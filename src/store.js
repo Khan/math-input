@@ -8,15 +8,15 @@ const initialState = {
 const reducer = function(state = initialState, action) {
 
     switch(action.type) {
-        case 'RegisterInput':
+        case 'RegisterKeyHandler':
             return {
                 ...state,
                 keyHandlers: [...state.keyHandlers, action.keyHandler],
             };
 
             return state;
-        case 'KeyPress':
 
+        case 'PressKey':
             // This is probably an anti-pattern but it works for the case where
             // we don't actually control the state but we still want to
             // communicate with the other object

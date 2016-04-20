@@ -1,8 +1,8 @@
 const React = require('react');
-const { css, StyleSheet } = require("aphrodite");
+const { StyleSheet } = require("aphrodite");
 const ReactRedux = require("react-redux");
 
-const store = require('./store');
+const actions = require('./actions');
 
 const MathQuill = window.MathQuill;
 
@@ -25,10 +25,7 @@ const MathInput = React.createClass({
 
         // pass this component's handleKey method to the store so it can call
         // it whenever the store gets an KeyPress action from the keypad
-        store.dispatch({
-            type: 'RegisterInput',
-            keyHandler: this.handleKey,
-        });
+        actions.registerKeyHandler(this.handleKey);
     },
 
     handleKey(e) {
