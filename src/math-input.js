@@ -1,3 +1,5 @@
+/* eslint no-console: 0 */
+
 const React = require('react');
 const ReactDOM = require('react-dom');
 const { StyleSheet } = require("aphrodite");
@@ -19,13 +21,13 @@ const MathInput = React.createClass({
         const span = document.createElement('span');
         container.appendChild(span);
 
-        var MQ = MathQuill.getInterface(2);
+        const MQ = MathQuill.getInterface(2);
         this.mathField = MQ.MathField(span, {
             handlers: {
                 edit: () => {
                     console.log(this.mathField.latex());
-                }
-            }
+                },
+            },
         });
 
         // pass this component's handleKey method to the store so it can call
@@ -52,7 +54,7 @@ const styles = StyleSheet.create({
     input: {
         margin: 10,
         width: 300,
-        fontSize: 48
+        fontSize: 48,
     },
 });
 

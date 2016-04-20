@@ -7,7 +7,7 @@ const initialState = {
 
 const reducer = function(state = initialState, action) {
 
-    switch(action.type) {
+    switch (action.type) {
         case 'RegisterKeyHandler':
             return {
                 ...state,
@@ -22,13 +22,8 @@ const reducer = function(state = initialState, action) {
                 handler(action.key, action.cmd);
             });
 
-            // TODO(kevinb) have the handler return state from MathQuill and store it
+            // TODO(kevinb) get state from MathQuill and store it?
             return state;
-
-        case 'PressBackspace':
-            state.keyHandlers.forEach(handler => {
-                handler('backspace');
-            });
 
         default:
             return state;

@@ -15,7 +15,7 @@ const App = React.createClass({
                 <MathKeypad />
             </Provider>
         </View>;
-    }
+    },
 });
 
 module.exports = App;

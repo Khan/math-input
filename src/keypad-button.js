@@ -8,7 +8,7 @@ const KeypadButton = (props) => {
         styles.button,
         // React Native allows you to set the 'style' props on user defined
         // components, https://facebook.github.io/react-native/docs/style.html
-        ...(Array.isArray(props.style) ? props.style : [props.style])
+        ...(Array.isArray(props.style) ? props.style : [props.style]),
     ];
 
     return <View style={style} onClick={props.onClick}>
@@ -21,6 +21,7 @@ const KeypadButton = (props) => {
 KeypadButton.propTypes = {
     label: React.PropTypes.string.isRequired,
     onClick: React.PropTypes.func.isRequired,
+    style: React.PropTypes.any, // TODO(kevinb) switch to react-native-web
 };
 
 const styles = StyleSheet.create({
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
     text: {
         fontFamily: 'sans-serif',
         fontSize: 24,
-    }
+    },
 });
 
 module.exports = KeypadButton;

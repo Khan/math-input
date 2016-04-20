@@ -41,15 +41,12 @@ const MathKeypad = React.createClass({
                 <KeypadButton {...KeyProps.BACKSPACE} />
             </View>
         </View>;
-    }
+    },
 });
 
 const styles = StyleSheet.create({
     row: {
         flexDirection: 'row',
-        ':last-child': {
-            backgroundColor: 'red',
-        }
     },
     keypad: {
         position: 'fixed',
@@ -57,7 +54,7 @@ const styles = StyleSheet.create({
         width: '100%',
         paddingRight: 1,
         paddingBottom: 1,
-    }
+    },
 });
 
 module.exports = MathKeypad;

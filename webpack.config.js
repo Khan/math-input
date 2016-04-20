@@ -1,20 +1,20 @@
-var path = require('path');
-var webpack = require('webpack');
+const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
     devtool: '#eval-source-map',
     entry: {
         app: './src/index',
-        deps: ['react', 'react-dom', 'redux', 'react-redux', 'aphrodite']
+        deps: ['react', 'react-dom', 'redux', 'react-redux', 'aphrodite'],
     },
     output: {
         path: path.join(__dirname, 'build'),
-        filename: '[name].js'
+        filename: '[name].js',
     },
     plugins: [
         new webpack.optimize.CommonsChunkPlugin({
-            name: 'deps'
-        })
+            name: 'deps',
+        }),
     ],
     resolve: {
         extensions: ['', '.js', '.jsx'],
@@ -27,11 +27,11 @@ module.exports = {
         loaders: [{
             test: /\.jsx?$/,
             loaders: ['babel'],
-            include: path.join(__dirname, 'src')
+            include: path.join(__dirname, 'src'),
         }, {
             // appends `module.exports = window.MathQuill` to mathquill.js
             test: /[\/]mathquill\.js$/,
-            loader: "exports?window.MathQuill"
-        }]
+            loader: "exports?window.MathQuill",
+        }],
     },
 };

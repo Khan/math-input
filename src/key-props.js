@@ -55,7 +55,7 @@ const KeyProps = {
     BACKSPACE: {
         label: Symbols.BACKSPACE,
         onClick: () => actions.pressKey('Backspace'),
-    }
+    },
 };
 
 for (const num of '0123456789') {

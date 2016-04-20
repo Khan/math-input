@@ -1,15 +1,27 @@
 const React = require('react');
 const { StyleSheet, css } = require('aphrodite');
 
-const View = (props) => {
-    const className = Array.isArray(props.style)
-        ? css(styles.initial, ...props.style)
-        : css(styles.initial, props.style);
+const View = React.createClass({
+    propTypes: {
+        children: React.PropTypes.oneOfType([
+            React.PropTypes.arrayOf(React.PropTypes.node),
+            React.PropTypes.node,
+        ]),
+        numberOfLines: React.PropTypes.number,
+        onClick: React.PropTypes.func,
+        style: React.PropTypes.any,
+    },
 
-    return <div onClick={props.onClick} className={className}>
-        {props.children}
-    </div>;
-};
+    render() {
+        const className = Array.isArray(this.props.style)
+            ? css(styles.initial, ...this.props.style)
+            : css(styles.initial, this.props.style);
+
+        return <div onClick={this.props.onClick} className={className}>
+            {this.props.children}
+        </div>;
+    },
+});
 
 // https://github.com/necolas/react-native-web/blob/master/src/components/View/index.js
 const styles = StyleSheet.create({
@@ -35,8 +47,8 @@ const styles = StyleSheet.create({
         // fix flexbox bugs
         maxWidth: '100%',
         minHeight: 0,
-        minWidth: 0
-    }
+        minWidth: 0,
+    },
 });
 
 module.exports = View;
