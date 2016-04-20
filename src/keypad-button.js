@@ -26,18 +26,19 @@ KeypadButton.propTypes = {
 const styles = StyleSheet.create({
     button: {
         width: '100%',
-        height: 60,
+        height: 44,
         borderColor: '#BBB',
         borderStyle: 'solid',
-        borderTopWidth: 1,
-        borderRightWidth: 1,
-        lineHeight: '60px',
+        borderWidth: 1,
+        marginBottom: -1,
+        marginRight: -1,
+        lineHeight: '44px',
         textAlign: 'center',
         backgroundColor: '#EEE',
     },
     text: {
         fontFamily: 'sans-serif',
-        fontSize: 32,
+        fontSize: 24,
     }
 });
 

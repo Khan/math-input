@@ -6,7 +6,6 @@ const MathQuill = require('mathquill');
 const { View } = require('./react-native');
 
 const actions = require('./actions');
-const Keys = require('./keys');
 
 const MathInput = React.createClass({
     propTypes: {
@@ -35,7 +34,7 @@ const MathInput = React.createClass({
     },
 
     handleKey(key, cmd) {
-        if (Object.values(Keys).includes(key)) {
+        if (['Left', 'Right', 'Backspace'].includes(key)) {
             this.mathField.keystroke(key);
         } else if (cmd) {
             this.mathField.cmd(key).focus();
