@@ -1,62 +1,22 @@
+/**
+ * This file contains props used by KeypadButtons in MathKeypad.  The reason
+ * for defining them here is separate button actions and labels from styling
+ * of those buttons.
+ */
+
 const Symbols = require('./symbols');
 const actions = require('./actions');
 
-const CMD = true;
+const Keys = require('./keys');
 
-const KeyProps = {
-    PLUS: {
-        label: '+',
-        onClick: () => actions.pressKey('+'),
-    },
-    MINUS: {
-        label: Symbols.MINUS,
-        onClick: () => actions.pressKey('-'),
-    },
-    TIMES: {
-        label: Symbols.TIMES,
-        onClick: () => actions.pressKey('\\times'),
-    },
-    DIVIDE: {
-        label: Symbols.DIVIDE,
-        onClick: () => actions.pressKey("\\div"),
-    },
-    DECIMAL: {
-        label: '.',
-        onClick: () => actions.pressKey('.'),
-    },
-    EQUAL: {
-        label: '=',
-        onClick: () => actions.pressKey('='),
-    },
-    FRAC: {
-        label: '/',
-        onClick: () => actions.pressKey("/", CMD),
-    },
-    EXP: {
-        label: '^',
-        onClick: () => actions.pressKey('^', CMD),
-    },
-    SQRT: {
-        label: Symbols.SQRT,
-        onClick: () => actions.pressKey('sqrt', CMD),
-    },
-    DOT: {
-        label: Symbols.CDOT,
-        onClick: () => actions.pressKey('\\cdot'),
-    },
-    LEFT: {
-        label: Symbols.LEFT_ARROW,
-        onClick: () => actions.pressKey('Left'),
-    },
-    RIGHT: {
-        label: Symbols.RIGHT_ARROW,
-        onClick: () => actions.pressKey('Right'),
-    },
-    BACKSPACE: {
-        label: Symbols.BACKSPACE,
-        onClick: () => actions.pressKey('Backspace'),
-    },
-};
+const KeyProps = {};
+
+for (const key of Object.keys(Keys)) {
+    KeyProps[key] = {
+        label: Symbols[key],
+        onClick: () => actions.pressKey(key),
+    };
+}
 
 for (const num of '0123456789') {
     KeyProps[`NUM_${num}`] = {

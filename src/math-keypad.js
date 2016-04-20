@@ -29,7 +29,7 @@ const MathKeypad = React.createClass({
                 <KeypadButton {...KeyProps.NUM_2} />
                 <KeypadButton {...KeyProps.NUM_3} />
                 <KeypadButton {...KeyProps.TIMES} />
-                <KeypadButton {...KeyProps.DOT} />
+                <KeypadButton {...KeyProps.CDOT} />
                 <KeypadButton {...KeyProps.EQUAL} />
             </View>
             <View style={styles.row}>

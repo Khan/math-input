@@ -3,11 +3,10 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 const { StyleSheet } = require("aphrodite");
-const MathQuill = require('mathquill');
-
-const { View } = require('./react-native');
 
 const actions = require('./actions');
+const { View } = require('./react-native');
+const MathWrapper = require('./math-wrapper');
 
 const MathInput = React.createClass({
     propTypes: {
@@ -21,28 +20,11 @@ const MathInput = React.createClass({
         const span = document.createElement('span');
         container.appendChild(span);
 
-        const MQ = MathQuill.getInterface(2);
-        this.mathField = MQ.MathField(span, {
-            handlers: {
-                edit: () => {
-                    console.log(this.mathField.latex());
-                },
-            },
-        });
+        this.mathField = new MathWrapper(span);
 
         // pass this component's handleKey method to the store so it can call
         // it whenever the store gets an KeyPress action from the keypad
-        actions.registerKeyHandler(this.handleKey);
-    },
-
-    handleKey(key, cmd) {
-        if (['Left', 'Right', 'Backspace'].includes(key)) {
-            this.mathField.keystroke(key);
-        } else if (cmd) {
-            this.mathField.cmd(key).focus();
-        } else {
-            this.mathField.write(key).focus();
-        }
+        actions.registerKeyHandler(key => this.mathField.pressKey(key));
     },
 
     render() {
