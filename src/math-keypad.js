@@ -3,25 +3,10 @@ const { StyleSheet } = require('aphrodite');
 
 const { View } = require('./react-native');
 const KeypadButton = require('./keypad-button');
-const actions = require('./actions');
 const KeyProps = require('./key-props');
 
 const MathKeypad = React.createClass({
     render() {
-        for (const num of '0123456789') {
-            KeyProps[`NUM_${num}`] = {
-                label: num,
-                onClick: () => actions.pressKey(num),
-            };
-        }
-
-        for (const letter of 'xyz') {
-            KeyProps[letter] = {
-                label: letter,
-                onClick: () => actions.pressKey(letter),
-            };
-        }
-
         return <View style={styles.keypad}>
             <View style={styles.row}>
                 <KeypadButton {...KeyProps.NUM_7} />
