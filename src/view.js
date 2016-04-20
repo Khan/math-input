@@ -6,10 +6,7 @@ const View = (props) => {
         ? css(styles.initial, ...props.style)
         : css(styles.initial, props.style);
 
-    return <div
-        onClick={props.onClick}
-        className={className}
-    >
+    return <div onClick={props.onClick} className={className}>
         {props.children}
     </div>;
 };
