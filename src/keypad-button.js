@@ -4,10 +4,14 @@ const { Text, View } = require('./react-native');
 
 
 const KeypadButton = (props) => {
-    return <View
-        style={styles.button}
-        onClick={props.onClick}
-    >
+    const style = [
+        styles.button,
+        // React Native allows you to set the 'style' props on user defined
+        // components, https://facebook.github.io/react-native/docs/style.html
+        ...(Array.isArray(props.style) ? props.style : [props.style])
+    ];
+
+    return <View style={style} onClick={props.onClick}>
         <Text style={styles.text}>
             {props.label}
         </Text>
@@ -21,15 +25,19 @@ KeypadButton.propTypes = {
 
 const styles = StyleSheet.create({
     button: {
-        width: 100,
-        height: 100,
-        border: 'solid 1px gray',
-        lineHeight: '100px',
+        width: '100%',
+        height: 60,
+        borderColor: '#BBB',
+        borderStyle: 'solid',
+        borderTopWidth: 1,
+        borderRightWidth: 1,
+        lineHeight: '60px',
         textAlign: 'center',
+        backgroundColor: '#EEE',
     },
     text: {
         fontFamily: 'sans-serif',
-        fontSize: 48,
+        fontSize: 32,
     }
 });
 

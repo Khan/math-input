@@ -51,8 +51,9 @@ const MathInput = React.createClass({
 
 const styles = StyleSheet.create({
     input: {
-        margin: 5,
-        fontSize: 48,
+        margin: 10,
+        width: 300,
+        fontSize: 48
     },
 });
 

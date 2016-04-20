@@ -1,13 +1,18 @@
 const React = require('react');
 const { StyleSheet, css } = require('aphrodite');
 
-const View = (props) =>
-    <div
+const View = (props) => {
+    const className = Array.isArray(props.style)
+        ? css(styles.initial, ...props.style)
+        : css(styles.initial, props.style);
+
+    return <div
         onClick={props.onClick}
-        className={css(styles.initial, props.style)}
+        className={className}
     >
         {props.children}
     </div>;
+};
 
 // https://github.com/necolas/react-native-web/blob/master/src/components/View/index.js
 const styles = StyleSheet.create({
