@@ -1,12 +1,12 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 const { StyleSheet } = require("aphrodite");
+const MathQuill = require('mathquill');
+
 const { View } = require('./react-native');
 
 const actions = require('./actions');
 const Keys = require('./keys');
-
-const MathQuill = window.MathQuill;
 
 const MathInput = React.createClass({
     propTypes: {

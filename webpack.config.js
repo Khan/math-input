@@ -17,13 +17,21 @@ module.exports = {
         })
     ],
     resolve: {
-        extensions: ['', '.js', '.jsx']
+        extensions: ['', '.js', '.jsx'],
+        alias: {
+            // allows us to do `const MathQuill = require('mathquill');`
+            mathquill: path.join(__dirname, "mathquill/mathquill.js"),
+        },
     },
     module: {
         loaders: [{
             test: /\.jsx?$/,
             loaders: ['babel'],
             include: path.join(__dirname, 'src')
+        }, {
+            // appends `module.exports = window.MathQuill` to mathquill.js
+            test: /[\/]mathquill\.js$/,
+            loader: "exports?window.MathQuill"
         }]
-    }
+    },
 };

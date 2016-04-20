@@ -13,12 +13,6 @@ module.exports = {
         });
     },
 
-    pressBackspace: function() {
-        store.dispatch({
-            type: 'PressBackspace',
-        });
-    },
-
     registerKeyHandler: function(keyHandler) {
         store.dispatch({
             type: 'RegisterKeyHandler',
