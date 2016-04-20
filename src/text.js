@@ -1,19 +1,21 @@
 const React = require('react');
 const { StyleSheet, css } = require('aphrodite');
 
-const Text = (props) => {
-    const { numberOfLines } = props;
+const Text = React.createClass({
+    render() {
+        const {numberOfLines, style} = this.props;
 
-    const className = css(
-        styles.initial,
-        props.style,
-        numberOfLines === 1 && styles.singleLineStyle
-    );
+        const className = css(
+            styles.initial,
+            style,
+            numberOfLines === 1 && styles.singleLineStyle
+        );
 
-    return <span className={className}>
-        {props.children}
-    </span>;
-};
+        return <span className={className}>
+            {this.props.children}
+        </span>;
+    }
+});
 
 // https://github.com/necolas/react-native-web/blob/master/src/components/Text/index.js
 const styles = StyleSheet.create({

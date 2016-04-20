@@ -14,19 +14,22 @@ const reducer = function(state = initialState, action) {
                 keyHandlers: [...state.keyHandlers, action.keyHandler],
             };
 
-            return state;
-
         case 'PressKey':
             // This is probably an anti-pattern but it works for the case where
             // we don't actually control the state but we still want to
             // communicate with the other object
             state.keyHandlers.forEach(handler => {
-                handler(action.key);
+                handler(action.key, action.cmd);
             });
 
             // TODO(kevinb) have the handler return state from MathQuill and store it
-
             return state;
+
+        case 'PressBackspace':
+            state.keyHandlers.forEach(handler => {
+                handler('backspace');
+            });
+
         default:
             return state;
     }

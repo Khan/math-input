@@ -1,8 +1,10 @@
 const React = require('react');
+const ReactDOM = require('react-dom');
 const { StyleSheet } = require("aphrodite");
-const ReactRedux = require("react-redux");
+const { View } = require('./react-native');
 
 const actions = require('./actions');
+const Keys = require('./keys');
 
 const MathQuill = window.MathQuill;
 
@@ -14,11 +16,15 @@ const MathInput = React.createClass({
     },
 
     componentDidMount() {
+        const container = ReactDOM.findDOMNode(this);
+        const span = document.createElement('span');
+        container.appendChild(span);
+
         var MQ = MathQuill.getInterface(2);
-        this.mathfield = MQ.MathField(this.refs.mathinput, {
+        this.mathField = MQ.MathField(span, {
             handlers: {
                 edit: () => {
-                    console.log(this.mathfield.latex());
+                    console.log(this.mathField.latex());
                 }
             }
         });
@@ -28,30 +34,26 @@ const MathInput = React.createClass({
         actions.registerKeyHandler(this.handleKey);
     },
 
-    handleKey(e) {
-        console.log('MathInput.handleKey');
-        console.log(e);
-        if ('^/*'.includes(e)) {
-            this.mathfield.cmd(e).focus();
+    handleKey(key, cmd) {
+        if (Object.values(Keys).includes(key)) {
+            this.mathField.keystroke(key);
+        } else if (cmd) {
+            this.mathField.cmd(key).focus();
         } else {
-            this.mathfield.write(e).focus();
+            this.mathField.write(key).focus();
         }
     },
 
     render() {
-        return <div>
-            <span ref='mathinput'></span>
-        </div>;
+        return <View style={styles.input} />;
     },
 });
 
 const styles = StyleSheet.create({
     input: {
-        border: 'solid 1px black',
         margin: 5,
+        fontSize: 48,
     },
 });
-
-const ConnectedMathInput = ReactRedux.connect(state => state)(MathInput);
 
 module.exports = MathInput;
