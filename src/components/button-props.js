@@ -4,32 +4,32 @@
  * of those buttons.
  */
 
-const Symbols = require('./symbols');
-const actions = require('./actions');
+const actions = require('../actions');
 
-const Keys = require('./keys');
+const Keys = require('../data/keys');
+const Symbols = require('../data/symbols');
 
-const KeyProps = {};
+const ButtonProps = {};
 
 for (const key of Object.keys(Keys)) {
-    KeyProps[key] = {
+    ButtonProps[key] = {
         label: Symbols[key],
         onClick: () => actions.pressKey(key),
     };
 }
 
 for (const num of '0123456789') {
-    KeyProps[`NUM_${num}`] = {
+    ButtonProps[`NUM_${num}`] = {
         label: num,
         onClick: () => actions.pressKey(num),
     };
 }
 
-for (const letter of 'xyz') {
-    KeyProps[letter] = {
+for (const letter of 'abcdefghijklmnopqrstuvwxyz') {
+    ButtonProps[letter] = {
         label: letter,
         onClick: () => actions.pressKey(letter),
     };
 }
 
-module.exports = KeyProps;
+module.exports = ButtonProps;

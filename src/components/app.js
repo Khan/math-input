@@ -1,11 +1,11 @@
 const React = require('react');
 const { Provider } = require('react-redux');
 
-const { View } = require('./react-native');
+const { View } = require('../fake-react-native-web');
 
 const MathInput = require('./math-input');
 const MathKeypad = require('./math-keypad');
-const store = require('./store');
+const store = require('../store');
 
 const App = React.createClass({
     render() {

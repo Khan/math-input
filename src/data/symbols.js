@@ -1,3 +1,7 @@
+/**
+ * A dictionary of symbols (glyphs) used as icongraphy for keypad buttons.
+ */
+
 const Keys = require('./keys');
 
 const Symbols = {
@@ -11,9 +15,9 @@ const Symbols = {
     [Keys.FRAC]: '/',
     [Keys.EXP]: '^',
     [Keys.SQRT]: '\u221A',
-    [Keys.LEFT]: "\u2190",
-    [Keys.RIGHT]: "\u2192",
-    [Keys.BACKSPACE]: "\u232B",
+    [Keys.LEFT]: '\u2190',
+    [Keys.RIGHT]: '\u2192',
+    [Keys.BACKSPACE]: '\u232B',
 };
 
 module.exports = Symbols;

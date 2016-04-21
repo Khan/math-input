@@ -4,8 +4,8 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 const { StyleSheet } = require("aphrodite");
 
-const actions = require('./actions');
-const { View } = require('./react-native');
+const actions = require('../actions');
+const { View } = require('../fake-react-native-web');
 const MathWrapper = require('./math-wrapper');
 
 const MathInput = React.createClass({

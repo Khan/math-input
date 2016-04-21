@@ -1,6 +1,6 @@
 const React = require('react');
 const { StyleSheet } = require('aphrodite');
-const { Text, View } = require('./react-native');
+const { Text, View } = require('../fake-react-native-web');
 
 
 const KeypadButton = (props) => {

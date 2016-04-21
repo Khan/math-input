@@ -1,5 +1,5 @@
 /**
- * This file contains constants for keypad buttons that aren't single \
+ * This file contains constants for keypad buttons that aren't single
  * alphanumeric characters.
  */
 

@@ -1,4 +1,4 @@
-const store = require('./store');
+const store = require('../store');
 
 module.exports = {
     // naming convetion: verb + noun
