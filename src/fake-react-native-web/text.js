@@ -12,11 +12,11 @@ const Text = React.createClass({
     },
 
     render() {
-        const {numberOfLines, style} = this.props;
+        const { numberOfLines, style } = this.props;
 
         const className = css(
             styles.initial,
-            style,
+            ...(Array.isArray(style) ? style : [style]),
             numberOfLines === 1 && styles.singleLineStyle
         );
 

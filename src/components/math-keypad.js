@@ -4,6 +4,7 @@ const { connect } = require('react-redux');
 const DefaultKeypad = require('./default-keypad');
 const NumberKeypad = require('./number-keypad');
 const FractionKeypad = require('./fraction-keypad');
+const TestMultiButtonKeypad = require('./test-multi-button-keypad');
 
 const { keypadTypes } = require('./consts');
 
@@ -24,6 +25,8 @@ const MathKeypad = React.createClass({
             return <NumberKeypad />;
         } else if (this.props.keypadType === keypadTypes.FRACTION) {
             return <FractionKeypad />;
+        } else if (this.props.keypadType === keypadTypes.TEST_MULTI_BUTTON) {
+            return <TestMultiButtonKeypad />;
         } else {
             // TODO(charlie): Add in both variants of the Expression keypad.
             return <DefaultKeypad />;
