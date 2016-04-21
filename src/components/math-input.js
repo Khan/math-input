@@ -9,12 +9,6 @@ const { View } = require('../fake-react-native-web');
 const MathWrapper = require('./math-wrapper');
 
 const MathInput = React.createClass({
-    propTypes: {
-        currentValue: React.PropTypes.string.isRequired,
-        // cursor: React.PropTypes.number,
-        // onChange: React.PropTypes.func,
-    },
-
     componentDidMount() {
         const container = ReactDOM.findDOMNode(this);
         const span = document.createElement('span');

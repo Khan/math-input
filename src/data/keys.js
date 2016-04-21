@@ -21,6 +21,8 @@ const Keys = {
     RIGHT: 'RIGHT',
     BACKSPACE: 'BACKSPACE',
     DISMISS: 'DISMISS',
+    MORE: 'MORE',
+    NUMBERS: 'NUMBERS',
 };
 
 module.exports = Keys;

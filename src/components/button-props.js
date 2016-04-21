@@ -8,30 +8,35 @@ const actions = require('../actions');
 
 const Keys = require('../data/keys');
 const Symbols = require('../data/symbols');
+const KeyTypes = require('../data/key-types');
+const CustomActions = require('../data/custom-actions');
+const { keyTypes } = require('../consts');
 
 const ButtonProps = {};
 
 for (const key of Object.keys(Keys)) {
-    // TODO(charlie): The "dismiss" key needs to trigger a dismiss action,
-    // rather than being treated as a key press to-be sent to and handled by
-    // the input.
+    // Use a custom action if necessary, or default to dispatching the raw
+    // key-press event.
+    const onClick = CustomActions[key] ||
+        (() => actions.pressKey(key, KeyTypes[key]));
+
     ButtonProps[key] = {
         label: Symbols[key],
-        onClick: () => actions.pressKey(key),
+        onClick: onClick,
     };
 }
 
 for (const num of '0123456789') {
     ButtonProps[`NUM_${num}`] = {
         label: num,
-        onClick: () => actions.pressKey(num),
+        onClick: () => actions.pressKey(num, keyTypes.MATH),
     };
 }
 
 for (const letter of 'abcdefghijklmnopqrstuvwxyz') {
     ButtonProps[letter] = {
         label: letter,
-        onClick: () => actions.pressKey(letter),
+        onClick: () => actions.pressKey(letter, keyTypes.MATH),
     };
 }
 

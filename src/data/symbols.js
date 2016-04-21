@@ -21,6 +21,8 @@ const Symbols = {
     [Keys.RIGHT]: '\u2192',
     [Keys.BACKSPACE]: '\u232B',
     [Keys.DISMISS]: 'X',
+    [Keys.MORE]: '...',
+    [Keys.NUMBERS]: '123',
 };
 
 module.exports = Symbols;

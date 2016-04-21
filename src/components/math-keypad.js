@@ -5,12 +5,14 @@ const DefaultKeypad = require('./default-keypad');
 const NumberKeypad = require('./number-keypad');
 const FractionKeypad = require('./fraction-keypad');
 const TestMultiButtonKeypad = require('./test-multi-button-keypad');
+const TestMultiPageKeypad = require('./test-multi-page-keypad');
 
-const { keypadTypes } = require('./consts');
+const { keypadTypes } = require('../consts');
 
 const MathKeypad = React.createClass({
     propTypes: {
-        keypadType: React.PropTypes.oneOf(Object.keys(keypadTypes)),
+        page: React.PropTypes.number,
+        type: React.PropTypes.oneOf(Object.keys(keypadTypes)),
     },
 
     render() {
@@ -21,21 +23,28 @@ const MathKeypad = React.createClass({
         // However, the keyboards differ pretty heavily right now and it's not
         // clear what that format would look like exactly. Plus, there aren't
         // very many of them. So to keep us moving, we'll just hardcode.
-        if (this.props.keypadType === keypadTypes.NUMBER) {
-            return <NumberKeypad />;
-        } else if (this.props.keypadType === keypadTypes.FRACTION) {
-            return <FractionKeypad />;
-        } else if (this.props.keypadType === keypadTypes.TEST_MULTI_BUTTON) {
-            return <TestMultiButtonKeypad />;
-        } else {
-            // TODO(charlie): Add in both variants of the Expression keypad.
-            return <DefaultKeypad />;
+        switch (this.props.type) {
+            case keypadTypes.NUMBER:
+                return <NumberKeypad {...this.props} />;
+
+            case keypadTypes.FRACTION:
+                return <FractionKeypad {...this.props} />;
+
+            case keypadTypes.TEST_MULTI_BUTTON:
+                return <TestMultiButtonKeypad {...this.props} />;
+
+            case keypadTypes.TEST_MULTI_PAGE:
+                return <TestMultiPageKeypad {...this.props} />;
+
+            case keypadTypes.DEFAULT:
+            default:
+                return <DefaultKeypad {...this.props} />;
         }
     },
 });
 
 const mapStateToProps = (state) => {
-    return { keypadType: state.keypadType };
+    return state.keypad;
 };
 
 module.exports = connect(mapStateToProps)(MathKeypad);

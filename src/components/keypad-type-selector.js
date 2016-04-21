@@ -4,7 +4,7 @@
 
 const React = require('React');
 
-const { keypadTypes } = require('./consts');
+const { keypadTypes } = require('../consts');
 
 const KeypadTypeSelector = React.createClass({
     propTypes: {
