@@ -14,36 +14,36 @@ const DefaultKeypad = React.createClass({
     render() {
         return <View style={keypad}>
             <View style={row}>
-                <KeypadButton {...ButtonProps.NUM_7} />
-                <KeypadButton {...ButtonProps.NUM_8} />
-                <KeypadButton {...ButtonProps.NUM_9} />
-                <KeypadButton {...ButtonProps.PLUS} />
-                <KeypadButton {...ButtonProps.EXP} />
-                <KeypadButton {...ButtonProps.LEFT} />
+                <KeypadButton primaryKey={ButtonProps.NUM_7} />
+                <KeypadButton primaryKey={ButtonProps.NUM_8} />
+                <KeypadButton primaryKey={ButtonProps.NUM_9} />
+                <KeypadButton primaryKey={ButtonProps.PLUS} />
+                <KeypadButton primaryKey={ButtonProps.EXP} />
+                <KeypadButton primaryKey={ButtonProps.LEFT} />
             </View>
             <View style={row}>
-                <KeypadButton {...ButtonProps.NUM_4} />
-                <KeypadButton {...ButtonProps.NUM_5} />
-                <KeypadButton {...ButtonProps.NUM_6} />
-                <KeypadButton {...ButtonProps.MINUS} />
-                <KeypadButton {...ButtonProps.SQRT} />
-                <KeypadButton {...ButtonProps.RIGHT} />
+                <KeypadButton primaryKey={ButtonProps.NUM_4} />
+                <KeypadButton primaryKey={ButtonProps.NUM_5} />
+                <KeypadButton primaryKey={ButtonProps.NUM_6} />
+                <KeypadButton primaryKey={ButtonProps.MINUS} />
+                <KeypadButton primaryKey={ButtonProps.SQRT} />
+                <KeypadButton primaryKey={ButtonProps.RIGHT} />
             </View>
             <View style={row}>
-                <KeypadButton {...ButtonProps.NUM_1} />
-                <KeypadButton {...ButtonProps.NUM_2} />
-                <KeypadButton {...ButtonProps.NUM_3} />
-                <KeypadButton {...ButtonProps.TIMES} />
-                <KeypadButton {...ButtonProps.CDOT} />
-                <KeypadButton {...ButtonProps.EQUAL} />
+                <KeypadButton primaryKey={ButtonProps.NUM_1} />
+                <KeypadButton primaryKey={ButtonProps.NUM_2} />
+                <KeypadButton primaryKey={ButtonProps.NUM_3} />
+                <KeypadButton primaryKey={ButtonProps.TIMES} />
+                <KeypadButton primaryKey={ButtonProps.CDOT} />
+                <KeypadButton primaryKey={ButtonProps.EQUAL} />
             </View>
             <View style={row}>
-                <KeypadButton {...ButtonProps.x} />
-                <KeypadButton {...ButtonProps.NUM_0} />
-                <KeypadButton {...ButtonProps.DECIMAL} />
-                <KeypadButton {...ButtonProps.DIVIDE} />
-                <KeypadButton {...ButtonProps.FRAC} />
-                <KeypadButton {...ButtonProps.BACKSPACE} />
+                <KeypadButton primaryKey={ButtonProps.x} />
+                <KeypadButton primaryKey={ButtonProps.NUM_0} />
+                <KeypadButton primaryKey={ButtonProps.DECIMAL} />
+                <KeypadButton primaryKey={ButtonProps.DIVIDE} />
+                <KeypadButton primaryKey={ButtonProps.FRAC} />
+                <KeypadButton primaryKey={ButtonProps.BACKSPACE} />
             </View>
         </View>;
     },

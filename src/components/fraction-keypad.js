@@ -15,28 +15,28 @@ const FractionKeypad = React.createClass({
     render() {
         return <View style={keypad}>
             <View style={row}>
-                <KeypadButton {...ButtonProps.NUM_7} />
-                <KeypadButton {...ButtonProps.NUM_8} />
-                <KeypadButton {...ButtonProps.NUM_9} />
-                <KeypadButton {...ButtonProps.DIVIDE} />
+                <KeypadButton primaryKey={ButtonProps.NUM_7} />
+                <KeypadButton primaryKey={ButtonProps.NUM_8} />
+                <KeypadButton primaryKey={ButtonProps.NUM_9} />
+                <KeypadButton primaryKey={ButtonProps.DIVIDE} />
             </View>
             <View style={row}>
-                <KeypadButton {...ButtonProps.NUM_4} />
-                <KeypadButton {...ButtonProps.NUM_5} />
-                <KeypadButton {...ButtonProps.NUM_6} />
-                <KeypadButton {...ButtonProps.PERCENT} />
+                <KeypadButton primaryKey={ButtonProps.NUM_4} />
+                <KeypadButton primaryKey={ButtonProps.NUM_5} />
+                <KeypadButton primaryKey={ButtonProps.NUM_6} />
+                <KeypadButton primaryKey={ButtonProps.PERCENT} />
             </View>
             <View style={row}>
-                <KeypadButton {...ButtonProps.NUM_1} />
-                <KeypadButton {...ButtonProps.NUM_2} />
-                <KeypadButton {...ButtonProps.NUM_3} />
-                <KeypadButton {...ButtonProps.BACKSPACE} />
+                <KeypadButton primaryKey={ButtonProps.NUM_1} />
+                <KeypadButton primaryKey={ButtonProps.NUM_2} />
+                <KeypadButton primaryKey={ButtonProps.NUM_3} />
+                <KeypadButton primaryKey={ButtonProps.BACKSPACE} />
             </View>
             <View style={row}>
-                <KeypadButton {...ButtonProps.TOGGLE_SIGN} />
-                <KeypadButton {...ButtonProps.NUM_0} />
-                <KeypadButton {...ButtonProps.DECIMAL} />
-                <KeypadButton {...ButtonProps.DISMISS} />
+                <KeypadButton primaryKey={ButtonProps.TOGGLE_SIGN} />
+                <KeypadButton primaryKey={ButtonProps.NUM_0} />
+                <KeypadButton primaryKey={ButtonProps.DECIMAL} />
+                <KeypadButton primaryKey={ButtonProps.DISMISS} />
             </View>
         </View>;
     },

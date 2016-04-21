@@ -14,24 +14,24 @@ const NumberKeypad = React.createClass({
     render() {
         return <View style={keypad}>
             <View style={row}>
-                <KeypadButton {...ButtonProps.NUM_7} />
-                <KeypadButton {...ButtonProps.NUM_8} />
-                <KeypadButton {...ButtonProps.NUM_9} />
+                <KeypadButton primaryKey={ButtonProps.NUM_7} />
+                <KeypadButton primaryKey={ButtonProps.NUM_8} />
+                <KeypadButton primaryKey={ButtonProps.NUM_9} />
             </View>
             <View style={row}>
-                <KeypadButton {...ButtonProps.NUM_4} />
-                <KeypadButton {...ButtonProps.NUM_5} />
-                <KeypadButton {...ButtonProps.NUM_6} />
+                <KeypadButton primaryKey={ButtonProps.NUM_4} />
+                <KeypadButton primaryKey={ButtonProps.NUM_5} />
+                <KeypadButton primaryKey={ButtonProps.NUM_6} />
             </View>
             <View style={row}>
-                <KeypadButton {...ButtonProps.NUM_1} />
-                <KeypadButton {...ButtonProps.NUM_2} />
-                <KeypadButton {...ButtonProps.NUM_3} />
+                <KeypadButton primaryKey={ButtonProps.NUM_1} />
+                <KeypadButton primaryKey={ButtonProps.NUM_2} />
+                <KeypadButton primaryKey={ButtonProps.NUM_3} />
             </View>
             <View style={row}>
-                <KeypadButton {...ButtonProps.BACKSPACE} />
-                <KeypadButton {...ButtonProps.NUM_0} />
-                <KeypadButton {...ButtonProps.DISMISS} />
+                <KeypadButton primaryKey={ButtonProps.BACKSPACE} />
+                <KeypadButton primaryKey={ButtonProps.NUM_0} />
+                <KeypadButton primaryKey={ButtonProps.DISMISS} />
             </View>
         </View>;
     },
