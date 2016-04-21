@@ -4,6 +4,12 @@ module.exports = {
     // naming convetion: verb + noun
     // the noun should be one of the other properties in the object that's
     // being dispatched
+    setKeypadType: function(keypadType) {
+        store.dispatch({
+            type: 'SetKeypadType',
+            keypadType,
+        });
+    },
 
     pressKey: function(key, cmd = false) {
         store.dispatch({

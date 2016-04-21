@@ -20,6 +20,10 @@ const KEYSTROKE = 'keystroke';
 const KeyActions = {
     [Keys.PLUS]: { str: '+', fn: WRITE },
     [Keys.MINUS]: { str: '-', fn: WRITE },
+    // TODO(charlie): The behavior of this key depends on the state of the
+    // input. Right now, it doesn't properly respect the "switch to positive"
+    // case.
+    [Keys.TOGGLE_SIGN]: { str: '-', fn: WRITE },
     [Keys.TIMES]: { str: '\\times', fn: WRITE },
     [Keys.DIVIDE]: { str: '\\div', fn: WRITE },
     [Keys.DECIMAL]: { str: '.', fn: WRITE },

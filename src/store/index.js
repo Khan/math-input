@@ -1,13 +1,21 @@
 const Redux = require('redux');
 
+const { keypadTypes } = require('../components/consts');
+
 const initialState = {
+    keypadType: keypadTypes.FRACTION,
     currentValue: '',
     keyHandlers: [],    // TODO(kevinb) keep track of the current handle
 };
 
 const reducer = function(state = initialState, action) {
-
     switch (action.type) {
+        case 'SetKeypadType':
+            return {
+                ...state,
+                keypadType: action.keypadType,
+            };
+
         case 'RegisterKeyHandler':
             return {
                 ...state,
@@ -29,7 +37,6 @@ const reducer = function(state = initialState, action) {
             return state;
     }
 };
-
 
 const store = Redux.createStore(reducer);
 

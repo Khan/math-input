@@ -12,6 +12,9 @@ const Symbols = require('../data/symbols');
 const ButtonProps = {};
 
 for (const key of Object.keys(Keys)) {
+    // TODO(charlie): The "dismiss" key needs to trigger a dismiss action,
+    // rather than being treated as a key press to-be sent to and handled by
+    // the input.
     ButtonProps[key] = {
         label: Symbols[key],
         onClick: () => actions.pressKey(key),

@@ -7,9 +7,11 @@
 const Keys = {
     PLUS: 'PLUS',
     MINUS: 'MINUS',
+    TOGGLE_SIGN: 'TOGGLE_SIGN',
     TIMES: 'TIMES',
     DIVIDE: 'DIVIDE',
     DECIMAL: 'DECIMAL',
+    PERCENT: 'PERCENT',
     EQUAL: 'EQUAL',
     FRAC: 'FRAC',
     EXP: 'EXP',
@@ -18,6 +20,7 @@ const Keys = {
     LEFT: 'LEFT',
     RIGHT: 'RIGHT',
     BACKSPACE: 'BACKSPACE',
+    DISMISS: 'DISMISS',
 };
 
 module.exports = Keys;
