@@ -9,6 +9,7 @@ module.exports = {
         DEFAULT: 'DEFAULT',
         TEST_MULTI_BUTTON: 'TEST_MULTI_BUTTON',
         TEST_MULTI_PAGE: 'TEST_MULTI_PAGE',
+        TEST_POPOVER: 'TEST_POPOVER',
     },
 
     keyTypes: {

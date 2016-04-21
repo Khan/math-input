@@ -8,6 +8,11 @@ const React = require('React');
 
 const { StyleSheet } = require('aphrodite');
 const { Text, View } = require('../fake-react-native-web');
+const {
+    buttonHeightPx,
+    buttonFontSizePrimary,
+    buttonFontSizeSecondary,
+} = require('./common-style');
 const CornerDecal = require('./corner-decal');
 
 const keyPropType = React.PropTypes.shape({
@@ -91,7 +96,6 @@ const KeypadButton = React.createClass({
 });
 
 const gapWidthPx = 5;
-const buttonHeightPx = 44;
 
 const styles = StyleSheet.create({
     primaryColumn: {
@@ -101,7 +105,7 @@ const styles = StyleSheet.create({
     },
     primaryText: {
         fontFamily: 'sans-serif',
-        fontSize: 24,
+        fontSize: buttonFontSizePrimary,
     },
 
     secondaryColumn: {
@@ -114,7 +118,7 @@ const styles = StyleSheet.create({
     },
     secondaryText: {
         fontFamily: 'sans-serif',
-        fontSize: 12,
+        fontSize: buttonFontSizeSecondary,
         color: 'grey',
     },
 

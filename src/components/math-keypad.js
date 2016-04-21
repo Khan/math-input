@@ -6,6 +6,7 @@ const NumberKeypad = require('./number-keypad');
 const FractionKeypad = require('./fraction-keypad');
 const TestMultiButtonKeypad = require('./test-multi-button-keypad');
 const TestMultiPageKeypad = require('./test-multi-page-keypad');
+const TestPopoverKeypad = require('./test-popover-keypad');
 
 const { keypadTypes } = require('../consts');
 
@@ -35,6 +36,9 @@ const MathKeypad = React.createClass({
 
             case keypadTypes.TEST_MULTI_PAGE:
                 return <TestMultiPageKeypad {...this.props} />;
+
+            case keypadTypes.TEST_POPOVER:
+                return <TestPopoverKeypad {...this.props} />;
 
             case keypadTypes.DEFAULT:
             default:
