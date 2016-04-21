@@ -14,7 +14,7 @@ const CMD = 'cmd';
 const KEYSTROKE = 'keystroke';
 
 // A mapping from keys that can be pressed on a keypad to the way in which
-// MathQuill should modify its input in response to that keyPress. Any keys
+// MathQuill should modify its input in response to that key-press. Any keys
 // that do not provide explicit actions (like the numeral keys) will merely
 // write their contents to MathQuill.
 const KeyActions = {
