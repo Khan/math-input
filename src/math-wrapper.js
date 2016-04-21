@@ -32,7 +32,15 @@ const KeyActions = {
 class MathWrapper {
 
     constructor(element) {
-        this.mathField = MQ.MathField(element);
+        const options = {
+            // use a span instead of a textarea so that we don't bring up the
+            // native keyboard on mobile when selecting the input
+            substituteTextarea: function() {
+                return document.createElement('span');
+            },
+        };
+
+        this.mathField = MQ.MathField(element, options);
     }
 
     pressKey(key) {
@@ -43,7 +51,7 @@ class MathWrapper {
                 this.mathField[fn](mqKey).focus();
             }
         } else if (/^[0-9a-z]$/.test(key)) {
-            this.mathField[WRITE](key).focus();
+            this.mathField[WRITE](key);
         }
     }
 }
