@@ -125,6 +125,9 @@ const styles = StyleSheet.create({
         lineHeight: `${buttonHeightPx}px`,
         textAlign: 'center',
         backgroundColor: '#EEE',
+        cursor: 'pointer',
+        // Make the text unselectable
+        userSelect: 'none',
     },
 });
 
