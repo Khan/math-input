@@ -40,4 +40,9 @@ for (const letter of 'abcdefghijklmnopqrstuvwxyz') {
     };
 }
 
+ButtonProps[Keys.NOOP] = {
+    label: '',
+    onClick: () => {},
+};
+
 module.exports = ButtonProps;

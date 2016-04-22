@@ -76,31 +76,31 @@ describe('MathQuill', () => {
         });
     });
 
-    describe.skip('Parentheses', () => {
+    describe('Parentheses', () => {
         it('should work with no content', () => {
             mathField.setContent('');
             mathField.pressKey(Keys.PARENS);
-            assert.equal(mathField.getContent(), '()');
+            assert.equal(mathField.getContent(), '\\left(\\right)');
         });
 
         it('should work after an expression', () => {
             mathField.setContent('35x^2');
             mathField.pressKey(Keys.PARENS);
-            assert.equal(mathField.getContent(), '35x^2()');
+            assert.equal(mathField.getContent(), '35x^2\\left(\\right)');
         });
 
         it('should work before an expression', () => {
             mathField.setContent('35x^2');
             mathField.moveToStart();
             mathField.pressKey(Keys.PARENS);
-            assert.equal(mathField.getContent(), '()35x^2');
+            assert.equal(mathField.getContent(), '\\left(\\right)35x^2');
         });
 
-        it('should work on a selected expression', () => {
+        it.skip('should work on a selected expression', () => {
             mathField.setContent('35x + 5');
             mathField.selectAll();
             mathField.pressKey(Keys.PARENS);
-            assert.equal(mathField.getContent(), '(35x^2)');
+            assert.equal(mathField.getContent(), '\\left(35x^2\\right)');
         });
     });
 
@@ -245,20 +245,18 @@ describe('MathQuill', () => {
             assert.equal(mathField.getContent(), '\\frac{35x+5}{x^2}');
         });
 
-        // TODO(kevinb) doesn't delete both
         it('should delete parens when inside empty parens', () => {
-            mathField.setContent('()');
+            mathField.setContent('\\left(\\right)');
             mathField.pressKey(Keys.LEFT);
             mathField.pressKey(Keys.BACKSPACE);
             assert.equal(mathField.getContent(), '');
         });
 
-        // TODO(kevinb) math isn't selected
         it('should select an expression when deleting from outside', () => {
-            mathField.setContent('(35x+5)');
+            mathField.setContent('\\left(35x+5\\right)');
             mathField.pressKey(Keys.BACKSPACE);
             assert(mathField.isSelected());
-            assert.equal(mathField.getContent(), '(35x+5)'); // currently ')'
+            assert.equal(mathField.getContent(), '\\left(35x+5\\right)');
         });
 
         // TODO(kevinb) confirm with design we want this behavior be different

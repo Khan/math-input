@@ -36,7 +36,6 @@ const KeyActions = {
     [Keys.PI]: { str: 'pi', fn: CMD },
     [Keys.LEFT]: { str: 'Left', fn: KEYSTROKE },
     [Keys.RIGHT]: { str: 'Right', fn: KEYSTROKE },
-    [Keys.BACKSPACE]: { str: 'Backspace', fn: KEYSTROKE },
 };
 
 class MathWrapper {
@@ -54,15 +53,52 @@ class MathWrapper {
     }
 
     pressKey(key) {
+        const cursor = this.mathField.__controller.cursor;
+
         if (key in KeyActions) {
-            const { str, fn } = KeyActions[key];
+            const {str, fn} = KeyActions[key];
 
             if (str && fn) {
                 this.mathField[fn](str).focus();
             }
+        } else if (key === Keys.PARENS) {
+            this.mathField.write('\\left(\\right)');
+            this.mathField.keystroke('Left');
+        } else if (key === Keys.BACKSPACE) {
+            if (!cursor.selection) {
+                const leftSeq = cursor[-1].ctrlSeq;
+                const rightSeq = cursor[1].ctrlSeq;
+
+                if (leftSeq === '\\left(' && rightSeq === '\\right)') {
+                    // Handle deleting an empty set of parens:
+                    // (|) => |
+                    this.mathField.keystroke('Right');
+                    this.mathField.keystroke('Backspace');
+                    this.mathField.keystroke('Backspace');
+                    cursor.show();
+                    return;
+                } else if (leftSeq === '\\left(') {
+                    // In this case the node with '\\left(' for its ctrlSeq
+                    // is the parent of the expression contained within the
+                    // parentheses.
+                    //
+                    // Handle selecting an expression before deleting:
+                    // (x+1)| => |(x+1)|
+                    cursor.startSelection();
+                    cursor.insLeftOf(cursor[-1]);
+                    cursor.select();
+                    cursor.endSelection();
+                    return;
+                }
+            }
+
+            // fall through
+            this.mathField.keystroke('Backspace');
         } else if (/^[0-9a-z]$/.test(key)) {
             this.mathField[WRITE](key).focus();
         }
+
+        cursor.show();
     }
 }
 

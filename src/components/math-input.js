@@ -6,7 +6,7 @@ const { StyleSheet } = require("aphrodite");
 
 const actions = require('../actions');
 const { View } = require('../fake-react-native-web');
-const MathWrapper = require('./math-wrapper');
+const MathWrapper = require('../../test/test-math-wrapper');
 
 const MathInput = React.createClass({
     componentDidMount() {

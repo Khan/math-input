@@ -24,6 +24,7 @@ const KeyTypes = {
     [Keys.EXP]: keyTypes.MATH,
     [Keys.SQRT]: keyTypes.MATH,
     [Keys.PI]: keyTypes.MATH,
+    [Keys.PARENS]: keyTypes.MATH,
     [Keys.LEFT]: keyTypes.INPUT_NAVIGATION,
     [Keys.RIGHT]: keyTypes.INPUT_NAVIGATION,
     [Keys.BACKSPACE]: keyTypes.INPUT_NAVIGATION,

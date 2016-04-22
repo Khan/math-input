@@ -24,6 +24,7 @@ const Symbols = {
     [Keys.DISMISS]: 'X',
     [Keys.MORE]: '...',
     [Keys.NUMBERS]: '123',
+    [Keys.PARENS]: '()',
 };
 
 module.exports = Symbols;
