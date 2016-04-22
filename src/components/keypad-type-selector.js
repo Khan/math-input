@@ -2,7 +2,7 @@
  * A component used to toggle between a set of available keypad types.
  */
 
-const React = require('React');
+const React = require('react');
 
 const { keypadTypes } = require('../consts');
 

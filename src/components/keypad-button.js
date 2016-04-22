@@ -4,7 +4,7 @@
  * set of secondary keys that can be revealed through a long press.
  */
 
-const React = require('React');
+const React = require('react');
 
 const { StyleSheet } = require('aphrodite');
 const { Text, View } = require('../fake-react-native-web');
