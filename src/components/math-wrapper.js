@@ -13,6 +13,7 @@ const Keys = require('../data/keys');
 const WRITE = 'write';
 const CMD = 'cmd';
 const KEYSTROKE = 'keystroke';
+const MQ_END = 0;
 
 // A mapping from keys that can be pressed on a keypad to the way in which
 // MathQuill should modify its input in response to that key-press. Any keys
@@ -99,20 +100,69 @@ class MathWrapper {
     //
     // MathQuill's stores its layout as nested linked lists.  Each node in the
     // list has MQ.L '-1' and MQ.R '1' properties that define links to the
-    // left and right nodes respectively.  They also have 'parent', 'ctrlSeq',
-    // 'ends', and a bunch of other properties we don't care about. The
-    // 'ctrlSeq' property contains the latex code snippet that defines that
-    // node.
+    // left and right nodes respectively.  They also have
+    //
+    // ctrlSeq: contains the latex code snippet that defines that node.
+    // jQ: jQuery object for the DOM node(s) for this MathQuill node.
+    // ends: pointers to the nodes at the ends of the container.
+    // parent: parent node.
+    // blocks: an array containing one or more nodes that make up the node.
+    // sub?: subscript node if there is one as is the case in log_n
     //
     // All of the code below is super fragile.  Please be especially careful
     // when upgrading MathQuill.
+
+    /**
+     * Selects and deletes part of the expression based on the cursor location.
+     * See inline comments for precise behavior of different cases.
+     *
+     * @param {cursor} cursor
+     * @private
+     */
+    _handleBackspace(cursor) {
+        if (!cursor.selection) {
+            const parent = cursor.parent;
+            const grandparent = parent.parent;
+            const leftNode = cursor[MQ.L];
+
+            if (this._isFraction(leftNode)) {
+                this._selectNode(leftNode, cursor);
+
+            } else if (this._isSquareRoot(leftNode)) {
+                this._selectNode(leftNode, cursor);
+
+            } else if (this._isNthRoot(leftNode)) {
+                this._selectNode(leftNode, cursor);
+
+            } else if (this._isNthRootIndex(parent)) {
+                this._handleBackspaceInRootIndex(cursor);
+
+            } else if (this._isInsideEmptyParens(cursor)) {
+                this._handleBackspaceInEmptyParens(cursor);
+
+            } else if (leftNode.ctrlSeq === '\\left(') {
+                this._handleBackspaceOutsideParens(cursor);
+
+            } else if (grandparent.ctrlSeq === '\\left(') {
+                this._handleBackspaceInsideParens(cursor);
+
+            } else if (this._isInsideLogIndex(cursor)) {
+                this._handleBackspaceInLogIndex(cursor);
+
+            } else {
+                this.mathField.keystroke('Backspace');
+            }
+        } else {
+            this.mathField.keystroke('Backspace');
+        }
+    }
 
     /**
      * Return the start node of the command to the left of `\\left(` or null
      * if there is no command.
      *
      * @param {node} leftParenNode - node where .ctrlSeq == `\\left(`
-     * @returns {node} - null or the first node in the command
+     * @returns {null|node} - null or the first node in the command
      * @private
      */
     _maybeFindCommand(leftParenNode) {
@@ -131,145 +181,258 @@ class MathWrapper {
         // ['\\l', 'o', 'g ', '\\left(', ...]
         const commandCharRegex = /[\\]?[a-z]/;
 
+        let name = '';
+
         while (node[MQ.L] !== 0) {
             node = node[MQ.L];
             if (commandCharRegex.test(node.ctrlSeq)) {
+                name = node.ctrlSeq.trim() + name;
+
                 if (node.ctrlSeq.startsWith(commandDelimiter)) {
-                    return node;
+                    return { name, node };
                 } else {
                     continue;
                 }
             } else {
-                return null;
+                return { name: null, node: null };
             }
         }
 
-        return null;
+        return { name: null, node: null };
     }
 
-    /**
-     * Selects and deletes part of the expression based on the cursor location.
-     * See inline comments for precise behavior of different cases.
-     *
-     * @param {cursor} cursor
-     * @private
-     */
-    _handleBackspace(cursor) {
-        const MQ_END = 0;
+    _selectNode(node, cursor) {
+        cursor.insLeftOf(node);
+        cursor.startSelection();
+        cursor.insRightOf(node);
+        cursor.select();
+        cursor.endSelection();
+    }
 
-        if (!cursor.selection) {
-            const rightNode = cursor[MQ.R];
-            const leftNode = cursor[MQ.L];
+    _isFraction(node) {
+        return node.jQ && node.jQ.hasClass('mq-fraction');
+    }
 
-            // TODO(kevinb): handle square brackets, braces, etc.
-            if (leftNode.ctrlSeq === '\\left(' &&
-                    rightNode.ctrlSeq === '\\right)') {
-                // handle deleting an empty set of parens
-                // (|) => |
-                this.mathField.keystroke('Right');
+    _isSquareRoot(node) {
+        return node.blocks && node.blocks[0].jQ &&
+            node.blocks[0].jQ.hasClass('mq-sqrt-stem');
+    }
+
+    _isNthRoot(node) {
+        return node.blocks && node.blocks[0].jQ &&
+            node.blocks[0].jQ.hasClass('mq-nthroot');
+    }
+
+    _isNthRootIndex(node) {
+        return node.jQ && node.jQ.hasClass('mq-nthroot');
+    }
+
+    _isInsideLogIndex(cursor) {
+        const grandparent = cursor.parent.parent;
+
+        if (grandparent && grandparent.jQ.hasClass('mq-supsub')) {
+            const command = this._maybeFindCommand(grandparent);
+
+            if (command.name === '\\log') {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    _isInsideEmptyParens(cursor) {
+        return cursor[MQ.L].ctrlSeq === '\\left(' &&
+            cursor[MQ.R].ctrlSeq === '\\right)';
+    }
+
+    _isInsideEmptyNode(cursor) {
+        return cursor[MQ.L] === MQ_END && cursor[MQ.R] === MQ_END;
+    }
+
+    _handleBackspaceInEmptyParens(cursor) {
+        // handle deleting an empty set of parens
+        // (|) => |
+        this.mathField.keystroke('Right');
+        this.mathField.keystroke('Backspace');
+        this.mathField.keystroke('Backspace');
+        cursor.show();
+    }
+
+    _handleBackspaceInRootIndex(cursor) {
+        if (this._isInsideEmptyNode(cursor)) {
+            // When deleting the index in a nthroot, we change from the nthroot
+            // to a sqrt, e.g. \sqrt[|]{35x-5} => |\sqrt{35x-5}.  If there's no
+            // content under the root, then we delete the whole thing.
+
+            const grandparent = cursor.parent.parent;
+            const latex = grandparent.latex();
+            const reinsertionPoint = grandparent[MQ.L];
+
+            this._selectNode(grandparent, cursor);
+
+            const rootIsEmpty = grandparent.blocks[1].jQ.text() === '';
+
+            if (rootIsEmpty) {
+                // If there is not content under the root then simply delete
+                // the whole thing.
                 this.mathField.keystroke('Backspace');
-                this.mathField.keystroke('Backspace');
-                cursor.show();
-                return;
-            } else if (leftNode.ctrlSeq === '\\left(') {
-                // In this case the node with '\\left(' for its ctrlSeq
-                // is the parent of the expression contained within the
-                // parentheses.
-                //
-                // Handle selecting an expression before deleting:
-                // (x+1)| => |(x+1)|
-                // \log(x+1)| => |\log(x+1)|
-
-                const command = this._maybeFindCommand(leftNode);
-
-                if (command) {
-                    // there's a command before the parens so we select it
-                    // as well as the parens
-                    cursor.insLeftOf(command);
-                    cursor.startSelection();
-                    if (rightNode === MQ_END) {
-                        cursor.insAtRightEnd(cursor.parent);
-                    } else {
-                        cursor.insLeftOf(rightNode);
-                    }
-                    cursor.select();
-                    cursor.endSelection();
-                } else {
-                    cursor.startSelection();
-                    cursor.insLeftOf(leftNode); // left of \\left(
-                    cursor.select();
-                    cursor.endSelection();
-                }
-
-                return;
-            } else if (cursor.parent.parent.ctrlSeq === '\\left(') {
-                // Handle situations when the cursor is inside parens or a
-                // command that uses parens, e.g. \log() or \tan()
-                //
-                // MathQuill represents log(x+1) in roughly the following way
-                // [l, o, g, \\left[parent:[x, +, 1]]]
-                //
-                // If the cursor is inside the parentheses it's next to one of:
-                // x, +, or 1.  This makes sub_sub_expr its parent and sub_expr
-                // it's parent.
-                //
-                // Interestingly parent doesn't have any nodes to the left or
-                // right of it (even though the corresponding DOM node has
-                // ( and ) characters on either side.
-                //
-                // The grandparent's ctrlSeq is `\\left(`. The `\\right)` isn't
-                // stored anywhere.  NOTE(kevinb): I believe this is because
-                // MathQuill knows what the close paren should be and does the
-                // right thing at render time.
-                //
-                // This conditional branch handles the following cases:
-                // - \log(x+1|) => \log(x+|)
-                // - \log(|x+1) => |\log(x+1)|
-                // - \log(|) => |
-
-                if (cursor[MQ.L] !== MQ_END) {
-                    // This command contains math and there's some math to
-                    // the left of the cursor that we should delete normally
-                    // before doing anything special.
-                    this.mathField.keystroke('Backspace');
-                    return;
-                }
-
-                // Determine if the parens are empty before we modify the
-                // cursor's position.
-                const isEmpty = cursor[MQ.L] === MQ_END &&
-                    cursor[MQ.R] === MQ_END;
-
-                const grandparent = cursor.parent.parent;
-
-                // Insert the cursor to the left of the command if there is one
-                // or before the '\\left(` if there isn't
-                cursor.insLeftOf(
-                    this._maybeFindCommand(grandparent) || grandparent);
-                cursor.startSelection();
-
-                if (grandparent[MQ.R] !== MQ_END) {
-                    // There is something to the right of the grandparent we
-                    // place the cursor on the left side of the item that's to
-                    // the right, e.g. \\log\\left(x+1\\right)|+1
-                    cursor.insLeftOf(grandparent[MQ.R]);
-                } else {
-                    // The end of the command is at the end of the latex so
-                    // we move the cursor to the end of everything.
-                    cursor.insRightOf(grandparent);
-                }
-                cursor.select();
-                cursor.endSelection();
-
-                // Delete the selection, but only if the parens were empty to
-                // begin with.
-                if (isEmpty) {
-                    this.mathField.keystroke('Backspace');
-                }
             } else {
+                // Replace the nthroot with a sqrt if there was content under
+                // the root.
+
+                // Start by deleting the selection.
+                this.mathField.keystroke('Backspace');
+
+                // Replace the nth-root with a sqrt.
+                this.mathField.write(
+                    latex.replace(/^\\sqrt\[\]/, '\\sqrt'));
+
+                // Adjust the cursor to be to the left the sqrt.
+                if (reinsertionPoint === MQ_END) {
+                    this.mathField.moveToDirEnd(MQ.L);
+                } else {
+                    cursor.insRightOf(reinsertionPoint);
+                }
+            }
+        } else {
+            if (cursor[MQ.L] !== MQ_END) {
+                // If the cursor is not at the leftmost position inside the
+                // root's index, delete a character.
+                this.mathField.keystroke('Backspace');
+            } else {
+                // TODO(kevinb) verify that we want this behavior after testing
+                // Do nothing because we haven't completely deleted the
+                // index of the radical.
+            }
+        }
+    }
+
+    _handleBackspaceInLogIndex(cursor) {
+        if (this._isInsideEmptyNode(cursor)) {
+            const grandparent = cursor.parent.parent;
+            const command = this._maybeFindCommand(grandparent);
+
+            cursor.insLeftOf(command.node);
+            cursor.startSelection();
+
+            if (grandparent[MQ.R] !== MQ_END) {
+                cursor.insRightOf(grandparent[MQ.R]);
+            } else {
+                cursor.insRightOf(grandparent);
+            }
+
+            cursor.select();
+            cursor.endSelection();
+
+            const isLogBodyEmpty = grandparent[MQ.R].contentjQ.text() === '';
+
+            if (isLogBodyEmpty) {
+                // If there's no content inside the log's parens then delete the
+                // whole thing.
                 this.mathField.keystroke('Backspace');
             }
         } else {
+            this.mathField.keystroke('Backspace');
+        }
+    }
+
+    _handleBackspaceOutsideParens(cursor) {
+        // In this case the node with '\\left(' for its ctrlSeq
+        // is the parent of the expression contained within the
+        // parentheses.
+        //
+        // Handle selecting an expression before deleting:
+        // (x+1)| => |(x+1)|
+        // \log(x+1)| => |\log(x+1)|
+
+        const leftNode = cursor[MQ.L];
+        const rightNode = cursor[MQ.R];
+        const command = this._maybeFindCommand(leftNode);
+
+        if (command.node) {
+            // There's a command before the parens so we select it as well as
+            // the parens.
+            cursor.insLeftOf(command.node);
+            cursor.startSelection();
+            if (rightNode === MQ_END) {
+                cursor.insAtRightEnd(cursor.parent);
+            } else {
+                cursor.insLeftOf(rightNode);
+            }
+            cursor.select();
+            cursor.endSelection();
+        } else {
+            cursor.startSelection();
+            cursor.insLeftOf(leftNode); // left of \\left(
+            cursor.select();
+            cursor.endSelection();
+        }
+    }
+
+    _handleBackspaceInsideParens(cursor) {
+        // Handle situations when the cursor is inside parens or a
+        // command that uses parens, e.g. \log() or \tan()
+        //
+        // MathQuill represents log(x+1) in roughly the following way
+        // [l, o, g, \\left[parent:[x, +, 1]]]
+        //
+        // If the cursor is inside the parentheses it's next to one of:
+        // x, +, or 1.  This makes sub_sub_expr its parent and sub_expr
+        // it's parent.
+        //
+        // Interestingly parent doesn't have any nodes to the left or
+        // right of it (even though the corresponding DOM node has
+        // ( and ) characters on either side.
+        //
+        // The grandparent's ctrlSeq is `\\left(`. The `\\right)` isn't
+        // stored anywhere.  NOTE(kevinb): I believe this is because
+        // MathQuill knows what the close paren should be and does the
+        // right thing at render time.
+        //
+        // This conditional branch handles the following cases:
+        // - \log(x+1|) => \log(x+|)
+        // - \log(|x+1) => |\log(x+1)|
+        // - \log(|) => |
+
+        if (cursor[MQ.L] !== MQ_END) {
+            // This command contains math and there's some math to
+            // the left of the cursor that we should delete normally
+            // before doing anything special.
+            this.mathField.keystroke('Backspace');
+            return;
+        }
+
+        const grandparent = cursor.parent.parent;
+
+        // If the cursors is inside the parens at the start but the command
+        // has a subscript as is the case in log_n then move the cursor into
+        // the subscript, e.g. \log_{5}(|x+1) => \log_{5|}(x+1)
+
+        if (grandparent[MQ.L].sub) {    // if there is a subscript
+            if (grandparent[MQ.L].sub.jQ.text()) {    // and it contains text
+                // move the cursor to the right end of the subscript
+                cursor.insAtRightEnd(grandparent[MQ.L].sub);
+                return;
+            }
+        }
+
+        // Determine if the parens are empty before we modify the
+        // cursor's position.
+        const isEmpty = this._isInsideEmptyNode(cursor);
+
+        // Insert the cursor to the left of the command if there is one
+        // or before the '\\left(` if there isn't
+        const command = this._maybeFindCommand(grandparent);
+        cursor.insLeftOf(command.node || grandparent);
+        cursor.startSelection();
+        cursor.insRightOf(grandparent);
+        cursor.select();
+        cursor.endSelection();
+
+        // Delete the selection, but only if the parens were empty to
+        // begin with.
+        if (isEmpty) {
             this.mathField.keystroke('Backspace');
         }
     }

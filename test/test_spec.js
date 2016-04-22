@@ -5,6 +5,7 @@ const assert = require('assert');
 
 const Keys = require('../src/data/keys');
 
+const MQ = { L: '-1', R: '1' };
 const END_OF_EXPR = 0;
 
 const createMathField = (document, MathWrapper) => {
@@ -271,8 +272,8 @@ describe('MathQuill', () => {
             mathField.setContent(expr);
             mathField.pressKey(Keys.BACKSPACE);
             const selection = mathField.getSelection();
-            const left = selection.ends[-1][-1];
-            const right = selection.ends[1][1];
+            const left = selection.ends[MQ.L][MQ.L];
+            const right = selection.ends[MQ.R][MQ.R];
 
             assert.equal(left.ctrlSeq, '+');
             assert.equal(right, END_OF_EXPR);
@@ -286,8 +287,8 @@ describe('MathQuill', () => {
             mathField.pressKey(Keys.LEFT);
             mathField.pressKey(Keys.BACKSPACE);
             const selection = mathField.getSelection();
-            const left = selection.ends[-1][-1];
-            const right = selection.ends[1][1];
+            const left = selection.ends[MQ.L][MQ.L];
+            const right = selection.ends[MQ.R][MQ.R];
 
             assert.equal(left.ctrlSeq, '+');
             assert.equal(right.ctrlSeq, '-');
@@ -301,16 +302,23 @@ describe('MathQuill', () => {
             mathField.pressKey(Keys.LEFT);
             mathField.pressKey(Keys.BACKSPACE);
             const selection = mathField.getSelection();
-            const left = selection.ends[-1][-1];
-            const right = selection.ends[1][1];
+            const left = selection.ends[MQ.L][MQ.L];
+            const right = selection.ends[MQ.R][MQ.R];
 
             assert.equal(left, END_OF_EXPR);
             assert.equal(right.ctrlSeq, '-');
             assert.equal(mathField.getContent(), expr);
         });
 
-        // TODO(kevinb) confirm with design we want this behavior be different
-        it('should not delete squared exponents', () => {
+        it('should select an expression when deleting from outside', () => {
+            mathField.setContent('\\left(35x+5\\right)');
+            mathField.pressKey(Keys.BACKSPACE);
+            assert(mathField.isSelected());
+            assert.equal(mathField.getContent(), '\\left(35x+5\\right)');
+        });
+
+        // TODO(kevinb) fix this behavior so that we delete the exponent too
+        it.skip('should not delete squared exponents', () => {
             mathField.setContent('35x^2');
             mathField.pressKey(Keys.BACKSPACE);
             assert.equal(mathField.getContent(), '35x^2');
@@ -348,22 +356,71 @@ describe('MathQuill', () => {
             assert.equal(mathField.getContent(), '');
         });
 
-        it('should move before full radical when cursor is in index', () => {
-            const expr = '\\sqrt[]{35x+5}';
+        it('deletes nthroot index normally', () => {
+            mathField.setContent('\\sqrt[3]{35x+5}');
+            mathField.moveToStart();
+            mathField.pressKey(Keys.RIGHT);
+            mathField.pressKey(Keys.RIGHT);
+            mathField.pressKey(Keys.BACKSPACE);
+
+            const cursor = mathField.getCursor();
+
+            assert.equal(cursor[MQ.L], END_OF_EXPR);
+            assert.equal(mathField.getContent(), '\\sqrt[]{35x+5}');
+        });
+
+        it('converts nthroot to sqrt when deleting from index (1)', () => {
+            mathField.setContent('\\sqrt[]{35x+5}');
+            mathField.moveToStart();
+            mathField.pressKey(Keys.RIGHT);
+            mathField.pressKey(Keys.BACKSPACE);
+
+            const cursor = mathField.getCursor();
+
+            assert.equal(cursor[MQ.L], END_OF_EXPR);
+            assert.equal(mathField.getContent(), '\\sqrt{35x+5}');
+        });
+
+        it('converts nthroot to sqrt when deleting from index (2)', () => {
+            mathField.setContent('1+\\sqrt[]{35x+5}');
+            mathField.moveToStart();
+            mathField.pressKey(Keys.RIGHT);
+            mathField.pressKey(Keys.RIGHT);
+            mathField.pressKey(Keys.RIGHT);
+            mathField.pressKey(Keys.BACKSPACE);
+
+            const cursor = mathField.getCursor();
+
+            assert.equal(cursor[MQ.L].ctrlSeq, '+');
+            assert.equal(mathField.getContent(), '1+\\sqrt{35x+5}');
+        });
+
+        it('should not delete if the index has contents', () => {
+            const expr = '\\sqrt[3]{35x+5}';
             mathField.setContent(expr);
             mathField.moveToStart();
             mathField.pressKey(Keys.RIGHT);
             mathField.pressKey(Keys.BACKSPACE);
-            // TODO(kevinb) assert cursor position
+
             assert.equal(mathField.getContent(), expr);
         });
 
         it('should select a full square root before deleting it', () => {
-            mathField.setContent('\\sqrt{35x+5}');
-            mathField.moveToStart();
+            const expr = '\\sqrt{35x+5}';
+            mathField.setContent(expr);
             mathField.pressKey(Keys.BACKSPACE);
+
             assert(mathField.isSelected());
-            assert.equal(mathField.getContent(), '\\sqrt[]{35x+5}');
+            assert.equal(mathField.getContent(), expr);
+        });
+
+        it('should select a full nth-root before deleting it', () => {
+            const expr = '\\sqrt[3]{35x+5}';
+            mathField.setContent(expr);
+            mathField.pressKey(Keys.BACKSPACE);
+
+            assert(mathField.isSelected());
+            assert.equal(mathField.getContent(), expr);
         });
 
         it('should delete log when inside empty log', () => {
@@ -374,7 +431,7 @@ describe('MathQuill', () => {
         });
 
         it('should select log when inside full log at head', () => {
-            const expr = '\\log\\left(35x+5\\right)';
+            const expr = '\\log\\left(35x\\right)';
             mathField.setContent(expr);
             mathField.moveToStart();
             mathField.pressKey(Keys.RIGHT);
@@ -387,7 +444,7 @@ describe('MathQuill', () => {
         });
 
         it('should select log when outside full log at tail (1)', () => {
-            const expr = '\\log\\left(35x+5\\right)';
+            const expr = '\\log\\left(35x\\right)';
             mathField.setContent(expr);
             mathField.pressKey(Keys.BACKSPACE);
             assert(mathField.isSelected());
@@ -395,12 +452,12 @@ describe('MathQuill', () => {
         });
 
         it('should select log when outside full log at tail (2)', () => {
-            const expr = '1+\\log\\left(35x+5\\right)';
+            const expr = '1+\\log\\left(35x\\right)';
             mathField.setContent(expr);
             mathField.pressKey(Keys.BACKSPACE);
             const selection = mathField.getSelection();
-            const left = selection.ends[-1][-1];
-            const right = selection.ends[1][1];
+            const left = selection.ends[MQ.L][MQ.L];
+            const right = selection.ends[MQ.R][MQ.R];
 
             assert.equal(left.ctrlSeq, '+');
             assert.equal(right, END_OF_EXPR);
@@ -408,14 +465,14 @@ describe('MathQuill', () => {
         });
 
         it('should select log when outside full log at tail (3)', () => {
-            const expr = '1+\\log\\left(35x+5\\right)-1';
+            const expr = '1+\\log\\left(35x\\right)-1';
             mathField.setContent(expr);
             mathField.pressKey(Keys.LEFT);
             mathField.pressKey(Keys.LEFT);
             mathField.pressKey(Keys.BACKSPACE);
             const selection = mathField.getSelection();
-            const left = selection.ends[-1][-1];
-            const right = selection.ends[1][1];
+            const left = selection.ends[MQ.L][MQ.L];
+            const right = selection.ends[MQ.R][MQ.R];
 
             assert.equal(left.ctrlSeq, '+');
             assert.equal(right.ctrlSeq, '-');
@@ -423,14 +480,14 @@ describe('MathQuill', () => {
         });
 
         it('should select log when outside full log at tail (4)', () => {
-            const expr = '\\log\\left(35x+5\\right)-1';
+            const expr = '\\log\\left(35x\\right)-1';
             mathField.setContent(expr);
             mathField.pressKey(Keys.LEFT);
             mathField.pressKey(Keys.LEFT);
             mathField.pressKey(Keys.BACKSPACE);
             const selection = mathField.getSelection();
-            const left = selection.ends[-1][-1];
-            const right = selection.ends[1][1];
+            const left = selection.ends[MQ.L][MQ.L];
+            const right = selection.ends[MQ.R][MQ.R];
 
             assert.equal(left, END_OF_EXPR);
             assert.equal(right.ctrlSeq, '-');
@@ -448,25 +505,102 @@ describe('MathQuill', () => {
             assert.equal(mathField.getContent(), '');
         });
 
-        // TODO(kevinb) don't delete the parens... move to the index instead
+        it('should delete log index normally', () => {
+            mathField.setContent('\\log_5\\left(\\right)');
+            mathField.moveToStart();
+            mathField.pressKey(Keys.RIGHT);
+            mathField.pressKey(Keys.RIGHT);
+            mathField.pressKey(Keys.RIGHT);
+            mathField.pressKey(Keys.RIGHT);
+            mathField.pressKey(Keys.RIGHT);
+            mathField.pressKey(Keys.BACKSPACE);
+            assert.equal(mathField.getContent(), '\\log_{ }\\left(\\right)');
+        });
+
         it('should move to index from inside empty log with index', () => {
             mathField.setContent('\\log_5\\left(\\right)');
             mathField.pressKey(Keys.LEFT);
             mathField.pressKey(Keys.BACKSPACE);
-            // TODO(kevinb) verify cursor position
+
+            const cursor = mathField.getCursor();
+
+            assert.equal(cursor[MQ.L].ctrlSeq, '5');
             assert.equal(mathField.getContent(), '\\log_5\\left(\\right)');
         });
 
-        it('should select full log when deleting from empty index', () => {
-            mathField.setContent('log_{ }\\left(x+1\\right)');
+        it('should select full log when deleting from empty index (1)', () => {
+            const expr = '\\log_{ }\\left(x\\right)';
+            mathField.setContent(expr);
             mathField.moveToStart();
             mathField.pressKey(Keys.RIGHT);
             mathField.pressKey(Keys.RIGHT);
             mathField.pressKey(Keys.RIGHT);
             mathField.pressKey(Keys.RIGHT);
             mathField.pressKey(Keys.BACKSPACE);
+
             assert(mathField.isSelected());
-            assert.equal(mathField.getContent(), 'log_{ }\\left(x+1\\right)');
+            assert.equal(mathField.getContent(), expr);
+        });
+
+        it('should select full log when deleting from empty index (2)', () => {
+            const expr = '1+\\log_{ }\\left(x\\right)';
+            mathField.setContent(expr);
+            mathField.moveToStart();
+            mathField.pressKey(Keys.RIGHT);
+            mathField.pressKey(Keys.RIGHT);
+            mathField.pressKey(Keys.RIGHT);
+            mathField.pressKey(Keys.RIGHT);
+            mathField.pressKey(Keys.RIGHT);
+            mathField.pressKey(Keys.RIGHT);
+            mathField.pressKey(Keys.BACKSPACE);
+
+            const selection = mathField.getSelection();
+            const left = selection.ends[MQ.L][MQ.L];
+            const right = selection.ends[MQ.R][MQ.R];
+
+            assert.equal(left.ctrlSeq, '+');
+            assert.equal(right, END_OF_EXPR);
+            assert.equal(mathField.getContent(), expr);
+        });
+
+        it('should select full log when deleting from empty index (3)', () => {
+            const expr = '1+\\log_{ }\\left(x\\right)-1';
+            mathField.setContent(expr);
+            mathField.moveToStart();
+            mathField.pressKey(Keys.RIGHT);
+            mathField.pressKey(Keys.RIGHT);
+            mathField.pressKey(Keys.RIGHT);
+            mathField.pressKey(Keys.RIGHT);
+            mathField.pressKey(Keys.RIGHT);
+            mathField.pressKey(Keys.RIGHT);
+            mathField.pressKey(Keys.BACKSPACE);
+
+            const selection = mathField.getSelection();
+            const left = selection.ends[MQ.L][MQ.L];
+            const right = selection.ends[MQ.R][MQ.R];
+
+            assert.equal(left.ctrlSeq, '+');
+            assert.equal(right.ctrlSeq, '-');
+            assert.equal(mathField.getContent(), expr);
+        });
+
+        it('should select full log when deleting from empty index (4)', () => {
+            const expr = '\\log_{ }\\left(x\\right)-1';
+            mathField.setContent(expr);
+            mathField.moveToStart();
+            mathField.pressKey(Keys.RIGHT);
+            mathField.pressKey(Keys.RIGHT);
+            mathField.pressKey(Keys.RIGHT);
+            mathField.pressKey(Keys.RIGHT);
+            mathField.pressKey(Keys.BACKSPACE);
+
+            const selection = mathField.getSelection();
+            const left = selection.ends[MQ.L][MQ.L];
+            const right = selection.ends[MQ.R][MQ.R];
+
+            assert.equal(left, END_OF_EXPR);
+            assert.equal(right.ctrlSeq, '-');
+            assert.equal(mathField.getContent(), expr);
         });
     });
 
