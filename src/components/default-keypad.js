@@ -14,9 +14,17 @@ const DefaultKeypad = React.createClass({
     render() {
         return <View style={keypad}>
             <View style={row}>
+                <KeypadButton primaryKey={ButtonProps.SIN} />
+                <KeypadButton primaryKey={ButtonProps.COS} />
+                <KeypadButton primaryKey={ButtonProps.TAN} />
                 <KeypadButton primaryKey={ButtonProps.NOOP} />
                 <KeypadButton primaryKey={ButtonProps.NOOP} />
                 <KeypadButton primaryKey={ButtonProps.NOOP} />
+            </View>
+            <View style={row}>
+                <KeypadButton primaryKey={ButtonProps.RADICAL} />
+                <KeypadButton primaryKey={ButtonProps.LOG} />
+                <KeypadButton primaryKey={ButtonProps.LOG_N} />
                 <KeypadButton primaryKey={ButtonProps.NOOP} />
                 <KeypadButton primaryKey={ButtonProps.NOOP} />
                 <KeypadButton primaryKey={ButtonProps.PARENS} />

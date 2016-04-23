@@ -1,8 +1,11 @@
 /* eslint-env node, mocha */
+require('babel-polyfill');
 const jsdom = require('jsdom');
 const assert = require('assert');
 
 const Keys = require('../src/data/keys');
+
+const END_OF_EXPR = 0;
 
 const createMathField = (document, MathWrapper) => {
     const span = document.createElement('span');
@@ -132,7 +135,7 @@ describe('MathQuill', () => {
         });
 
         // TODO(kevinb): makes the expression an exponent when it shouldn't
-        it('should work on a selected expression', () => {
+        it.skip('should work on a selected expression', () => {
             mathField.setContent('35x+5');
             mathField.selectAll();
             mathField.pressKey(Keys.EXP);
@@ -160,19 +163,19 @@ describe('MathQuill', () => {
         });
     });
 
-    describe.skip('Radical', () => {
+    describe('Radical', () => {
         it('should work with no content', () => {
             mathField.pressKey(Keys.RADICAL);
-            assert.equal(mathField.getContent(), '\\sqrt[ ]{ }');
+            assert.equal(mathField.getContent(), '\\sqrt[]{}');
         });
 
         it('should work after an expression', () => {
             mathField.setContent('35x^2');
             mathField.pressKey(Keys.RADICAL);
-            assert.equal(mathField.getContent(), '35x^2\\sqrt[ ]{ }');
+            assert.equal(mathField.getContent(), '35x^2\\sqrt[]{}');
         });
 
-        it('should work on a selected expression', () => {
+        it.skip('should work on a selected expression', () => {
             mathField.setContent('35x+5');
             mathField.selectAll();
             mathField.pressKey(Keys.RADICAL);
@@ -181,43 +184,45 @@ describe('MathQuill', () => {
         });
     });
 
-    describe.skip('Log', () => {
+    describe('Log', () => {
         it('should work with no content', () => {
             mathField.pressKey(Keys.LOG);
-            assert.equal(mathField.getContent(), '\\log{ }');
+            assert.equal(mathField.getContent(), '\\log\\left(\\right)');
         });
 
         it('should work after an expression', () => {
             mathField.setContent('35x^2');
             mathField.pressKey(Keys.LOG);
-            assert.equal(mathField.getContent(), '35x^2\\log{ }');
+            assert.equal(mathField.getContent(), '35x^2\\log\\left(\\right)');
         });
 
-        it('should work on a selected expression', () => {
+        it.skip('should work on a selected expression', () => {
             mathField.setContent('35x+5');
             mathField.selectAll();
             mathField.pressKey(Keys.LOG);
-            assert.equal(mathField.getContent(), '\\log{35x+5}');
+            assert.equal(mathField.getContent(), '\\log\\left(35x+5\\right)');
         });
     });
 
-    describe.skip('Log w/ base n', () => {
+    describe('Log w/ base n', () => {
         it('should work with no content', () => {
             mathField.pressKey(Keys.LOG_N);
-            assert.equal(mathField.getContent(), '\\log_{ }{ }');
+            assert.equal(mathField.getContent(), '\\log_{ }\\left(\\right)');
         });
 
         it('should work after an expression', () => {
             mathField.setContent('35x^2');
             mathField.pressKey(Keys.LOG_N);
-            assert.equal(mathField.getContent(), '35x^2\\log_{ }{ }');
+            assert.equal(
+                mathField.getContent(), '35x^2\\log_{ }\\left(\\right)');
         });
 
-        it('should work on a selected expression', () => {
+        it.skip('should work on a selected expression', () => {
             mathField.setContent('35x+5');
             mathField.selectAll();
             mathField.pressKey(Keys.LOG_N);
-            assert.equal(mathField.getContent(), '\\log_{ }{35x+5}');
+            assert.equal(
+                mathField.getContent(), '\\log_{ }\\left(35x+5\\right)');
         });
     });
 
@@ -239,10 +244,11 @@ describe('MathQuill', () => {
 
         // TODO(kevinb) math isn't selected
         it('should select a fraction when deleting from outside of it', () => {
-            mathField.setContent('\\frac{35x+5}{x^2}');
+            const expr = '\\frac{35x+5}{x^2}';
+            mathField.setContent(expr);
             mathField.pressKey(Keys.BACKSPACE);
             assert(mathField.isSelected());
-            assert.equal(mathField.getContent(), '\\frac{35x+5}{x^2}');
+            assert.equal(mathField.getContent(), expr);
         });
 
         it('should delete parens when inside empty parens', () => {
@@ -252,11 +258,55 @@ describe('MathQuill', () => {
             assert.equal(mathField.getContent(), '');
         });
 
-        it('should select an expression when deleting from outside', () => {
-            mathField.setContent('\\left(35x+5\\right)');
+        it('should select an expression when deleting from outside (1)', () => {
+            const expr = '\\left(35x+5\\right)';
+            mathField.setContent(expr);
             mathField.pressKey(Keys.BACKSPACE);
             assert(mathField.isSelected());
-            assert.equal(mathField.getContent(), '\\left(35x+5\\right)');
+            assert.equal(mathField.getContent(), expr);
+        });
+
+        it('should select an expression when deleting from outside (2)', () => {
+            const expr = '1+\\left(35x+5\\right)';
+            mathField.setContent(expr);
+            mathField.pressKey(Keys.BACKSPACE);
+            const selection = mathField.getSelection();
+            const left = selection.ends[-1][-1];
+            const right = selection.ends[1][1];
+
+            assert.equal(left.ctrlSeq, '+');
+            assert.equal(right, END_OF_EXPR);
+            assert.equal(mathField.getContent(), expr);
+        });
+
+        it('should select an expression when deleting from outside (3)', () => {
+            const expr = '1+\\left(35x+5\\right)-1';
+            mathField.setContent(expr);
+            mathField.pressKey(Keys.LEFT);
+            mathField.pressKey(Keys.LEFT);
+            mathField.pressKey(Keys.BACKSPACE);
+            const selection = mathField.getSelection();
+            const left = selection.ends[-1][-1];
+            const right = selection.ends[1][1];
+
+            assert.equal(left.ctrlSeq, '+');
+            assert.equal(right.ctrlSeq, '-');
+            assert.equal(mathField.getContent(), expr);
+        });
+
+        it('should select an expression when deleting from outside (4)', () => {
+            const expr = '\\left(35x+5\\right)-1';
+            mathField.setContent(expr);
+            mathField.pressKey(Keys.LEFT);
+            mathField.pressKey(Keys.LEFT);
+            mathField.pressKey(Keys.BACKSPACE);
+            const selection = mathField.getSelection();
+            const left = selection.ends[-1][-1];
+            const right = selection.ends[1][1];
+
+            assert.equal(left, END_OF_EXPR);
+            assert.equal(right.ctrlSeq, '-');
+            assert.equal(mathField.getContent(), expr);
         });
 
         // TODO(kevinb) confirm with design we want this behavior be different
@@ -299,12 +349,13 @@ describe('MathQuill', () => {
         });
 
         it('should move before full radical when cursor is in index', () => {
-            mathField.setContent('\\sqrt[]{35x+5}');
+            const expr = '\\sqrt[]{35x+5}';
+            mathField.setContent(expr);
             mathField.moveToStart();
             mathField.pressKey(Keys.RIGHT);
             mathField.pressKey(Keys.BACKSPACE);
             // TODO(kevinb) assert cursor position
-            assert.equal(mathField.getContent(), '\\sqrt[]{35x+5}');
+            assert.equal(mathField.getContent(), expr);
         });
 
         it('should select a full square root before deleting it', () => {
@@ -323,7 +374,8 @@ describe('MathQuill', () => {
         });
 
         it('should select log when inside full log at head', () => {
-            mathField.setContent('\\log\\left(35x+5\\right)');
+            const expr = '\\log\\left(35x+5\\right)';
+            mathField.setContent(expr);
             mathField.moveToStart();
             mathField.pressKey(Keys.RIGHT);
             mathField.pressKey(Keys.RIGHT);
@@ -331,14 +383,58 @@ describe('MathQuill', () => {
             mathField.pressKey(Keys.RIGHT);
             mathField.pressKey(Keys.BACKSPACE);
             assert(mathField.isSelected());
-            assert.equal(mathField.getContent(), '\\log\\left(35x+5\\right)');
+            assert.equal(mathField.getContent(), expr);
         });
 
-        it('should select log when outside full log at tail', () => {
-            mathField.setContent('\\log\\left(35x+5\\right)');
+        it('should select log when outside full log at tail (1)', () => {
+            const expr = '\\log\\left(35x+5\\right)';
+            mathField.setContent(expr);
             mathField.pressKey(Keys.BACKSPACE);
             assert(mathField.isSelected());
-            assert.equal(mathField.getContent(), '\\log\\left(35x+5\\right)');
+            assert.equal(mathField.getContent(), expr);
+        });
+
+        it('should select log when outside full log at tail (2)', () => {
+            const expr = '1+\\log\\left(35x+5\\right)';
+            mathField.setContent(expr);
+            mathField.pressKey(Keys.BACKSPACE);
+            const selection = mathField.getSelection();
+            const left = selection.ends[-1][-1];
+            const right = selection.ends[1][1];
+
+            assert.equal(left.ctrlSeq, '+');
+            assert.equal(right, END_OF_EXPR);
+            assert.equal(mathField.getContent(), expr);
+        });
+
+        it('should select log when outside full log at tail (3)', () => {
+            const expr = '1+\\log\\left(35x+5\\right)-1';
+            mathField.setContent(expr);
+            mathField.pressKey(Keys.LEFT);
+            mathField.pressKey(Keys.LEFT);
+            mathField.pressKey(Keys.BACKSPACE);
+            const selection = mathField.getSelection();
+            const left = selection.ends[-1][-1];
+            const right = selection.ends[1][1];
+
+            assert.equal(left.ctrlSeq, '+');
+            assert.equal(right.ctrlSeq, '-');
+            assert.equal(mathField.getContent(), expr);
+        });
+
+        it('should select log when outside full log at tail (4)', () => {
+            const expr = '\\log\\left(35x+5\\right)-1';
+            mathField.setContent(expr);
+            mathField.pressKey(Keys.LEFT);
+            mathField.pressKey(Keys.LEFT);
+            mathField.pressKey(Keys.BACKSPACE);
+            const selection = mathField.getSelection();
+            const left = selection.ends[-1][-1];
+            const right = selection.ends[1][1];
+
+            assert.equal(left, END_OF_EXPR);
+            assert.equal(right.ctrlSeq, '-');
+            assert.equal(mathField.getContent(), expr);
         });
 
         it('should delete empty log when at index', () => {

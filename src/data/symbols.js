@@ -18,6 +18,7 @@ const Symbols = {
     [Keys.EXP]: '^',
     [Keys.SQRT]: '\u221A',
     [Keys.PI]: '\u03C0',
+    [Keys.RADICAL]: 'n\u221A',
     [Keys.LEFT]: '\u2190',
     [Keys.RIGHT]: '\u2192',
     [Keys.BACKSPACE]: '\u232B',
@@ -25,6 +26,11 @@ const Symbols = {
     [Keys.MORE]: '...',
     [Keys.NUMBERS]: '123',
     [Keys.PARENS]: '()',
+    [Keys.LOG]: 'log',
+    [Keys.LOG_N]: 'log_n',
+    [Keys.SIN]: 'sin',
+    [Keys.COS]: 'cos',
+    [Keys.TAN]: 'tan',
 };
 
 module.exports = Symbols;

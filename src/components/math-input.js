@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     input: {
         margin: 10,
         width: 300,
-        fontSize: 48,
+        fontSize: 28,
     },
 });
 

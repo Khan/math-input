@@ -23,6 +23,10 @@ const Keys = {
     PARENS: 'PARENS',
     LOG: 'LOG',
     LOG_N: 'LOG_N',
+    SIN: 'SIN',
+    COS: 'COS',
+    TAN: 'TAN',
+
     LEFT: 'LEFT',
     RIGHT: 'RIGHT',
     BACKSPACE: 'BACKSPACE',

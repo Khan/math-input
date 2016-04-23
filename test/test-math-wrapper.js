@@ -26,14 +26,21 @@ class TestMathWrapper extends MathWrapper {
     }
 
     isSelected() {
-        const cursor = this.mathField.__controller.cursor;
-        const selection = cursor.selection;
+        const selection = this.getSelection();
 
         if (selection) {
             return selection.ends[-1][-1] === 0 && selection.ends[1][1] === 0;
         }
 
         return false;
+    }
+
+    getCursor() {
+        return this.mathField.__controller.cursor;
+    }
+
+    getSelection() {
+        return this.getCursor().selection;
     }
 }
 
