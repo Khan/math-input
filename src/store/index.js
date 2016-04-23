@@ -32,7 +32,7 @@ const handlersReducer = function(state = initialHandlersState, action) {
 };
 
 const initialKeypadState = {
-    type: keypadTypes.FRACTION,
+    type: keypadTypes.DEFAULT,
     page: 0,
 };
 
