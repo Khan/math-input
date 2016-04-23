@@ -11,7 +11,8 @@ module.exports = {
             'react-redux',
             'redux',
             'aphrodite',
-            'mathquill',
+            // TODO(kevinb) create a build config for test code
+            // 'mathquill',
         ],
     },
     output: {
@@ -22,6 +23,11 @@ module.exports = {
         new webpack.optimize.CommonsChunkPlugin({
             name: 'deps',
         }),
+        // new webpack.optimize.UglifyJsPlugin({
+        //     compress: {
+        //         warnings: false
+        //     }
+        // }),
     ],
     resolve: {
         extensions: ['', '.js', '.jsx'],
@@ -34,7 +40,7 @@ module.exports = {
         loaders: [{
             test: /\.jsx?$/,
             loaders: ['babel'],
-            include: path.join(__dirname, 'src'),
+            exclude: /(node_modules|mathquill)/,
         }, {
             // appends `module.exports = window.MathQuill` to mathquill.js
             test: /[\/]mathquill\.js$/,
