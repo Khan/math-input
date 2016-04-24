@@ -17,6 +17,7 @@ const Symbols = {
     [Keys.FRAC]: '/',
     [Keys.EXP]: '^',
     [Keys.SQRT]: '\u221A',
+    [Keys.PI]: '\u03C0',
     [Keys.LEFT]: '\u2190',
     [Keys.RIGHT]: '\u2192',
     [Keys.BACKSPACE]: '\u232B',

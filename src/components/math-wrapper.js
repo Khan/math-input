@@ -33,6 +33,7 @@ const KeyActions = {
     [Keys.FRAC]: { str: '/', fn: CMD },
     [Keys.EXP]: { str: '^', fn: CMD },
     [Keys.SQRT]: { str: 'sqrt', fn: CMD },
+    [Keys.PI]: { str: 'pi', fn: CMD },
     [Keys.LEFT]: { str: 'Left', fn: KEYSTROKE },
     [Keys.RIGHT]: { str: 'Right', fn: KEYSTROKE },
     [Keys.BACKSPACE]: { str: 'Backspace', fn: KEYSTROKE },
