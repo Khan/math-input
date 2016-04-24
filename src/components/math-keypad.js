@@ -7,13 +7,18 @@ const FractionKeypad = require('./fraction-keypad');
 const TestMultiButtonKeypad = require('./test-multi-button-keypad');
 const TestMultiPageKeypad = require('./test-multi-page-keypad');
 const TestPopoverKeypad = require('./test-popover-keypad');
+const TestMultiSymbolKeypad = require('./test-multi-symbol-keypad');
 
+const ButtonProps = require('./button-props');
 const { keypadTypes } = require('../consts');
 
 const MathKeypad = React.createClass({
     propTypes: {
+        configuration: React.PropTypes.shape({
+            extraSymbols: React.PropTypes.arrayOf(React.PropTypes.string),
+            keypadType: React.PropTypes.oneOf(Object.keys(keypadTypes)),
+        }),
         page: React.PropTypes.number,
-        type: React.PropTypes.oneOf(Object.keys(keypadTypes)),
     },
 
     render() {
@@ -24,25 +29,31 @@ const MathKeypad = React.createClass({
         // However, the keyboards differ pretty heavily right now and it's not
         // clear what that format would look like exactly. Plus, there aren't
         // very many of them. So to keep us moving, we'll just hardcode.
-        switch (this.props.type) {
+        switch (this.props.configuration.keypadType) {
             case keypadTypes.NUMBER:
-                return <NumberKeypad {...this.props} />;
+                return <NumberKeypad />;
 
             case keypadTypes.FRACTION:
-                return <FractionKeypad {...this.props} />;
+                return <FractionKeypad />;
 
             case keypadTypes.TEST_MULTI_BUTTON:
-                return <TestMultiButtonKeypad {...this.props} />;
+                return <TestMultiButtonKeypad />;
 
             case keypadTypes.TEST_MULTI_PAGE:
-                return <TestMultiPageKeypad {...this.props} />;
+                return <TestMultiPageKeypad page={this.props.page} />;
 
             case keypadTypes.TEST_POPOVER:
-                return <TestPopoverKeypad {...this.props} />;
+                return <TestPopoverKeypad />;
+
+            case keypadTypes.TEST_MULTI_SYMBOL:
+                const extraKeys = this.props.configuration.extraSymbols.map(
+                    symbol => ButtonProps[symbol]
+                );
+                return <TestMultiSymbolKeypad extraKeys={extraKeys} />;
 
             case keypadTypes.DEFAULT:
             default:
-                return <DefaultKeypad {...this.props} />;
+                return <DefaultKeypad />;
         }
     },
 });

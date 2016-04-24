@@ -15,10 +15,7 @@ const {
 } = require('./common-style');
 const CornerDecal = require('./corner-decal');
 
-const keyPropType = React.PropTypes.shape({
-    onClick: React.PropTypes.func,
-    label: React.PropTypes.string,
-});
+const { keyPropType } = require('./prop-types');
 
 const KeypadButton = React.createClass({
     propTypes: {
@@ -51,10 +48,42 @@ const KeypadButton = React.createClass({
             ...(Array.isArray(style) ? style : [style]),
         ];
 
+        const hasPrimaryKey = primaryKey != null;
         const hasSecondaryKeys = secondaryKeys.length > 0;
-        if (!hasSecondaryKeys || !showAllSymbols) {
+
+        if (!hasPrimaryKey) {
+            const splitColumnStyle = [
+                styles.halfCell,
+                styles.secondaryText,
+            ];
+            const leftColumnStyle = [
+                styles.leftColumn,
+                ...splitColumnStyle,
+            ];
+            const rightColumnStyle = [
+                styles.rightColumn,
+                ...splitColumnStyle,
+            ];
+
+            // If we have no primary key, then we show up to four keys, in a
+            // two-column layout.
+            const maxKeysPerColumn = 2;
+            return <View style={buttonStyle}>
+                <View style={leftColumnStyle}>
+                    {secondaryKeys.slice(0, maxKeysPerColumn).map(key =>
+                        <Text>{key.label}</Text>
+                    )}
+                </View>
+                <View style={rightColumnStyle}>
+                    {secondaryKeys.slice(
+                        maxKeysPerColumn, 2 * maxKeysPerColumn
+                    ).map(key => <Text>{key.label}</Text>)}
+                </View>
+                <CornerDecal />
+            </View>;
+        } else if (!hasSecondaryKeys || !showAllSymbols) {
             const fullRowStyle = [
-                styles.fullRowColumn,
+                styles.centerColumn,
                 styles.primaryText,
             ];
 
@@ -69,12 +98,13 @@ const KeypadButton = React.createClass({
             </View>;
         } else {
             const primaryStyle = [
-                styles.primaryColumn,
+                styles.leftColumn,
                 styles.primaryText,
             ];
 
             const secondaryStyle = [
-                styles.secondaryColumn,
+                styles.rightColumn,
+                styles.halfCell,
                 styles.secondaryText,
             ];
 
@@ -98,33 +128,36 @@ const KeypadButton = React.createClass({
 const gapWidthPx = 5;
 
 const styles = StyleSheet.create({
-    primaryColumn: {
+    centerColumn: {
         width: '100%',
+        flexDirection: 'column',
+        textAlign: 'center',
+    },
+    leftColumn: {
+        width: '100%',
+        flexDirection: 'column',
         textAlign: 'right',
         marginRight: gapWidthPx,
     },
-    primaryText: {
-        fontFamily: 'sans-serif',
-        fontSize: buttonFontSizePrimary,
-    },
-
-    secondaryColumn: {
+    rightColumn: {
         width: '100%',
-        height: buttonHeightPx / 2,
-        lineHeight: `${buttonHeightPx / 2}px`,
         flexDirection: 'column',
         textAlign: 'left',
         marginLeft: gapWidthPx,
+    },
+    halfCell: {
+        height: buttonHeightPx / 2,
+        lineHeight: `${buttonHeightPx / 2}px`,
+    },
+
+    primaryText: {
+        fontFamily: 'sans-serif',
+        fontSize: buttonFontSizePrimary,
     },
     secondaryText: {
         fontFamily: 'sans-serif',
         fontSize: buttonFontSizeSecondary,
         color: 'grey',
-    },
-
-    fullRowColumn: {
-        width: '100%',
-        textAlign: 'center',
     },
 
     button: {

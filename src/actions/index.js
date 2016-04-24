@@ -10,10 +10,10 @@ module.exports = {
         });
     },
 
-    setKeypadType: function(keypadType) {
+    configureKeypad: function(configuration) {
         store.dispatch({
-            type: 'SetKeypadType',
-            keypadType,
+            type: 'ConfigureKeypad',
+            configuration,
         });
     },
 

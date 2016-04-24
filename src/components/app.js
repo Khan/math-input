@@ -8,7 +8,7 @@ const MathKeypad = require('./math-keypad');
 const KeypadTypeSelector = require('./keypad-type-selector');
 
 const store = require('../store');
-const { setKeypadType } = require('../actions');
+const { configureKeypad } = require('../actions');
 
 const App = React.createClass({
     render() {
@@ -17,7 +17,9 @@ const App = React.createClass({
             <Provider store={store}>
                 <MathKeypad />
             </Provider>
-            <KeypadTypeSelector onChange={setKeypadType} />
+            <KeypadTypeSelector onChange={keypadType =>
+                configureKeypad({ keypadType })}
+            />
         </View>;
     },
 });

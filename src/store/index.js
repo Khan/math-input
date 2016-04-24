@@ -32,7 +32,10 @@ const handlersReducer = function(state = initialHandlersState, action) {
 };
 
 const initialKeypadState = {
-    type: keypadTypes.DEFAULT,
+    configuration: {
+        extraSymbols: Keypads[keypadTypes.DEFAULT].extraSymbols,
+        keypadType: keypadTypes.DEFAULT,
+    },
     page: 0,
 };
 
@@ -50,7 +53,11 @@ const keypadReducer = function(state = initialKeypadState, action) {
             };
 
         case 'PageKeypadRight':
-            const numPages = Keypads[state.type].numPages;
+            // TODO(charlie): It's strange that reducer needs to be aware of
+            // the number of pages. We should transition to an API that
+            // requires the keypads to declare the page to which they want to
+            // transition.
+            const numPages = Keypads[state.configuration.keypadType].numPages;
             return {
                 ...state,
                 page: Math.min(state.page + 1, numPages - 1),
@@ -62,10 +69,19 @@ const keypadReducer = function(state = initialKeypadState, action) {
                 page: Math.max(state.page - 1, 0),
             };
 
-        case 'SetKeypadType':
+        case 'ConfigureKeypad':
+            const keypadType = action.configuration.keypadType;
             return {
                 ...state,
-                type: action.keypadType,
+                configuration: {
+                    // TODO(charlie): For now, we're hardcoding the extra
+                    // symbols. However, once we've integrated with Perseus,
+                    // they'll be providing both the keypad type and the extra
+                    // symbols in one call; hence, they're packaged together as
+                    // a single 'configuration' object.
+                    extraSymbols: Keypads[keypadType].extraSymbols,
+                    keypadType,
+                },
             };
 
         case 'PressKey':

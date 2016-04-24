@@ -10,6 +10,7 @@ module.exports = {
         TEST_MULTI_BUTTON: 'TEST_MULTI_BUTTON',
         TEST_MULTI_PAGE: 'TEST_MULTI_PAGE',
         TEST_POPOVER: 'TEST_POPOVER',
+        TEST_MULTI_SYMBOL: 'TEST_MULTI_SYMBOL',
     },
 
     keyTypes: {
