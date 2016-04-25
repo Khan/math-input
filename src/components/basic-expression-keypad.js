@@ -9,7 +9,7 @@ const SimpleKeypadButton = require('./simple-keypad-button');
 const EmptyKeypadButton = require('./empty-keypad-button');
 const MultiKeypadButton = require('./multi-keypad-button');
 const ManyKeypadButton = require('./many-keypad-button');
-const { keypad, row } = require('./styles');
+const { row, column, oneColumn, twoColumn, keypad } = require('./styles');
 
 const { keyPropType } = require('./prop-types');
 const ButtonProps = require('./button-props');
@@ -26,21 +26,30 @@ const BasicExpressionKeypad = React.createClass({
         let keypadContents;
         switch (page) {
             case 0:
-                keypadContents = [
-                    <View style={row}>
+                keypadContents = <View style={row}>
+                    <View style={[column, oneColumn]}>
                         <SimpleKeypadButton singleKey={ButtonProps.NUM_7} />
+                        <SimpleKeypadButton singleKey={ButtonProps.NUM_4} />
+                        <SimpleKeypadButton singleKey={ButtonProps.NUM_1} />
+                        <ManyKeypadButton keys={extraKeys} />
+                    </View>
+                    <View style={[column, oneColumn]}>
                         <SimpleKeypadButton singleKey={ButtonProps.NUM_8} />
+                        <SimpleKeypadButton singleKey={ButtonProps.NUM_5} />
+                        <SimpleKeypadButton singleKey={ButtonProps.NUM_2} />
+                        <SimpleKeypadButton singleKey={ButtonProps.NUM_0} />
+                    </View>
+                    <View style={[column, oneColumn]}>
                         <SimpleKeypadButton singleKey={ButtonProps.NUM_9} />
+                        <SimpleKeypadButton singleKey={ButtonProps.NUM_6} />
+                        <SimpleKeypadButton singleKey={ButtonProps.NUM_3} />
+                        <SimpleKeypadButton singleKey={ButtonProps.DECIMAL} />
+                    </View>
+                    <View style={[column, oneColumn]}>
                         <MultiKeypadButton
                             primaryKey={ButtonProps.FRAC}
                             secondaryKeys={[ButtonProps.DIVIDE]}
                         />
-                        <SimpleKeypadButton singleKey={ButtonProps.MORE} />
-                    </View>,
-                    <View style={row}>
-                        <SimpleKeypadButton singleKey={ButtonProps.NUM_4} />
-                        <SimpleKeypadButton singleKey={ButtonProps.NUM_5} />
-                        <SimpleKeypadButton singleKey={ButtonProps.NUM_6} />
                         <MultiKeypadButton
                             primaryKey={ButtonProps.PARENS}
                             secondaryKeys={[
@@ -48,46 +57,42 @@ const BasicExpressionKeypad = React.createClass({
                                 ButtonProps.TIMES,
                             ]}
                         />
-                        <SimpleKeypadButton singleKey={ButtonProps.RIGHT} />
-                    </View>,
-                    <View style={row}>
-                        <SimpleKeypadButton singleKey={ButtonProps.NUM_1} />
-                        <SimpleKeypadButton singleKey={ButtonProps.NUM_2} />
-                        <SimpleKeypadButton singleKey={ButtonProps.NUM_3} />
                         <SimpleKeypadButton singleKey={ButtonProps.MINUS} />
-                        <SimpleKeypadButton
-                            singleKey={ButtonProps.BACKSPACE}
-                        />
-                    </View>,
-                    <View style={row}>
-                        <ManyKeypadButton keys={extraKeys} />
-                        <SimpleKeypadButton singleKey={ButtonProps.NUM_0} />
-                        <SimpleKeypadButton singleKey={ButtonProps.DECIMAL} />
                         <SimpleKeypadButton singleKey={ButtonProps.PLUS} />
+                    </View>
+                    <View style={[column, oneColumn]}>
+                        <SimpleKeypadButton singleKey={ButtonProps.MORE} />
+                        <SimpleKeypadButton singleKey={ButtonProps.RIGHT} />
+                        <SimpleKeypadButton singleKey={ButtonProps.BACKSPACE} />
                         <SimpleKeypadButton singleKey={ButtonProps.DISMISS} />
-                    </View>,
-                ];
+                    </View>
+                </View>;
                 break;
 
             case 1:
-                keypadContents = [
-                    <View style={row}>
+                keypadContents = <View style={row}>
+                    <View style={[column, twoColumn]}>
                         <MultiKeypadButton
                             primaryKey={ButtonProps.EQUAL}
                             secondaryKeys={[ButtonProps.NEQ]}
                             showAllSymbols={false}
                         />
                         <MultiKeypadButton
-                            primaryKey={ButtonProps.EXP_2}
-                            secondaryKeys={[ButtonProps.EXP]}
-                            showAllSymbols={false}
-                        />
-                        <SimpleKeypadButton singleKey={ButtonProps.NUMBERS} />
-                    </View>,
-                    <View style={row}>
-                        <MultiKeypadButton
                             primaryKey={ButtonProps.LT}
                             secondaryKeys={[ButtonProps.LEQ]}
+                            showAllSymbols={false}
+                        />
+                        <MultiKeypadButton
+                            primaryKey={ButtonProps.GT}
+                            secondaryKeys={[ButtonProps.GEQ]}
+                            showAllSymbols={false}
+                        />
+                        <EmptyKeypadButton />
+                    </View>
+                    <View style={[column, twoColumn]}>
+                        <MultiKeypadButton
+                            primaryKey={ButtonProps.EXP_2}
+                            secondaryKeys={[ButtonProps.EXP]}
                             showAllSymbols={false}
                         />
                         <MultiKeypadButton
@@ -95,25 +100,16 @@ const BasicExpressionKeypad = React.createClass({
                             secondaryKeys={[ButtonProps.RADICAL]}
                             showAllSymbols={false}
                         />
+                        <EmptyKeypadButton />
+                        <EmptyKeypadButton />
+                    </View>
+                    <View style={[column, oneColumn]}>
+                        <SimpleKeypadButton singleKey={ButtonProps.NUMBERS} />
                         <SimpleKeypadButton singleKey={ButtonProps.RIGHT} />
-                    </View>,
-                    <View style={row}>
-                        <MultiKeypadButton
-                            primaryKey={ButtonProps.GT}
-                            secondaryKeys={[ButtonProps.GEQ]}
-                            showAllSymbols={false}
-                        />
-                        <EmptyKeypadButton />
-                        <SimpleKeypadButton
-                            singleKey={ButtonProps.BACKSPACE}
-                        />
-                    </View>,
-                    <View style={row}>
-                        <EmptyKeypadButton />
-                        <EmptyKeypadButton />
+                        <SimpleKeypadButton singleKey={ButtonProps.BACKSPACE} />
                         <SimpleKeypadButton singleKey={ButtonProps.DISMISS} />
-                    </View>,
-                ];
+                    </View>
+                </View>;
                 break;
 
             default:
