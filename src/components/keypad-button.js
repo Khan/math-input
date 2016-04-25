@@ -51,7 +51,9 @@ const KeypadButton = React.createClass({
         const hasPrimaryKey = primaryKey != null;
         const hasSecondaryKeys = secondaryKeys.length > 0;
 
-        if (!hasPrimaryKey) {
+        if (!hasPrimaryKey && !hasSecondaryKeys) {
+            return <View style={[...buttonStyle, styles.uninteractable]} />;
+        } else if (!hasPrimaryKey) {
             const splitColumnStyle = [
                 styles.halfCell,
                 styles.secondaryText,
@@ -175,6 +177,10 @@ const styles = StyleSheet.create({
         cursor: 'pointer',
         // Make the text unselectable
         userSelect: 'none',
+    },
+
+    uninteractable: {
+        cursor: 'default',
     },
 });
 
