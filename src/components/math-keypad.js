@@ -4,6 +4,7 @@ const { connect } = require('react-redux');
 const DefaultKeypad = require('./default-keypad');
 const NumberKeypad = require('./number-keypad');
 const FractionKeypad = require('./fraction-keypad');
+const BasicExpressionKeypad = require('./basic-expression-keypad');
 const AdvancedExpressionKeypad = require('./advanced-expression-keypad');
 const TestPopoverKeypad = require('./test-popover-keypad');
 
@@ -20,6 +21,12 @@ const MathKeypad = React.createClass({
     },
 
     render() {
+        // Extract props that some keypads will need.
+        const page = this.props.page;
+        const extraKeys = this.props.configuration.extraSymbols.map(
+            symbol => ButtonProps[symbol]
+        );
+
         // Select the appropriate keyboard given the type.
         // TODO(charlie): In the future, we might want to move towards a
         // data-driven approach to defining keyboard layouts, and have a
@@ -35,11 +42,13 @@ const MathKeypad = React.createClass({
                 return <FractionKeypad />;
 
             case keypadTypes.ADVANCED_EXPRESSION:
-                const page = this.props.page;
-                const extraKeys = this.props.configuration.extraSymbols.map(
-                    symbol => ButtonProps[symbol]
-                );
                 return <AdvancedExpressionKeypad
+                    page={page}
+                    extraKeys={extraKeys}
+                />;
+
+            case keypadTypes.BASIC_EXPRESSION:
+                return <BasicExpressionKeypad
                     page={page}
                     extraKeys={extraKeys}
                 />;

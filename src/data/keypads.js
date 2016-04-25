@@ -21,6 +21,10 @@ const Keypads = {
         numPages: 2,
         extraSymbols: ['x', 'PI', 'y', 'e', 'z'],
     },
+    [keypadTypes.BASIC_EXPRESSION]: {
+        numPages: 2,
+        extraSymbols: ['x', 'PI', 'y', 'e', 'z'],
+    },
     [keypadTypes.TEST_POPOVER]: {
         numPages: 1,
         extraSymbols: [],
