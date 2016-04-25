@@ -15,6 +15,8 @@ module.exports = {
     keyTypes: {
         // For buttons that insert or adjust math in an input.
         MATH: 'MATH',
+        // For numerals in particular.
+        NUMERAL: 'NUMERAL',
         // For buttons that move the cursor in an input (including via
         // deletion).
         INPUT_NAVIGATION: 'INPUT_NAVIGATION',

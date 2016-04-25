@@ -15,6 +15,7 @@ const {
 } = require('./common-style');
 const CornerDecal = require('./corner-decal');
 
+const { keyTypes } = require('../consts');
 const { keyPropType } = require('./prop-types');
 
 const KeypadButton = React.createClass({
@@ -36,23 +37,67 @@ const KeypadButton = React.createClass({
         };
     },
 
+    _getButtonStyle(primaryKey, secondaryKeys, style) {
+        const hasPrimaryKey = primaryKey != null;
+        const hasSecondaryKeys = secondaryKeys.length > 0;
+
+        // Select the appropriate style for the button, based on the
+        // combination of primary and secondary keys.
+        let backgroundStyle;
+        let borderStyle;
+        if (!hasPrimaryKey) {
+            if (hasSecondaryKeys) {
+                backgroundStyle = styles.command;
+                borderStyle = styles.bordered;
+            } else {
+                backgroundStyle = styles.disabled;
+                borderStyle = styles.bordered;
+            }
+        } else {
+            switch (primaryKey.type) {
+                case keyTypes.NUMERAL:
+                    backgroundStyle = styles.numeral;
+                    borderStyle = null;
+                    break;
+
+                case keyTypes.MATH:
+                    backgroundStyle = styles.command;
+                    borderStyle = styles.bordered;
+                    break;
+
+                case keyTypes.INPUT_NAVIGATION:
+                case keyTypes.KEYPAD_NAVIGATION:
+                    backgroundStyle = styles.control;
+                    borderStyle = null;
+                    break;
+            }
+        }
+
+        return [
+            styles.buttonBase,
+            backgroundStyle,
+            borderStyle,
+            // React Native allows you to set the 'style' props on user defined
+            // components, https://facebook.github.io/react-native/docs/style.html
+            ...(Array.isArray(style) ? style : [style]),
+        ];
+    },
+
     render() {
         const {
             primaryKey, secondaryKeys, showAllSymbols, style,
         } = this.props;
 
-        const buttonStyle = [
-            styles.button,
-            // React Native allows you to set the 'style' props on user defined
-            // components, https://facebook.github.io/react-native/docs/style.html
-            ...(Array.isArray(style) ? style : [style]),
-        ];
+
+        const buttonStyle = this._getButtonStyle(
+            primaryKey, secondaryKeys, style
+        );
 
         const hasPrimaryKey = primaryKey != null;
         const hasSecondaryKeys = secondaryKeys.length > 0;
 
         if (!hasPrimaryKey && !hasSecondaryKeys) {
-            return <View style={[...buttonStyle, styles.uninteractable]} />;
+            return <View style={buttonStyle} />;
         } else if (!hasPrimaryKey) {
             const splitColumnStyle = [
                 styles.halfCell,
@@ -147,6 +192,7 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         marginLeft: gapWidthPx,
     },
+
     halfCell: {
         height: buttonHeightPx / 2,
         lineHeight: `${buttonHeightPx / 2}px`,
@@ -162,24 +208,39 @@ const styles = StyleSheet.create({
         color: 'grey',
     },
 
-    button: {
+    buttonBase: {
         width: '100%',
         flexDirection: 'row',
         height: buttonHeightPx,
-        borderColor: '#BBB',
-        borderStyle: 'solid',
-        borderWidth: 1,
-        marginBottom: -1,
-        marginRight: -1,
         lineHeight: `${buttonHeightPx}px`,
         textAlign: 'center',
-        backgroundColor: '#EEE',
         cursor: 'pointer',
         // Make the text unselectable
         userSelect: 'none',
     },
 
-    uninteractable: {
+    // TODO(charlie): This causes layout weirdness where borders get
+    // double-drawn and the margins are off in some places. We need to properly
+    // figure out borders, which may require conditional borders being
+    // specified as props.
+    bordered: {
+        borderColor: '#ECECEC',
+        borderStyle: 'solid',
+        borderWidth: 1,
+    },
+
+    // Background colors and other base styles that may vary between key types.
+    numeral: {
+        backgroundColor: '#FFF',
+    },
+    command: {
+        backgroundColor: '#FAFAFA',
+    },
+    control: {
+        backgroundColor: '#F7F7F7',
+    },
+    disabled: {
+        backgroundColor: '#F0F0F0',
         cursor: 'default',
     },
 });
