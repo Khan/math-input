@@ -8,7 +8,7 @@
 const React = require('react');
 
 const { View } = require('../fake-react-native-web');
-const KeypadButton = require('./keypad-button');
+const MultiKeypadButton = require('./multi-keypad-button');
 const { keypad, row } = require('./styles');
 
 const ButtonProps = require('./button-props');
@@ -17,20 +17,20 @@ const TestMultiButtonKeypad = React.createClass({
     render() {
         return <View style={keypad}>
             <View style={row}>
-                <KeypadButton
+                <MultiKeypadButton
+                    primaryKey={ButtonProps.PLUS}
+                    secondaryKeys={[ButtonProps.EXP, ButtonProps.MINUS]}
                     showAllSymbols={false}
+                />
+                <MultiKeypadButton
                     primaryKey={ButtonProps.PLUS}
                     secondaryKeys={[ButtonProps.EXP, ButtonProps.MINUS]}
-                />
-                <KeypadButton
                     showAllSymbols={true}
-                    primaryKey={ButtonProps.PLUS}
-                    secondaryKeys={[ButtonProps.EXP, ButtonProps.MINUS]}
                 />
-                <KeypadButton
-                    showAllSymbols={true}
+                <MultiKeypadButton
                     primaryKey={ButtonProps.PLUS}
                     secondaryKeys={[ButtonProps.EXP]}
+                    showAllSymbols={true}
                 />
             </View>
         </View>;

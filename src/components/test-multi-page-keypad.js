@@ -5,7 +5,7 @@
 const React = require('react');
 
 const { View } = require('../fake-react-native-web');
-const KeypadButton = require('./keypad-button');
+const SimpleKeypadButton = require('./simple-keypad-button');
 const { keypad, row } = require('./styles');
 
 const ButtonProps = require('./button-props');
@@ -20,17 +20,17 @@ const TestMultiPageKeypad = React.createClass({
         switch (this.props.page) {
             case 0:
                 keypadContents = [
-                    <KeypadButton primaryKey={ButtonProps.NUM_1} />,
-                    <KeypadButton primaryKey={ButtonProps.NUM_2} />,
-                    <KeypadButton primaryKey={ButtonProps.MORE} />,
+                    <SimpleKeypadButton singleKey={ButtonProps.NUM_1} />,
+                    <SimpleKeypadButton singleKey={ButtonProps.NUM_2} />,
+                    <SimpleKeypadButton singleKey={ButtonProps.MORE} />,
                 ];
                 break;
 
             case 1:
                 keypadContents = [
-                    <KeypadButton primaryKey={ButtonProps.NUM_3} />,
-                    <KeypadButton primaryKey={ButtonProps.LEFT} />,
-                    <KeypadButton primaryKey={ButtonProps.NUMBERS} />,
+                    <SimpleKeypadButton singleKey={ButtonProps.NUM_3} />,
+                    <SimpleKeypadButton singleKey={ButtonProps.LEFT} />,
+                    <SimpleKeypadButton singleKey={ButtonProps.NUMBERS} />,
                 ];
                 break;
 

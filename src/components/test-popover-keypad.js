@@ -5,7 +5,7 @@
 const React = require('react');
 
 const { View } = require('../fake-react-native-web');
-const KeypadButton = require('./keypad-button');
+const SimpleKeypadButton = require('./simple-keypad-button');
 const MultiSymbolPopover = require('./multi-symbol-popover');
 const { keypad, row } = require('./styles');
 
@@ -15,8 +15,8 @@ const TestPopoverKeypad = React.createClass({
     render() {
         return <View style={keypad}>
             <View style={row}>
-                <KeypadButton primaryKey={ButtonProps.NUM_7} />
-                <KeypadButton primaryKey={ButtonProps.NUM_8} />
+                <SimpleKeypadButton singleKey={ButtonProps.NUM_7} />
+                <SimpleKeypadButton singleKey={ButtonProps.NUM_8} />
                 <MultiSymbolPopover
                     keys={[
                         ButtonProps.NUM_9,
@@ -26,14 +26,14 @@ const TestPopoverKeypad = React.createClass({
                 />
             </View>
             <View style={row}>
-                <KeypadButton primaryKey={ButtonProps.NUM_4} />
-                <KeypadButton primaryKey={ButtonProps.NUM_5} />
-                <KeypadButton primaryKey={ButtonProps.NUM_6} />
+                <SimpleKeypadButton singleKey={ButtonProps.NUM_4} />
+                <SimpleKeypadButton singleKey={ButtonProps.NUM_5} />
+                <SimpleKeypadButton singleKey={ButtonProps.NUM_6} />
             </View>
             <View style={row}>
-                <KeypadButton primaryKey={ButtonProps.NUM_1} />
-                <KeypadButton primaryKey={ButtonProps.NUM_2} />
-                <KeypadButton primaryKey={ButtonProps.NUM_3} />
+                <SimpleKeypadButton singleKey={ButtonProps.NUM_1} />
+                <SimpleKeypadButton singleKey={ButtonProps.NUM_2} />
+                <SimpleKeypadButton singleKey={ButtonProps.NUM_3} />
             </View>
         </View>;
     },

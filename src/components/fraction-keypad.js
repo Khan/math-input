@@ -6,7 +6,7 @@
 const React = require('react');
 
 const { View } = require('../fake-react-native-web');
-const KeypadButton = require('./keypad-button');
+const SimpleKeypadButton = require('./simple-keypad-button');
 const { keypad, row } = require('./styles');
 
 const ButtonProps = require('./button-props');
@@ -15,28 +15,28 @@ const FractionKeypad = React.createClass({
     render() {
         return <View style={keypad}>
             <View style={row}>
-                <KeypadButton primaryKey={ButtonProps.NUM_7} />
-                <KeypadButton primaryKey={ButtonProps.NUM_8} />
-                <KeypadButton primaryKey={ButtonProps.NUM_9} />
-                <KeypadButton primaryKey={ButtonProps.DIVIDE} />
+                <SimpleKeypadButton singleKey={ButtonProps.NUM_7} />
+                <SimpleKeypadButton singleKey={ButtonProps.NUM_8} />
+                <SimpleKeypadButton singleKey={ButtonProps.NUM_9} />
+                <SimpleKeypadButton singleKey={ButtonProps.DIVIDE} />
             </View>
             <View style={row}>
-                <KeypadButton primaryKey={ButtonProps.NUM_4} />
-                <KeypadButton primaryKey={ButtonProps.NUM_5} />
-                <KeypadButton primaryKey={ButtonProps.NUM_6} />
-                <KeypadButton primaryKey={ButtonProps.PERCENT} />
+                <SimpleKeypadButton singleKey={ButtonProps.NUM_4} />
+                <SimpleKeypadButton singleKey={ButtonProps.NUM_5} />
+                <SimpleKeypadButton singleKey={ButtonProps.NUM_6} />
+                <SimpleKeypadButton singleKey={ButtonProps.PERCENT} />
             </View>
             <View style={row}>
-                <KeypadButton primaryKey={ButtonProps.NUM_1} />
-                <KeypadButton primaryKey={ButtonProps.NUM_2} />
-                <KeypadButton primaryKey={ButtonProps.NUM_3} />
-                <KeypadButton primaryKey={ButtonProps.BACKSPACE} />
+                <SimpleKeypadButton singleKey={ButtonProps.NUM_1} />
+                <SimpleKeypadButton singleKey={ButtonProps.NUM_2} />
+                <SimpleKeypadButton singleKey={ButtonProps.NUM_3} />
+                <SimpleKeypadButton singleKey={ButtonProps.BACKSPACE} />
             </View>
             <View style={row}>
-                <KeypadButton primaryKey={ButtonProps.TOGGLE_SIGN} />
-                <KeypadButton primaryKey={ButtonProps.NUM_0} />
-                <KeypadButton primaryKey={ButtonProps.DECIMAL} />
-                <KeypadButton primaryKey={ButtonProps.DISMISS} />
+                <SimpleKeypadButton singleKey={ButtonProps.TOGGLE_SIGN} />
+                <SimpleKeypadButton singleKey={ButtonProps.NUM_0} />
+                <SimpleKeypadButton singleKey={ButtonProps.DECIMAL} />
+                <SimpleKeypadButton singleKey={ButtonProps.DISMISS} />
             </View>
         </View>;
     },
