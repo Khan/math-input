@@ -7,10 +7,8 @@ module.exports = {
         NUMBER: 'NUMBER',
         FRACTION: 'FRACTION',
         DEFAULT: 'DEFAULT',
-        TEST_MULTI_BUTTON: 'TEST_MULTI_BUTTON',
-        TEST_MULTI_PAGE: 'TEST_MULTI_PAGE',
+        ADVANCED_EXPRESSION: 'ADVANCED_EXPRESSION',
         TEST_POPOVER: 'TEST_POPOVER',
-        TEST_MULTI_SYMBOL: 'TEST_MULTI_SYMBOL',
     },
 
     keyTypes: {

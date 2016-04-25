@@ -4,10 +4,8 @@ const { connect } = require('react-redux');
 const DefaultKeypad = require('./default-keypad');
 const NumberKeypad = require('./number-keypad');
 const FractionKeypad = require('./fraction-keypad');
-const TestMultiButtonKeypad = require('./test-multi-button-keypad');
-const TestMultiPageKeypad = require('./test-multi-page-keypad');
+const AdvancedExpressionKeypad = require('./advanced-expression-keypad');
 const TestPopoverKeypad = require('./test-popover-keypad');
-const TestMultiSymbolKeypad = require('./test-multi-symbol-keypad');
 
 const ButtonProps = require('./button-props');
 const { keypadTypes } = require('../consts');
@@ -36,20 +34,18 @@ const MathKeypad = React.createClass({
             case keypadTypes.FRACTION:
                 return <FractionKeypad />;
 
-            case keypadTypes.TEST_MULTI_BUTTON:
-                return <TestMultiButtonKeypad />;
-
-            case keypadTypes.TEST_MULTI_PAGE:
-                return <TestMultiPageKeypad page={this.props.page} />;
-
-            case keypadTypes.TEST_POPOVER:
-                return <TestPopoverKeypad />;
-
-            case keypadTypes.TEST_MULTI_SYMBOL:
+            case keypadTypes.ADVANCED_EXPRESSION:
+                const page = this.props.page;
                 const extraKeys = this.props.configuration.extraSymbols.map(
                     symbol => ButtonProps[symbol]
                 );
-                return <TestMultiSymbolKeypad extraKeys={extraKeys} />;
+                return <AdvancedExpressionKeypad
+                    page={page}
+                    extraKeys={extraKeys}
+                />;
+
+            case keypadTypes.TEST_POPOVER:
+                return <TestPopoverKeypad />;
 
             case keypadTypes.DEFAULT:
             default:

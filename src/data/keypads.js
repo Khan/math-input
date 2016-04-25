@@ -17,21 +17,13 @@ const Keypads = {
         numPages: 1,
         extraSymbols: [],
     },
-    [keypadTypes.TEST_MULTI_BUTTON]: {
-        numPages: 1,
-        extraSymbols: [],
-    },
-    [keypadTypes.TEST_MULTI_PAGE]: {
+    [keypadTypes.ADVANCED_EXPRESSION]: {
         numPages: 2,
-        extraSymbols: [],
+        extraSymbols: ['x', 'PI', 'y', 'e', 'z'],
     },
     [keypadTypes.TEST_POPOVER]: {
         numPages: 1,
         extraSymbols: [],
-    },
-    [keypadTypes.TEST_MULTI_SYMBOL]: {
-        numPages: 1,
-        extraSymbols: ['x', 'PI', 'y', 'e', 'z'],
     },
 };
 
