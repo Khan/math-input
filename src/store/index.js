@@ -82,6 +82,8 @@ const keypadReducer = function(state = initialKeypadState, action) {
                     extraSymbols: Keypads[keypadType].extraSymbols,
                     keypadType,
                 },
+                // Reset the page whenever the keypad is re-configured.
+                page: 0,
             };
 
         case 'PressKey':
