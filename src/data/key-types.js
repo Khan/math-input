@@ -11,20 +11,6 @@ const Keys = require('./keys');
 const { keyTypes } = require('../consts');
 
 const KeyTypes = {
-    [Keys.PLUS]: keyTypes.MATH,
-    [Keys.MINUS]: keyTypes.MATH,
-    [Keys.TOGGLE_SIGN]: keyTypes.MATH,
-    [Keys.TIMES]: keyTypes.MATH,
-    [Keys.DIVIDE]: keyTypes.MATH,
-    [Keys.DECIMAL]: keyTypes.MATH,
-    [Keys.PERCENT]: keyTypes.MATH,
-    [Keys.CDOT]: keyTypes.MATH,
-    [Keys.EQUAL]: keyTypes.MATH,
-    [Keys.FRAC]: keyTypes.MATH,
-    [Keys.EXP]: keyTypes.MATH,
-    [Keys.SQRT]: keyTypes.MATH,
-    [Keys.PI]: keyTypes.MATH,
-    [Keys.PARENS]: keyTypes.MATH,
     [Keys.LEFT]: keyTypes.INPUT_NAVIGATION,
     [Keys.RIGHT]: keyTypes.INPUT_NAVIGATION,
     [Keys.BACKSPACE]: keyTypes.INPUT_NAVIGATION,
@@ -32,5 +18,12 @@ const KeyTypes = {
     [Keys.MORE]: keyTypes.KEYPAD_NAVIGATION,
     [Keys.NUMBERS]: keyTypes.KEYPAD_NAVIGATION,
 };
+
+// Default to MATH, if the key type wasn't explicitly specified above.
+Object.keys(Keys).forEach(key => {
+    if (!KeyTypes[key]) {
+        KeyTypes[key] = keyTypes.MATH;
+    }
+});
 
 module.exports = KeyTypes;
