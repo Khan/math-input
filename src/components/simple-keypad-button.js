@@ -13,7 +13,8 @@ const SimpleKeypadButton = React.createClass({
     },
 
     render() {
-        return <KeypadButton primaryKey={this.props.singleKey} />;
+        const { singleKey } = this.props;
+        return <KeypadButton primaryKey={singleKey} />;
     },
 });
 

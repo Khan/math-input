@@ -6,7 +6,7 @@ const React = require('react');
 
 const KeypadButton = require('./keypad-button');
 
-const EmptyKeypadButton = () => {
+const EmptyKeypadButton = (props) => {
     return <KeypadButton />;
 };
 

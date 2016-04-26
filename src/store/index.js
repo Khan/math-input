@@ -1,5 +1,6 @@
 const Redux = require('redux');
 
+const { defaultButtonHeightPx } = require('../components/common-style');
 const { keypadTypes, keyTypes } = require('../consts');
 const Keypads = require('../data/keypads');
 
@@ -98,8 +99,26 @@ const keypadReducer = function(state = initialKeypadState, action) {
     }
 };
 
+const initialButtonsState = {
+    buttonHeightPx: defaultButtonHeightPx,
+};
+
+const buttonsReducer = function(state = initialButtonsState, action) {
+    switch (action.type) {
+        case 'SetButtonHeightPx':
+            return {
+                ...state,
+                buttonHeightPx: action.buttonHeightPx,
+            };
+
+        default:
+            return state;
+    }
+};
+
 const reducer = Redux.combineReducers({
     keypad: keypadReducer,
+    buttons: buttonsReducer,
     handlers: handlersReducer,
 });
 

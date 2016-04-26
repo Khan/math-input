@@ -7,7 +7,9 @@ const FractionKeypad = require('./fraction-keypad');
 const BasicExpressionKeypad = require('./basic-expression-keypad');
 const AdvancedExpressionKeypad = require('./advanced-expression-keypad');
 const TestPopoverKeypad = require('./test-popover-keypad');
+const { getButtonHeightPx } = require('./common-style');
 
+const { setButtonHeightPx } = require('../actions');
 const ButtonProps = require('./button-props');
 const { keypadTypes } = require('../consts');
 
@@ -18,6 +20,32 @@ const MathKeypad = React.createClass({
             keypadType: React.PropTypes.oneOf(Object.keys(keypadTypes)),
         }),
         page: React.PropTypes.number,
+    },
+
+    componentDidMount() {
+        window.addEventListener("resize", this._onResize);
+    },
+
+    componentWillUnmount() {
+        window.removeEventListener("resize", this._onResize);
+    },
+
+    _onResize() {
+        // Whenever the page resizes, we need to force an update, as the button
+        // heights are computed as a portion of the page width.
+        // TODO(charlie): If we decide that we don't need to support Android
+        // 4.3, we can achieve this effect trivially using Viewport units.
+
+        // Throttle resize events -- taken from:
+        //    https://developer.mozilla.org/en-US/docs/Web/Events/resize
+        if (this.resizeTimeout == null) {
+            this.resizeTimeout = setTimeout(() => {
+                this.resizeTimeout = null;
+
+                // Notify the store that the button height has changed.
+                setButtonHeightPx(getButtonHeightPx());
+            }, 66);
+        }
     },
 
     render() {

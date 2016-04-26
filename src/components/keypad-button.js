@@ -5,11 +5,11 @@
  */
 
 const React = require('react');
+const { connect } = require('react-redux');
 
 const { StyleSheet } = require('aphrodite');
 const { Text, View } = require('../fake-react-native-web');
 const {
-    buttonHeightPx,
     buttonFontSizePrimary,
     buttonFontSizeSecondary,
 } = require('./common-style');
@@ -20,6 +20,7 @@ const { keyPropType } = require('./prop-types');
 
 const KeypadButton = React.createClass({
     propTypes: {
+        buttonHeightPx: React.PropTypes.number.isRequired,
         primaryKey: keyPropType,
         // Any additional keys that can be accessed by long-pressing on the key
         // and may optionally be displayed alongside the primary key.
@@ -35,6 +36,22 @@ const KeypadButton = React.createClass({
             secondaryKeys: [],
             showAllSymbols: true,
         };
+    },
+
+    componentWillMount() {
+        this.heightStyles = stylesForButtonHeightPx(this.props.buttonHeightPx);
+    },
+
+    componentWillUpdate(newProps, newState) {
+        // Only recompute the Aphrodite StyleSheet when the button height has
+        // changed. Though it is safe to recompute the StyleSheet (since
+        // they're content-addressable), it saves us a bunch of hashing and
+        // other work to cache it here.
+        if (newProps.buttonHeightPx !== this.props.buttonHeightPx) {
+            this.heightStyles = stylesForButtonHeightPx(
+                newProps.buttonHeightPx
+            );
+        }
     },
 
     _getButtonStyle(primaryKey, secondaryKeys, style) {
@@ -77,6 +94,7 @@ const KeypadButton = React.createClass({
             styles.buttonBase,
             backgroundStyle,
             borderStyle,
+            this.heightStyles.fullHeight,
             // React Native allows you to set the 'style' props on user defined
             // components, https://facebook.github.io/react-native/docs/style.html
             ...(Array.isArray(style) ? style : [style]),
@@ -88,7 +106,6 @@ const KeypadButton = React.createClass({
             primaryKey, secondaryKeys, showAllSymbols, style,
         } = this.props;
 
-
         const buttonStyle = this._getButtonStyle(
             primaryKey, secondaryKeys, style
         );
@@ -99,17 +116,13 @@ const KeypadButton = React.createClass({
         if (!hasPrimaryKey && !hasSecondaryKeys) {
             return <View style={buttonStyle} />;
         } else if (!hasPrimaryKey) {
-            const splitColumnStyle = [
-                styles.halfCell,
-                styles.secondaryText,
-            ];
             const leftColumnStyle = [
                 styles.leftColumn,
-                ...splitColumnStyle,
+                styles.secondaryText,
             ];
             const rightColumnStyle = [
                 styles.rightColumn,
-                ...splitColumnStyle,
+                styles.secondaryText,
             ];
 
             // If we have no primary key, then we show up to four keys, in a
@@ -118,7 +131,7 @@ const KeypadButton = React.createClass({
             return <View style={buttonStyle}>
                 <View style={leftColumnStyle}>
                     {secondaryKeys.slice(0, maxKeysPerColumn).map(key =>
-                        <Text>{key.label}</Text>
+                        <View><Text>{key.label}</Text></View>
                     )}
                 </View>
                 <View style={rightColumnStyle}>
@@ -151,7 +164,6 @@ const KeypadButton = React.createClass({
 
             const secondaryStyle = [
                 styles.rightColumn,
-                styles.halfCell,
                 styles.secondaryText,
             ];
 
@@ -193,11 +205,6 @@ const styles = StyleSheet.create({
         marginLeft: gapWidthPx,
     },
 
-    halfCell: {
-        height: buttonHeightPx / 2,
-        lineHeight: `${buttonHeightPx / 2}px`,
-    },
-
     primaryText: {
         fontFamily: 'sans-serif',
         fontSize: buttonFontSizePrimary,
@@ -211,9 +218,7 @@ const styles = StyleSheet.create({
     buttonBase: {
         width: '100%',
         flexDirection: 'row',
-        height: buttonHeightPx,
-        lineHeight: `${buttonHeightPx}px`,
-        textAlign: 'center',
+        alignItems: 'center',
         cursor: 'pointer',
         // Make the text unselectable
         userSelect: 'none',
@@ -245,4 +250,16 @@ const styles = StyleSheet.create({
     },
 });
 
-module.exports = KeypadButton;
+const stylesForButtonHeightPx = (buttonHeightPx) => {
+    return StyleSheet.create({
+        fullHeight: {
+            height: buttonHeightPx,
+        },
+    });
+};
+
+const mapStateToProps = (state) => {
+    return state.buttons;
+};
+
+module.exports = connect(mapStateToProps)(KeypadButton);

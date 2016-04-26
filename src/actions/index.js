@@ -17,6 +17,13 @@ module.exports = {
         });
     },
 
+    setButtonHeightPx: function(buttonHeightPx) {
+        store.dispatch({
+            type: 'SetButtonHeightPx',
+            buttonHeightPx,
+        });
+    },
+
     resetKeypadPage: function() {
         store.dispatch({
             type: 'ResetKeypadPage',
