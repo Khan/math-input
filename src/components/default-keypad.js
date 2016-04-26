@@ -5,14 +5,15 @@
 const React = require('react');
 
 const { View } = require('../fake-react-native-web');
+const Keypad = require('./keypad');
 const SimpleKeypadButton = require('./simple-keypad-button');
-const { keypad, row } = require('./styles');
+const { row } = require('./styles');
 
 const ButtonProps = require('./button-props');
 
 const DefaultKeypad = React.createClass({
     render() {
-        return <View style={keypad}>
+        return <Keypad>
             <View style={row}>
                 <SimpleKeypadButton singleKey={ButtonProps.SIN} />
                 <SimpleKeypadButton singleKey={ButtonProps.COS} />
@@ -61,7 +62,7 @@ const DefaultKeypad = React.createClass({
                 <SimpleKeypadButton singleKey={ButtonProps.FRAC} />
                 <SimpleKeypadButton singleKey={ButtonProps.BACKSPACE} />
             </View>
-        </View>;
+        </Keypad>;
     },
 });
 

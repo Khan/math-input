@@ -24,4 +24,7 @@ module.exports = StyleSheet.create({
         paddingRight: 1,
         paddingBottom: 1,
     },
+    fullWidth: {
+        width: '100%',
+    },
 });
