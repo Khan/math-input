@@ -1,0 +1,5 @@
+.mq-editable-field .mq-cursor {
+    border-left: 2px solid #78c008 !important;
+    margin-left: -1px !important;
+    margin-right: -1px !important;
+}
