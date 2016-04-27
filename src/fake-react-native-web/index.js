@@ -3,11 +3,12 @@
  * We do this so that someday in the future we can use these components with
  * React Native.
  *
- * Inspired by https://github.com/necolas/react-native-web.  We use aphrodite
+ * Inspired by https://github.com/necolas/react-native-web. We use aphrodite
  * StyleSheets instead.
  */
 
 module.exports = {
-    View: require('./view'),
+    Image: require('./image'),
     Text: require('./text'),
+    View: require('./view'),
 };

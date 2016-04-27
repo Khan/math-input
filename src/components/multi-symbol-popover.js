@@ -3,27 +3,25 @@
  */
 
 const React = require('react');
-
 const { StyleSheet } = require('aphrodite');
-const { View, Text } = require('../fake-react-native-web');
-const { buttonHeightPx, buttonFontSizePrimary } = require('./common-style');
+const { View } = require('../fake-react-native-web');
+
+const Icon = require('./icon');
+const { buttonFontSizePrimary } = require('./common-style');
+const { keyPropType } = require('./prop-types');
 
 const MultiSymbolPopover = React.createClass({
     propTypes: {
-        keys: React.PropTypes.arrayOf(React.PropTypes.shape({
-            onClick: React.PropTypes.func,
-            label: React.PropTypes.string,
-        })),
+        keys: React.PropTypes.arrayOf(keyPropType),
     },
 
     render() {
+        // TODO(charlie): This needs to receive the proper button height.
         return <View style={styles.container}>
             <View style={styles.column}>
                 {this.props.keys.map(key => {
-                    return <View style={styles.cell} onClick={key.onClick}>
-                        <Text style={styles.text}>
-                            {key.label}
-                        </Text>
+                    return <View onClick={key.onClick}>
+                        <Icon name={key.name} />
                     </View>;
                 })}
             </View>
@@ -35,7 +33,6 @@ const styles = StyleSheet.create({
     container: {
         width: '100%',
         position: 'relative',
-        height: buttonHeightPx,
     },
 
     column: {
@@ -48,11 +45,6 @@ const styles = StyleSheet.create({
         zIndex: 1,
         boxShadow: '3px 3px 5px 6px #ccc',
         cursor: 'pointer',
-    },
-
-    cell: {
-        height: buttonHeightPx,
-        lineHeight: `${buttonHeightPx}px`,
     },
 
     text: {

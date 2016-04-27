@@ -47,6 +47,7 @@ const BasicExpressionKeypad = React.createClass({
                 <MultiKeypadButton
                     primaryKey={ButtonProps.FRAC}
                     secondaryKeys={[ButtonProps.DIVIDE]}
+                    customSymbolWithName={'FRAC_MULTI'}
                 />
                 <MultiKeypadButton
                     primaryKey={ButtonProps.PARENS}
@@ -54,6 +55,7 @@ const BasicExpressionKeypad = React.createClass({
                         ButtonProps.CDOT,
                         ButtonProps.TIMES,
                     ]}
+                    customSymbolWithName={'PARENS_MULTI'}
                 />
                 <SimpleKeypadButton singleKey={ButtonProps.MINUS} />
                 <SimpleKeypadButton singleKey={ButtonProps.PLUS} />
@@ -71,30 +73,28 @@ const BasicExpressionKeypad = React.createClass({
                 <MultiKeypadButton
                     primaryKey={ButtonProps.EQUAL}
                     secondaryKeys={[ButtonProps.NEQ]}
-                    showAllSymbols={false}
                 />
                 <MultiKeypadButton
                     primaryKey={ButtonProps.LT}
                     secondaryKeys={[ButtonProps.LEQ]}
-                    showAllSymbols={false}
                 />
                 <MultiKeypadButton
                     primaryKey={ButtonProps.GT}
                     secondaryKeys={[ButtonProps.GEQ]}
-                    showAllSymbols={false}
                 />
                 <EmptyKeypadButton />
             </View>
             <View style={[column, twoColumn]}>
                 <MultiKeypadButton
                     primaryKey={ButtonProps.EXP_2}
-                    secondaryKeys={[ButtonProps.EXP]}
-                    showAllSymbols={false}
+                    secondaryKeys={[ButtonProps.EXP_3, ButtonProps.EXP]}
                 />
                 <MultiKeypadButton
                     primaryKey={ButtonProps.SQRT}
-                    secondaryKeys={[ButtonProps.RADICAL]}
-                    showAllSymbols={false}
+                    secondaryKeys={[
+                        ButtonProps.CUBE_ROOT,
+                        ButtonProps.RADICAL,
+                    ]}
                 />
                 <EmptyKeypadButton />
                 <EmptyKeypadButton />

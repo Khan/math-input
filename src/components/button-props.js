@@ -7,7 +7,6 @@
 const actions = require('../actions');
 
 const Keys = require('../data/keys');
-const Symbols = require('../data/symbols');
 const KeyTypes = require('../data/key-types');
 const CustomActions = require('../data/custom-actions');
 const { keyTypes } = require('../consts');
@@ -23,7 +22,6 @@ for (const key of Object.keys(Keys)) {
         (() => actions.pressKey(key, keyType));
 
     ButtonProps[key] = {
-        label: Symbols[key],
         onClick: onClick,
         type: keyType,
     };
@@ -32,7 +30,6 @@ for (const key of Object.keys(Keys)) {
 for (const num of '0123456789') {
     const numButtonType = keyTypes.NUMERAL;
     ButtonProps[`NUM_${num}`] = {
-        label: num,
         onClick: () => actions.pressKey(num, numButtonType),
         type: numButtonType,
     };
@@ -41,7 +38,6 @@ for (const num of '0123456789') {
 for (const letter of 'abcdefghijklmnopqrstuvwxyz') {
     const varButtonType = keyTypes.MATH;
     ButtonProps[letter] = {
-        label: letter,
         onClick: () => actions.pressKey(letter, varButtonType),
         type: varButtonType,
     };
@@ -51,5 +47,13 @@ ButtonProps[Keys.NOOP] = {
     label: '',
     onClick: () => {},
 };
+
+for (const key of Object.keys(ButtonProps)) {
+    // Add in the key name, which is used to select the appropriate SVG image.
+    ButtonProps[key] = {
+        ...ButtonProps[key],
+        name: key,
+    };
+}
 
 module.exports = ButtonProps;

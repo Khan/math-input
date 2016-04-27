@@ -8,33 +8,35 @@ const React = require('react');
 const { connect } = require('react-redux');
 
 const { StyleSheet } = require('aphrodite');
-const { Text, View } = require('../fake-react-native-web');
-const {
-    buttonFontSizePrimary,
-    buttonFontSizeSecondary,
-} = require('./common-style');
+const { View } = require('../fake-react-native-web');
+const Icon = require('./icon');
 const CornerDecal = require('./corner-decal');
 
 const { keyTypes } = require('../consts');
+const {
+    row, column, rightAligned, leftAligned, fullWidth, centered,
+} = require('./styles');
+const {
+    iconSizeHeightPx, iconSizeWidthPx,
+} = require('./common-style');
 const { keyPropType } = require('./prop-types');
 
 const KeypadButton = React.createClass({
     propTypes: {
         buttonHeightPx: React.PropTypes.number.isRequired,
+        // A custom symbol, typically used for buttons that contain multiple
+        // symbols. The default is to show the primary symbol alone.
+        customSymbolWithName: React.PropTypes.string,
         primaryKey: keyPropType,
         // Any additional keys that can be accessed by long-pressing on the key
         // and may optionally be displayed alongside the primary key.
         secondaryKeys: React.PropTypes.arrayOf(keyPropType),
-        // Whether to show all (up to three) of the secondary key symbols, or
-        // only the symbol that corresponds to the primary key.
-        showAllSymbols: React.PropTypes.bool,
         style: React.PropTypes.any,
     },
 
     getDefaultProps() {
         return {
             secondaryKeys: [],
-            showAllSymbols: true,
         };
     },
 
@@ -103,7 +105,10 @@ const KeypadButton = React.createClass({
 
     render() {
         const {
-            primaryKey, secondaryKeys, showAllSymbols, style,
+            customSymbolWithName,
+            primaryKey,
+            secondaryKeys,
+            style,
         } = this.props;
 
         const buttonStyle = this._getButtonStyle(
@@ -115,113 +120,59 @@ const KeypadButton = React.createClass({
 
         if (!hasPrimaryKey && !hasSecondaryKeys) {
             return <View style={buttonStyle} />;
-        } else if (!hasPrimaryKey) {
-            const leftColumnStyle = [
-                styles.leftColumn,
-                styles.secondaryText,
-            ];
-            const rightColumnStyle = [
-                styles.rightColumn,
-                styles.secondaryText,
-            ];
-
-            // If we have no primary key, then we show up to four keys, in a
-            // two-column layout.
+        } else if (!hasPrimaryKey && !customSymbolWithName) {
+            // If we have no primary key or custom symbol, then we show up to
+            // four keys, in a two-column layout.
             const maxKeysPerColumn = 2;
             return <View style={buttonStyle}>
-                <View style={leftColumnStyle}>
-                    {secondaryKeys.slice(0, maxKeysPerColumn).map(key =>
-                        <View><Text>{key.label}</Text></View>
-                    )}
-                </View>
-                <View style={rightColumnStyle}>
-                    {secondaryKeys.slice(
-                        maxKeysPerColumn, 2 * maxKeysPerColumn
-                    ).map(key => <Text>{key.label}</Text>)}
+                <View style={[centered, fullWidth]}>
+                    <View style={[row, styles.singleIconSize]}>
+                        <View style={column}>
+                            {secondaryKeys.slice(0, maxKeysPerColumn).map(key =>
+                                <View style={rightAligned}>
+                                    <Icon name={key.name} />
+                                </View>
+                            )}
+                        </View>
+                        <View style={column}>
+                            {secondaryKeys.slice(
+                                maxKeysPerColumn, 2 * maxKeysPerColumn)
+                            .map(key =>
+                                <View style={leftAligned}>
+                                    <Icon name={key.name} />
+                                </View>
+                            )}
+                        </View>
+                    </View>
                 </View>
                 <CornerDecal />
-            </View>;
-        } else if (!hasSecondaryKeys || !showAllSymbols) {
-            const fullRowStyle = [
-                styles.centerColumn,
-                styles.primaryText,
-            ];
-
-            // If there are no secondary keys, or we're not supposed to show
-            // the secondary symbols, then we render the primary symbol across
-            // the entirety of the button.
-            return <View style={buttonStyle} onClick={primaryKey.onClick}>
-                <Text style={fullRowStyle}>
-                    {primaryKey.label}
-                </Text>
-                {hasSecondaryKeys && <CornerDecal />}
             </View>;
         } else {
-            const primaryStyle = [
-                styles.leftColumn,
-                styles.primaryText,
-            ];
-
-            const secondaryStyle = [
-                styles.rightColumn,
-                styles.secondaryText,
-            ];
-
-            // Otherwise, we show up to three keys, in a two-column layout.
-            const maxSecondaryKeys = 2;
+            // Render a single symbol, be it a custom symbol or the primary
+            // symbol if no custom symbol has been provided.
             return <View style={buttonStyle} onClick={primaryKey.onClick}>
-                <View style={primaryStyle}>
-                    <Text>{primaryKey.label}</Text>
+                <View style={[centered, fullWidth]}>
+                    <Icon name={customSymbolWithName || primaryKey.name} />
                 </View>
-                <View style={secondaryStyle}>
-                    {secondaryKeys.slice(0, maxSecondaryKeys).map(key =>
-                        <Text>{key.label}</Text>
-                    )}
-                </View>
-                <CornerDecal />
+                {hasSecondaryKeys && <CornerDecal />}
             </View>;
         }
     },
 });
 
-const gapWidthPx = 5;
-
 const styles = StyleSheet.create({
-    centerColumn: {
-        width: '100%',
-        flexDirection: 'column',
-        textAlign: 'center',
-    },
-    leftColumn: {
-        width: '100%',
-        flexDirection: 'column',
-        textAlign: 'right',
-        marginRight: gapWidthPx,
-    },
-    rightColumn: {
-        width: '100%',
-        flexDirection: 'column',
-        textAlign: 'left',
-        marginLeft: gapWidthPx,
-    },
-
-    primaryText: {
-        fontFamily: 'sans-serif',
-        fontSize: buttonFontSizePrimary,
-    },
-    secondaryText: {
-        fontFamily: 'sans-serif',
-        fontSize: buttonFontSizeSecondary,
-        color: 'grey',
+    singleIconSize: {
+        height: iconSizeHeightPx,
+        width: iconSizeWidthPx,
     },
 
     buttonBase: {
         width: '100%',
         flexDirection: 'row',
-        alignItems: 'center',
         cursor: 'pointer',
         // Make the text unselectable
         userSelect: 'none',
+        justifyContent: 'center',
     },
 
     // TODO(charlie): This causes layout weirdness where borders get

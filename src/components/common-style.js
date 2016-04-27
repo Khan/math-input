@@ -2,11 +2,9 @@
  * Common parameters used to style components.
  */
 
-const defaultButtonHeightPx = 44;
+const defaultButtonHeightPx = 60;
 
 module.exports = {
-    buttonFontSizePrimary: 24,
-    buttonFontSizeSecondary: 12,
     defaultButtonHeightPx,
     // Compute the button height on request, as it's dependent on window size.
     getButtonHeightPx: () => {
@@ -32,4 +30,6 @@ module.exports = {
             return buttonHeightPx;
         }
     },
+    iconSizeHeightPx: 48,
+    iconSizeWidthPx: 48,
 };

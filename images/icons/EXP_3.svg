@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 3.7.2 (28276) - http://www.bohemiancoding.com/sketch -->
+    <title>AFBE7FBE-433A-4D54-84EF-491A0D58214F</title>
+    <desc>Created with sketchtool.</desc>
+    <defs>
+        <rect id="path-1" x="14" y="20" width="12" height="16" rx="1"></rect>
+        <mask id="mask-2" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="12" height="16" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+    </defs>
+    <g id="Math-Input" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="[Assets]-Math-Input" transform="translate(-1204.000000, -766.000000)">
+            <g id="math_keypad_icon_exponent_3" transform="translate(1204.000000, 766.000000)">
+                <g id="icon">
+                    <rect id="bounds" fill-opacity="0" fill="#FF0088" x="0" y="0" width="48" height="48"></rect>
+                    <use id="base" stroke="#3B3E40" mask="url(#mask-2)" stroke-width="4" xlink:href="#path-1"></use>
+                    <text id="3" font-family="ProximaNova-Extrabld, Proxima Nova" font-size="10" font-weight="600" fill="#3B3E40">
+                        <tspan x="28" y="23">3</tspan>
+                    </text>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

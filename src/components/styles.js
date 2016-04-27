@@ -5,18 +5,6 @@
 const { StyleSheet } = require('aphrodite');
 
 module.exports = StyleSheet.create({
-    column: {
-        flexDirection: 'column',
-    },
-    row: {
-        flexDirection: 'row',
-    },
-    oneColumn: {
-        flexGrow: 1,
-    },
-    twoColumn: {
-        flexGrow: 2,
-    },
     keypad: {
         position: 'fixed',
         bottom: 0,
@@ -24,7 +12,31 @@ module.exports = StyleSheet.create({
         paddingRight: 1,
         paddingBottom: 1,
     },
+    row: {
+        flexDirection: 'row',
+    },
+    column: {
+        flexDirection: 'column',
+    },
+    oneColumn: {
+        flexGrow: 1,
+    },
+    twoColumn: {
+        flexGrow: 2,
+    },
     fullWidth: {
         width: '100%',
+    },
+    rightAligned: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+    },
+    leftAligned: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+    },
+    centered: {
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });
