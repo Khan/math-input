@@ -7,26 +7,30 @@ const { View } = require('../fake-react-native-web');
 const { StyleSheet } = require('aphrodite');
 
 const CornerDecal = () => {
-    return <View style={styles.triangle} />;
+    const points = `0,0 ${triangleSizePx},0 ` +
+        `${triangleSizePx},${triangleSizePx} 0,0`;
+    const fill = triangleColor;
+
+    // TODO(charlie): Separate out the contents of the corner decal from its
+    // positioning. Not necessary now, but it will be if external users need
+    // more fine-grained control over the styling of the keypad.
+    return <View style={styles.triangle}>
+        <svg>
+            <polygon points={points} fill={fill} />
+        </svg>
+    </View>;
 };
 
-const triangleSizePx = 15;
-const triangleColor = 'green';
+const triangleSizePx = 8;
+const triangleColor = '#78C008';
 
 const styles = StyleSheet.create({
     triangle: {
-        width: 0,
-        height: 0,
-        // Draw the triangle by manipulating the border on one side.
-        // See: https://css-tricks.com/snippets/css/css-triangle/.
-        borderTop: `${triangleSizePx}px solid transparent`,
-        borderBottom: `${triangleSizePx}px solid transparent`,
-        borderLeft: `${triangleSizePx}px solid ${triangleColor}`,
         position: "absolute",
-        // TODO(charlie): We only translate by (triangleSizePx - 1) because of
-        // the 1px border on the parent view. Rejigger once we figure out the
-        // border situation for real.
-        transform: `rotate(-45deg) translateY(-${triangleSizePx - 1}px)`,
+        top: 0,
+        right: 0,
+        width: triangleSizePx,
+        height: triangleSizePx,
     },
 });
 

@@ -27,14 +27,6 @@ module.exports = StyleSheet.create({
     fullWidth: {
         width: '100%',
     },
-    rightAligned: {
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-    },
-    leftAligned: {
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-    },
     centered: {
         justifyContent: 'center',
         alignItems: 'center',

@@ -8,14 +8,12 @@ const React = require('react');
 const { connect } = require('react-redux');
 
 const { StyleSheet } = require('aphrodite');
-const { View } = require('../fake-react-native-web');
+const { Text, View } = require('../fake-react-native-web');
 const Icon = require('./icon');
 const CornerDecal = require('./corner-decal');
 
 const { keyTypes } = require('../consts');
-const {
-    row, column, rightAligned, leftAligned, fullWidth, centered,
-} = require('./styles');
+const { row, column, centered } = require('./styles');
 const {
     iconSizeHeightPx, iconSizeWidthPx,
 } = require('./common-style');
@@ -123,26 +121,28 @@ const KeypadButton = React.createClass({
         } else if (!hasPrimaryKey && !customSymbolWithName) {
             // If we have no primary key or custom symbol, then we show up to
             // four keys, in a two-column layout.
+            // TODO(charlie): Figure out how we're going to get the symbols. We
+            // could re-add the symbol logic, but if we end up doing this with
+            // SVG as well (i.e., if we need button rescaling), then it's not
+            // worthwhile.
             const maxKeysPerColumn = 2;
             return <View style={buttonStyle}>
-                <View style={[centered, fullWidth]}>
-                    <View style={[row, styles.singleIconSize]}>
-                        <View style={column}>
-                            {secondaryKeys.slice(0, maxKeysPerColumn).map(key =>
-                                <View style={rightAligned}>
-                                    <Icon name={key.name} />
-                                </View>
-                            )}
-                        </View>
-                        <View style={column}>
-                            {secondaryKeys.slice(
-                                maxKeysPerColumn, 2 * maxKeysPerColumn)
-                            .map(key =>
-                                <View style={leftAligned}>
-                                    <Icon name={key.name} />
-                                </View>
-                            )}
-                        </View>
+                <View style={[row, centered, styles.singleIconSize]}>
+                    <View style={column}>
+                        {secondaryKeys.slice(0, maxKeysPerColumn).map(key =>
+                            <Text style={styles.extraSymbolText}>
+                                {key.label}
+                            </Text>
+                        )}
+                    </View>
+                    <View style={column}>
+                        {secondaryKeys.slice(
+                            maxKeysPerColumn, 2 * maxKeysPerColumn)
+                        .map(key =>
+                            <Text style={styles.extraSymbolText}>
+                                {key.label}
+                            </Text>
+                        )}
                     </View>
                 </View>
                 <CornerDecal />
@@ -151,9 +151,7 @@ const KeypadButton = React.createClass({
             // Render a single symbol, be it a custom symbol or the primary
             // symbol if no custom symbol has been provided.
             return <View style={buttonStyle} onClick={primaryKey.onClick}>
-                <View style={[centered, fullWidth]}>
-                    <Icon name={customSymbolWithName || primaryKey.name} />
-                </View>
+                <Icon name={customSymbolWithName || primaryKey.name} />
                 {hasSecondaryKeys && <CornerDecal />}
             </View>;
         }
@@ -161,11 +159,6 @@ const KeypadButton = React.createClass({
 });
 
 const styles = StyleSheet.create({
-    singleIconSize: {
-        height: iconSizeHeightPx,
-        width: iconSizeWidthPx,
-    },
-
     buttonBase: {
         width: '100%',
         flexDirection: 'row',
@@ -173,6 +166,7 @@ const styles = StyleSheet.create({
         // Make the text unselectable
         userSelect: 'none',
         justifyContent: 'center',
+        alignItems: 'center',
     },
 
     // TODO(charlie): This causes layout weirdness where borders get
@@ -185,6 +179,19 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
 
+    // Styles used to create the 'additional symbols' button.
+    singleIconSize: {
+        height: iconSizeHeightPx,
+        width: iconSizeWidthPx,
+    },
+
+    extraSymbolText: {
+        margin: 1,
+        // TODO(charlie): Include Proxima and set font appropriately.
+        fontSize: 12,
+        color: '#888d93',
+    },
+
     // Background colors and other base styles that may vary between key types.
     numeral: {
         backgroundColor: '#FFF',
@@ -193,10 +200,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#FAFAFA',
     },
     control: {
-        backgroundColor: '#F7F7F7',
+        backgroundColor: '#F6F7F7',
     },
     disabled: {
-        backgroundColor: '#F0F0F0',
+        backgroundColor: '#F0F1F2',
         cursor: 'default',
     },
 });
