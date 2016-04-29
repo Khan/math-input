@@ -4,6 +4,7 @@
  * from MathQuill changes.
  */
 
+const $ = require('jQuery');
 // TODO(kevinb) allow test code to use const MathQuill = require('mathquill');
 const MathQuill = window.MathQuill;
 const MQ = MathQuill.getInterface(2);
@@ -94,6 +95,17 @@ class MathWrapper {
         if (!cursor.selection) {  // don't show the cursor for selections
             cursor.show();
         }
+    }
+
+    setCursorPosition(x, y) {
+        const el = document.elementFromPoint(x, y);
+
+        if (!el || !el.hasAttribute('mathquill-command-id')) {
+            return;
+        }
+
+        const controller = this.mathField.__controller;
+        controller.seek($(el), x, y).cursor.startSelection();
     }
 
     // Notes about MathQuill

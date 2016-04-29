@@ -9,6 +9,10 @@ const View = React.createClass({
         ]),
         numberOfLines: React.PropTypes.number,
         onClick: React.PropTypes.func,
+        onTouchCancel: React.PropTypes.func,
+        onTouchEnd: React.PropTypes.func,
+        onTouchMove: React.PropTypes.func,
+        onTouchStart: React.PropTypes.func,
         style: React.PropTypes.any,
     },
 
@@ -17,7 +21,14 @@ const View = React.createClass({
             ? css(styles.initial, ...this.props.style)
             : css(styles.initial, this.props.style);
 
-        return <div onClick={this.props.onClick} className={className}>
+        return <div
+            className={className}
+            onClick={this.props.onClick}
+            onTouchCancel={this.props.onTouchCancel}
+            onTouchEnd={this.props.onTouchEnd}
+            onTouchMove={this.props.onTouchMove}
+            onTouchStart={this.props.onTouchStart}
+        >
             {this.props.children}
         </div>;
     },

@@ -33,11 +33,12 @@ const MathInput = React.createClass({
         });
     },
 
-    handleClick(e) {
-        const cursorBounds =
-            document.querySelector('.mq-cursor').getBoundingClientRect();
+    _setCursorLocation(x, y) {
+        this.mathField.setCursorPosition(x, y);
 
         const containerBounds = this._container.getBoundingClientRect();
+        const cursorBounds =
+            document.querySelector('.mq-cursor').getBoundingClientRect();
 
         // Subtract the upper left corner of the container bounds from the
         // coordinates of the cursor to account for the fact that the
@@ -55,14 +56,40 @@ const MathInput = React.createClass({
         });
     },
 
+    handleClick(e) {
+        this._setCursorLocation(e.pageX, e.pageY);
+    },
+
+    handleTouchStart(e) {
+        e.preventDefault();
+
+        const touch = e.changedTouches[0];
+        this._setCursorLocation(touch.pageX, touch.pageY);
+    },
+
+    handleHandleMove(x, y) {
+        const containerBounds = this._container.getBoundingClientRect();
+
+        // Use the middle of the container as our y-coordinate because the
+        // finger that's dragging the handle is below the container.
+        // TODO(kevinb) figure out how deal with fractions and exponents
+        const middle = (containerBounds.top + containerBounds.bottom) / 2;
+
+        this._setCursorLocation(x, middle);
+    },
+
     render() {
         return <View
             ref={(node) => this._container = ReactDOM.findDOMNode(node)}
             style={styles.input}
             onClick={this.handleClick}
+            onTouchStart={this.handleTouchStart}
         >
             <Text ref={(node) => this._text = ReactDOM.findDOMNode(node)} />
-            <CursorHandle {...this.state.handle} />
+            <CursorHandle
+                {...this.state.handle}
+                onMove={this.handleHandleMove}
+            />
         </View>;
     },
 });

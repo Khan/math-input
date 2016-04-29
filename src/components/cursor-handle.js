@@ -8,6 +8,7 @@ const { View } = require('../fake-react-native-web');
 
 const CursorHandle = React.createClass({
     propTypes: {
+        onMove: React.PropTypes.func.isRequired,
         visible: React.PropTypes.bool.isRequired,
         x: React.PropTypes.number.isRequired,
         y: React.PropTypes.number.isRequired,
@@ -31,6 +32,15 @@ const CursorHandle = React.createClass({
         }
     },
 
+    handleTouchMove(e) {
+        e.preventDefault();
+
+        const x = e.changedTouches[0].pageX;
+        const y = e.changedTouches[0].pageY;
+
+        this.props.onMove(x, y);
+    },
+
     render() {
         const style = [
             styles.cursorHandle,
@@ -40,7 +50,10 @@ const CursorHandle = React.createClass({
             this.dynamicStyles.position,
         ];
 
-        return <View style={style} />;
+        return <View
+            onTouchMove={this.handleTouchMove}
+            style={style}
+        />;
     },
 });
 
