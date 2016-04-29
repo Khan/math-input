@@ -35,25 +35,36 @@ const MathInput = React.createClass({
 
     _setCursorLocation(x, y) {
         this.mathField.setCursorPosition(x, y);
+        this.mathField.getCursor().show();
 
-        const containerBounds = this._container.getBoundingClientRect();
-        const cursorBounds =
-            document.querySelector('.mq-cursor').getBoundingClientRect();
+        if (this.mathField.getLatex() === "") {
+            this.setState({
+                handle: {
+                    visible: false,
+                    x: 0,
+                    y: 0,
+                },
+            });
+        } else {
+            const containerBounds = this._container.getBoundingClientRect();
+            const cursorBounds =
+                document.querySelector('.mq-cursor').getBoundingClientRect();
 
-        // Subtract the upper left corner of the container bounds from the
-        // coordinates of the cursor to account for the fact that the
-        // container is position:relative while the cursor handle will be
-        // position:absolute.
-        const left = cursorBounds.left - containerBounds.left;
-        const bottom = cursorBounds.bottom - containerBounds.top;
+            // Subtract the upper left corner of the container bounds from the
+            // coordinates of the cursor to account for the fact that the
+            // container is position:relative while the cursor handle will be
+            // position:absolute.
+            const left = cursorBounds.left - containerBounds.left;
+            const bottom = cursorBounds.bottom - containerBounds.top;
 
-        this.setState({
-            handle: {
-                visible: true,
-                x: left,
-                y: bottom,
-            },
-        });
+            this.setState({
+                handle: {
+                    visible: true,
+                    x: left,
+                    y: bottom,
+                },
+            });
+        }
     },
 
     handleClick(e) {

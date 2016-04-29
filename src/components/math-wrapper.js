@@ -100,12 +100,22 @@ class MathWrapper {
     setCursorPosition(x, y) {
         const el = document.elementFromPoint(x, y);
 
-        if (!el || !el.hasAttribute('mathquill-command-id')) {
-            return;
+        if (el) {
+            if (el.hasAttribute('mq-root-block')) {
+                // If we're in the empty area place the cursor at the right
+                // end of the expression.
+                const cursor = this.getCursor();
+                cursor.insAtRightEnd(this.mathField.__controller.root);
+            } else {
+                // Otherwise place beside the element at x, y.
+                const controller = this.mathField.__controller;
+                controller.seek($(el), x, y).cursor.startSelection();
+            }
         }
+    }
 
-        const controller = this.mathField.__controller;
-        controller.seek($(el), x, y).cursor.startSelection();
+    getLatex() {
+        return this.mathField.latex();
     }
 
     // Notes about MathQuill
