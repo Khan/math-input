@@ -57,7 +57,9 @@ const CursorHandle = React.createClass({
     },
 });
 
-const cursorDiameterPx = 20;
+// This actually isn't the diameter, it's the diameter plus the distance
+// the triangle corner is outside of the the circle within the pointer.
+const cursorDiameterPx = 28;
 
 const styles = StyleSheet.create({
     cursorHandle: {
