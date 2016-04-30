@@ -24,8 +24,13 @@ class GestureManager {
     onTouchStart(evt) {
         const [x, y] = coordsForEvent(evt);
         this.gestureStateMachine.onTouchStart(
-            this.nodeManager.idForCoords(x, y)
+            this.nodeManager.idForCoords(x, y),
+            x
         );
+
+        // If an event started in a view that we're managing, we'll handle it
+        // all the way through.
+        evt.preventDefault();
     }
 
     /**
@@ -37,7 +42,8 @@ class GestureManager {
     onTouchMove(evt) {
         const [x, y] = coordsForEvent(evt);
         this.gestureStateMachine.onTouchMove(
-            this.nodeManager.idForCoords(x, y)
+            this.nodeManager.idForCoords(x, y),
+            x
         );
     }
 
@@ -50,7 +56,8 @@ class GestureManager {
     onTouchEnd(evt) {
         const [x, y] = coordsForEvent(evt);
         this.gestureStateMachine.onTouchEnd(
-            this.nodeManager.idForCoords(x, y)
+            this.nodeManager.idForCoords(x, y),
+            x
         );
     }
 
@@ -61,10 +68,7 @@ class GestureManager {
      * @param {event} evt - the raw touch event from the browser
      */
     onTouchCancel(evt) {
-        const [x, y] = coordsForEvent(evt);
-        this.gestureStateMachine.onTouchCancel(
-            this.nodeManager.idForCoords(x, y)
-        );
+        this.gestureStateMachine.onTouchCancel();
     }
 
     /**

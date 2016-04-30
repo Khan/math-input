@@ -139,15 +139,50 @@ const buttonsReducer = function(state = initialButtonsState, action) {
 const initialGestureState = {
     popover: null,
     focus: null,
-    gestureManager: new GestureManager({}),
+    gestureManager: new GestureManager({
+        onSwipeChange: (dx) => {
+            /* eslint-disable no-console */
+            console.log("onSwipeChange:", dx);
+        },
+        onSwipeEnd: (dx) => {
+            /* eslint-disable no-console */
+            console.log("onSwipeEnd:", dx);
+        },
+        onFocus: (id) => {
+            store.dispatch({
+                type: 'FocusKey',
+                key: id,
+            });
+        },
+        onBlur: () => {
+            store.dispatch({
+                type: 'Blur',
+            });
+        },
+        onTouchEnd: (id) => {
+            store.dispatch({
+                type: 'PressKey',
+                key: id,
+            });
+            store.dispatch({
+                type: 'Blur',
+            });
+        },
+    }),
 };
 
 const gestureReducer = function(state = initialGestureState, action) {
     switch (action.type) {
-        case 'SetActiveNodes':
+        case 'FocusKey':
             return {
                 ...state,
-                ...action.activeNodes,
+                focus: action.key,
+            };
+
+        case 'Blur':
+            return {
+                ...state,
+                focus: null,
             };
 
         case 'ConfigureKeypad':
