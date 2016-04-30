@@ -1,5 +1,8 @@
 /**
- * The state machine that backs our gesture system.
+ * The state machine that backs our gesture system. In particular, this state
+ * machine manages the interplay between focuses, touch ups, and swiping.
+ * It is entirely ignorant of the existence of popovers and the positions of
+ * DOM nodes, operating solely on IDs.
  */
 
 // TODO(charlie): Substitute in proper constants. These are just for testing.
@@ -7,8 +10,8 @@ const waitTimeMs = 200;
 const swipeThreshold = 20;
 
 class GestureStateMachine {
-    constructor(options) {
-        this.options = options;
+    constructor(handlers) {
+        this.handlers = handlers;
 
         this.swiping = false;
         this.startX = null;
@@ -25,7 +28,7 @@ class GestureStateMachine {
 
         const self = this;
         this._focusTimeoutId = setTimeout(() => {
-            self.options.onFocus(id);
+            self.handlers.onFocus(id);
             self._focusTimeoutId = null;
         }, waitTimeMs);
     }
@@ -36,14 +39,16 @@ class GestureStateMachine {
      * @param {string} id - the identifier of the node over which the move
      *                      event occurred
      * @param {number} pageX - the x coordinate of the touch
+     * @param {boolean} swipeEnabled - whether the system should allow for
+     *                                 transitions into a swiping state
      */
-    onTouchMove(id, pageX) {
+    onTouchMove(id, pageX, swipeEnabled) {
         const dx = pageX - this.startX;
-        const shouldBeginSwiping = !this.swiping &&
+        const shouldBeginSwiping = !this.swiping && swipeEnabled &&
             Math.abs(dx) > swipeThreshold;
 
         if (this.swiping) {
-            this.options.onSwipeChange(dx);
+            this.handlers.onSwipeChange(dx);
         } else if (shouldBeginSwiping) {
             // Cancel the focus event.
             clearTimeout(this._focusTimeoutId);
@@ -51,16 +56,16 @@ class GestureStateMachine {
 
             // Trigger the swipe.
             this.swiping = true;
-            this.options.onSwipeChange(dx);
+            this.handlers.onSwipeChange(dx);
 
-            this.options.onBlur();
+            this.handlers.onBlur();
         } else if (this._focusTimeoutId) {
             // Waiting to see if we're swiping.
             // TODO(charlie): If we've moved over onto another node, what
             // should we do?
         } else if (id != null) {
             // Handle the move by changing focus, if you're over a node.
-            this.options.onFocus(id);
+            this.handlers.onFocus(id);
         }
     }
 
@@ -73,9 +78,9 @@ class GestureStateMachine {
      */
     onTouchEnd(id, pageX) {
         if (this.swiping) {
-            this.options.onSwipeEnd(pageX - this.startX);
+            this.handlers.onSwipeEnd(pageX - this.startX);
         } else {
-            this.options.onTouchEnd(id);
+            this.handlers.onTouchEnd(id);
         }
 
         // Cancel the focus event.
@@ -90,7 +95,7 @@ class GestureStateMachine {
      * Handle a touch-cancel event.
      */
     onTouchCancel() {
-        this.options.onBlur();
+        this.handlers.onBlur();
 
         // Cancel the focus event.
         clearTimeout(this._focusTimeoutId);

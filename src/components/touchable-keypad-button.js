@@ -15,6 +15,7 @@ const { keyIdPropType } = require('./prop-types');
 
 const TouchableKeypadButton = React.createClass({
     propTypes: {
+        childKeyIds: React.PropTypes.arrayOf(keyIdPropType),
         gestureManager: React.PropTypes.instanceOf(GestureManager),
         id: keyIdPropType.isRequired,
     },
@@ -25,11 +26,11 @@ const TouchableKeypadButton = React.createClass({
     },
 
     render() {
-        const { gestureManager, id, ...rest } = this.props;
+        const { childKeyIds, gestureManager, id, ...rest } = this.props;
 
         return <KeypadButton
             ref={(node) => gestureManager.registerDOMNode(
-                id, ReactDOM.findDOMNode(node)
+                id, ReactDOM.findDOMNode(node), childKeyIds
             )}
             onTouchStart={(evt) => gestureManager.onTouchStart(evt)}
             onTouchEnd={(evt) => gestureManager.onTouchEnd(evt)}
@@ -48,6 +49,7 @@ const mapStateToProps = (state, ownProps) => {
 
     return {
         ...rest,
+        childKeyIds: childKeyIds,
         gestureManager: gestures.gestureManager,
         id: id,
 

@@ -136,10 +136,10 @@ const buttonsReducer = function(state = initialButtonsState, action) {
     }
 };
 
-const initialGestureState = {
-    popover: null,
-    focus: null,
-    gestureManager: new GestureManager({
+const createGestureManager = (swipeEnabled) => {
+    return new GestureManager({
+        swipeEnabled,
+    }, {
         onSwipeChange: (dx) => {
             /* eslint-disable no-console */
             console.log("onSwipeChange:", dx);
@@ -148,45 +148,50 @@ const initialGestureState = {
             /* eslint-disable no-console */
             console.log("onSwipeEnd:", dx);
         },
-        onFocus: (id) => {
+        onActiveNodesChanged: (activeNodes) => {
             store.dispatch({
-                type: 'FocusKey',
-                key: id,
+                type: 'SetActiveNodes',
+                activeNodes,
             });
         },
-        onBlur: () => {
-            store.dispatch({
-                type: 'Blur',
-            });
-        },
-        onTouchEnd: (id) => {
+        onClick: (id) => {
             store.dispatch({
                 type: 'PressKey',
                 key: id,
             });
-            store.dispatch({
-                type: 'Blur',
-            });
+            // TODO(charlie): Dispatch an "echo" event. These events should be
+            // handled at a high level and not by the individual keypad buttons
+            // as they may, for example, be removed from the DOM by the time we
+            // animate the echo. We should pass down the box of the DOM node
+            // here (which we can already access in the GestureManager) and use
+            // it to animate the echo.
         },
-    }),
+    });
+};
+
+const initialGestureState = {
+    popover: null,
+    focus: null,
+    gestureManager: createGestureManager(true),
 };
 
 const gestureReducer = function(state = initialGestureState, action) {
     switch (action.type) {
-        case 'FocusKey':
+        case 'SetActiveNodes':
             return {
                 ...state,
-                focus: action.key,
-            };
-
-        case 'Blur':
-            return {
-                ...state,
-                focus: null,
+                ...action.activeNodes,
             };
 
         case 'ConfigureKeypad':
-            return initialGestureState;
+            const { keypadType } = action.configuration;
+            const { numPages } = Keypads[keypadType];
+            const swipeEnabled = numPages > 1;
+            return {
+                popover: null,
+                focus: null,
+                gestureManager: createGestureManager(swipeEnabled),
+            };
 
         default:
             return state;

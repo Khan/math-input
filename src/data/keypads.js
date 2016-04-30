@@ -26,10 +26,6 @@ const Keypads = {
         numPages: 2,
         extraKeys: ['x', Keys.PI, 'y', 'e', 'z'],
     },
-    [keypadTypes.TEST_POPOVER]: {
-        numPages: 1,
-        extraKeys: [],
-    },
 };
 
 module.exports = Keypads;

@@ -1,8 +1,11 @@
 /**
- * A high-level manager for our gesture system.
+ * A high-level manager for our gesture system. In particular, this class
+ * connects our various bits of logic for managing gestures and interactions,
+ * and links them together.
  */
 
 const NodeManager = require('./node-manager');
+const PopoverStateMachine = require('./popover-state-machine');
 const GestureStateMachine = require('./gesture-state-machine');
 
 const coordsForEvent = (evt) => {
@@ -10,9 +13,29 @@ const coordsForEvent = (evt) => {
 };
 
 class GestureManager {
-    constructor(options) {
+    constructor(options, handlers) {
+        const { swipeEnabled } = options;
+
+        this.swipeEnabled = swipeEnabled;
+
         this.nodeManager = new NodeManager();
-        this.gestureStateMachine = new GestureStateMachine(options);
+        this.popoverStateMachine = new PopoverStateMachine({
+            onActiveNodesChanged: handlers.onActiveNodesChanged,
+            onClick: handlers.onClick,
+        });
+        this.gestureStateMachine = new GestureStateMachine({
+            onFocus: (id) => {
+                this.popoverStateMachine.onFocus(id);
+            },
+            onBlur: () => {
+                this.popoverStateMachine.onBlur();
+            },
+            onTouchEnd: (id) => {
+                this.popoverStateMachine.onTouchEnd(id);
+            },
+            onSwipeChange: handlers.onSwipeChange,
+            onSwipeEnd: handlers.onSwipeEnd,
+        });
     }
 
     /**
@@ -40,10 +63,13 @@ class GestureManager {
      * @param {event} evt - the raw touch event from the browser
      */
     onTouchMove(evt) {
+        const swipeLocked = this.popoverStateMachine.isPopoverVisible();
+        const swipeEnabled = this.swipeEnabled && !swipeLocked;
         const [x, y] = coordsForEvent(evt);
         this.gestureStateMachine.onTouchMove(
             this.nodeManager.idForCoords(x, y),
-            x
+            x,
+            swipeEnabled
         );
     }
 
@@ -76,9 +102,14 @@ class GestureManager {
      *
      * @param {string} id - the identifier of the given node
      * @param {node} domNode - the DOM node linked to the identifier
+     * @param {string[]} childIds - the identifiers of any DOM nodes that
+     *                              should be considered children of this node,
+     *                              in that they should take priority when
+     *                              intercepting touch events
      */
-    registerDOMNode(id, domNode) {
-        this.nodeManager.registerDOMNode(id, domNode);
+    registerDOMNode(id, domNode, childIds) {
+        this.nodeManager.registerDOMNode(id, domNode, childIds);
+        this.popoverStateMachine.registerPopover(id, childIds);
     }
 
     /**
@@ -88,6 +119,7 @@ class GestureManager {
      */
     unregisterDOMNode(id) {
         this.nodeManager.unregisterDOMNode(id);
+        this.popoverStateMachine.unregisterPopover(id);
     }
 }
 

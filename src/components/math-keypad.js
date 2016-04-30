@@ -6,7 +6,6 @@ const NumberKeypad = require('./number-keypad');
 const FractionKeypad = require('./fraction-keypad');
 const BasicExpressionKeypad = require('./basic-expression-keypad');
 const AdvancedExpressionKeypad = require('./advanced-expression-keypad');
-const TestPopoverKeypad = require('./test-popover-keypad');
 const { getButtonHeightPx } = require('./common-style');
 
 const { setButtonHeightPx } = require('../actions');
@@ -78,9 +77,6 @@ const MathKeypad = React.createClass({
                     page={page}
                     extraKeys={extraKeys}
                 />;
-
-            case keypadTypes.TEST_POPOVER:
-                return <TestPopoverKeypad />;
 
             case keypadTypes.DEFAULT:
             default:
