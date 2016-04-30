@@ -1,5 +1,7 @@
 const Redux = require('redux');
 
+const GestureManager = require('../components/gesture-manager');
+
 const { defaultButtonHeightPx } = require('../components/common-style');
 const { keypadTypes, keyTypes } = require('../consts');
 const Keys = require('../data/keys');
@@ -137,6 +139,7 @@ const buttonsReducer = function(state = initialButtonsState, action) {
 const initialGestureState = {
     popover: null,
     focus: null,
+    gestureManager: new GestureManager({}),
 };
 
 const gestureReducer = function(state = initialGestureState, action) {
@@ -148,11 +151,7 @@ const gestureReducer = function(state = initialGestureState, action) {
             };
 
         case 'ConfigureKeypad':
-            return {
-                ...state,
-                popover: null,
-                focus: null,
-            };
+            return initialGestureState;
 
         default:
             return state;

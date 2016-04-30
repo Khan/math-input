@@ -27,7 +27,10 @@ const KeypadButton = React.createClass({
         // The name of the button, used to select the appropriate SVG
         // background image.
         name: React.PropTypes.string,
-        onClick: React.PropTypes.func,
+        onTouchCancel: React.PropTypes.func,
+        onTouchEnd: React.PropTypes.func,
+        onTouchMove: React.PropTypes.func,
+        onTouchStart: React.PropTypes.func,
         popoverEnabled: React.PropTypes.bool,
         style: React.PropTypes.any,
         type: React.PropTypes.oneOf(Object.keys(keyTypes)).isRequired,
@@ -102,7 +105,10 @@ const KeypadButton = React.createClass({
             childKeys,
             focused,
             name,
-            onClick,
+            onTouchCancel,
+            onTouchEnd,
+            onTouchMove,
+            onTouchStart,
             popoverEnabled,
             style,
             type,
@@ -110,20 +116,23 @@ const KeypadButton = React.createClass({
 
         const buttonStyle = this._getButtonStyle(focused, type, style);
 
+        const eventHandlers = {
+            onTouchCancel, onTouchEnd, onTouchMove, onTouchStart,
+        };
         const maybeCornerDecal = childKeys && childKeys.length > 0 &&
             <CornerDecal />;
         const maybePopoverContent = popoverEnabled &&
             <MultiSymbolPopover keys={childKeys} />;
 
         if (type === keyTypes.EMPTY) {
-            return <View style={buttonStyle} onClick={onClick} />;
+            return <View style={buttonStyle} {...eventHandlers} />;
         } else if (type === keyTypes.MANY) {
             // TODO(charlie): Figure out how we're going to get the symbols. We
             // could re-add the symbol logic, but if we end up doing this with
             // SVG as well (i.e., if we need button rescaling), then it's not
             // worthwhile.
             const maxKeysPerColumn = 2;
-            return <View style={buttonStyle} onClick={onClick}>
+            return <View style={buttonStyle} {...eventHandlers}>
                 <View style={[row, centered, styles.singleIconSize]}>
                     <View style={column}>
                         {childKeys.slice(0, maxKeysPerColumn).map(key =>
@@ -146,7 +155,7 @@ const KeypadButton = React.createClass({
                 {maybePopoverContent}
             </View>;
         } else {
-            return <View style={buttonStyle} onClick={onClick}>
+            return <View style={buttonStyle} {...eventHandlers}>
                 <Icon name={name} />
                 {maybeCornerDecal}
                 {maybePopoverContent}
