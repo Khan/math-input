@@ -25,6 +25,7 @@ const KeypadButton = React.createClass({
         // The name of the button, used to select the appropriate SVG
         // background image.
         name: React.PropTypes.string,
+        onClick: React.PropTypes.func,
         style: React.PropTypes.any,
         type: React.PropTypes.oneOf(Object.keys(keyTypes)).isRequired,
     },
@@ -94,6 +95,7 @@ const KeypadButton = React.createClass({
         const {
             childKeys,
             name,
+            onClick,
             style,
             type,
         } = this.props;
@@ -101,14 +103,14 @@ const KeypadButton = React.createClass({
         const buttonStyle = this._getButtonStyle(type, style);
 
         if (type === keyTypes.EMPTY) {
-            return <View style={buttonStyle} />;
+            return <View style={buttonStyle} onClick={onClick} />;
         } else if (type === keyTypes.MANY) {
             // TODO(charlie): Figure out how we're going to get the symbols. We
             // could re-add the symbol logic, but if we end up doing this with
             // SVG as well (i.e., if we need button rescaling), then it's not
             // worthwhile.
             const maxKeysPerColumn = 2;
-            return <View style={buttonStyle}>
+            return <View style={buttonStyle} onClick={onClick}>
                 <View style={[row, centered, styles.singleIconSize]}>
                     <View style={column}>
                         {childKeys.slice(0, maxKeysPerColumn).map(key =>
@@ -134,7 +136,7 @@ const KeypadButton = React.createClass({
 
             // Render a single symbol, be it a custom symbol or the primary
             // symbol if no custom symbol has been provided.
-            return <View style={buttonStyle}>
+            return <View style={buttonStyle} onClick={onClick}>
                 <Icon name={name} />
                 {hasChildKeys && <CornerDecal />}
             </View>;

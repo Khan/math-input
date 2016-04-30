@@ -2,6 +2,8 @@ const Redux = require('redux');
 
 const { defaultButtonHeightPx } = require('../components/common-style');
 const { keypadTypes, keyTypes } = require('../consts');
+const Keys = require('../data/keys');
+const KeyConfigs = require('../data/key-configs');
 const Keypads = require('../data/keypads');
 
 const initialHandlersState = {
@@ -17,12 +19,15 @@ const handlersReducer = function(state = initialHandlersState, action) {
             };
 
         case 'PressKey':
-            // This is probably an anti-pattern but it works for the case where
-            // we don't actually control the state but we still want to
-            // communicate with the other object
-            state.keyHandlers.forEach(handler => {
-                handler(action.key);
-            });
+            const keyConfig = KeyConfigs[action.key];
+            if (keyConfig.type !== keyTypes.KEYPAD_NAVIGATION) {
+                // This is probably an anti-pattern but it works for the case
+                // where we don't actually control the state but we still want
+                // to communicate with the other object
+                state.keyHandlers.forEach(handler => {
+                    handler(keyConfig.id);
+                });
+            }
 
             // TODO(kevinb) get state from MathQuill and store it?
             return state;
@@ -88,9 +93,22 @@ const keypadReducer = function(state = initialKeypadState, action) {
             };
 
         case 'PressKey':
+            const keyConfig = KeyConfigs[action.key];
+
             // Reset the keypad if the user performs a math operation.
-            if (action.keyType === keyTypes.MATH && state.page > 0) {
+            if (keyConfig.type === keyTypes.MATH ||
+                    keyConfig.type === keyTypes.NUMERAL) {
                 return keypadReducer(state, { type: 'ResetKeypadPage' });
+            } else if (keyConfig.type === keyTypes.KEYPAD_NAVIGATION) {
+                if (keyConfig.id === Keys.DISMISS) {
+                    /* eslint-disable no-console */
+                    console.log("TODO(charlie): Figure out dismissal.");
+                    return state;
+                } else if (keyConfig.id === Keys.NUMBERS) {
+                    return keypadReducer(state, { type: 'ResetKeypadPage' });
+                } else if (keyConfig.id === Keys.MORE) {
+                    return keypadReducer(state, { type: 'PageKeypadRight' });
+                }
             }
             return state;
 

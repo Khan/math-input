@@ -88,8 +88,10 @@ class MathWrapper {
             this.mathField.keystroke('Left'); // into index
         } else if (key === Keys.BACKSPACE) {
             this._handleBackspace(cursor);
-        } else if (/^[0-9a-z]$/.test(key)) {
+        } else if (/^[a-z]$/.test(key)) {
             this.mathField[WRITE](key).focus();
+        } else if (/^NUM_\d/.test(key)) {
+            this.mathField[WRITE](key[4]).focus();
         }
 
         if (!cursor.selection) {  // don't show the cursor for selections

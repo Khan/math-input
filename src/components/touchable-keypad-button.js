@@ -6,6 +6,7 @@
 
 const React = require('react');
 
+const actions = require('../actions');
 const KeypadButton = require('./keypad-button');
 const KeyConfigs = require('../data/key-configs');
 const { keyConfigPropType } = require('./prop-types');
@@ -20,6 +21,7 @@ const TouchableKeypadButton = React.createClass({
         const { id, childKeyIds, type } = keyConfig;
 
         return <KeypadButton
+            onClick={() => actions.pressKey(id)}
             name={id}
             type={type}
             childKeys={childKeyIds &&

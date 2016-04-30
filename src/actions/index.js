@@ -42,11 +42,10 @@ module.exports = {
         });
     },
 
-    pressKey: function(key, keyType) {
+    pressKey: function(key) {
         store.dispatch({
             type: 'PressKey',
             key,
-            keyType,
         });
     },
 
