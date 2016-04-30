@@ -134,10 +134,36 @@ const buttonsReducer = function(state = initialButtonsState, action) {
     }
 };
 
+const initialGestureState = {
+    popover: null,
+    focus: null,
+};
+
+const gestureReducer = function(state = initialGestureState, action) {
+    switch (action.type) {
+        case 'SetActiveNodes':
+            return {
+                ...state,
+                ...action.activeNodes,
+            };
+
+        case 'ConfigureKeypad':
+            return {
+                ...state,
+                popover: null,
+                focus: null,
+            };
+
+        default:
+            return state;
+    }
+};
+
 const reducer = Redux.combineReducers({
     keypad: keypadReducer,
     buttons: buttonsReducer,
     handlers: handlersReducer,
+    gestures: gestureReducer,
 });
 
 const store = Redux.createStore(reducer);

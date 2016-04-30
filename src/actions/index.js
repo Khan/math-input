@@ -55,4 +55,11 @@ module.exports = {
             keyHandler,
         });
     },
+
+    setActiveNodes: function(activeNodes) {
+        store.dispatch({
+            type: 'SetActiveNodes',
+            activeNodes,
+        });
+    },
 };

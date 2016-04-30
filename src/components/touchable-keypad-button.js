@@ -5,30 +5,46 @@
  */
 
 const React = require('react');
+const { connect } = require('react-redux');
 
 const actions = require('../actions');
 const KeypadButton = require('./keypad-button');
 const KeyConfigs = require('../data/key-configs');
-const { keyConfigPropType } = require('./prop-types');
+const { keyIdPropType } = require('./prop-types');
 
 const TouchableKeypadButton = React.createClass({
     propTypes: {
-        keyConfig: keyConfigPropType.isRequired,
+        id: keyIdPropType.isRequired,
     },
 
     render() {
-        const { keyConfig, ...rest } = this.props;
-        const { id, childKeyIds, type } = keyConfig;
+        /* eslint-disable no-unused-vars */
+        const { id, ...rest } = this.props;
 
-        return <KeypadButton
-            onClick={() => actions.pressKey(id)}
-            name={id}
-            type={type}
-            childKeys={childKeyIds &&
-                childKeyIds.map(id => KeyConfigs[id])}
-            {...rest}
-        />;
+        // TODO(charlie): Use the ID to register the DOM node and other touch
+        // events.
+        return <KeypadButton {...rest} />;
     },
 });
 
-module.exports = TouchableKeypadButton;
+const mapStateToProps = (state, ownProps) => {
+    const { gestures } = state;
+
+    const { keyConfig, ...rest } = ownProps;
+    const { id, childKeyIds, type } = keyConfig;
+
+    return {
+        ...rest,
+        id: id,
+
+        // Sanitze various props for the KeypadButton.
+        childKeys: childKeyIds && childKeyIds.map(id => KeyConfigs[id]),
+        focused: gestures.focus === id,
+        name: id,
+        onClick: () => actions.pressKey(id),
+        popoverEnabled: gestures.popover === id,
+        type: type,
+    };
+};
+
+module.exports = connect(mapStateToProps)(TouchableKeypadButton);

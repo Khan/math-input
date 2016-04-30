@@ -9,6 +9,7 @@ const { StyleSheet } = require('aphrodite');
 const { Text, View } = require('../fake-react-native-web');
 const Icon = require('./icon');
 const CornerDecal = require('./corner-decal');
+const MultiSymbolPopover = require('./multi-symbol-popover');
 const { keyTypes } = require('../consts');
 const { row, column, centered } = require('./styles');
 const {
@@ -22,17 +23,21 @@ const KeypadButton = React.createClass({
         // Any additional keys that can be accessed by long-pressing on the
         // button.
         childKeys: React.PropTypes.arrayOf(keyConfigPropType),
+        focused: React.PropTypes.bool,
         // The name of the button, used to select the appropriate SVG
         // background image.
         name: React.PropTypes.string,
         onClick: React.PropTypes.func,
+        popoverEnabled: React.PropTypes.bool,
         style: React.PropTypes.any,
         type: React.PropTypes.oneOf(Object.keys(keyTypes)).isRequired,
     },
 
     getDefaultProps() {
         return {
+            focused: false,
             childKeys: [],
+            popoverEnabled: false,
         };
     },
 
@@ -52,7 +57,7 @@ const KeypadButton = React.createClass({
         }
     },
 
-    _getButtonStyle(type, style) {
+    _getButtonStyle(focused, type, style) {
         // Select the appropriate style for the button, based on the
         // combination of primary and secondary keys.
         let backgroundStyle;
@@ -84,6 +89,7 @@ const KeypadButton = React.createClass({
             styles.buttonBase,
             backgroundStyle,
             borderStyle,
+            focused && styles.focused,
             this.heightStyles.fullHeight,
             // React Native allows you to set the 'style' props on user defined
             // components, https://facebook.github.io/react-native/docs/style.html
@@ -94,13 +100,20 @@ const KeypadButton = React.createClass({
     render() {
         const {
             childKeys,
+            focused,
             name,
             onClick,
+            popoverEnabled,
             style,
             type,
         } = this.props;
 
-        const buttonStyle = this._getButtonStyle(type, style);
+        const buttonStyle = this._getButtonStyle(focused, type, style);
+
+        const maybeCornerDecal = childKeys && childKeys.length > 0 &&
+            <CornerDecal />;
+        const maybePopoverContent = popoverEnabled &&
+            <MultiSymbolPopover keys={childKeys} />;
 
         if (type === keyTypes.EMPTY) {
             return <View style={buttonStyle} onClick={onClick} />;
@@ -129,16 +142,14 @@ const KeypadButton = React.createClass({
                         )}
                     </View>
                 </View>
-                <CornerDecal />
+                {maybeCornerDecal}
+                {maybePopoverContent}
             </View>;
         } else {
-            const hasChildKeys = childKeys && childKeys.length > 0;
-
-            // Render a single symbol, be it a custom symbol or the primary
-            // symbol if no custom symbol has been provided.
             return <View style={buttonStyle} onClick={onClick}>
                 <Icon name={name} />
-                {hasChildKeys && <CornerDecal />}
+                {maybeCornerDecal}
+                {maybePopoverContent}
             </View>;
         }
     },
@@ -191,6 +202,9 @@ const styles = StyleSheet.create({
     disabled: {
         backgroundColor: '#F0F1F2',
         cursor: 'default',
+    },
+    focused: {
+        backgroundColor: '#78C008',
     },
 });
 
