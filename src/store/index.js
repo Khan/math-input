@@ -35,7 +35,7 @@ const handlersReducer = function(state = initialHandlersState, action) {
 const initialKeypadState = {
     configuration: {
         extraSymbols: Keypads[keypadTypes.DEFAULT].extraSymbols,
-        keypadType: keypadTypes.DEFAULT,
+        keypadType: keypadTypes.ADVANCED_EXPRESSION,
     },
     page: 0,
 };

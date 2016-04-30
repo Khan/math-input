@@ -12,7 +12,7 @@ const Icon = React.createClass({
     },
 
     _urlForName(name) {
-        return `/images/icons/${name}.svg`;
+        return `images/icons/${name}.svg`;
     },
 
     render() {
