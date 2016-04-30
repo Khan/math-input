@@ -3,7 +3,9 @@
  * alphanumeric characters.
  */
 
-// TODO(kevinb) add greek letters, infinite, inequalities, trig fns
+// TODO(charlie): There's duplication between this file and key-configs.js.
+// We should clean it up by removing this file and requiring clients to use the
+// `id` field on the key configurations.
 const Keys = {
     PLUS: 'PLUS',
     MINUS: 'MINUS',
@@ -35,6 +37,15 @@ const Keys = {
     TAN: 'TAN',
     PI: 'PI',
 
+    FRAC_MULTI: 'FRAC_MULTI',
+    PARENS_MULTI: 'PARENS_MULTI',
+    EQUAL_MULTI: 'EQUAL_MULTI',
+    LESS_MULTI: 'LESS_MULTI',
+    GREATER_MULTI: 'GREATER_MULTI',
+    EXP_MULTI: 'EXP_MULTI',
+    RADICAL_MULTI: 'RADICAL_MULTI',
+    LOG_MULTI: 'LOG_MULTI',
+
     LEFT: 'LEFT',
     RIGHT: 'RIGHT',
     BACKSPACE: 'BACKSPACE',
@@ -43,6 +54,10 @@ const Keys = {
     NUMBERS: 'NUMBERS',
 
     NOOP: 'NOOP',
+
+    // A custom key that captures an arbitrary number of symbols but has no
+    // 'default' symbol or action.
+    MANY: 'MANY',
 };
 
 module.exports = Keys;

@@ -13,6 +13,7 @@ module.exports = {
     },
 
     keyTypes: {
+        EMPTY: 'EMPTY',
         // For buttons that insert or adjust math in an input.
         MATH: 'MATH',
         // For numerals in particular.
@@ -23,5 +24,8 @@ module.exports = {
         // For buttons that modify the broader keypad state (e.g., by changing
         // the visible pane).
         KEYPAD_NAVIGATION: 'KEYPAD_NAVIGATION',
+        // For buttons that house multiple buttons and have no action
+        // themselves.
+        MANY: 'MANY',
     },
 };

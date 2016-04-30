@@ -10,13 +10,13 @@ const TestPopoverKeypad = require('./test-popover-keypad');
 const { getButtonHeightPx } = require('./common-style');
 
 const { setButtonHeightPx } = require('../actions');
-const ButtonProps = require('./button-props');
+const { keyIdPropType } = require('./prop-types');
 const { keypadTypes } = require('../consts');
 
 const MathKeypad = React.createClass({
     propTypes: {
         configuration: React.PropTypes.shape({
-            extraSymbols: React.PropTypes.arrayOf(React.PropTypes.string),
+            extraKeys: React.PropTypes.arrayOf(keyIdPropType),
             keypadType: React.PropTypes.oneOf(Object.keys(keypadTypes)),
         }),
         page: React.PropTypes.number,
@@ -50,10 +50,8 @@ const MathKeypad = React.createClass({
 
     render() {
         // Extract props that some keypads will need.
-        const page = this.props.page;
-        const extraKeys = this.props.configuration.extraSymbols.map(
-            symbol => ButtonProps[symbol]
-        );
+        const { configuration, page } = this.props;
+        const { extraKeys } = configuration;
 
         // Select the appropriate keyboard given the type.
         // TODO(charlie): In the future, we might want to move towards a

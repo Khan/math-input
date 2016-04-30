@@ -5,14 +5,16 @@
 
 const React = require('react');
 
-const KeypadButton = require('./keypad-button');
 const EmptyKeypadButton = require('./empty-keypad-button');
-const SimpleKeypadButton = require('./simple-keypad-button');
-const { keyPropType } = require('./prop-types');
+const TouchableKeypadButton = require('./touchable-keypad-button');
+
+const Keys = require('../data/keys');
+const { keyTypes } = require('../consts');
+const { keyIdPropType } = require('./prop-types');
 
 const ManyKeypadButton = React.createClass({
     propTypes: {
-        keys: React.PropTypes.arrayOf(keyPropType).isRequired,
+        keys: React.PropTypes.arrayOf(keyIdPropType).isRequired,
     },
 
     render() {
@@ -24,12 +26,14 @@ const ManyKeypadButton = React.createClass({
         if (keys.length === 0) {
             return <EmptyKeypadButton />;
         } else if (keys.length === 1) {
-            return <SimpleKeypadButton singleKey={keys[0]} />;
+            return <TouchableKeypadButton keyConfig={keys[0]} />;
         } else {
-            return <KeypadButton
-                primaryKey={null}
-                secondaryKeys={keys}
-            />;
+            const keyConfig = {
+                id: Keys.MANY,
+                type: keyTypes.MANY,
+                childKeyIds: keys,
+            };
+            return <TouchableKeypadButton keyConfig={keyConfig} />;
         }
     },
 });

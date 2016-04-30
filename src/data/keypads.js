@@ -2,32 +2,33 @@
  * Data used to define the various keypads available.
  */
 
+const Keys = require('./keys');
 const { keypadTypes } = require('../consts');
 
 const Keypads = {
     [keypadTypes.NUMBER]: {
         numPages: 1,
-        extraSymbols: [],
+        extraKeys: [],
     },
     [keypadTypes.FRACTION]: {
         numPages: 1,
-        extraSymbols: [],
+        extraKeys: [],
     },
     [keypadTypes.DEFAULT]: {
         numPages: 1,
-        extraSymbols: [],
+        extraKeys: [],
     },
     [keypadTypes.ADVANCED_EXPRESSION]: {
         numPages: 2,
-        extraSymbols: ['x', 'PI', 'y', 'e', 'z'],
+        extraKeys: ['x', Keys.PI, 'y', 'e', 'z'],
     },
     [keypadTypes.BASIC_EXPRESSION]: {
         numPages: 2,
-        extraSymbols: ['x', 'PI', 'y', 'e', 'z'],
+        extraKeys: ['x', Keys.PI, 'y', 'e', 'z'],
     },
     [keypadTypes.TEST_POPOVER]: {
         numPages: 1,
-        extraSymbols: [],
+        extraKeys: [],
     },
 };
 

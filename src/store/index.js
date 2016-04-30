@@ -34,7 +34,7 @@ const handlersReducer = function(state = initialHandlersState, action) {
 
 const initialKeypadState = {
     configuration: {
-        extraSymbols: Keypads[keypadTypes.DEFAULT].extraSymbols,
+        extraKeys: Keypads[keypadTypes.ADVANCED_EXPRESSION].extraKeys,
         keypadType: keypadTypes.ADVANCED_EXPRESSION,
     },
     page: 0,
@@ -80,7 +80,7 @@ const keypadReducer = function(state = initialKeypadState, action) {
                     // they'll be providing both the keypad type and the extra
                     // symbols in one call; hence, they're packaged together as
                     // a single 'configuration' object.
-                    extraSymbols: Keypads[keypadType].extraSymbols,
+                    extraKeys: Keypads[keypadType].extraKeys,
                     keypadType,
                 },
                 // Reset the page whenever the keypad is re-configured.

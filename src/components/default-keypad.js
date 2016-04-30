@@ -6,61 +6,61 @@ const React = require('react');
 
 const { View } = require('../fake-react-native-web');
 const Keypad = require('./keypad');
-const SimpleKeypadButton = require('./simple-keypad-button');
+const TouchableKeypadButton = require('./touchable-keypad-button');
 const { row } = require('./styles');
 
-const ButtonProps = require('./button-props');
+const KeyConfigs = require('../data/key-configs');
 
 const DefaultKeypad = React.createClass({
     render() {
         return <Keypad>
             <View style={row}>
-                <SimpleKeypadButton singleKey={ButtonProps.SIN} />
-                <SimpleKeypadButton singleKey={ButtonProps.COS} />
-                <SimpleKeypadButton singleKey={ButtonProps.TAN} />
-                <SimpleKeypadButton singleKey={ButtonProps.NOOP} />
-                <SimpleKeypadButton singleKey={ButtonProps.NOOP} />
-                <SimpleKeypadButton singleKey={ButtonProps.NOOP} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.SIN} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.COS} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.TAN} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.NOOP} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.NOOP} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.NOOP} />
             </View>
             <View style={row}>
-                <SimpleKeypadButton singleKey={ButtonProps.RADICAL} />
-                <SimpleKeypadButton singleKey={ButtonProps.LOG} />
-                <SimpleKeypadButton singleKey={ButtonProps.LOG_N} />
-                <SimpleKeypadButton singleKey={ButtonProps.NOOP} />
-                <SimpleKeypadButton singleKey={ButtonProps.NOOP} />
-                <SimpleKeypadButton singleKey={ButtonProps.PARENS} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.RADICAL} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.LOG} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.LOG_N} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.NOOP} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.NOOP} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.PARENS} />
             </View>
             <View style={row}>
-                <SimpleKeypadButton singleKey={ButtonProps.NUM_7} />
-                <SimpleKeypadButton singleKey={ButtonProps.NUM_8} />
-                <SimpleKeypadButton singleKey={ButtonProps.NUM_9} />
-                <SimpleKeypadButton singleKey={ButtonProps.PLUS} />
-                <SimpleKeypadButton singleKey={ButtonProps.EXP} />
-                <SimpleKeypadButton singleKey={ButtonProps.LEFT} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.NUM_7} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.NUM_8} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.NUM_9} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.PLUS} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.EXP} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.LEFT} />
             </View>
             <View style={row}>
-                <SimpleKeypadButton singleKey={ButtonProps.NUM_4} />
-                <SimpleKeypadButton singleKey={ButtonProps.NUM_5} />
-                <SimpleKeypadButton singleKey={ButtonProps.NUM_6} />
-                <SimpleKeypadButton singleKey={ButtonProps.MINUS} />
-                <SimpleKeypadButton singleKey={ButtonProps.SQRT} />
-                <SimpleKeypadButton singleKey={ButtonProps.RIGHT} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.NUM_4} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.NUM_5} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.NUM_6} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.MINUS} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.SQRT} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.RIGHT} />
             </View>
             <View style={row}>
-                <SimpleKeypadButton singleKey={ButtonProps.NUM_1} />
-                <SimpleKeypadButton singleKey={ButtonProps.NUM_2} />
-                <SimpleKeypadButton singleKey={ButtonProps.NUM_3} />
-                <SimpleKeypadButton singleKey={ButtonProps.TIMES} />
-                <SimpleKeypadButton singleKey={ButtonProps.CDOT} />
-                <SimpleKeypadButton singleKey={ButtonProps.EQUAL} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.NUM_1} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.NUM_2} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.NUM_3} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.TIMES} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.CDOT} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.EQUAL} />
             </View>
             <View style={row}>
-                <SimpleKeypadButton singleKey={ButtonProps.x} />
-                <SimpleKeypadButton singleKey={ButtonProps.NUM_0} />
-                <SimpleKeypadButton singleKey={ButtonProps.DECIMAL} />
-                <SimpleKeypadButton singleKey={ButtonProps.DIVIDE} />
-                <SimpleKeypadButton singleKey={ButtonProps.FRAC} />
-                <SimpleKeypadButton singleKey={ButtonProps.BACKSPACE} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.x} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.NUM_0} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.DECIMAL} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.DIVIDE} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.FRAC} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.BACKSPACE} />
             </View>
         </Keypad>;
     },
