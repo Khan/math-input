@@ -26,6 +26,8 @@ module.exports = {
         // For buttons that house multiple buttons and have no action
         // themselves.
         MANY: 'MANY',
+        // For the echo animation that appears on press.
+        ECHO: 'ECHO',
     },
 
     borderDirections: {

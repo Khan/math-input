@@ -75,6 +75,10 @@ const KeypadButton = React.createClass({
                 backgroundStyle = styles.disabled;
                 break;
 
+            case keyTypes.ECHO:
+                backgroundStyle = styles.focused;
+                break;
+
             case keyTypes.NUMERAL:
                 backgroundStyle = styles.numeral;
                 break;

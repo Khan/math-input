@@ -99,15 +99,19 @@ class PopoverStateMachine {
             // If we have a popover that is currently active, we trigger a
             // click on this node if and only if it's in the popover.
             if (this._isNodeInsidePopover(this.activePopover, id)) {
-                this.handlers.onClick(id);
+                this.handlers.onClick(id, id);
             }
         } else if (this.popovers[id]) {
-            // Otherwise, if the node is itself a popover revealer, trigger its
-            // default node.
-            this.handlers.onClick(this._defaultNodeForPopover(id));
+            // Otherwise, if the node is itself a popover revealer, trigger the
+            // clicking of its default node, but pass back the popover node ID
+            // for layout purposes.
+            const keyId = this._defaultNodeForPopover(id);
+            const domNodeId = id;
+            this.handlers.onClick(keyId, domNodeId);
         } else if (id != null) {
-            // Finally, trigger a click if it's a valid node.
-            this.handlers.onClick(id);
+            // Finally, if we have no active popover, and we touched up over a
+            // valid key, trigger a click.
+            this.handlers.onClick(id, id);
         }
 
         this.activePopover = null;

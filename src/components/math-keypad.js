@@ -7,7 +7,6 @@ const FractionKeypad = require('./fraction-keypad');
 const BasicExpressionKeypad = require('./basic-expression-keypad');
 const AdvancedExpressionKeypad = require('./advanced-expression-keypad');
 const { getButtonHeightPx } = require('./common-style');
-
 const { setButtonHeightPx } = require('../actions');
 const { keyIdPropType } = require('./prop-types');
 const { keypadTypes } = require('../consts');

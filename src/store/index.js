@@ -154,17 +154,12 @@ const createGestureManager = (swipeEnabled) => {
                 activeNodes,
             });
         },
-        onClick: (id) => {
+        onClick: (key, initialBounds) => {
             store.dispatch({
                 type: 'PressKey',
-                key: id,
+                key,
+                initialBounds,
             });
-            // TODO(charlie): Dispatch an "echo" event. These events should be
-            // handled at a high level and not by the individual keypad buttons
-            // as they may, for example, be removed from the DOM by the time we
-            // animate the echo. We should pass down the box of the DOM node
-            // here (which we can already access in the GestureManager) and use
-            // it to animate the echo.
         },
     });
 };
@@ -198,11 +193,57 @@ const gestureReducer = function(state = initialGestureState, action) {
     }
 };
 
+// Used to generate unique animation IDs for the echo animations. The actual
+// values are irrelevant as long as they are unique.
+let _lastAnimationId = 0;
+
+const initialEchoState = {
+    echoes: [],
+};
+
+const echoReducer = function(state = initialEchoState, action) {
+    switch (action.type) {
+        case 'PressKey':
+            const keyConfig = KeyConfigs[action.key];
+
+            // Reset the keypad if the user performs a math operation.
+            if (keyConfig.type === keyTypes.MATH ||
+                    keyConfig.type === keyTypes.NUMERAL) {
+                // Add in the echo animation.
+                return {
+                    ...state,
+                    echoes: [
+                        ...state.echoes,
+                        {
+                            animationId: "" + _lastAnimationId++,
+                            id: keyConfig.id,
+                            initialBounds: action.initialBounds,
+                        },
+                    ],
+                };
+            }
+            return state;
+
+        case 'RemoveEcho':
+            const remainingEchoes = state.echoes.filter((echo) => {
+                return echo.animationId !== action.animationId;
+            });
+            return {
+                ...state,
+                echoes: remainingEchoes,
+            };
+
+        default:
+            return state;
+    }
+};
+
 const reducer = Redux.combineReducers({
     keypad: keypadReducer,
     buttons: buttonsReducer,
     handlers: handlersReducer,
     gestures: gestureReducer,
+    echoes: echoReducer,
 });
 
 const store = Redux.createStore(reducer);

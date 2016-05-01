@@ -15,7 +15,24 @@ const keyConfigPropType = React.PropTypes.shape({
     childKeyIds: React.PropTypes.arrayOf(keyIdPropType),
 });
 
+const boundingBoxPropType = React.PropTypes.shape({
+    height: React.PropTypes.number,
+    width: React.PropTypes.number,
+    top: React.PropTypes.number,
+    right: React.PropTypes.number,
+    bottom: React.PropTypes.number,
+    left: React.PropTypes.number,
+});
+
+const echoPropType = React.PropTypes.shape({
+    animationId: React.PropTypes.string.isRequired,
+    id: keyIdPropType.isRequired,
+    initialBounds: boundingBoxPropType.isRequired,
+});
+
 module.exports = {
     keyConfigPropType,
     keyIdPropType,
+    boundingBoxPropType,
+    echoPropType,
 };

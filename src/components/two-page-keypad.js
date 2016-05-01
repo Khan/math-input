@@ -4,9 +4,10 @@
 
 const React = require('react');
 const { StyleSheet } = require('aphrodite');
-const { View } = require('../fake-react-native-web');
 
-const { keypad, row } = require('./styles');
+const Keypad = require('./keypad');
+const { View } = require('../fake-react-native-web');
+const { row } = require('./styles');
 
 const TwoPageKeypad = React.createClass({
     propTypes: {
@@ -27,18 +28,19 @@ const TwoPageKeypad = React.createClass({
             throw new Error("TwoPageKeypad received invalid page: " + page);
         }
 
-        const keypadStyle = [
-            keypad,
+        const pagerStyle = [
             row,
             styles.twoPagePager,
             // Initiate the CSS transition.
             transitionStyle,
         ];
 
-        return <View style={keypadStyle}>
-            {firstPage}
-            {secondPage}
-        </View>;
+        return <Keypad>
+            <View style={pagerStyle}>
+                {firstPage}
+                {secondPage}
+            </View>
+        </Keypad>;
     },
 });
 

@@ -3,8 +3,8 @@
  */
 
 const React = require('react');
-
 const { StyleSheet } = require('aphrodite');
+
 const { View } = require('../fake-react-native-web');
 const { keyConfigPropType } = require('./prop-types');
 

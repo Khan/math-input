@@ -73,6 +73,17 @@ class NodeManager {
             }
         }
     }
+
+    /**
+     * Return the bounding client rect for the node with the given identifier.
+     *
+     * @param {string} id - the identifier of the node for which to return the
+     *                      bounding client rect
+     * @returns {rect} - the bounding client rect for the given node
+     */
+    boxForId(id) {
+        return this._nodesById[id].getBoundingClientRect();
+    }
 }
 
 module.exports = NodeManager;

@@ -21,7 +21,23 @@ class GestureManager {
         this.nodeManager = new NodeManager();
         this.popoverStateMachine = new PopoverStateMachine({
             onActiveNodesChanged: handlers.onActiveNodesChanged,
-            onClick: handlers.onClick,
+            /**
+             * `onClick` takes two arguments:
+             *
+             * @param {string} keyId - the identifier key that should initiate
+             *                         a click
+             * @param {string} domNodeId - the identifier of the DOM node on
+             *                             which the click should be considered
+             *                             to have occurred
+             *
+             * These two parameters will often be equivalent. They will differ,
+             * though, when a popover button is itself clicked, in which case
+             * we need to mimic the effects of clicking on its 'primary' child
+             * key, but animate the click on the popover button.
+             */
+            onClick: (keyId, domNodeId) => {
+                handlers.onClick(keyId, this.nodeManager.boxForId(domNodeId));
+            },
         });
         this.gestureStateMachine = new GestureStateMachine({
             onFocus: (id) => {

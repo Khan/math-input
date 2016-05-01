@@ -62,4 +62,11 @@ module.exports = {
             activeNodes,
         });
     },
+
+    removeEcho: function(animationId) {
+        store.dispatch({
+            type: 'RemoveEcho',
+            animationId,
+        });
+    },
 };
