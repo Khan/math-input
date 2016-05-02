@@ -7,6 +7,7 @@ const { StyleSheet } = require('aphrodite');
 
 const { View } = require('../fake-react-native-web');
 const { keyConfigPropType } = require('./prop-types');
+const { keyTypes, borderStyles } = require('../consts');
 
 const MultiSymbolPopover = React.createClass({
     propTypes: {
@@ -20,7 +21,22 @@ const MultiSymbolPopover = React.createClass({
         // dependence in our components.
         const TouchableKeypadButton = require('./touchable-keypad-button');
         return <View style={styles.container}>
-            {keys.map(key => <TouchableKeypadButton keyConfig={key} />)}
+            {keys.map(key => {
+                // NOTE(charlie): Right now, buttons that appear in the
+                // popover are styled identically to the numeral buttons, i.e.,
+                // in a very simple way (white background, no borders). If the
+                // numeral buttons change in style, we'll have to change this
+                // logic to mimic a different button type.
+                const keyConfig = {
+                    ...key,
+                    type: keyTypes.NUMERAL,
+                };
+                return <TouchableKeypadButton
+                    key={keyConfig.id}
+                    keyConfig={keyConfig}
+                    borders={borderStyles.NONE}
+                />;
+            })}
         </View>;
     },
 });
@@ -32,11 +48,14 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         width: '100%',
-        justifyContent: 'center',
-        backgroundColor: '#FFF',
+        borderRadius: 2,
+        boxShadow: '0 2px 6px rgba(0, 0, 0, 0.3)',
         zIndex: 1,
-        boxShadow: '3px 3px 5px 6px #ccc',
-        cursor: 'pointer',
+    },
+
+    popoverButton: {
+        backgroundColor: '#FFF',
+        borderWidth: 0,
     },
 });
 
