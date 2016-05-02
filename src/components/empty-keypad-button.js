@@ -7,8 +7,8 @@ const React = require('react');
 const { keyTypes } = require('../consts');
 const KeypadButton = require('./keypad-button');
 
-const EmptyKeypadButton = () => {
-    return <KeypadButton type={keyTypes.EMPTY} />;
+const EmptyKeypadButton = (props) => {
+    return <KeypadButton type={keyTypes.EMPTY} {...props} />;
 };
 
 module.exports = EmptyKeypadButton;

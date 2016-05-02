@@ -28,4 +28,15 @@ module.exports = {
         // themselves.
         MANY: 'MANY',
     },
+
+    borderDirections: {
+        LEFT: 'LEFT',
+        BOTTOM: 'BOTTOM',
+    },
+    borderStyles: {
+        LEFT: ['LEFT'],
+        BOTTOM: ['BOTTOM'],
+        ALL: ['LEFT', 'BOTTOM'],
+        NONE: [],
+    },
 };

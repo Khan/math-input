@@ -10,7 +10,7 @@ const { Text, View } = require('../fake-react-native-web');
 const Icon = require('./icon');
 const CornerDecal = require('./corner-decal');
 const MultiSymbolPopover = require('./multi-symbol-popover');
-const { keyTypes } = require('../consts');
+const { keyTypes, borderDirections, borderStyles } = require('../consts');
 const { row, column, centered } = require('./styles');
 const {
     iconSizeHeightPx, iconSizeWidthPx,
@@ -19,6 +19,11 @@ const { keyConfigPropType } = require('./prop-types');
 
 const KeypadButton = React.createClass({
     propTypes: {
+        // The borders to display on the button. Typically, this should be set
+        // using one of the preset `borderStyles` options.
+        borders: React.PropTypes.arrayOf(
+            React.PropTypes.oneOf(Object.keys(borderDirections))
+        ),
         buttonHeightPx: React.PropTypes.number.isRequired,
         // Any additional keys that can be accessed by long-pressing on the
         // button.
@@ -38,8 +43,9 @@ const KeypadButton = React.createClass({
 
     getDefaultProps() {
         return {
-            focused: false,
+            borders: borderStyles.ALL,
             childKeys: [],
+            focused: false,
             popoverEnabled: false,
         };
     },
@@ -60,39 +66,42 @@ const KeypadButton = React.createClass({
         }
     },
 
-    _getButtonStyle(focused, type, style) {
+    _getButtonStyle(focused, type, borders, style) {
         // Select the appropriate style for the button, based on the
         // combination of primary and secondary keys.
         let backgroundStyle;
-        let borderStyle;
         switch (type) {
             case keyTypes.EMPTY:
                 backgroundStyle = styles.disabled;
-                borderStyle = styles.bordered;
                 break;
 
             case keyTypes.NUMERAL:
                 backgroundStyle = styles.numeral;
-                borderStyle = null;
                 break;
 
             case keyTypes.MATH:
                 backgroundStyle = styles.command;
-                borderStyle = styles.bordered;
                 break;
 
             case keyTypes.INPUT_NAVIGATION:
             case keyTypes.KEYPAD_NAVIGATION:
                 backgroundStyle = styles.control;
-                borderStyle = null;
                 break;
+        }
+
+        const borderStyle = [];
+        if (borders.indexOf(borderDirections.LEFT) !== -1) {
+            borderStyle.push(styles.leftBorder);
+        }
+        if (borders.indexOf(borderDirections.BOTTOM) !== -1) {
+            borderStyle.push(styles.bottomBorder);
         }
 
         return [
             styles.buttonBase,
             backgroundStyle,
-            borderStyle,
             focused && styles.focused,
+            ...borderStyle,
             this.heightStyles.fullHeight,
             // React Native allows you to set the 'style' props on user defined
             // components, https://facebook.github.io/react-native/docs/style.html
@@ -102,6 +111,7 @@ const KeypadButton = React.createClass({
 
     render() {
         const {
+            borders,
             childKeys,
             focused,
             name,
@@ -114,7 +124,7 @@ const KeypadButton = React.createClass({
             type,
         } = this.props;
 
-        const buttonStyle = this._getButtonStyle(focused, type, style);
+        const buttonStyle = this._getButtonStyle(focused, type, borders, style);
 
         const eventHandlers = {
             onTouchCancel, onTouchEnd, onTouchMove, onTouchStart,
@@ -164,6 +174,8 @@ const KeypadButton = React.createClass({
     },
 });
 
+const borderWidthPx = 1;
+
 const styles = StyleSheet.create({
     buttonBase: {
         width: '100%',
@@ -173,16 +185,10 @@ const styles = StyleSheet.create({
         userSelect: 'none',
         justifyContent: 'center',
         alignItems: 'center',
-    },
-
-    // TODO(charlie): This causes layout weirdness where borders get
-    // double-drawn and the margins are off in some places. We need to properly
-    // figure out borders, which may require conditional borders being
-    // specified as props.
-    bordered: {
+        // Borders are made selectively visible.
         borderColor: '#ECECEC',
         borderStyle: 'solid',
-        borderWidth: 1,
+        boxSizing: 'border-box',
     },
 
     // Styles used to create the 'additional symbols' button.
@@ -214,6 +220,15 @@ const styles = StyleSheet.create({
     },
     focused: {
         backgroundColor: '#78C008',
+    },
+
+    // Styles used to render the appropriate borders. Buttons are only allowed
+    // to render left and bottom borders, to simplify layout.
+    leftBorder: {
+        borderLeftWidth: borderWidthPx,
+    },
+    bottomBorder: {
+        borderBottomWidth: borderWidthPx,
     },
 });
 

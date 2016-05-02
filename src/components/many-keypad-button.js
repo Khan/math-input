@@ -18,22 +18,22 @@ const ManyKeypadButton = React.createClass({
     },
 
     render() {
-        const { keys } = this.props;
+        const { keys, ...rest } = this.props;
 
         // If we have no extra symbols, render an empty button. If we have just
         // one, render a standard button. Otherwise, capture them all in a
         // single button with no 'default' symbol.
         if (keys.length === 0) {
-            return <EmptyKeypadButton />;
+            return <EmptyKeypadButton {...rest} />;
         } else if (keys.length === 1) {
-            return <TouchableKeypadButton keyConfig={keys[0]} />;
+            return <TouchableKeypadButton keyConfig={keys[0]} {...rest} />;
         } else {
             const keyConfig = {
                 id: Keys.MANY,
                 type: keyTypes.MANY,
                 childKeyIds: keys,
             };
-            return <TouchableKeypadButton keyConfig={keyConfig} />;
+            return <TouchableKeypadButton keyConfig={keyConfig} {...rest} />;
         }
     },
 });

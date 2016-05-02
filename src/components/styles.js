@@ -9,8 +9,7 @@ module.exports = StyleSheet.create({
         position: 'fixed',
         bottom: 0,
         width: '100%',
-        paddingRight: 1,
-        paddingBottom: 1,
+        borderTop: '1px solid rgba(0, 0, 0, 0.2)',
     },
     row: {
         flexDirection: 'row',
