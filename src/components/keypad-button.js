@@ -67,30 +67,19 @@ const KeypadButton = React.createClass({
     },
 
     _getButtonStyle(focused, type, borders, style) {
-        // Select the appropriate style for the button, based on the
-        // combination of primary and secondary keys.
+        // Select the appropriate style for the button.
         let backgroundStyle;
-        switch (type) {
-            case keyTypes.EMPTY:
-                backgroundStyle = styles.disabled;
-                break;
-
-            case keyTypes.ECHO:
-                backgroundStyle = styles.focused;
-                break;
-
-            case keyTypes.NUMERAL:
-                backgroundStyle = styles.numeral;
-                break;
-
-            case keyTypes.MATH:
-                backgroundStyle = styles.command;
-                break;
-
-            case keyTypes.INPUT_NAVIGATION:
-            case keyTypes.KEYPAD_NAVIGATION:
-                backgroundStyle = styles.control;
-                break;
+        if (focused) {
+            backgroundStyle = styles.focused;
+        } else if (type === keyTypes.NUMERAL) {
+            backgroundStyle = styles.numeral;
+        } else if (type === keyTypes.MATH) {
+            backgroundStyle = styles.command;
+        } else if (type === keyTypes.INPUT_NAVIGATION ||
+                   type === keyTypes.KEYPAD_NAVIGATION) {
+            backgroundStyle = styles.control;
+        } else if (type === keyTypes.EMPTY) {
+            backgroundStyle = styles.disabled;
         }
 
         const borderStyle = [];
@@ -104,7 +93,6 @@ const KeypadButton = React.createClass({
         return [
             styles.buttonBase,
             backgroundStyle,
-            focused && styles.focused,
             ...borderStyle,
             this.heightStyles.fullHeight,
             // React Native allows you to set the 'style' props on user defined
@@ -128,7 +116,12 @@ const KeypadButton = React.createClass({
             type,
         } = this.props;
 
-        const buttonStyle = this._getButtonStyle(focused, type, borders, style);
+        // We render in the focus state if the key is focused, or if it's an
+        // echo.
+        const renderFocused = focused || type === keyTypes.ECHO;
+        const buttonStyle = this._getButtonStyle(
+            renderFocused, type, borders, style
+        );
 
         const eventHandlers = {
             onTouchCancel, onTouchEnd, onTouchMove, onTouchStart,
@@ -170,7 +163,7 @@ const KeypadButton = React.createClass({
             </View>;
         } else {
             return <View style={buttonStyle} {...eventHandlers}>
-                <Icon name={name} />
+                <Icon name={name} focused={renderFocused} />
                 {maybeCornerDecal}
                 {maybePopoverContent}
             </View>;
