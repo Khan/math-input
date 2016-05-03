@@ -19,6 +19,11 @@ const TouchableKeypadButton = React.createClass({
         id: keyIdPropType.isRequired,
     },
 
+    componentWillUnmount() {
+        const { gestureManager, id } = this.props;
+        gestureManager.unregisterDOMNode(id);
+    },
+
     render() {
         const { gestureManager, id, ...rest } = this.props;
 

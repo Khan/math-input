@@ -115,7 +115,12 @@ const AdvancedExpressionKeypad = React.createClass({
                     keyConfig={KeyConfigs.NUMBERS}
                     borders={borderStyles.LEFT}
                 />
-                <TouchableKeypadButton
+                {/* HACK(charlie): These keys are duplicated in the keypad, but
+                    they need to be unique for the gesture system to function
+                    properly. As soon as we affix the right sidebar to the edge
+                    of the keypad, they'll no longer be duplicated, and we can
+                    add them back in. */}
+                {/*<TouchableKeypadButton
                     keyConfig={KeyConfigs.RIGHT}
                     borders={borderStyles.LEFT}
                 />
@@ -126,7 +131,10 @@ const AdvancedExpressionKeypad = React.createClass({
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.DISMISS}
                     borders={borderStyles.LEFT}
-                />
+                />*/}
+                <EmptyKeypadButton borders={borderStyles.LEFT} />
+                <EmptyKeypadButton borders={borderStyles.LEFT} />
+                <EmptyKeypadButton borders={borderStyles.LEFT} />
             </View>
         </View>;
 
