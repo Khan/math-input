@@ -1,14 +1,36 @@
-/* eslint no-console: 0 */
-
 const React = require('react');
 const ReactDOM = require('react-dom');
 const { StyleSheet } = require("aphrodite");
 const $ = require('jQuery');
 
 const actions = require('../../actions');
-const { View, Text } = require('../../fake-react-native-web');
+const { View } = require('../../fake-react-native-web');
 const CursorHandle = require('./cursor-handle');
+const SelectionRect = require('./selection-rect');
 const MathWrapper = require('./math-wrapper');
+
+const defaultSelectionRect = {
+    visible: false,
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
+};
+
+const unionRects = (rects) =>
+    rects.reduce((previous, current) => {
+        return {
+            top: Math.min(previous.top, current.top),
+            right: Math.max(previous.right, current.right),
+            bottom: Math.max(previous.bottom, current.bottom),
+            left: Math.min(previous.left, current.left),
+        };
+    }, {
+        top: Infinity,
+        right: -Infinity,
+        bottom: -Infinity,
+        left: Infinity,
+    });
 
 const MathInput = React.createClass({
     getInitialState() {
@@ -18,13 +40,17 @@ const MathInput = React.createClass({
                 x: 0,
                 y: 0,
             },
+            selectionRect: defaultSelectionRect,
         };
     },
 
     componentDidMount() {
-        this.mathField = new MathWrapper(this._text);
+        this.mathField = new MathWrapper(this._mathContainer, {
+            onSelectionChanged: this.onSelectionChanged,
+        });
 
         this._root = document.querySelector('.mq-root-block');
+        this._root.style.border = `solid ${paddingWidthPx}px white`;
 
         // pass this component's handleKey method to the store so it can call
         // it whenever the store gets an KeyPress action from the keypad
@@ -34,6 +60,42 @@ const MathInput = React.createClass({
             // Hide the cursor handle whenever the user types a key.
             this.setState({ handle: { visible: false } });
         });
+    },
+
+    onSelectionChanged(selection) {
+        if (!selection) {
+            this.setState({
+                selectionRect: defaultSelectionRect,
+            });
+            return;
+        }
+
+        const selectionRoot = document.querySelector('.mq-selection');
+        selectionRoot.setAttribute('id', 'selection-override');
+
+        const bounds = unionRects(
+            // Grab all the DOMNodes within the selection and calculate the
+            // union of all of their bounding boxes.
+            [...selectionRoot.querySelectorAll('*')].map(
+                elem => elem.getBoundingClientRect()
+            )
+        );
+
+        const mathContainerBounds =
+            this._mathContainer.getBoundingClientRect();
+
+        const borderWidth = borderWidthPx;
+        const padding = paddingWidthPx;
+
+        const selectionRect = {
+            visible: true,
+            x: bounds.left - mathContainerBounds.left - borderWidth - padding,
+            y: bounds.top - mathContainerBounds.top - borderWidth - padding,
+            width: bounds.right - bounds.left + 2 * padding,
+            height: bounds.bottom - bounds.top + 2 * padding,
+        };
+
+        this.setState({ selectionRect });
     },
 
     _updateCursorHandle() {
@@ -54,6 +116,7 @@ const MathInput = React.createClass({
                 x: left,
                 y: bottom,
             },
+            selectionRect: defaultSelectionRect,
         });
     },
 
@@ -305,21 +368,31 @@ const MathInput = React.createClass({
     },
 
     render() {
+        const { handle, selectionRect } = this.state;
+
         return <View
             ref={(node) => this._container = ReactDOM.findDOMNode(node)}
             style={styles.input}
             onClick={this.handleClick}
             onTouchStart={this.handleTouchStart}
         >
-            <Text ref={(node) => this._text = ReactDOM.findDOMNode(node)} />
-            <CursorHandle
-                {...this.state.handle}
+            <View
+                ref={(node) => this._mathContainer = ReactDOM.findDOMNode(node)}
+                style={styles.innerContainer}
+            >
+                {selectionRect.visible && <SelectionRect {...selectionRect}/>}
+            </View>
+            {handle.visible && <CursorHandle
+                {...handle}
                 ref={(node) => this._cursorHandle = ReactDOM.findDOMNode(node)}
                 onMove={this.handleCursorHandleMove}
-            />
+            />}
         </View>;
     },
 });
+
+const paddingWidthPx = 2;   // around _mathContainer and the selection rect
+const borderWidthPx = 1;    // black border around _mathContainer
 
 const styles = StyleSheet.create({
     input: {
@@ -327,7 +400,16 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         marginRight: 20,
         marginBottom: 40,
+        position: 'relative',
         fontSize: 28,
+    },
+
+    // TODO(kevinb) update border style to match mocks
+    innerContainer: {
+        overflow: 'hidden',
+        borderWidth: borderWidthPx,
+        borderStyle: 'solid',
+        borderColor: 'black',
     },
 });
 

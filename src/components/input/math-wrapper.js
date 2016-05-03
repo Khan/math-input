@@ -51,7 +51,7 @@ const NormalCommands = {
 
 class MathWrapper {
 
-    constructor(element) {
+    constructor(element, callbacks = {}) {
         const options = {
             // use a span instead of a textarea so that we don't bring up the
             // native keyboard on mobile when selecting the input
@@ -61,6 +61,7 @@ class MathWrapper {
         };
 
         this.mathField = MQ.MathField(element, options);
+        this.callbacks = callbacks;
     }
 
     _writeNormalFunction(name) {
@@ -97,6 +98,10 @@ class MathWrapper {
 
         if (!cursor.selection) {  // don't show the cursor for selections
             cursor.show();
+        }
+
+        if (this.callbacks.onSelectionChanged) {
+            this.callbacks.onSelectionChanged(cursor.selection);
         }
     }
 

@@ -6,6 +6,7 @@ const React = require('react');
 const { StyleSheet } = require('aphrodite');
 
 const { View } = require('../../fake-react-native-web');
+const zIndexes = require('./z-indexes');
 
 const CursorHandle = React.createClass({
     propTypes: {
@@ -72,6 +73,7 @@ const styles = StyleSheet.create({
         transform: 'rotate(45deg)',
         marginTop: 0.3 * cursorDiameterPx,
         marginLeft: 1 - cursorDiameterPx / 2,
+        zIndex: zIndexes.cursorHandle,
     },
     visible: {
         display: 'block',

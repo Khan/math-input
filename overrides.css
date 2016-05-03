@@ -3,3 +3,14 @@
     margin-left: -1px !important;
     margin-right: -1px !important;
 }
+
+.mq-math-mode #selection-override,
+.mq-editable-field #selection-override,
+.mq-math-mode #selection-override .mq-non-leaf,
+.mq-editable-field #selection-override .mq-non-leaf,
+.mq-math-mode #selection-override .mq-scaled,
+.mq-editable-field #selection-override .mq-scaled {
+    background: #78c008 !important;
+    color: white !important;
+    border-color: transparent !important;
+}
