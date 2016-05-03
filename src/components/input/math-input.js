@@ -5,10 +5,10 @@ const ReactDOM = require('react-dom');
 const { StyleSheet } = require("aphrodite");
 const $ = require('jQuery');
 
-const actions = require('../actions');
-const { View, Text } = require('../fake-react-native-web');
+const actions = require('../../actions');
+const { View, Text } = require('../../fake-react-native-web');
 const CursorHandle = require('./cursor-handle');
-const MathWrapper = require('../../test/test-math-wrapper');
+const MathWrapper = require('./math-wrapper');
 
 const MathInput = React.createClass({
     getInitialState() {

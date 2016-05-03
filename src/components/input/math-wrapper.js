@@ -9,7 +9,7 @@ const $ = require('jQuery');
 const MathQuill = window.MathQuill;
 const MQ = MathQuill.getInterface(2);
 
-const Keys = require('../data/keys');
+const Keys = require('../../data/keys');
 
 const WRITE = 'write';
 const CMD = 'cmd';
@@ -115,6 +115,14 @@ class MathWrapper {
                 controller.seek($(el), x, y).cursor.startSelection();
             }
         }
+    }
+
+    getCursor() {
+        return this.mathField.__controller.cursor;
+    }
+
+    getSelection() {
+        return this.getCursor().selection;
     }
 
     getLatex() {

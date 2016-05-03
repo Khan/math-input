@@ -34,14 +34,6 @@ class TestMathWrapper extends MathWrapper {
 
         return false;
     }
-
-    getCursor() {
-        return this.mathField.__controller.cursor;
-    }
-
-    getSelection() {
-        return this.getCursor().selection;
-    }
 }
 
 module.exports = TestMathWrapper;

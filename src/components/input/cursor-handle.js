@@ -4,7 +4,8 @@
 
 const React = require('react');
 const { StyleSheet } = require('aphrodite');
-const { View } = require('../fake-react-native-web');
+
+const { View } = require('../../fake-react-native-web');
 
 const CursorHandle = React.createClass({
     propTypes: {

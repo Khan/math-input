@@ -3,7 +3,7 @@ const { Provider } = require('react-redux');
 
 const { View } = require('../fake-react-native-web');
 
-const MathInput = require('./math-input');
+const MathInput = require('./input/math-input');
 const MathKeypad = require('./math-keypad');
 const KeypadTypeSelector = require('./keypad-type-selector');
 
