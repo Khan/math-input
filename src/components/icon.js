@@ -4,30 +4,31 @@
 
 const React = require('react');
 
-const { Image, View } = require('../fake-react-native-web');
+const Iconography = require('./iconography');
+const { View } = require('../fake-react-native-web');
 
 const Icon = React.createClass({
     propTypes: {
+        focused: React.PropTypes.bool,
         name: React.PropTypes.string.isRequired,
     },
 
-    _urlForName(name) {
-        return `images/icons/${name}.svg`;
-    },
-
     render() {
-        const { name } = this.props;
+        const { focused, name } = this.props;
 
-        // TODO(charlie): Right now, we're consuming SVGs that have been
-        // exported from Sketch. We should put these SVGs through a minifier
-        // before shipping to production. We may also want to explore the use
-        // of inline SVG, rather than loading the SVGs in <img> tags.
-        return <View>
-            <Image
-                source={this._urlForName(name)}
-                resizeMode={'contain'}
-            />
-        </View>;
+        // Select the appropriate icon, if it's available. Otherwise, render a
+        // blank <View>.
+        // TODO(charlie): Some of the generated SVGs contain redundant
+        // information. We should spend some time optimizing them to decrease
+        // payload size.
+        // TODO(charlie): Some of the generated SVGs aren't quite rendering
+        // correctly (for example, the EXP symbol isn't positioning its
+        // superscript box on the correct side). Once we have the final
+        // iconography, work with design to identify the troublesome SVG
+        // patterns and modify the icons appropriately.
+        const Component = Iconography[name] || View;
+        const componentProps = focused ? { primaryColor: '#FFF' } : {};
+        return <Component {...componentProps} />;
     },
 });
 
