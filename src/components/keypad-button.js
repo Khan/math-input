@@ -66,20 +66,30 @@ const KeypadButton = React.createClass({
         }
     },
 
-    _getButtonStyle(focused, type, borders, style) {
+    _getButtonStyle(type, borders, style) {
         // Select the appropriate style for the button.
         let backgroundStyle;
-        if (focused) {
-            backgroundStyle = styles.focused;
-        } else if (type === keyTypes.NUMERAL) {
-            backgroundStyle = styles.numeral;
-        } else if (type === keyTypes.MATH) {
-            backgroundStyle = styles.command;
-        } else if (type === keyTypes.INPUT_NAVIGATION ||
-                   type === keyTypes.KEYPAD_NAVIGATION) {
-            backgroundStyle = styles.control;
-        } else if (type === keyTypes.EMPTY) {
-            backgroundStyle = styles.disabled;
+        switch (type) {
+            case keyTypes.EMPTY:
+                backgroundStyle = styles.disabled;
+                break;
+
+            case keyTypes.NUMERAL:
+                backgroundStyle = styles.numeral;
+                break;
+
+            case keyTypes.MATH:
+                backgroundStyle = styles.command;
+                break;
+
+            case keyTypes.INPUT_NAVIGATION:
+            case keyTypes.KEYPAD_NAVIGATION:
+                backgroundStyle = styles.control;
+                break;
+
+            case keyTypes.ECHO:
+                backgroundStyle = null;
+                break;
         }
 
         const borderStyle = [];
@@ -119,9 +129,7 @@ const KeypadButton = React.createClass({
         // We render in the focus state if the key is focused, or if it's an
         // echo.
         const renderFocused = focused || type === keyTypes.ECHO;
-        const buttonStyle = this._getButtonStyle(
-            renderFocused, type, borders, style
-        );
+        const buttonStyle = this._getButtonStyle(type, borders, style);
 
         const eventHandlers = {
             onTouchCancel, onTouchEnd, onTouchMove, onTouchStart,
@@ -163,7 +171,9 @@ const KeypadButton = React.createClass({
             </View>;
         } else {
             return <View style={buttonStyle} {...eventHandlers}>
-                <Icon name={name} focused={renderFocused} />
+                <View style={renderFocused && styles.focused}>
+                    <Icon name={name} focused={renderFocused} />
+                </View>
                 {maybeCornerDecal}
                 {maybePopoverContent}
             </View>;
@@ -171,6 +181,7 @@ const KeypadButton = React.createClass({
     },
 });
 
+const focusInsetPx = 4;
 const borderWidthPx = 1;
 
 const styles = StyleSheet.create({
@@ -186,6 +197,8 @@ const styles = StyleSheet.create({
         borderColor: '#ECECEC',
         borderStyle: 'solid',
         boxSizing: 'border-box',
+        // The focus state is inset slightly from the edge of the button.
+        padding: focusInsetPx,
     },
 
     // Styles used to create the 'additional symbols' button.
@@ -217,6 +230,11 @@ const styles = StyleSheet.create({
     },
     focused: {
         backgroundColor: '#78C008',
+        width: '100%',
+        height: '100%',
+        borderRadius: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 
     // Styles used to render the appropriate borders. Buttons are only allowed
