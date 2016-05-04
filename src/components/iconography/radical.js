@@ -20,18 +20,12 @@ const Radical = React.createClass({
 
     render() {
         return <svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1">
-            <defs>
-                <rect id="path-1" x="13" y="16" width="8" height="8" rx="1"></rect>
-                <mask id="mask-2" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="8" height="8" fill="white">
-                    <use xlinkHref="#path-1"></use>
-                </mask>
-            </defs>
             <g id="Math-Input" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                 <g id="[Assets]-Math-Input" transform="translate(-1272.000000, -698.000000)">
                     <g id="math_keypad_icon_radical" transform="translate(1272.000000, 698.000000)">
                         <g id="icon">
                             <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="48" height="48"></rect>
-                            <use id="box" stroke={this.props.primaryColor} mask="url(#mask-2)" strokeWidth="4" xlinkHref="#path-1"></use>
+                            <path d="M13,16.9970301 C13,16.4463856 13.4530363,16 13.9970301,16 L20.0029699,16 C20.5536144,16 21,16.4530363 21,16.9970301 L21,23.0029699 C21,23.5536144 20.5469637,24 20.0029699,24 L13.9970301,24 C13.4463856,24 13,23.5469637 13,23.0029699 L13,16.9970301 Z M15,18 L19,18 L19,22 L15,22 L15,18 Z" id="block" fill={this.props.primaryColor}></path>
                             <polyline id="root" stroke={this.props.primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" points="14 29 18 35 27 21 34 21"></polyline>
                         </g>
                     </g>

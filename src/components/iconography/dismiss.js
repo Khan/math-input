@@ -7,17 +7,13 @@ const React = require('react');
 
 const Dismiss = () => {
     return <svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1">
-        <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-            <g id="math_keypad_icon_dismiss">
-                <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="48" height="48"></rect>
-                <path d="M19.2928932,32.7071068 L23.2928932,36.7071068 C23.6834175,37.0976311 24.3165825,37.0976311 24.7071068,36.7071068 L28.7071068,32.7071068 C29.0976311,32.3165825 29.0976311,31.6834175 28.7071068,31.2928932 C28.3165825,30.9023689 27.6834175,30.9023689 27.2928932,31.2928932 L23.2928932,35.2928932 L24.7071068,35.2928932 L20.7071068,31.2928932 C20.3165825,30.9023689 19.6834175,30.9023689 19.2928932,31.2928932 C18.9023689,31.6834175 18.9023689,32.3165825 19.2928932,32.7071068 L19.2928932,32.7071068 Z" id="chevron" fill="#78C008"></path>
-                <g id="keyboard" transform="translate(14.000000, 12.000000)">
-                    <rect id="box" fill="#78C008" x="0" y="0" width="20" height="14" rx="1"></rect>
-                    <g id="grid" fill="#FFFFFF">
-                        <rect id="vr" x="6" y="0" width="1" height="14"></rect>
-                        <rect id="vr" x="13" y="0" width="1" height="14"></rect>
-                        <rect id="hr" x="0" y="4" width="20" height="1"></rect>
-                        <rect id="hr" x="0" y="9" width="20" height="1"></rect>
+        <g id="Math-Input" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+            <g id="[Assets]-Math-Input" transform="translate(-1204.000000, -200.000000)">
+                <g id="math_keypad_icon_dismiss" transform="translate(1204.000000, 200.000000)">
+                    <rect id="bounds" fillOpacity="0" fill="#FF0088" fillRule="evenodd" x="0" y="0" width="48" height="48"></rect>
+                    <polyline id="chevron" stroke="#78C008" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" points="20 32 24 36 28 32"></polyline>
+                    <g id="keyboard" strokeWidth="1" fillRule="evenodd" transform="translate(14.000000, 12.000000)" fill="#78C008">
+                        <path d="M0,1.00684547 C0,0.450780073 0.455305576,0 0.99180311,0 L19.0081969,0 C19.5559546,0 20,0.449948758 20,1.00684547 L20,12.9931545 C20,13.5492199 19.5446944,14 19.0081969,14 L0.99180311,14 C0.444045377,14 0,13.5500512 0,12.9931545 L0,1.00684547 Z M6,0 L7,0 L7,14 L6,14 L6,0 Z M13,0 L14,0 L14,14 L13,14 L13,0 Z M0,9 L6,9 L6,10 L0,10 L0,9 Z M0,4 L6,4 L6,5 L0,5 L0,4 Z M7,9 L13,9 L13,10 L7,10 L7,9 Z M7,4 L13,4 L13,5 L7,5 L7,4 Z M14,9 L20,9 L20,10 L14,10 L14,9 Z M14,4 L20,4 L20,5 L14,5 L14,4 Z" id="keypad"></path>
                     </g>
                 </g>
             </g>

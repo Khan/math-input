@@ -20,21 +20,13 @@ const Exp3 = React.createClass({
 
     render() {
         return <svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1">
-            <defs>
-                <rect id="path-1" x="14" y="20" width="12" height="16" rx="1"></rect>
-                <mask id="mask-2" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="12" height="16" fill="white">
-                    <use xlinkHref="#path-1"></use>
-                </mask>
-            </defs>
             <g id="Math-Input" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                 <g id="[Assets]-Math-Input" transform="translate(-1204.000000, -766.000000)">
                     <g id="math_keypad_icon_exponent_3" transform="translate(1204.000000, 766.000000)">
                         <g id="icon">
                             <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="48" height="48"></rect>
-                            <use id="base" stroke={this.props.primaryColor} mask="url(#mask-2)" strokeWidth="4" xlinkHref="#path-1"></use>
-                            <text id="3" fontFamily="ProximaNova-Extrabld, Proxima Nova" fontSize="10" fontWeight="600" fill={this.props.primaryColor}>
-                                <tspan x="28" y="23">3</tspan>
-                            </text>
+                            <path d="M14,21.0008717 C14,20.4481055 14.455761,20 15.0024733,20 L24.9975267,20 C25.5511774,20 26,20.4446309 26,21.0008717 L26,34.9991283 C26,35.5518945 25.544239,36 24.9975267,36 L15.0024733,36 C14.4488226,36 14,35.5553691 14,34.9991283 L14,21.0008717 Z M16,22 L24,22 L24,34 L16,34 L16,22 Z" id="block" fill={this.props.primaryColor}></path>
+                            <path d="M30.92,23.12 C32.58,23.12 33.68,22.31 33.68,21.14 C33.68,20.18 32.82,19.63 32.11,19.56 C32.9,19.43 33.57,18.84 33.57,18.06 C33.57,16.96 32.62,16.23 30.92,16.23 C29.69,16.23 28.81,16.68 28.25,17.31 L29.08,18.39 C29.55,17.97 30.13,17.75 30.74,17.75 C31.38,17.75 31.86,17.94 31.86,18.36 C31.86,18.71 31.47,18.88 30.78,18.88 C30.53,18.88 30.01,18.88 29.88,18.87 L29.88,20.4 C29.98,20.39 30.49,20.39 30.78,20.39 C31.69,20.39 31.97,20.57 31.97,20.95 C31.97,21.32 31.59,21.6 30.85,21.6 C30.27,21.6 29.51,21.37 29.03,20.9 L28.16,22.07 C28.68,22.67 29.64,23.12 30.92,23.12 L30.92,23.12 Z" id="3" fill={this.props.primaryColor}></path>
                         </g>
                     </g>
                 </g>

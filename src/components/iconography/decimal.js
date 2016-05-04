@@ -20,10 +20,12 @@ const Decimal = React.createClass({
 
     render() {
         return <svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1">
-            <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                <g id="math_keypad_icon_radix_separator">
-                    <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="48" height="48"></rect>
-                    <path d="M23.9875,32.275 C24.9375,32.275 25.7375,31.475 25.7375,30.525 C25.7375,29.575 24.9375,28.775 23.9875,28.775 C23.0375,28.775 22.2375,29.575 22.2375,30.525 C22.2375,31.475 23.0375,32.275 23.9875,32.275 L23.9875,32.275 Z" id="." fill={this.props.primaryColor}></path>
+            <g id="Math-Input" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+                <g id="[Assets]-Math-Input" transform="translate(-1680.000000, -298.000000)">
+                    <g id="math_keypad_icon_radix_character" transform="translate(1680.000000, 298.000000)">
+                        <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="48" height="48"></rect>
+                        <circle id="dot" fill={this.props.primaryColor} cx="24" cy="30" r="2"></circle>
+                    </g>
                 </g>
             </g>
         </svg>;

@@ -20,14 +20,16 @@ const Frac = React.createClass({
 
     render() {
         return <svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1">
-            <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                <g id="math_keypad_icon_fraction">
-                    <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="48" height="48"></rect>
-                    <g id="fraction" transform="translate(12.000000, 12.000000)">
-                        <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="24" height="24"></rect>
-                        <path d="M9,16.9970301 L9,16.9970301 L9,23.0029699 C9,22.4474734 8.55530831,22 7.99539757,22 L16.0046024,22 C15.4455817,22 15,22.4432337 15,23.0029699 L15,16.9970301 C15,17.5525266 15.4446917,18 16.0046024,18 L7.99539757,18 C8.55441832,18 9,17.5567663 9,16.9970301 L9,16.9970301 Z M7,16.9970301 C7,16.4463856 7.4556644,16 7.99539757,16 L16.0046024,16 C16.5543453,16 17,16.4530363 17,16.9970301 L17,23.0029699 C17,23.5536144 16.5443356,24 16.0046024,24 L7.99539757,24 C7.44565467,24 7,23.5469637 7,23.0029699 L7,16.9970301 L7,16.9970301 Z" id="box" fill={this.props.primaryColor}></path>
-                        <rect id="bar" fill={this.props.primaryColor} x="2" y="11" width="20" height="2" rx="1"></rect>
-                        <path d="M9,0.997030139 L9,0.997030139 L9,7.00296986 C9,6.44747336 8.55530831,6 7.99539757,6 L16.0046024,6 C15.4455817,6 15,6.44323373 15,7.00296986 L15,0.997030139 C15,1.55252664 15.4446917,2 16.0046024,2 L7.99539757,2 C8.55441832,2 9,1.55676627 9,0.997030139 L9,0.997030139 Z M7,0.997030139 C7,0.446385598 7.4556644,0 7.99539757,0 L16.0046024,0 C16.5543453,0 17,0.453036308 17,0.997030139 L17,7.00296986 C17,7.5536144 16.5443356,8 16.0046024,8 L7.99539757,8 C7.44565467,8 7,7.54696369 7,7.00296986 L7,0.997030139 L7,0.997030139 Z" id="box" fill={this.props.primaryColor}></path>
+            <g id="Math-Input" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+                <g id="[Assets]-Math-Input" transform="translate(-1204.000000, -532.000000)">
+                    <g id="math_keypad_icon_fraction" transform="translate(1204.000000, 532.000000)">
+                        <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="48" height="48"></rect>
+                        <g id="fraction" strokeWidth="1" transform="translate(12.000000, 12.000000)">
+                            <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="24" height="24"></rect>
+                            <path d="M8,16.9970301 C8,16.4463856 8.45303631,16 8.99703014,16 L15.0029699,16 C15.5536144,16 16,16.4530363 16,16.9970301 L16,23.0029699 C16,23.5536144 15.5469637,24 15.0029699,24 L8.99703014,24 C8.4463856,24 8,23.5469637 8,23.0029699 L8,16.9970301 Z M10,18 L14,18 L14,22 L10,22 L10,18 Z" id="block" fill={this.props.primaryColor}></path>
+                            <rect id="bar" fill={this.props.primaryColor} x="2" y="11" width="20" height="2" rx="1"></rect>
+                            <path d="M8,0.997030139 C8,0.446385598 8.45303631,0 8.99703014,0 L15.0029699,0 C15.5536144,0 16,0.453036308 16,0.997030139 L16,7.00296986 C16,7.5536144 15.5469637,8 15.0029699,8 L8.99703014,8 C8.4463856,8 8,7.54696369 8,7.00296986 L8,0.997030139 Z M10,2 L14,2 L14,6 L10,6 L10,2 Z" id="block" fill={this.props.primaryColor}></path>
+                        </g>
                     </g>
                 </g>
             </g>

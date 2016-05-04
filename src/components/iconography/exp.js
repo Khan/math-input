@@ -20,23 +20,13 @@ const Exp = React.createClass({
 
     render() {
         return <svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1">
-            <defs>
-                <rect id="path-1" x="28" y="16" width="8" height="8" rx="1"></rect>
-                <mask id="mask-2" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="8" height="8" fill="white">
-                    <use xlinkHref="#path-1"></use>
-                </mask>
-                <rect id="path-3" x="14" y="20" width="12" height="16" rx="1"></rect>
-                <mask id="mask-4" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="12" height="16" fill="white">
-                    <use xlinkHref="#path-3"></use>
-                </mask>
-            </defs>
             <g id="Math-Input" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                 <g id="[Assets]-Math-Input" transform="translate(-1204.000000, -698.000000)">
                     <g id="math_keypad_icon_exponent" transform="translate(1204.000000, 698.000000)">
                         <g id="icon">
                             <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="48" height="48"></rect>
-                            <use id="box" stroke={this.props.primaryColor} mask="url(#mask-2)" strokeWidth="4" xlinkHref="#path-1"></use>
-                            <use id="base" stroke={this.props.primaryColor} mask="url(#mask-4)" strokeWidth="4" xlinkHref="#path-3"></use>
+                            <path d="M28,16.9970301 C28,16.4463856 28.4530363,16 28.9970301,16 L35.0029699,16 C35.5536144,16 36,16.4530363 36,16.9970301 L36,23.0029699 C36,23.5536144 35.5469637,24 35.0029699,24 L28.9970301,24 C28.4463856,24 28,23.5469637 28,23.0029699 L28,16.9970301 Z M30,18 L34,18 L34,22 L30,22 L30,18 Z" id="block" fill={this.props.primaryColor}></path>
+                            <path d="M14,21.0008717 C14,20.4481055 14.455761,20 15.0024733,20 L24.9975267,20 C25.5511774,20 26,20.4446309 26,21.0008717 L26,34.9991283 C26,35.5518945 25.544239,36 24.9975267,36 L15.0024733,36 C14.4488226,36 14,35.5553691 14,34.9991283 L14,21.0008717 Z M16,22 L24,22 L24,34 L16,34 L16,22 Z" id="block" fill={this.props.primaryColor}></path>
                         </g>
                     </g>
                 </g>

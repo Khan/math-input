@@ -20,10 +20,12 @@ const Num1 = React.createClass({
 
     render() {
         return <svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1">
-            <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                <g id="math_keypad_icon_1">
-                    <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="48" height="48"></rect>
-                    <polygon id="1" fill={this.props.primaryColor} points="26.2875 32 26.2875 15.325 24.4625 15.325 20.2875 19.625 21.5375 20.9 24.2125 18.075 24.2125 32"></polygon>
+            <g id="Math-Input" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+                <g id="[Assets]-Math-Input" transform="translate(-1068.000000, -298.000000)">
+                    <g id="math_keypad_icon_1" transform="translate(1068.000000, 298.000000)">
+                        <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="48" height="48"></rect>
+                        <polygon id="1" fill={this.props.primaryColor} points="26.2875 32 26.2875 15.325 24.4625 15.325 20.2875 19.625 21.5375 20.9 24.2125 18.075 24.2125 32"></polygon>
+                    </g>
                 </g>
             </g>
         </svg>;

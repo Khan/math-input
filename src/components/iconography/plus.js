@@ -20,11 +20,13 @@ const Plus = React.createClass({
 
     render() {
         return <svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1">
-            <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                <g id="math_keypad_icon_add">
-                    <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="48" height="48"></rect>
-                    <path d="M16,25 L32,25 C32.5522847,25 33,24.5522847 33,24 C33,23.4477153 32.5522847,23 32,23 L16,23 C15.4477153,23 15,23.4477153 15,24 C15,24.5522847 15.4477153,25 16,25 L16,25 Z" id="line" fill={this.props.primaryColor}></path>
-                    <path d="M25,32 L25,16 C25,15.4477153 24.5522847,15 24,15 C23.4477153,15 23,15.4477153 23,16 L23,32 C23,32.5522847 23.4477153,33 24,33 C24.5522847,33 25,32.5522847 25,32 L25,32 Z" id="line" fill={this.props.primaryColor}></path>
+            <g id="Math-Input" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+                <g id="[Assets]-Math-Input" transform="translate(-1000.000000, -600.000000)">
+                    <g id="math_keypad_icon_addition" transform="translate(1000.000000, 600.000000)">
+                        <rect id="bounds" fillOpacity="0" fill="#FF0088" fillRule="evenodd" x="0" y="0" width="48" height="48"></rect>
+                        <path d="M19,24 L29,24" id="line" stroke={this.props.primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
+                        <path d="M24,29 L24,19" id="line" stroke={this.props.primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
+                    </g>
                 </g>
             </g>
         </svg>;

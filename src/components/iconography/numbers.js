@@ -5,15 +5,36 @@
  */
 const React = require('react');
 
-const Numbers = () => {
-    return <svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1">
-        <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-            <g id="math_keypad_icon_basic">
-                <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="48" height="48"></rect>
-                <path d="M18.144,29 L18.144,19.662 L16.408,19.662 L13.468,22.616 L14.602,23.806 L16.156,22.224 L16.156,29 L18.144,29 Z M26.754,29 L26.754,27.25 L22.946,27.25 C25.368,25.486 26.684,24.1 26.684,22.504 C26.684,20.642 25.102,19.522 23.114,19.522 C21.812,19.522 20.426,19.998 19.516,21.048 L20.65,22.364 C21.28,21.706 22.092,21.286 23.156,21.286 C23.926,21.286 24.668,21.692 24.668,22.504 C24.668,23.652 23.548,24.618 19.726,27.446 L19.726,29 L26.754,29 Z M31.43,29.168 C33.67,29.168 35.112,28.034 35.112,26.424 C35.112,25.024 33.88,24.282 32.928,24.184 C33.964,24.002 34.972,23.232 34.972,22.056 C34.972,20.502 33.628,19.522 31.444,19.522 C29.806,19.522 28.63,20.152 27.874,21.006 L28.868,22.252 C29.526,21.622 30.338,21.286 31.234,21.286 C32.214,21.286 32.97,21.65 32.97,22.392 C32.97,23.078 32.284,23.386 31.248,23.386 C30.898,23.386 30.254,23.386 30.086,23.372 L30.086,25.164 C30.226,25.15 30.856,25.136 31.248,25.136 C32.55,25.136 33.124,25.472 33.124,26.214 C33.124,26.914 32.494,27.404 31.36,27.404 C30.45,27.404 29.428,27.012 28.784,26.34 L27.748,27.67 C28.434,28.51 29.708,29.168 31.43,29.168 L31.43,29.168 Z" id="123" fill="#888D93"></path>
+const Numbers = React.createClass({
+    propTypes: {
+        primaryColor: React.PropTypes.string,
+        secondaryColor: React.PropTypes.string,
+    },
+
+    getDefaultProps() {
+        return {
+            primaryColor: '#3B3E40',
+            secondaryColor: '#BABEC2',
+        };
+    },
+
+    render() {
+        return <svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1">
+            <g id="Math-Input" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+                <g id="[Assets]-Math-Input" transform="translate(-1068.000000, -200.000000)">
+                    <g id="math_keypad_icon_on_page_symbols" transform="translate(1068.000000, 200.000000)">
+                        <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="48" height="48"></rect>
+                        <g id="horizontal-toggle" strokeWidth="1" transform="translate(4.000000, 16.000000)">
+                            <rect id="track" fill={this.props.secondaryColor} x="0" y="0" width="40" height="16" rx="2"></rect>
+                            <rect id="selection" fill="#888D93" x="20" y="0" width="20" height="16" rx="2"></rect>
+                            <polyline id="radical" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" points="25 8 27 12 31 4 35 4"></polyline>
+                            <path d="M10,13.168 C12.66,13.168 13.864,10.746 13.864,8.338 C13.864,5.93 12.66,3.522 10,3.522 C7.326,3.522 6.136,5.93 6.136,8.338 C6.136,10.746 7.326,13.168 10,13.168 L10,13.168 Z M10,11.404 C8.656,11.404 8.152,10.06 8.152,8.338 C8.152,6.616 8.656,5.286 10,5.286 C11.33,5.286 11.834,6.616 11.834,8.338 C11.834,10.06 11.33,11.404 10,11.404 L10,11.404 Z" id="0" fill="#E3E5E6"></path>
+                        </g>
+                    </g>
+                </g>
             </g>
-        </g>
-    </svg>;
-};
+        </svg>;
+    },
+});
 
 module.exports = Numbers;

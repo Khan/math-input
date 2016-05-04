@@ -25,9 +25,7 @@ const Ln = React.createClass({
                     <g id="math_keypad_icon_log_e" transform="translate(1340.000000, 766.000000)">
                         <g id="icon">
                             <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="48" height="48"></rect>
-                            <text id="ln" fontFamily="ProximaNova-Bold, Proxima Nova" fontSize="14" fontWeight="bold" fill={this.props.primaryColor}>
-                                <tspan x="18.176" y="29">ln</tspan>
-                            </text>
+                            <path d="M20.836,29 L20.836,19.662 L19.058,19.662 L19.058,29 L20.836,29 Z M28.942,29 L28.942,24.226 C28.942,22.91 28.228,22.07 26.744,22.07 C25.638,22.07 24.812,22.602 24.378,23.12 L24.378,22.238 L22.6,22.238 L22.6,29 L24.378,29 L24.378,24.45 C24.672,24.044 25.218,23.652 25.918,23.652 C26.674,23.652 27.164,23.974 27.164,24.912 L27.164,29 L28.942,29 Z" id="ln" fill={this.props.primaryColor}></path>
                         </g>
                     </g>
                 </g>

@@ -20,18 +20,20 @@ const ToggleSign = React.createClass({
 
     render() {
         return <svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1">
-            <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                <g id="math_keypad_icon_negate">
-                    <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="48" height="48"></rect>
-                    <g id="icon" transform="translate(12.000000, 12.000000)">
-                        <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="24" height="24"></rect>
-                        <g id="subtract" transform="translate(13.000000, 16.000000)" fill={this.props.primaryColor}>
-                            <path d="M1,2 L9,2 C9.55228475,2 10,1.55228475 10,1 C10,0.44771525 9.55228475,0 9,0 L1,0 C0.44771525,0 0,0.44771525 0,1 C0,1.55228475 0.44771525,2 1,2 L1,2 Z" id="line"></path>
-                        </g>
-                        <path d="M17.1679497,2.4452998 L5.16794971,20.4452998 C4.86159725,20.9048285 4.98577112,21.5256978 5.4452998,21.8320503 C5.90482849,22.1384028 6.52569784,22.0142289 6.83205029,21.5547002 L18.8320503,3.5547002 C19.1384028,3.09517151 19.0142289,2.47430216 18.5547002,2.16794971 C18.0951715,1.86159725 17.4743022,1.98577112 17.1679497,2.4452998 L17.1679497,2.4452998 Z" id="line" fill={this.props.primaryColor}></path>
-                        <g id="add" transform="translate(1.000000, 2.000000)" fill={this.props.primaryColor}>
-                            <path d="M1,6 L9,6 C9.55228475,6 10,5.55228475 10,5 C10,4.44771525 9.55228475,4 9,4 L1,4 C0.44771525,4 0,4.44771525 0,5 C0,5.55228475 0.44771525,6 1,6 L1,6 Z" id="line"></path>
-                            <path d="M4,1 L4,9 C4,9.55228475 4.44771525,10 5,10 C5.55228475,10 6,9.55228475 6,9 L6,1 C6,0.44771525 5.55228475,0 5,0 C4.44771525,0 4,0.44771525 4,1 L4,1 Z" id="line"></path>
+            <g id="Math-Input" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+                <g id="[Assets]-Math-Input" transform="translate(-1748.000000, -298.000000)">
+                    <g id="math_keypad_icon_negate" transform="translate(1748.000000, 298.000000)">
+                        <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="48" height="48"></rect>
+                        <g id="icon" strokeWidth="1" transform="translate(12.000000, 12.000000)">
+                            <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="24" height="24"></rect>
+                            <g id="subtract" transform="translate(15.000000, 15.000000)" stroke={this.props.primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M0,1 L8,1" id="line"></path>
+                            </g>
+                            <path d="M16,4 L8,20" id="line" stroke={this.props.primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
+                            <g id="add" transform="translate(1.000000, 4.000000)" stroke={this.props.primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M0,4 L8,4" id="line"></path>
+                                <path d="M4,0 L4,8" id="line"></path>
+                            </g>
                         </g>
                     </g>
                 </g>

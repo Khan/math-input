@@ -20,10 +20,12 @@ const Num2 = React.createClass({
 
     render() {
         return <svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1">
-            <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                <g id="math_keypad_icon_2">
-                    <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="48" height="48"></rect>
-                    <path d="M29.45,32 L29.45,30.15 L21.275,30.15 C25.925,26.475 29.375,23.375 29.375,19.975 C29.375,16.65 26.55,15.075 23.775,15.075 C21.425,15.075 19.25,16.025 17.975,17.7 L19.25,19.025 C20.225,17.775 21.775,16.925 23.775,16.925 C25.5,16.925 27.25,17.85 27.25,19.975 C27.25,22.85 24,25.625 18,30.35 L18,32 L29.45,32 Z" id="2" fill={this.props.primaryColor}></path>
+            <g id="Math-Input" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+                <g id="[Assets]-Math-Input" transform="translate(-1136.000000, -298.000000)">
+                    <g id="math_keypad_icon_2" transform="translate(1136.000000, 298.000000)">
+                        <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="48" height="48"></rect>
+                        <path d="M29.45,32 L29.45,30.15 L21.275,30.15 C25.925,26.475 29.375,23.375 29.375,19.975 C29.375,16.65 26.55,15.075 23.775,15.075 C21.425,15.075 19.25,16.025 17.975,17.7 L19.25,19.025 C20.225,17.775 21.775,16.925 23.775,16.925 C25.5,16.925 27.25,17.85 27.25,19.975 C27.25,22.85 24,25.625 18,30.35 L18,32 L29.45,32 Z" id="2" fill={this.props.primaryColor}></path>
+                    </g>
                 </g>
             </g>
         </svg>;
