@@ -43,11 +43,14 @@ class GestureManager {
             onFocus: (id) => {
                 this.popoverStateMachine.onFocus(id);
             },
-            onBlur: () => {
-                this.popoverStateMachine.onBlur();
+            onLongPress: (id) => {
+                this.popoverStateMachine.onLongPress(id);
             },
             onTouchEnd: (id) => {
                 this.popoverStateMachine.onTouchEnd(id);
+            },
+            onBlur: () => {
+                this.popoverStateMachine.onBlur();
             },
             onSwipeChange: handlers.onSwipeChange,
             onSwipeEnd: handlers.onSwipeEnd,

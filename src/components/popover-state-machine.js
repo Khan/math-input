@@ -45,6 +45,7 @@ class PopoverStateMachine {
      * Blur the active nodes.
      */
     onBlur() {
+        this.activePopover = null;
         this.handlers.onActiveNodesChanged({
             popover: null,
             focus: null,
@@ -59,16 +60,36 @@ class PopoverStateMachine {
     onFocus(id) {
         if (this.activePopover) {
             // If we have a popover that is currently active, we focus this
-            // node if and only if it's in the popover.
+            // node if it's in the popover, and remove any highlight otherwise.
             if (this._isNodeInsidePopover(this.activePopover, id)) {
                 this.handlers.onActiveNodesChanged({
                     popover: this.activePopover,
                     focus: id,
                 });
+            } else {
+                this.handlers.onActiveNodesChanged({
+                    popover: this.activePopover,
+                    focus: null,
+                });
             }
-        } else if (this.popovers[id]) {
-            // If we're newly focusing a popover, enable it and auto-focus its
-            // first child.
+        } else {
+            this.activePopover = null;
+            this.handlers.onActiveNodesChanged({
+                popover: null,
+                focus: id,
+            });
+        }
+    }
+
+    /**
+     * Handle a long press event on the node with the given identifier.
+     *
+     * @param {string} id - the identifier of the node that was long-pressed
+     */
+    onLongPress(id) {
+        // We only care about long presses if they occur on a popover, and we
+        // don't already have a popover active.
+        if (!this.activePopover && this.popovers[id]) {
             // NOTE(charlie): There's an assumption here that focusing the
             // first child is the correct behavior for a newly focused popover.
             // This relies on the fact that the children are rendered
@@ -78,12 +99,6 @@ class PopoverStateMachine {
             this.handlers.onActiveNodesChanged({
                 popover: this.activePopover,
                 focus: this._defaultNodeForPopover(this.activePopover),
-            });
-        } else {
-            this.activePopover = null;
-            this.handlers.onActiveNodesChanged({
-                popover: null,
-                focus: id,
             });
         }
     }
@@ -114,7 +129,6 @@ class PopoverStateMachine {
             this.handlers.onClick(id, id);
         }
 
-        this.activePopover = null;
         this.onBlur();
     }
 
