@@ -33,9 +33,9 @@ const MathKeypad = React.createClass({
 
         // Throttle resize events -- taken from:
         //    https://developer.mozilla.org/en-US/docs/Web/Events/resize
-        if (this.resizeTimeout == null) {
-            this.resizeTimeout = setTimeout(() => {
-                this.resizeTimeout = null;
+        if (this._resizeTimeout == null) {
+            this._resizeTimeout = setTimeout(() => {
+                this._resizeTimeout = null;
 
                 // Notify the store that the button height has changed.
                 setButtonHeightPx(getButtonHeightPx());

@@ -24,6 +24,13 @@ module.exports = {
         });
     },
 
+    setPageWidthPx: function(pageWidthPx) {
+        store.dispatch({
+            type: 'SetPageWidthPx',
+            pageWidthPx,
+        });
+    },
+
     resetKeypadPage: function() {
         store.dispatch({
             type: 'ResetKeypadPage',

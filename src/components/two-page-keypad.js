@@ -6,51 +6,31 @@ const React = require('react');
 const { StyleSheet } = require('aphrodite');
 
 const Keypad = require('./keypad');
+const ViewPager = require('./view-pager');
 const { View } = require('../fake-react-native-web');
 const { row } = require('./styles');
 
 const TwoPageKeypad = React.createClass({
     propTypes: {
-        currentPage: React.PropTypes.oneOf([0, 1]).isRequired,
         firstPage: React.PropTypes.node.isRequired,
         secondPage: React.PropTypes.node.isRequired,
         sidebar: React.PropTypes.node.isRequired,
     },
 
     render() {
-        const { currentPage, firstPage, secondPage, sidebar } = this.props;
-
-        let transitionStyle;
-        if (currentPage === 0) {
-            transitionStyle = styles.showFirstPage;
-        } else if (currentPage === 1) {
-            transitionStyle = styles.showSecondPage;
-        } else {
-            throw new Error(
-                "TwoPageKeypad received invalid page: " + currentPage
-            );
-        }
-
-        const pagerStyle = [
-            row,
-            styles.twoPagePager,
-            // Initiate the CSS transition.
-            transitionStyle,
-        ];
+        const { firstPage, secondPage, sidebar } = this.props;
 
         return <Keypad style={row}>
             <View style={styles.mainContent}>
-                <View style={pagerStyle}>
+                <ViewPager>
                     {firstPage}
                     {secondPage}
-                </View>
+                </ViewPager>
             </View>
             {sidebar}
         </Keypad>;
     },
 });
-
-const transitionDurationMs = 400;
 
 // NOTE(charlie): All of the pages of all of our multi-page keypads are based
 // on a 4x5 layout, regardless of the number of columns that they actually
@@ -64,27 +44,6 @@ const styles = StyleSheet.create({
         // one of the columns (with the last column being reserved for the
         // sidebar).
         flexBasis: `${100 * (numColumns - 1) / numColumns}%`,
-    },
-
-    twoPagePager: {
-        width: '200%',
-        // Note: By default, <View> sets a `maxWidth` of 100% to fix some
-        // Flexbox bugs. We have to override to acheive our desired width of
-        // 200%.
-        maxWidth: '200%',
-        // Animate translations.
-        transitionProperty: 'transform',
-        transitionDuration: `${transitionDurationMs}ms`,
-    },
-
-    // TODO(charlie): Explore using translate3d to kick the GPU in some
-    // browsers.
-    showFirstPage: {
-        transform: 'translateX(0)',
-    },
-
-    showSecondPage: {
-        transform: 'translateX(-50%)',
     },
 });
 

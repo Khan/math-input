@@ -30,9 +30,15 @@ const echoPropType = React.PropTypes.shape({
     initialBounds: boundingBoxPropType.isRequired,
 });
 
+const childrenPropType = React.PropTypes.oneOfType([
+    React.PropTypes.arrayOf(React.PropTypes.node),
+    React.PropTypes.node,
+]);
+
 module.exports = {
     keyConfigPropType,
     keyIdPropType,
     boundingBoxPropType,
     echoPropType,
+    childrenPropType,
 };

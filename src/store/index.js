@@ -79,8 +79,13 @@ const keypadReducer = function(state = initialKeypadState, action) {
 };
 
 const initialPagerState = {
+    animateToPosition: false,
     currentPage: 0,
+    // The cumulative differential in the horizontal direction for the current
+    // swipe.
+    dx: 0,
     numPages: Keypads[defaultKeypadType].numPages,
+    pageWidthPx: 0,
 };
 
 const pagerReducer = function(state = initialPagerState, action) {
@@ -91,6 +96,12 @@ const pagerReducer = function(state = initialPagerState, action) {
             return {
                 ...initialPagerState,
                 numPages,
+            };
+
+        case 'SetPageWidthPx':
+            return {
+                ...state,
+                pageWidthPx: action.pageWidthPx,
             };
 
         case 'PressKey':
@@ -112,6 +123,7 @@ const pagerReducer = function(state = initialPagerState, action) {
         case 'ResetKeypadPage':
             return {
                 ...state,
+                animateToPosition: true,
                 currentPage: 0,
                 dx: 0,
             };
@@ -123,6 +135,7 @@ const pagerReducer = function(state = initialPagerState, action) {
             );
             return {
                 ...state,
+                animateToPosition: true,
                 currentPage: nextPage,
                 dx: 0,
             };
@@ -131,7 +144,34 @@ const pagerReducer = function(state = initialPagerState, action) {
             const prevPage = Math.max(state.currentPage - 1, 0);
             return {
                 ...state,
+                animateToPosition: true,
                 currentPage: prevPage,
+                dx: 0,
+            };
+
+        case 'OnSwipeChange':
+            return {
+                ...state,
+                animateToPosition: false,
+                dx: action.dx,
+            };
+
+        case 'OnSwipeEnd':
+            const { pageWidthPx } = state;
+            const { dx } = action;
+
+            const shouldPageRight = dx < -pageWidthPx / 2;
+            const shouldPageLeft = dx > pageWidthPx / 2;
+
+            if (shouldPageRight) {
+                return pagerReducer(state, { type: 'PageKeypadRight' });
+            } else if (shouldPageLeft) {
+                return pagerReducer(state, { type: 'PageKeypadLeft' });
+            }
+
+            return {
+                ...state,
+                animateToPosition: true,
                 dx: 0,
             };
 
@@ -145,12 +185,16 @@ const createGestureManager = (swipeEnabled) => {
         swipeEnabled,
     }, {
         onSwipeChange: (dx) => {
-            /* eslint-disable no-console */
-            console.log("onSwipeChange:", dx);
+            store.dispatch({
+                type: 'OnSwipeChange',
+                dx,
+            });
         },
         onSwipeEnd: (dx) => {
-            /* eslint-disable no-console */
-            console.log("onSwipeEnd:", dx);
+            store.dispatch({
+                type: 'OnSwipeEnd',
+                dx,
+            });
         },
         onActiveNodesChanged: (activeNodes) => {
             store.dispatch({
