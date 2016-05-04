@@ -32,6 +32,7 @@ const KeyActions = {
     [Keys.DECIMAL]: { str: '.', fn: WRITE },
     [Keys.EQUAL]: { str: '=', fn: WRITE },
     [Keys.CDOT]: { str: '\\cdot', fn: WRITE },
+    [Keys.PERCENT]: { str: '%', fn: WRITE },
     [Keys.FRAC]: { str: '/', fn: CMD },
     [Keys.EXP]: { str: '^', fn: CMD },
     [Keys.SQRT]: { str: 'sqrt', fn: CMD },
