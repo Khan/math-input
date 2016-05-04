@@ -20,15 +20,16 @@ const Lt = React.createClass({
 
     render() {
         return <svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1">
-            <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                <g id="math_keypad_icon_less_than_multi">
-                    <g id="icon">
-                        <g id="math_keypad_icon_less_than">
-                            <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="48" height="48"></rect>
-                            <g id="icon" transform="translate(12.000000, 12.000000)">
-                                <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="24" height="24"></rect>
-                                <path d="M4,22 L20,22 C20.5522847,22 21,21.5522847 21,21 C21,20.4477153 20.5522847,20 20,20 L4,20 C3.44771525,20 3,20.4477153 3,21 C3,21.5522847 3.44771525,22 4,22 L4,22 Z" id="line" fill="#E3E5E6"></path>
-                                <path d="M20.3511234,17.0636708 L4.35112344,11.0636708 L4.35112344,12.9363292 L20.3511234,6.93632918 C20.8682438,6.74240906 21.1302493,6.16599688 20.9363292,5.64887656 C20.7424091,5.13175623 20.1659969,4.8697507 19.6488766,5.06367082 L3.64887656,11.0636708 C2.78370781,11.3881091 2.78370781,12.6118909 3.64887656,12.9363292 L19.6488766,18.9363292 C20.1659969,19.1302493 20.7424091,18.8682438 20.9363292,18.3511234 C21.1302493,17.8340031 20.8682438,17.2575909 20.3511234,17.0636708 L20.3511234,17.0636708 Z" id="bracket" fill={this.props.primaryColor}></path>
+            <g id="Math-Input" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+                <g id="[Assets]-Math-Input" transform="translate(-1068.000000, -834.000000)">
+                    <g id="math_keypad_icon_less_than" transform="translate(1068.000000, 834.000000)">
+                        <g id="icon">
+                            <g id="math_keypad_icon_less_than">
+                                <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="48" height="48"></rect>
+                                <g id="icon" transform="translate(12.000000, 12.000000)">
+                                    <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="24" height="24"></rect>
+                                    <polyline id="bracket" stroke={this.props.primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" points="20 18 4 12 20 6"></polyline>
+                                </g>
                             </g>
                         </g>
                     </g>
