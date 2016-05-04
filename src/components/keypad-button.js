@@ -66,6 +66,18 @@ const KeypadButton = React.createClass({
         }
     },
 
+    _getFocusStyle(type) {
+        let focusBackgroundStyle;
+        if (type === keyTypes.INPUT_NAVIGATION ||
+                type === keyTypes.KEYPAD_NAVIGATION) {
+            focusBackgroundStyle = styles.light;
+        } else {
+            focusBackgroundStyle = styles.bright;
+        }
+
+        return [styles.focusBox, focusBackgroundStyle];
+    },
+
     _getButtonStyle(type, borders, style) {
         // Select the appropriate style for the button.
         let backgroundStyle;
@@ -170,8 +182,9 @@ const KeypadButton = React.createClass({
                 {maybePopoverContent}
             </View>;
         } else {
+            const focusStyle = this._getFocusStyle(type);
             return <View style={buttonStyle} {...eventHandlers}>
-                <View style={renderFocused && styles.focused}>
+                <View style={renderFocused && focusStyle}>
                     <Icon name={name} focused={renderFocused} />
                 </View>
                 {maybeCornerDecal}
@@ -228,13 +241,19 @@ const styles = StyleSheet.create({
         backgroundColor: '#F0F1F2',
         cursor: 'default',
     },
-    focused: {
-        backgroundColor: '#78C008',
+
+    focusBox: {
         width: '100%',
         height: '100%',
         borderRadius: 1,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    bright: {
+        backgroundColor: '#78C008',
+    },
+    light: {
+        backgroundColor: 'rgba(33, 36, 44, 0.1)',
     },
 
     // Styles used to render the appropriate borders. Buttons are only allowed
