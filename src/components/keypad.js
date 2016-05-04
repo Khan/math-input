@@ -19,6 +19,7 @@ const Keypad = React.createClass({
             React.PropTypes.node,
         ]),
         echoes: React.PropTypes.arrayOf(echoPropType).isRequired,
+        style: React.PropTypes.any,
     },
 
     componentWillMount() {
@@ -48,7 +49,7 @@ const Keypad = React.createClass({
     },
 
     render() {
-        const { children, echoes } = this.props;
+        const { children, echoes, style } = this.props;
 
         // Translate the echo boxes, as they'll be positioned absolutely to
         // this relative container.
@@ -67,7 +68,12 @@ const Keypad = React.createClass({
             };
         });
 
-        return <View style={keypad}>
+        const keypadStyle = [
+            keypad,
+            ...(Array.isArray(style) ? style : [style]),
+        ];
+
+        return <View style={keypadStyle}>
             {children}
             <EchoManager echoes={relativeEchoes} />
         </View>;

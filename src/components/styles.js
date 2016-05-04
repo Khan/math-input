@@ -20,9 +20,6 @@ module.exports = StyleSheet.create({
     oneColumn: {
         flexGrow: 1,
     },
-    twoColumn: {
-        flexGrow: 2,
-    },
     fullWidth: {
         width: '100%',
     },
