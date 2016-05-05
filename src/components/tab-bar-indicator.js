@@ -12,18 +12,21 @@ const { brightGreen, darkGrey } = require('./common-style');
 const Tab = React.createClass({
     propTypes: {
         active: React.PropTypes.bool,
+        onClick: React.PropTypes.func,
         title: React.PropTypes.string.isRequired,
     },
 
     render() {
-        const { active, title } = this.props;
+        const { active, onClick, title } = this.props;
 
         const textStyle = [
             styles.tabTitleText,
             active && styles.activeTabTitleText,
         ];
 
-        return <View style={styles.tab}>
+        // TODO(charlie): Use `onTouchEnd` rather than `onClick` to avoid
+        // delay. This requires verifying that the touch ended in the view.
+        return <View style={styles.tab} onClick={onClick}>
             <Text style={textStyle}>{title}</Text>
             {active && <View style={styles.activeTabUnderline} />}
         </View>;
@@ -33,14 +36,20 @@ const Tab = React.createClass({
 const TabBarIndicator = React.createClass({
     propTypes: {
         currentPage: React.PropTypes.number.isRequired,
+        onSelectTab: React.PropTypes.func,
         pageTitles: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
     },
 
     render() {
-        const { currentPage, pageTitles } = this.props;
+        const { currentPage, onSelectTab, pageTitles } = this.props;
 
         const tabTitles = pageTitles.map((title, i) => {
-            return <Tab key={i} active={i === currentPage} title={title} />;
+            return <Tab
+                key={i}
+                active={i === currentPage}
+                onClick={() => onSelectTab(i)}
+                title={title}
+            />;
         });
 
         return <View style={styles.tabBar}>
@@ -74,6 +83,7 @@ const styles = StyleSheet.create({
         paddingRight: tabUnderlineExtraWidthPx,
     },
 
+    // TODO(charlie): Use Proxima, once it's available.
     tabTitleText: {
         fontSize: 14,
         fontFamily: 'Proxima Nova Semibold',

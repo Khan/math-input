@@ -49,6 +49,13 @@ module.exports = {
         });
     },
 
+    setKeypadCurrentPage: function(page) {
+        store.dispatch({
+            type: 'SetKeypadCurrentPage',
+            page,
+        });
+    },
+
     pressKey: function(key) {
         store.dispatch({
             type: 'PressKey',

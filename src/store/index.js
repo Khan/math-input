@@ -153,6 +153,17 @@ const pagerReducer = function(state = initialPagerState, action) {
                 dx: 0,
             };
 
+        case 'SetKeypadCurrentPage':
+            const boundedPage = Math.min(
+                Math.max(action.page, 0),
+                state.numPages - 1
+            );
+            return {
+                ...state,
+                currentPage: boundedPage,
+                dx: 0,
+            };
+
         case 'OnSwipeChange':
             state.velocityTracker.push(action.dx);
 

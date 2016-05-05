@@ -16,6 +16,7 @@ const { column, row } = require('./styles');
 const {
     buttonBorderColor, buttonBorderStyle, buttonBorderWidthPx,
 } = require('./common-style');
+const { setKeypadCurrentPage } = require('../actions');
 
 const TwoPageKeypad = React.createClass({
     propTypes: {
@@ -69,8 +70,9 @@ const TwoPageKeypad = React.createClass({
         return <Keypad style={column}>
             {showTabBarIndicator &&
                 <TabBarIndicator
-                    pageTitles={['Basic', 'Advanced']}
                     currentPage={currentPage}
+                    onSelectTab={setKeypadCurrentPage}
+                    pageTitles={['Basic', 'Advanced']}
                 />
             }
             <View style={keypadContentsStyle}>
