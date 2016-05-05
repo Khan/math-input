@@ -16,19 +16,60 @@ const Tab = React.createClass({
         title: React.PropTypes.string.isRequired,
     },
 
+    getInitialState() {
+        return {
+            focused: false,
+        };
+    },
+
+    _onTouchStart() {
+        this.setState({ focused: true });
+    },
+
+    _onTouchEnd() {
+        this.setState({ focused: false });
+    },
+
     render() {
         const { active, onClick, title } = this.props;
+        const { focused } = this.state;
 
-        const textStyle = [
+        let underlineColorStyle;
+        let textColorStyle;
+        if (active && focused) {
+            underlineColorStyle = styles.activeFocused;
+            textColorStyle = styles.activeFocusedText;
+        } else if (active && !focused) {
+            underlineColorStyle = styles.active;
+            textColorStyle = styles.activeText;
+        } else if (!active && !focused) {
+            underlineColorStyle = styles.inactive;
+            textColorStyle = styles.inactiveText;
+        } else if (!active && focused) {
+            underlineColorStyle = styles.inactiveFocused;
+            textColorStyle = styles.inactiveFocusedText;
+        }
+
+        const titleStyle = [
             styles.tabTitleText,
-            active && styles.activeTabTitleText,
+            textColorStyle,
+        ];
+
+        const underlineStyle = [
+            styles.tabUnderline,
+            underlineColorStyle,
         ];
 
         // TODO(charlie): Use `onTouchEnd` rather than `onClick` to avoid
         // delay. This requires verifying that the touch ended in the view.
-        return <View style={styles.tab} onClick={onClick}>
-            <Text style={textStyle}>{title}</Text>
-            {active && <View style={styles.activeTabUnderline} />}
+        return <View
+            style={styles.tab}
+            onClick={onClick}
+            onTouchStart={() => this._onTouchStart()}
+            onTouchEnd={() => this._onTouchEnd()}
+        >
+            <Text style={titleStyle}>{title}</Text>
+            {active && <View style={underlineStyle} />}
         </View>;
     },
 });
@@ -64,6 +105,8 @@ const tabUnderlineExtraWidthPx = 10;
 
 const activeColor = brightGreen;
 const inactiveColor = darkGrey;
+const activeFocusedColor = '#518005';
+const inactiveFocusedColor = '#71B307';
 
 const styles = StyleSheet.create({
     tabBar: {
@@ -83,10 +126,10 @@ const styles = StyleSheet.create({
         paddingRight: tabUnderlineExtraWidthPx,
     },
 
-    // TODO(charlie): Use Proxima, once it's available.
     tabTitleText: {
         fontSize: 14,
         fontFamily: 'Proxima Nova Semibold',
+        userSelect: 'none',
         color: inactiveColor,
     },
 
@@ -94,14 +137,38 @@ const styles = StyleSheet.create({
         color: activeColor,
     },
 
-    activeTabUnderline: {
+    tabUnderline: {
         position: 'absolute',
         left: 0,
         bottom: 0,
         width: '100%',
         borderRadius: 2,
         height: 2,
+    },
+
+    active: {
         backgroundColor: activeColor,
+    },
+    activeText: {
+        color: activeColor,
+    },
+    inactive: {
+        backgroundColor: inactiveColor,
+    },
+    inactiveText: {
+        color: inactiveColor,
+    },
+    activeFocused: {
+        backgroundColor: activeFocusedColor,
+    },
+    activeFocusedText: {
+        color: activeFocusedColor,
+    },
+    inactiveFocused: {
+        backgroundColor: inactiveFocusedColor,
+    },
+    inactiveFocusedText: {
+        color: inactiveFocusedColor,
     },
 });
 
