@@ -12,13 +12,28 @@ const KeypadButton = require('./keypad-button');
 const KeyConfigs = require('../data/key-configs');
 const GestureManager = require('./gesture-manager');
 const { bordersPropType, keyIdPropType } = require('./prop-types');
+const { keyTypes } = require('../consts');
 
 const TouchableKeypadButton = React.createClass({
     propTypes: {
         borders: bordersPropType,
         childKeyIds: React.PropTypes.arrayOf(keyIdPropType),
+        focused: React.PropTypes.bool,
         gestureManager: React.PropTypes.instanceOf(GestureManager),
         id: keyIdPropType.isRequired,
+        popoverEnabled: React.PropTypes.bool,
+        type: React.PropTypes.oneOf(Object.keys(keyTypes)).isRequired,
+    },
+
+    shouldComponentUpdate(newProps) {
+        // We take advantage of a few different properties of our key
+        // configuration system. Namely, we know that the other props flow
+        // directly from the ID, and thus don't need to be checked.
+        return newProps.id !== this.props.id ||
+            newProps.gestureManager !== this.props.gestureManager ||
+            newProps.focused !== this.props.focused ||
+            newProps.popoverEnabled !== this.props.popoverEnabled ||
+            newProps.type !== this.props.type;
     },
 
     componentWillUnmount() {
