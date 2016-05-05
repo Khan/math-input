@@ -1,14 +1,14 @@
 const Redux = require('redux');
 
 const { defaultButtonHeightPx } = require('../components/common-style');
-const { keypadTypes, keyTypes } = require('../consts');
+const { keyTypes } = require('../consts');
 const Keys = require('../data/keys');
 const KeyConfigs = require('../data/key-configs');
 const Keypads = require('../data/keypads');
 const GestureManager = require('../components/gesture-manager');
 const VelocityTracker = require('../components/velocity-tracker');
 
-const defaultKeypadType = keypadTypes.ADVANCED_EXPRESSION;
+const Settings = require('../settings');
 
 const initialHandlersState = {
     keyHandlers: [],    // TODO(kevinb) keep track of the current handle
@@ -40,6 +40,8 @@ const handlersReducer = function(state = initialHandlersState, action) {
             return state;
     }
 };
+
+const defaultKeypadType = Settings.keypadType.toUpperCase();
 
 const initialKeypadState = {
     extraKeys: Keypads[defaultKeypadType].extraKeys,
