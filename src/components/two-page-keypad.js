@@ -11,22 +11,24 @@ const { row } = require('./styles');
 
 const TwoPageKeypad = React.createClass({
     propTypes: {
+        currentPage: React.PropTypes.oneOf([0, 1]).isRequired,
         firstPage: React.PropTypes.node.isRequired,
-        page: React.PropTypes.oneOf([0, 1]),
         secondPage: React.PropTypes.node.isRequired,
         sidebar: React.PropTypes.node.isRequired,
     },
 
     render() {
-        const { firstPage, page, secondPage, sidebar } = this.props;
+        const { currentPage, firstPage, secondPage, sidebar } = this.props;
 
         let transitionStyle;
-        if (page === 0) {
+        if (currentPage === 0) {
             transitionStyle = styles.showFirstPage;
-        } else if (page === 1) {
+        } else if (currentPage === 1) {
             transitionStyle = styles.showSecondPage;
         } else {
-            throw new Error("TwoPageKeypad received invalid page: " + page);
+            throw new Error(
+                "TwoPageKeypad received invalid page: " + currentPage
+            );
         }
 
         const pagerStyle = [

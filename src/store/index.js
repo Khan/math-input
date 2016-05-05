@@ -1,12 +1,13 @@
 const Redux = require('redux');
 
-const GestureManager = require('../components/gesture-manager');
-
 const { defaultButtonHeightPx } = require('../components/common-style');
 const { keypadTypes, keyTypes } = require('../consts');
 const Keys = require('../data/keys');
 const KeyConfigs = require('../data/key-configs');
 const Keypads = require('../data/keypads');
+const GestureManager = require('../components/gesture-manager');
+
+const defaultKeypadType = keypadTypes.ADVANCED_EXPRESSION;
 
 const initialHandlersState = {
     keyHandlers: [],    // TODO(kevinb) keep track of the current handle
@@ -40,11 +41,8 @@ const handlersReducer = function(state = initialHandlersState, action) {
 };
 
 const initialKeypadState = {
-    configuration: {
-        extraKeys: Keypads[keypadTypes.ADVANCED_EXPRESSION].extraKeys,
-        keypadType: keypadTypes.ADVANCED_EXPRESSION,
-    },
-    page: 0,
+    extraKeys: Keypads[defaultKeypadType].extraKeys,
+    keypadType: defaultKeypadType,
 };
 
 const keypadReducer = function(state = initialKeypadState, action) {
@@ -54,63 +52,24 @@ const keypadReducer = function(state = initialKeypadState, action) {
             console.log("TODO(charlie): Figure out dismissal.");
             return state;
 
-        case 'ResetKeypadPage':
-            return {
-                ...state,
-                page: 0,
-            };
-
-        case 'PageKeypadRight':
-            // TODO(charlie): It's strange that reducer needs to be aware of
-            // the number of pages. We should transition to an API that
-            // requires the keypads to declare the page to which they want to
-            // transition.
-            const numPages = Keypads[state.configuration.keypadType].numPages;
-            return {
-                ...state,
-                page: Math.min(state.page + 1, numPages - 1),
-            };
-
-        case 'PageKeypadLeft':
-            return {
-                ...state,
-                page: Math.max(state.page - 1, 0),
-            };
-
         case 'ConfigureKeypad':
-            const keypadType = action.configuration.keypadType;
+            const { keypadType } = action.configuration;
             return {
-                ...state,
-                configuration: {
-                    // TODO(charlie): For now, we're hardcoding the extra
-                    // symbols. However, once we've integrated with Perseus,
-                    // they'll be providing both the keypad type and the extra
-                    // symbols in one call; hence, they're packaged together as
-                    // a single 'configuration' object.
-                    extraKeys: Keypads[keypadType].extraKeys,
-                    keypadType,
-                },
-                // Reset the page whenever the keypad is re-configured.
-                page: 0,
+                // TODO(charlie): For now, we're hardcoding the extra
+                // symbols. However, once we've integrated with Perseus,
+                // they'll be providing both the keypad type and the extra
+                // symbols in one call; hence, they're packaged together as
+                // a single 'configuration' object.
+                extraKeys: Keypads[keypadType].extraKeys,
+                keypadType,
             };
 
         case 'PressKey':
             const keyConfig = KeyConfigs[action.key];
-
-            // Reset the keypad if the user performs a math operation.
-            if (keyConfig.type === keyTypes.MATH ||
-                    keyConfig.type === keyTypes.NUMERAL) {
-                return keypadReducer(state, { type: 'ResetKeypadPage' });
-            } else if (keyConfig.type === keyTypes.KEYPAD_NAVIGATION) {
-                if (keyConfig.id === Keys.DISMISS) {
-                    /* eslint-disable no-console */
-                    console.log("TODO(charlie): Figure out dismissal.");
-                    return state;
-                } else if (keyConfig.id === Keys.NUMBERS) {
-                    return keypadReducer(state, { type: 'ResetKeypadPage' });
-                } else if (keyConfig.id === Keys.MORE) {
-                    return keypadReducer(state, { type: 'PageKeypadRight' });
-                }
+            if (keyConfig.id === Keys.DISMISS) {
+                /* eslint-disable no-console */
+                console.log("TODO(charlie): Figure out dismissal.");
+                return state;
             }
             return state;
 
@@ -119,16 +78,61 @@ const keypadReducer = function(state = initialKeypadState, action) {
     }
 };
 
-const initialButtonsState = {
-    buttonHeightPx: defaultButtonHeightPx,
+const initialPagerState = {
+    currentPage: 0,
+    numPages: Keypads[defaultKeypadType].numPages,
 };
 
-const buttonsReducer = function(state = initialButtonsState, action) {
+const pagerReducer = function(state = initialPagerState, action) {
     switch (action.type) {
-        case 'SetButtonHeightPx':
+        case 'ConfigureKeypad':
+            const { keypadType } = action.configuration;
+            const { numPages } = Keypads[keypadType];
+            return {
+                ...initialPagerState,
+                numPages,
+            };
+
+        case 'PressKey':
+            const keyConfig = KeyConfigs[action.key];
+
+            // Reset the keypad page if the user performs a math operation.
+            if (keyConfig.type === keyTypes.MATH ||
+                    keyConfig.type === keyTypes.NUMERAL) {
+                return pagerReducer(state, { type: 'ResetKeypadPage' });
+            } else if (keyConfig.type === keyTypes.KEYPAD_NAVIGATION) {
+                if (keyConfig.id === Keys.NUMBERS) {
+                    return pagerReducer(state, { type: 'ResetKeypadPage' });
+                } else if (keyConfig.id === Keys.MORE) {
+                    return pagerReducer(state, { type: 'PageKeypadRight' });
+                }
+            }
+            return state;
+
+        case 'ResetKeypadPage':
             return {
                 ...state,
-                buttonHeightPx: action.buttonHeightPx,
+                currentPage: 0,
+                dx: 0,
+            };
+
+        case 'PageKeypadRight':
+            const nextPage = Math.min(
+                state.currentPage + 1,
+                state.numPages - 1
+            );
+            return {
+                ...state,
+                currentPage: nextPage,
+                dx: 0,
+            };
+
+        case 'PageKeypadLeft':
+            const prevPage = Math.max(state.currentPage - 1, 0);
+            return {
+                ...state,
+                currentPage: prevPage,
+                dx: 0,
             };
 
         default:
@@ -167,7 +171,9 @@ const createGestureManager = (swipeEnabled) => {
 const initialGestureState = {
     popover: null,
     focus: null,
-    gestureManager: createGestureManager(true),
+    gestureManager: createGestureManager(
+        Keypads[defaultKeypadType].numPages > 1
+    ),
 };
 
 const gestureReducer = function(state = initialGestureState, action) {
@@ -238,12 +244,30 @@ const echoReducer = function(state = initialEchoState, action) {
     }
 };
 
+const initialButtonsState = {
+    buttonHeightPx: defaultButtonHeightPx,
+};
+
+const buttonsReducer = function(state = initialButtonsState, action) {
+    switch (action.type) {
+        case 'SetButtonHeightPx':
+            return {
+                ...state,
+                buttonHeightPx: action.buttonHeightPx,
+            };
+
+        default:
+            return state;
+    }
+};
+
 const reducer = Redux.combineReducers({
-    keypad: keypadReducer,
-    buttons: buttonsReducer,
     handlers: handlersReducer,
+    keypad: keypadReducer,
+    pager: pagerReducer,
     gestures: gestureReducer,
     echoes: echoReducer,
+    buttons: buttonsReducer,
 });
 
 const store = Redux.createStore(reducer);

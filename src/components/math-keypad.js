@@ -13,11 +13,8 @@ const { keypadTypes } = require('../consts');
 
 const MathKeypad = React.createClass({
     propTypes: {
-        configuration: React.PropTypes.shape({
-            extraKeys: React.PropTypes.arrayOf(keyIdPropType),
-            keypadType: React.PropTypes.oneOf(Object.keys(keypadTypes)),
-        }),
-        page: React.PropTypes.number,
+        extraKeys: React.PropTypes.arrayOf(keyIdPropType),
+        keypadType: React.PropTypes.oneOf(Object.keys(keypadTypes)),
     },
 
     componentDidMount() {
@@ -48,8 +45,7 @@ const MathKeypad = React.createClass({
 
     render() {
         // Extract props that some keypads will need.
-        const { configuration, page } = this.props;
-        const { extraKeys } = configuration;
+        const { extraKeys, keypadType } = this.props;
 
         // Select the appropriate keyboard given the type.
         // TODO(charlie): In the future, we might want to move towards a
@@ -58,7 +54,7 @@ const MathKeypad = React.createClass({
         // However, the keyboards differ pretty heavily right now and it's not
         // clear what that format would look like exactly. Plus, there aren't
         // very many of them. So to keep us moving, we'll just hardcode.
-        switch (this.props.configuration.keypadType) {
+        switch (keypadType) {
             case keypadTypes.NUMBER:
                 return <NumberKeypad />;
 
@@ -66,16 +62,10 @@ const MathKeypad = React.createClass({
                 return <FractionKeypad />;
 
             case keypadTypes.ADVANCED_EXPRESSION:
-                return <AdvancedExpressionKeypad
-                    page={page}
-                    extraKeys={extraKeys}
-                />;
+                return <AdvancedExpressionKeypad extraKeys={extraKeys} />;
 
             case keypadTypes.BASIC_EXPRESSION:
-                return <BasicExpressionKeypad
-                    page={page}
-                    extraKeys={extraKeys}
-                />;
+                return <BasicExpressionKeypad extraKeys={extraKeys} />;
 
             case keypadTypes.DEFAULT:
             default:

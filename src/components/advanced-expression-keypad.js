@@ -3,6 +3,7 @@
  */
 
 const React = require('react');
+const { connect } = require('react-redux');
 const { StyleSheet } = require('aphrodite');
 
 const { View } = require('../fake-react-native-web');
@@ -17,12 +18,12 @@ const KeyConfigs = require('../data/key-configs');
 
 const AdvancedExpressionKeypad = React.createClass({
     propTypes: {
+        currentPage: React.PropTypes.number.isRequired,
         extraKeys: React.PropTypes.arrayOf(keyIdPropType),
-        page: React.PropTypes.number.isRequired,
     },
 
     render() {
-        const { extraKeys } = this.props;
+        const { currentPage, extraKeys } = this.props;
 
         const firstPage = <View style={[row, styles.fullPage]}>
             <View style={[column, oneColumn]}>
@@ -93,8 +94,8 @@ const AdvancedExpressionKeypad = React.createClass({
             </View>
         </View>;
 
-        const switchPageKey = this.props.page === 0 ? KeyConfigs.MORE
-                                                    : KeyConfigs.NUMBERS;
+        const switchPageKey = currentPage === 0 ? KeyConfigs.MORE
+                                                : KeyConfigs.NUMBERS;
         const sidebar = <View style={[column, oneColumn]}>
             <TouchableKeypadButton
                 key={switchPageKey.id}
@@ -116,8 +117,8 @@ const AdvancedExpressionKeypad = React.createClass({
         </View>;
 
         return <TwoPageKeypad
+            currentPage={currentPage}
             firstPage={firstPage}
-            page={this.props.page}
             secondPage={secondPage}
             sidebar={sidebar}
         />;
@@ -130,4 +131,10 @@ const styles = StyleSheet.create({
     },
 });
 
-module.exports = AdvancedExpressionKeypad;
+const mapStateToProps = (state) => {
+    return {
+        currentPage: state.pager.currentPage,
+    };
+};
+
+module.exports = connect(mapStateToProps)(AdvancedExpressionKeypad);
