@@ -3,8 +3,10 @@
  */
 
 const React = require('react');
+const { connect } = require('react-redux');
 const { StyleSheet } = require('aphrodite');
 
+const Shadow = require('./shadow');
 const Keypad = require('./keypad');
 const ViewPager = require('./view-pager');
 const { View } = require('../fake-react-native-web');
@@ -12,22 +14,40 @@ const { row } = require('./styles');
 
 const TwoPageKeypad = React.createClass({
     propTypes: {
+        displayShadow: React.PropTypes.bool,
         firstPage: React.PropTypes.node.isRequired,
         secondPage: React.PropTypes.node.isRequired,
         sidebar: React.PropTypes.node.isRequired,
     },
 
     render() {
-        const { firstPage, secondPage, sidebar } = this.props;
+        const { displayShadow, firstPage, secondPage, sidebar } = this.props;
 
+        // NOTE(charlie): Ideally, we would render and manage the shadow in the
+        // <Keypad>, and popovers would be displayed on top using z-indexing.
+        // Unfortunately, because we're using a transform on the pages in this
+        // component, that approach doesn't work due to some unknown interplay
+        // between transforms and z-indices. As such, we need to render the
+        // shadow here (inside of the node that is being transformed) and,
+        // worse still, render it twice. An alternative approach would be to
+        // render the popovers absolutely on top of the keypad, similarly to
+        // how we render the echoes. But this leads to a bunch of additional
+        // complexity and makes the layout far more brittle. If we ever need to
+        // display a shadow in a non-two-page keypad, we can add a
+        // `displayShadow` prop to the <Keypad> and override it here to render
+        // the shadow ourselves in this case.
         return <Keypad style={row}>
             <View style={styles.mainContent}>
                 <ViewPager>
                     {firstPage}
                     {secondPage}
+                    {displayShadow && <Shadow />}
                 </ViewPager>
             </View>
-            {sidebar}
+            <View style={styles.sidebarContent}>
+                {sidebar}
+                {displayShadow && <Shadow />}
+            </View>
         </Keypad>;
     },
 });
@@ -45,6 +65,16 @@ const styles = StyleSheet.create({
         // sidebar).
         flexBasis: `${100 * (numColumns - 1) / numColumns}%`,
     },
+
+    sidebarContent: {
+        flexBasis: `${100 / numColumns}%`,
+    },
 });
 
-module.exports = TwoPageKeypad;
+const mapStateToProps = (state) => {
+    return {
+        displayShadow: !!(state.gestures.popover && state.gestures.focus),
+    };
+};
+
+module.exports = connect(mapStateToProps)(TwoPageKeypad);
