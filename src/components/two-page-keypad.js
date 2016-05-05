@@ -9,19 +9,39 @@ const { StyleSheet } = require('aphrodite');
 const Shadow = require('./shadow');
 const Keypad = require('./keypad');
 const ViewPager = require('./view-pager');
+const PagerIndicator = require('./pager-indicator');
 const { View } = require('../fake-react-native-web');
-const { row } = require('./styles');
+const { column, row } = require('./styles');
+const {
+    buttonBorderColor, buttonBorderStyle, buttonBorderWidthPx,
+} = require('./common-style');
 
 const TwoPageKeypad = React.createClass({
     propTypes: {
+        currentPage: React.PropTypes.oneOf([0, 1]).isRequired,
         displayShadow: React.PropTypes.bool,
         firstPage: React.PropTypes.node.isRequired,
         secondPage: React.PropTypes.node.isRequired,
+        showPagerIndicator: React.PropTypes.bool,
         sidebar: React.PropTypes.node.isRequired,
     },
 
+    getDefaultProps() {
+        return {
+            // TODO(charlie): Configure with `settings.js`.
+            showPagerIndicator: true,
+        };
+    },
+
     render() {
-        const { displayShadow, firstPage, secondPage, sidebar } = this.props;
+        const {
+            currentPage,
+            displayShadow,
+            firstPage,
+            secondPage,
+            showPagerIndicator,
+            sidebar,
+        } = this.props;
 
         // NOTE(charlie): Ideally, we would render and manage the shadow in the
         // <Keypad>, and popovers would be displayed on top using z-indexing.
@@ -36,18 +56,23 @@ const TwoPageKeypad = React.createClass({
         // display a shadow in a non-two-page keypad, we can add a
         // `displayShadow` prop to the <Keypad> and override it here to render
         // the shadow ourselves in this case.
-        return <Keypad style={row}>
-            <View style={styles.mainContent}>
-                <ViewPager>
-                    {firstPage}
-                    {secondPage}
+        return <Keypad style={column}>
+            <View style={[row, showPagerIndicator && styles.borderBottom]}>
+                <View style={styles.mainContent}>
+                    <ViewPager>
+                        {firstPage}
+                        {secondPage}
+                        {displayShadow && <Shadow />}
+                    </ViewPager>
+                </View>
+                <View style={styles.sidebarContent}>
+                    {sidebar}
                     {displayShadow && <Shadow />}
-                </ViewPager>
+                </View>
             </View>
-            <View style={styles.sidebarContent}>
-                {sidebar}
-                {displayShadow && <Shadow />}
-            </View>
+            {showPagerIndicator &&
+                <PagerIndicator numPages={2} currentPage={currentPage} />
+            }
         </Keypad>;
     },
 });
@@ -68,6 +93,11 @@ const styles = StyleSheet.create({
 
     sidebarContent: {
         flexBasis: `${100 / numColumns}%`,
+    },
+
+    borderBottom: {
+        borderBottom: `${buttonBorderWidthPx}px ${buttonBorderStyle} `
+            + `${buttonBorderColor}`,
     },
 });
 

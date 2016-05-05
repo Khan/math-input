@@ -13,7 +13,11 @@ const MultiSymbolPopover = require('./multi-symbol-popover');
 const { keyTypes, borderDirections, borderStyles } = require('../consts');
 const { row, column, centered } = require('./styles');
 const {
-    iconSizeHeightPx, iconSizeWidthPx,
+    buttonBorderColor,
+    buttonBorderStyle,
+    buttonBorderWidthPx,
+    iconSizeHeightPx,
+    iconSizeWidthPx,
 } = require('./common-style');
 const { keyConfigPropType } = require('./prop-types');
 
@@ -196,7 +200,6 @@ const KeypadButton = React.createClass({
 });
 
 const focusInsetPx = 4;
-const borderWidthPx = 1;
 
 const styles = StyleSheet.create({
     buttonBase: {
@@ -208,8 +211,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         // Borders are made selectively visible.
-        borderColor: '#ECECEC',
-        borderStyle: 'solid',
+        borderColor: buttonBorderColor,
+        borderStyle: buttonBorderStyle,
         boxSizing: 'border-box',
         // The focus state is inset slightly from the edge of the button.
         padding: focusInsetPx,
@@ -260,10 +263,10 @@ const styles = StyleSheet.create({
     // Styles used to render the appropriate borders. Buttons are only allowed
     // to render left and bottom borders, to simplify layout.
     leftBorder: {
-        borderLeftWidth: borderWidthPx,
+        borderLeftWidth: buttonBorderWidthPx,
     },
     bottomBorder: {
-        borderBottomWidth: borderWidthPx,
+        borderBottomWidth: buttonBorderWidthPx,
     },
 });
 

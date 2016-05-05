@@ -5,6 +5,9 @@
 const defaultButtonHeightPx = 60;
 
 module.exports = {
+    buttonBorderColor: '#ECECEC',
+    buttonBorderStyle: 'solid',
+    buttonBorderWidthPx: 1,
     defaultButtonHeightPx,
     // Compute the button height on request, as it's dependent on window size.
     getButtonHeightPx: () => {
