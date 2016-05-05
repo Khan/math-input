@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 3.7.2 (28276) - http://www.bohemiancoding.com/sketch -->
+    <title>470FA144-C1B1-4E9D-9544-5732384006D4</title>
+    <desc>Created with sketchtool.</desc>
+    <defs></defs>
+    <g id="Math-Input" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="[Assets]-Math-Input" transform="translate(-1136.000000, -532.000000)">
+            <g id="math_keypad_icon_parentheses" transform="translate(1136.000000, 532.000000)">
+                <rect id="bounds" fill-opacity="0" fill="#FF0088" x="0" y="0" width="48" height="48"></rect>
+                <g id="parentheses" stroke-width="1" transform="translate(12.000000, 12.000000)">
+                    <rect id="bounds" fill-opacity="0" fill="#FF0088" x="0" y="0" width="24" height="24"></rect>
+                    <path d="M7,2 C2.99999998,8 3.00000002,16 7,22" id="arc" stroke="#3B3E40" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M20,2 C16,8 16,16 20,22" id="arc" stroke="#3B3E40" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" transform="translate(18.500000, 12.000000) scale(-1, 1) translate(-18.500000, -12.000000) "></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
