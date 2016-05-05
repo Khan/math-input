@@ -6,6 +6,7 @@ const React = require('react');
 
 const { View } = require('../fake-react-native-web');
 const Keypad = require('./keypad');
+const EmptyKeypadButton = require('./empty-keypad-button');
 const TouchableKeypadButton = require('./touchable-keypad-button');
 const { row } = require('./styles');
 
@@ -18,16 +19,16 @@ const DefaultKeypad = React.createClass({
                 <TouchableKeypadButton keyConfig={KeyConfigs.SIN} />
                 <TouchableKeypadButton keyConfig={KeyConfigs.COS} />
                 <TouchableKeypadButton keyConfig={KeyConfigs.TAN} />
-                <TouchableKeypadButton keyConfig={KeyConfigs.NOOP} />
-                <TouchableKeypadButton keyConfig={KeyConfigs.NOOP} />
-                <TouchableKeypadButton keyConfig={KeyConfigs.NOOP} />
+                <EmptyKeypadButton />
+                <EmptyKeypadButton />
+                <EmptyKeypadButton />
             </View>
             <View style={row}>
                 <TouchableKeypadButton keyConfig={KeyConfigs.RADICAL} />
                 <TouchableKeypadButton keyConfig={KeyConfigs.LOG} />
                 <TouchableKeypadButton keyConfig={KeyConfigs.LOG_N} />
-                <TouchableKeypadButton keyConfig={KeyConfigs.NOOP} />
-                <TouchableKeypadButton keyConfig={KeyConfigs.NOOP} />
+                <EmptyKeypadButton />
+                <EmptyKeypadButton />
                 <TouchableKeypadButton keyConfig={KeyConfigs.PARENS} />
             </View>
             <View style={row}>

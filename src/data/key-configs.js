@@ -95,7 +95,7 @@ const KeyConfigs = {
         type: keyTypes.MATH,
     },
     [Keys.NOOP]: {
-        type: keyTypes.MATH,
+        type: keyTypes.EMPTY,
     },
 
     // Input navigation keys.

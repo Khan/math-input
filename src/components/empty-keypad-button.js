@@ -3,12 +3,41 @@
  */
 
 const React = require('react');
+const { connect } = require('react-redux');
 
-const { keyTypes } = require('../consts');
+const GestureManager = require('./gesture-manager');
+const KeyConfigs = require('../data/key-configs');
 const KeypadButton = require('./keypad-button');
 
-const EmptyKeypadButton = (props) => {
-    return <KeypadButton type={keyTypes.EMPTY} {...props} />;
+const EmptyKeypadButton = React.createClass({
+    propTypes: {
+        gestureManager: React.PropTypes.instanceOf(GestureManager),
+    },
+
+    render() {
+        const { gestureManager, ...rest } = this.props;
+
+        // Register touch events on the button, but don't register its DOM node
+        // or compute focus state or anything like that. We want the gesture
+        // manager to know about touch events that start on empty buttons, but
+        // we don't need it to know about their DOM nodes, as it doesn't need
+        // to focus them or trigger presses.
+        return <KeypadButton
+            onTouchStart={(evt) => gestureManager.onTouchStart(evt)}
+            onTouchEnd={(evt) => gestureManager.onTouchEnd(evt)}
+            onTouchMove={(evt) => gestureManager.onTouchMove(evt)}
+            onTouchCancel={(evt) => gestureManager.onTouchCancel(evt)}
+            {...KeyConfigs.NOOP}
+            {...rest}
+        />;
+    },
+});
+
+const mapStateToProps = (state) => {
+    const { gestures } = state;
+    return {
+        gestureManager: gestures.gestureManager,
+    };
 };
 
-module.exports = EmptyKeypadButton;
+module.exports = connect(mapStateToProps)(EmptyKeypadButton);
