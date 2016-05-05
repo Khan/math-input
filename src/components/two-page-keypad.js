@@ -9,6 +9,7 @@ const { StyleSheet } = require('aphrodite');
 const Shadow = require('./shadow');
 const Keypad = require('./keypad');
 const ViewPager = require('./view-pager');
+const TabBarIndicator = require('./tab-bar-indicator');
 const PagerIndicator = require('./pager-indicator');
 const { View } = require('../fake-react-native-web');
 const { column, row } = require('./styles');
@@ -23,6 +24,7 @@ const TwoPageKeypad = React.createClass({
         firstPage: React.PropTypes.node.isRequired,
         secondPage: React.PropTypes.node.isRequired,
         showPagerIndicator: React.PropTypes.bool,
+        showTabBarIndicator: React.PropTypes.bool,
         sidebar: React.PropTypes.node.isRequired,
     },
 
@@ -30,6 +32,7 @@ const TwoPageKeypad = React.createClass({
         return {
             // TODO(charlie): Configure with `settings.js`.
             showPagerIndicator: true,
+            showTabBarIndicator: true,
         };
     },
 
@@ -40,8 +43,15 @@ const TwoPageKeypad = React.createClass({
             firstPage,
             secondPage,
             showPagerIndicator,
+            showTabBarIndicator,
             sidebar,
         } = this.props;
+
+        const keypadContentsStyle = [
+            row,
+            showPagerIndicator && styles.borderBottom,
+            showPagerIndicator && styles.borderTop,
+        ];
 
         // NOTE(charlie): Ideally, we would render and manage the shadow in the
         // <Keypad>, and popovers would be displayed on top using z-indexing.
@@ -57,7 +67,13 @@ const TwoPageKeypad = React.createClass({
         // `displayShadow` prop to the <Keypad> and override it here to render
         // the shadow ourselves in this case.
         return <Keypad style={column}>
-            <View style={[row, showPagerIndicator && styles.borderBottom]}>
+            {showTabBarIndicator &&
+                <TabBarIndicator
+                    pageTitles={['Basic', 'Advanced']}
+                    currentPage={currentPage}
+                />
+            }
+            <View style={keypadContentsStyle}>
                 <View style={styles.mainContent}>
                     <ViewPager>
                         {firstPage}
@@ -97,6 +113,10 @@ const styles = StyleSheet.create({
 
     borderBottom: {
         borderBottom: `${buttonBorderWidthPx}px ${buttonBorderStyle} `
+            + `${buttonBorderColor}`,
+    },
+    borderTop: {
+        borderTop: `${buttonBorderWidthPx}px ${buttonBorderStyle} `
             + `${buttonBorderColor}`,
     },
 });

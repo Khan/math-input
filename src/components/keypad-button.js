@@ -13,6 +13,7 @@ const MultiSymbolPopover = require('./multi-symbol-popover');
 const { keyTypes, borderDirections, borderStyles } = require('../consts');
 const { row, column, centered } = require('./styles');
 const {
+    brightGreen,
     buttonBorderColor,
     buttonBorderStyle,
     buttonBorderWidthPx,
@@ -254,7 +255,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     bright: {
-        backgroundColor: '#78C008',
+        backgroundColor: brightGreen,
     },
     light: {
         backgroundColor: 'rgba(33, 36, 44, 0.1)',

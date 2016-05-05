@@ -5,6 +5,9 @@
 const defaultButtonHeightPx = 60;
 
 module.exports = {
+    brightGreen: '#78C008',
+    darkGrey: '#888D93',
+    lightGrey: '#D6D8DA',
     buttonBorderColor: '#ECECEC',
     buttonBorderStyle: 'solid',
     buttonBorderWidthPx: 1,

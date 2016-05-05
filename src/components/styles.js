@@ -4,13 +4,15 @@
 
 const { StyleSheet } = require('aphrodite');
 
+const { lightGrey } = require('./common-style');
+
 module.exports = StyleSheet.create({
     keypad: {
         position: 'fixed',
         bottom: 0,
         width: '100%',
         borderTop: '1px solid rgba(0, 0, 0, 0.2)',
-        backgroundColor: '#D6D8DA',
+        backgroundColor: lightGrey,
     },
     row: {
         flexDirection: 'row',
