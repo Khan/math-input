@@ -6,6 +6,7 @@ const Keys = require('../data/keys');
 const KeyConfigs = require('../data/key-configs');
 const Keypads = require('../data/keypads');
 const GestureManager = require('../components/gesture-manager');
+const VelocityTracker = require('../components/velocity-tracker');
 
 const defaultKeypadType = keypadTypes.ADVANCED_EXPRESSION;
 
@@ -86,6 +87,7 @@ const initialPagerState = {
     dx: 0,
     numPages: Keypads[defaultKeypadType].numPages,
     pageWidthPx: 0,
+    velocityTracker: new VelocityTracker(),
 };
 
 const pagerReducer = function(state = initialPagerState, action) {
@@ -150,6 +152,8 @@ const pagerReducer = function(state = initialPagerState, action) {
             };
 
         case 'OnSwipeChange':
+            state.velocityTracker.push(action.dx);
+
             return {
                 ...state,
                 animateToPosition: false,
@@ -157,11 +161,20 @@ const pagerReducer = function(state = initialPagerState, action) {
             };
 
         case 'OnSwipeEnd':
-            const { pageWidthPx } = state;
+            const { pageWidthPx, velocityTracker } = state;
             const { dx } = action;
+            const velocity = velocityTracker.getVelocity();
 
-            const shouldPageRight = dx < -pageWidthPx / 2;
-            const shouldPageLeft = dx > pageWidthPx / 2;
+            // NOTE(charlie): These will need refinement. The velocity comes
+            // from Framer.
+            const minFlingVelocity = 0.1;
+            const minFlingDistance = 10;
+
+            const shouldPageRight = (dx < -pageWidthPx / 2) ||
+                (velocity < -minFlingVelocity && dx < -minFlingDistance);
+
+            const shouldPageLeft = (dx > pageWidthPx / 2) ||
+                (velocity > minFlingVelocity && dx > minFlingDistance);
 
             if (shouldPageRight) {
                 return pagerReducer(state, { type: 'PageKeypadRight' });
