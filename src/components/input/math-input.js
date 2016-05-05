@@ -51,6 +51,7 @@ const MathInput = React.createClass({
 
         this._root = document.querySelector('.mq-root-block');
         this._root.style.border = `solid ${paddingWidthPx}px white`;
+        this._root.style.fontSize = `${fontSizePt}pt`;
 
         // pass this component's handleKey method to the store so it can call
         // it whenever the store gets an KeyPress action from the keypad
@@ -391,6 +392,7 @@ const MathInput = React.createClass({
     },
 });
 
+const fontSizePt = 18;
 const paddingWidthPx = 2;   // around _mathContainer and the selection rect
 const borderWidthPx = 1;    // black border around _mathContainer
 
@@ -401,7 +403,6 @@ const styles = StyleSheet.create({
         marginRight: 20,
         marginBottom: 40,
         position: 'relative',
-        fontSize: 28,
     },
 
     // TODO(kevinb) update border style to match mocks
