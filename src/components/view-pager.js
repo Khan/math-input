@@ -86,28 +86,23 @@ const ViewPager = React.createClass({
         const { translateX, children } = this.props;
         const { animationDurationMs } = this.state;
 
-        // TODO(charlie): Do this with inline styles. We can't be creating a
-        // stylesheet mid-animation!
-        const dynamicStyles = StyleSheet.create({
-            translate: {
-                transform: `translate3d(${translateX}px, 0, 0)`,
-            },
-            animate: {
-                transitionProperty: 'transform',
-                transitionDuration: `${animationDurationMs}ms`,
-                transitionTimingFunction: 'ease-out',
-            },
-        });
+        const pagerStyle = [row, styles.twoPagePager];
 
-        const pagerStyle = [
-            row,
-            styles.twoPagePager,
-            dynamicStyles.translate,
-            animationDurationMs && dynamicStyles.animate,
-        ];
+        const transform = {
+            transform: `translate3d(${translateX}px, 0, 0)`,
+        };
+        const animate = animationDurationMs ? {
+            transitionProperty: 'transform',
+            transitionDuration: `${animationDurationMs}ms`,
+            transitionTimingFunction: 'ease-out',
+        } : {};
+        const dynamicStyle = {
+            ...transform,
+            ...animate,
+        };
 
         return <View>
-            <View style={pagerStyle}>
+            <View style={pagerStyle} dynamicStyle={dynamicStyle}>
                 {children}
             </View>
         </View>;

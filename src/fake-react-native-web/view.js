@@ -7,6 +7,11 @@ const View = React.createClass({
             React.PropTypes.arrayOf(React.PropTypes.node),
             React.PropTypes.node,
         ]),
+        // The `dynamicStyle` prop is provided for animating dynamic
+        // properties, as creating Aphrodite StyleSheets in animation loops is
+        // expensive. `dynamicStyle` should be a raw style object, rather than
+        // a StyleSheet.
+        dynamicStyle: React.PropTypes.any,
         numberOfLines: React.PropTypes.number,
         onClick: React.PropTypes.func,
         onTouchCancel: React.PropTypes.func,
@@ -23,6 +28,7 @@ const View = React.createClass({
 
         return <div
             className={className}
+            style={this.props.dynamicStyle}
             onClick={this.props.onClick}
             onTouchCancel={this.props.onTouchCancel}
             onTouchEnd={this.props.onTouchEnd}
