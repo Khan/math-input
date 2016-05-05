@@ -66,7 +66,7 @@ class GestureManager {
     onTouchStart(evt) {
         const [x, y] = coordsForEvent(evt);
         this.gestureStateMachine.onTouchStart(
-            this.nodeManager.idForCoords(x, y),
+            this.nodeManager.idComputationForCoords(x, y),
             x
         );
 
@@ -86,7 +86,7 @@ class GestureManager {
         const swipeEnabled = this.swipeEnabled && !swipeLocked;
         const [x, y] = coordsForEvent(evt);
         this.gestureStateMachine.onTouchMove(
-            this.nodeManager.idForCoords(x, y),
+            this.nodeManager.idComputationForCoords(x, y),
             x,
             swipeEnabled
         );
@@ -101,7 +101,7 @@ class GestureManager {
     onTouchEnd(evt) {
         const [x, y] = coordsForEvent(evt);
         this.gestureStateMachine.onTouchEnd(
-            this.nodeManager.idForCoords(x, y),
+            this.nodeManager.idComputationForCoords(x, y),
             x
         );
     }

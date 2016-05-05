@@ -75,6 +75,28 @@ class NodeManager {
     }
 
     /**
+     * Return a function that computes the identifier of the topmost node
+     * located at the given coordinates, and memoizes the result.
+     *
+     * @param {number} x - the x coordinate at which to search for a node
+     * @param {number} y - the y coordinate at which to search for a node
+     * @returns {() -> null|string} - a function that returns the result of
+     *                                calling `idForCoords` on the given
+     *                                coordinates, and memoizes the result
+     */
+    idComputationForCoords(x, y) {
+        let hasComputedId = false;
+        let id = null;
+        return () => {
+            if (!hasComputedId) {
+                id = this.idForCoords(x, y);
+                hasComputedId = true;
+            }
+            return id;
+        };
+    }
+
+    /**
      * Return the bounding client rect for the node with the given identifier.
      *
      * @param {string} id - the identifier of the node for which to return the
