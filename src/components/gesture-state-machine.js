@@ -68,27 +68,40 @@ class GestureStateMachine {
     }
 
     /**
+     * A function that returns the identifier of the node over which the touch
+     * event occurred. This is provided as a piece of lazy computation, as
+     * computing the DOM node for a given point is expensive, and the state
+     * machine won't always need that information. For example, if the user is
+     * swiping, then `onTouchMove` needs to be performant and doesn't care about
+     * the node over which the touch occurred.
+     *
+     * @typedef idComputation
+     * @returns {DOMNode} - the identifier of the node over which the touch
+     *                      occurred
+     */
+
+    /**
      * Handle a touch-start event on the node with the given identifer.
      *
-     * @param {string} id - the identifier of the node over which the start
-     *                      event occurred
+     * @param {idComputation} getId - a function that returns identifier of the
+     *                                node over which the start event occurred
      */
-    onTouchStart(id, pageX) {
+    onTouchStart(getId, pageX) {
         this.startX = pageX;
 
-        this._onFocus(id);
+        this._onFocus(getId());
     }
 
     /**
      * Handle a touch-move event on the node with the given identifer.
      *
-     * @param {string} id - the identifier of the node over which the move
-     *                      event occurred
+     * @param {idComputation} getId - a function that returns identifier of the
+     *                                node over which the move event occurred
      * @param {number} pageX - the x coordinate of the touch
      * @param {boolean} swipeEnabled - whether the system should allow for
      *                                 transitions into a swiping state
      */
-    onTouchMove(id, pageX, swipeEnabled) {
+    onTouchMove(getId, pageX, swipeEnabled) {
         const dx = pageX - this.startX;
         const shouldBeginSwiping = !this.swiping && swipeEnabled &&
             Math.abs(dx) > swipeThresholdPx;
@@ -101,25 +114,38 @@ class GestureStateMachine {
             // Trigger the swipe.
             this.swiping = true;
             this.handlers.onSwipeChange(dx);
-        } else if (id !== this._focusedNodeId) {
-            this._onFocus(id);
+        } else {
+            const id = getId();
+            if (id !== this._focusedNodeId) {
+                this._onFocus(id);
+            }
         }
     }
 
     /**
      * Handle a touch-end event on the node with the given identifer.
      *
-     * @param {string} id - the identifier of the node over which the end
-     *                      event occurred
+     * @param {idComputation} getId - a function that returns identifier of the
+     *                                node over which the end event occurred
      * @param {number} pageX - the x coordinate of the touch
      */
-    onTouchEnd(id, pageX) {
+    onTouchEnd(getId, pageX) {
         if (this.swiping) {
             this.handlers.onSwipeEnd(pageX - this.startX);
         } else {
             // Trigger a touch-end. There's no need to notify clients of a blur
             // as clients are responsible for handling any cleanup in their
             // touch-end handlers.
+            // NOTE(charlie): To avoid unnecessary lookups, we can just use the
+            // focused node ID that we've been tracking internally, unless the
+            // node received a long press, in which case, it may not be the
+            // focused node even though we never moved off of it.
+            let id;
+            if (this._longPressTimeoutId) {
+                id = this._focusedNodeId;
+            } else {
+                id = getId();
+            }
             this.handlers.onTouchEnd(id);
 
             // Clean-up any lingering long-press events.

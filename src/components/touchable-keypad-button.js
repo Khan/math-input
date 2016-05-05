@@ -50,7 +50,7 @@ const TouchableKeypadButton = React.createClass({
             ref={(node) => gestureManager.registerDOMNode(
                 id, ReactDOM.findDOMNode(node), childKeyIds, borders
             )}
-            onTouchStart={(evt) => gestureManager.onTouchStart(evt)}
+            onTouchStart={(evt) => gestureManager.onTouchStart(evt, id)}
             onTouchEnd={(evt) => gestureManager.onTouchEnd(evt)}
             onTouchMove={(evt) => gestureManager.onTouchMove(evt)}
             onTouchCancel={(evt) => gestureManager.onTouchCancel(evt)}
