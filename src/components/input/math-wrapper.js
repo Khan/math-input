@@ -31,19 +31,27 @@ const KeyActions = {
     [Keys.DIVIDE]: { str: '\\div', fn: WRITE },
     [Keys.DECIMAL]: { str: '.', fn: WRITE },
     [Keys.EQUAL]: { str: '=', fn: WRITE },
+    [Keys.NEQ]: { str: '\\neq', fn: WRITE },
     [Keys.CDOT]: { str: '\\cdot', fn: WRITE },
     [Keys.PERCENT]: { str: '%', fn: WRITE },
     [Keys.FRAC]: { str: '/', fn: CMD },
     [Keys.EXP]: { str: '^', fn: CMD },
+    [Keys.EXP_2]: { str: '^2', fn: WRITE },
+    [Keys.EXP_3]: { str: '^3', fn: WRITE },
     [Keys.SQRT]: { str: 'sqrt', fn: CMD },
     [Keys.PI]: { str: 'pi', fn: CMD },
     [Keys.RADICAL]: { str: 'nthroot', fn: CMD },
     [Keys.LEFT]: { str: 'Left', fn: KEYSTROKE },
     [Keys.RIGHT]: { str: 'Right', fn: KEYSTROKE },
+    [Keys.LT]: { str: '<', fn: WRITE },
+    [Keys.LEQ]: { str: '\\leq', fn: WRITE },
+    [Keys.GT]: { str: '>', fn: WRITE },
+    [Keys.GEQ]: { str: '\\geq', fn: WRITE },
 };
 
 const NormalCommands = {
     [Keys.LOG]: 'log',
+    [Keys.LN]: 'ln',
     [Keys.SIN]: 'sin',
     [Keys.COS]: 'cos',
     [Keys.TAN]: 'tan',
@@ -88,6 +96,9 @@ class MathWrapper {
             this.mathField.keystroke('Left'); // into parentheses
             this.mathField.keystroke('Left'); // out of parentheses
             this.mathField.keystroke('Left'); // into index
+        } else if (key === Keys.CUBE_ROOT) {
+            this.mathField.write('\\sqrt[3]{}');
+            this.mathField.keystroke('Left'); // under the root
         } else if (key === Keys.BACKSPACE) {
             this._handleBackspace(cursor);
         } else if (/^[a-z]$/.test(key)) {
