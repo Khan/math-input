@@ -90,6 +90,7 @@ const KeypadButton = React.createClass({
                 backgroundStyle = styles.numeral;
                 break;
 
+            case keyTypes.MANY:
             case keyTypes.MATH:
                 backgroundStyle = styles.command;
                 break;

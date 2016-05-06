@@ -10,6 +10,7 @@ module.exports = StyleSheet.create({
         bottom: 0,
         width: '100%',
         borderTop: '1px solid rgba(0, 0, 0, 0.2)',
+        backgroundColor: '#D6D8DA',
     },
     row: {
         flexDirection: 'row',
