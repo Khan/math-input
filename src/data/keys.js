@@ -48,6 +48,7 @@ const Keys = {
 
     LEFT: 'LEFT',
     RIGHT: 'RIGHT',
+    JUMP_OUT: 'JUMP_OUT',
     BACKSPACE: 'BACKSPACE',
     DISMISS: 'DISMISS',
     MORE: 'MORE',

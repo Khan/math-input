@@ -106,18 +106,21 @@ const AdvancedExpressionKeypad = React.createClass({
 
         // TODO(charlie): Simplify after user-testing.
         let topNavigationKey;
+        let goRightNavigationKey;
         if (showToggle) {
             topNavigationKey = currentPage === 0 ? KeyConfigs.MORE
                                                  : KeyConfigs.NUMBERS;
+            goRightNavigationKey = KeyConfigs.JUMP_OUT;
         } else {
             topNavigationKey = KeyConfigs.LEFT;
+            goRightNavigationKey = KeyConfigs.RIGHT;
         }
 
         // TODO(charlie): Enable this selectively. It's odd that we could show
-        // two `RIGHT` keys right now.
+        // two `JUMP_OUT` keys right now.
         let dismissOrJumpOutKey;
         if (cursorContext === CursorContexts.NESTED) {
-            dismissOrJumpOutKey = KeyConfigs.RIGHT;
+            dismissOrJumpOutKey = KeyConfigs.JUMP_OUT;
         } else {
             dismissOrJumpOutKey = KeyConfigs.DISMISS;
         }
@@ -128,7 +131,7 @@ const AdvancedExpressionKeypad = React.createClass({
                 borders={borderStyles.LEFT}
             />
             <TouchableKeypadButton
-                keyConfig={KeyConfigs.RIGHT}
+                keyConfig={goRightNavigationKey}
                 borders={borderStyles.LEFT}
             />
             <TouchableKeypadButton

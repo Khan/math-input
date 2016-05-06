@@ -23,7 +23,7 @@ module.exports = {
     NEQ: require('./neq'),
     GEQ: require('./geq'),
     LN: require('./ln'),
-    RADICAL: require('./radical'),
+    JUMP_OUT: require('./jump-out'),
     DISMISS: require('./dismiss'),
     SIN: require('./sin'),
     LT: require('./lt'),
@@ -55,6 +55,7 @@ module.exports = {
     EXP_MULTI: require('./exp-multi'),
     LEQ: require('./leq'),
     MINUS: require('./minus'),
+    RADICAL: require('./radical'),
     x: require('./x'),
     MORE: require('./more'),
 };

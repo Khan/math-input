@@ -105,6 +105,9 @@ const KeyConfigs = {
     [Keys.RIGHT]: {
         type: keyTypes.INPUT_NAVIGATION,
     },
+    [Keys.JUMP_OUT]: {
+        type: keyTypes.INPUT_NAVIGATION,
+    },
     [Keys.BACKSPACE]: {
         type: keyTypes.INPUT_NAVIGATION,
     },

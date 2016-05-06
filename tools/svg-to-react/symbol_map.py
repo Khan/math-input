@@ -40,6 +40,7 @@ filename_to_symbol = {
     'log': 'LOG_N',
     'move-backward': 'LEFT',
     'move-forward': 'RIGHT',
+    'jump-out': 'JUMP_OUT',
     'parentheses': 'PARENS',
     'multiplication-cross': 'TIMES',
     'multiplication-dot': 'CDOT',

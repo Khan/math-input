@@ -44,6 +44,7 @@ const KeyActions = {
     [Keys.RADICAL]: { str: 'nthroot', fn: CMD },
     [Keys.LEFT]: { str: 'Left', fn: KEYSTROKE },
     [Keys.RIGHT]: { str: 'Right', fn: KEYSTROKE },
+    [Keys.JUMP_OUT]: { str: 'Right', fn: KEYSTROKE },
     [Keys.LT]: { str: '<', fn: WRITE },
     [Keys.LEQ]: { str: '\\leq', fn: WRITE },
     [Keys.GT]: { str: '>', fn: WRITE },
