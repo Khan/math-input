@@ -2,7 +2,6 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-    devtool: '#eval-source-map',
     entry: {
         app: './src/index',
         deps: [
@@ -23,11 +22,14 @@ module.exports = {
         new webpack.optimize.CommonsChunkPlugin({
             name: 'deps',
         }),
-        // new webpack.optimize.UglifyJsPlugin({
-        //     compress: {
-        //         warnings: false
-        //     }
-        // }),
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': '"production"',
+        }),
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false,
+            },
+        }),
     ],
     resolve: {
         extensions: ['', '.js', '.jsx'],

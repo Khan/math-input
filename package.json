@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha test/test_*.js --compilers js:babel-register",
     "watch_test": "mocha test/test_spec.js --watch --compilers js:babel-register",
-    "start": "webpack -w"
+    "watch": "webpack --config webpack.config.dev.js --watch"
   },
   "author": "",
   "license": "MIT",
