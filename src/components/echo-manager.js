@@ -85,12 +85,12 @@ const styles = StyleSheet.create({
 
     enter: {
         opacity: 1,
-        transform: 'translateY(0)',
+        transform: 'translate3d(0, 0, 0)',
     },
 
     enterActive: {
         opacity: 0,
-        transform: `translateY(-${echoAnimationOffsetY}px)`,
+        transform: `translate3d(0, -${echoAnimationOffsetY}px, 0)`,
         transition: `transform ${echoAnimationMs}ms, `
             + `opacity ${echoAnimationMs}ms`,
     },
