@@ -183,25 +183,6 @@ const MathInput = React.createClass({
      */
     _moveCursorToNode(hitNode, x, y) {
         this.mathField.setCursorPosition(x, y, hitNode);
-
-        const cursorNode = document.querySelector('.mq-cursor');
-        const cursorBounds = cursorNode.getBoundingClientRect();
-
-        // Subtract the upper left corner of the container bounds from
-        // the coordinates of the cursor to account for the fact that
-        // the container is position:relative while the cursor handle
-        // will be position:absolute.
-        const containerBounds = this._container.getBoundingClientRect();
-        const left = cursorBounds.left - containerBounds.left;
-        const bottom = cursorBounds.bottom - containerBounds.top;
-
-        this.setState({
-            handle: {
-                visible: true,
-                x: left,
-                y: bottom,
-            },
-        });
     },
 
     /**
@@ -323,6 +304,17 @@ const MathInput = React.createClass({
      * @param {number} y - pageY of a touchmove on the cursor handle
      */
     handleCursorHandleMove(x, y) {
+        this.setState({
+            handle: {
+                visible: true,
+                // The offsets cause the handle to be positioned with its
+                // center right where the user's finger is.
+                // TODO(kevinb) use percentages after the switch to SVG
+                x: x - 20,
+                y: y - 35,
+            },
+        });
+
         // TODO(kevinb) cache this in the touchstart of the CursorHandle
         const containerBounds = this._container.getBoundingClientRect();
 
@@ -374,9 +366,21 @@ const MathInput = React.createClass({
             // Position the cursor at the right end of the line.
             const cursor = this.mathField.getCursor();
             cursor.insAtRightEnd(this.mathField.mathField.__controller.root);
-
-            this._updateCursorHandle();
         }
+    },
+
+    handleCursorHandleEnd(x, y) {
+        this._updateCursorHandle();
+    },
+
+    handleCursorHandleCancel(x, y) {
+        this.setState({
+            handle: {
+                visible: false,
+                x: 0,
+                y: 0,
+            },
+        });
     },
 
     render() {
@@ -396,6 +400,8 @@ const MathInput = React.createClass({
             {handle.visible && <CursorHandle
                 {...handle}
                 ref={(node) => this._cursorHandle = ReactDOM.findDOMNode(node)}
+                onEnd={this.handleCursorHandleEnd}
+                onCancel={this.handleCursorHandleCancel}
                 onMove={this.handleCursorHandleMove}
             />}
         </View>;
