@@ -11,7 +11,7 @@ const VelocityTracker = require('../components/velocity-tracker');
 const Settings = require('../settings');
 
 const initialHandlersState = {
-    keyHandlers: [],    // TODO(kevinb) keep track of the current handle
+    keyHandler: null,
 };
 
 const handlersReducer = function(state = initialHandlersState, action) {
@@ -19,7 +19,7 @@ const handlersReducer = function(state = initialHandlersState, action) {
         case 'RegisterKeyHandler':
             return {
                 ...state,
-                keyHandlers: [...state.keyHandlers, action.keyHandler],
+                keyHandler: action.keyHandler,
             };
 
         case 'PressKey':
@@ -28,9 +28,7 @@ const handlersReducer = function(state = initialHandlersState, action) {
                 // This is probably an anti-pattern but it works for the case
                 // where we don't actually control the state but we still want
                 // to communicate with the other object
-                state.keyHandlers.forEach(handler => {
-                    handler(keyConfig.id);
-                });
+                state.keyHandler(keyConfig.id);
             }
 
             // TODO(kevinb) get state from MathQuill and store it?
