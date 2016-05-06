@@ -6,10 +6,11 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 const { connect } = require('react-redux');
+const { StyleSheet } = require('aphrodite');
 
 const { View } = require('../fake-react-native-web');
 const EchoManager = require('./echo-manager');
-const { keypad } = require('./styles');
+const { lightGrey } = require('./common-style');
 const { echoPropType } = require('./prop-types');
 
 const Keypad = React.createClass({
@@ -69,7 +70,7 @@ const Keypad = React.createClass({
         });
 
         const keypadStyle = [
-            keypad,
+            styles.keypad,
             ...(Array.isArray(style) ? style : [style]),
         ];
 
@@ -77,6 +78,16 @@ const Keypad = React.createClass({
             {children}
             <EchoManager echoes={relativeEchoes} />
         </View>;
+    },
+});
+
+const styles = StyleSheet.create({
+    keypad: {
+        position: 'fixed',
+        bottom: 0,
+        width: '100%',
+        borderTop: '1px solid rgba(0, 0, 0, 0.2)',
+        backgroundColor: lightGrey,
     },
 });
 
