@@ -67,10 +67,12 @@ const MathInput = React.createClass({
         // pass this component's handleKey method to the store so it can call
         // it whenever the store gets an KeyPress action from the keypad
         actions.registerKeyHandler(key => {
-            this.mathField.pressKey(key);
+            const cursor = this.mathField.pressKey(key);
 
             // Hide the cursor handle whenever the user types a key.
             this.setState({ handle: { visible: false } });
+
+            return cursor;
         });
     },
 

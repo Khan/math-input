@@ -6,6 +6,7 @@ const React = require('react');
 
 const KeyConfigs = require('../data/key-configs');
 const { keyTypes } = require('../consts');
+const CursorContexts = require('./input/cursor-contexts');
 
 const keyIdPropType = React.PropTypes.oneOf(Object.keys(KeyConfigs));
 
@@ -30,6 +31,10 @@ const echoPropType = React.PropTypes.shape({
     initialBounds: boundingBoxPropType.isRequired,
 });
 
+const cursorContextPropType = React.PropTypes.oneOf(
+    Object.keys(CursorContexts)
+);
+
 const childrenPropType = React.PropTypes.oneOfType([
     React.PropTypes.arrayOf(React.PropTypes.node),
     React.PropTypes.node,
@@ -40,5 +45,6 @@ module.exports = {
     keyIdPropType,
     boundingBoxPropType,
     echoPropType,
+    cursorContextPropType,
     childrenPropType,
 };

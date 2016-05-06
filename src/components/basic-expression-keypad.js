@@ -8,17 +8,19 @@ const { StyleSheet } = require('aphrodite');
 
 const { View } = require('../fake-react-native-web');
 const TwoPageKeypad = require('./two-page-keypad');
-const TouchableKeypadButton = require('./touchable-keypad-button');
 const EmptyKeypadButton = require('./empty-keypad-button');
+const TouchableKeypadButton = require('./touchable-keypad-button');
 const { row, column, oneColumn } = require('./styles');
 const { borderStyles, switchTypes } = require('../consts');
-const { keyIdPropType } = require('./prop-types');
+const { cursorContextPropType, keyIdPropType } = require('./prop-types');
 const KeyConfigs = require('../data/key-configs');
+const CursorContexts = require('./input/cursor-contexts');
 const { keypadSwitch } = require('../settings');
 
 const BasicExpressionKeypad = React.createClass({
     propTypes: {
         currentPage: React.PropTypes.number.isRequired,
+        cursorContext: cursorContextPropType.isRequired,
         extraKeys: React.PropTypes.arrayOf(keyIdPropType),
         showToggle: React.PropTypes.bool,
     },
@@ -30,7 +32,7 @@ const BasicExpressionKeypad = React.createClass({
     },
 
     render() {
-        const { currentPage, showToggle } = this.props;
+        const { currentPage, cursorContext, showToggle } = this.props;
 
         const firstPage = <View style={[row, styles.fullPage]}>
             <View style={[column, oneColumn]}>
@@ -105,6 +107,15 @@ const BasicExpressionKeypad = React.createClass({
             topNavigationKey = KeyConfigs.LEFT;
         }
 
+        // TODO(charlie): Enable this selectively. It's odd that we could show
+        // two `RIGHT` keys right now.
+        let dismissOrJumpOutKey;
+        if (cursorContext === CursorContexts.NESTED) {
+            dismissOrJumpOutKey = KeyConfigs.RIGHT;
+        } else {
+            dismissOrJumpOutKey = KeyConfigs.DISMISS;
+        }
+
         const sidebar = <View style={[column, oneColumn]}>
             <TouchableKeypadButton
                 keyConfig={topNavigationKey}
@@ -119,7 +130,7 @@ const BasicExpressionKeypad = React.createClass({
                 borders={borderStyles.LEFT}
             />
             <TouchableKeypadButton
-                keyConfig={KeyConfigs.DISMISS}
+                keyConfig={dismissOrJumpOutKey}
                 borders={borderStyles.LEFT}
             />
         </View>;
@@ -142,6 +153,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
     return {
         currentPage: state.pager.currentPage,
+        cursorContext: state.input.cursor.context,
     };
 };
 

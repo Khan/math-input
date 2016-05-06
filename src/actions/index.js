@@ -70,6 +70,13 @@ module.exports = {
         });
     },
 
+    setCursor: function(cursor) {
+        store.dispatch({
+            type: 'SetCursor',
+            cursor,
+        });
+    },
+
     setActiveNodes: function(activeNodes) {
         store.dispatch({
             type: 'SetActiveNodes',

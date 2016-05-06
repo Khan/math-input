@@ -5,16 +5,20 @@ const { keyTypes } = require('../consts');
 const Keys = require('../data/keys');
 const KeyConfigs = require('../data/key-configs');
 const Keypads = require('../data/keypads');
+const CursorContexts = require('../components/input/cursor-contexts');
 const GestureManager = require('../components/gesture-manager');
 const VelocityTracker = require('../components/velocity-tracker');
 
 const Settings = require('../settings');
 
-const initialHandlersState = {
+const initialInputState = {
     keyHandler: null,
+    cursor: {
+        context: CursorContexts.TOP_LEVEL,
+    },
 };
 
-const handlersReducer = function(state = initialHandlersState, action) {
+const inputReducer = function(state = initialInputState, action) {
     switch (action.type) {
         case 'RegisterKeyHandler':
             return {
@@ -28,11 +32,20 @@ const handlersReducer = function(state = initialHandlersState, action) {
                 // This is probably an anti-pattern but it works for the case
                 // where we don't actually control the state but we still want
                 // to communicate with the other object
-                state.keyHandler(keyConfig.id);
+                return {
+                    ...state,
+                    cursor: state.keyHandler(keyConfig.id),
+                };
             }
 
             // TODO(kevinb) get state from MathQuill and store it?
             return state;
+
+        case 'SetCursor':
+            return {
+                ...state,
+                cursor: action.cursor,
+            };
 
         default:
             return state;
@@ -330,7 +343,7 @@ const buttonsReducer = function(state = initialButtonsState, action) {
 };
 
 const reducer = Redux.combineReducers({
-    handlers: handlersReducer,
+    input: inputReducer,
     keypad: keypadReducer,
     pager: pagerReducer,
     gestures: gestureReducer,

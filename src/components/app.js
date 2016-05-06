@@ -8,18 +8,13 @@ const MathKeypad = require('./math-keypad');
 const KeypadTypeSelector = require('./keypad-type-selector');
 
 const store = require('../store');
-const { configureKeypad } = require('../actions');
+const { configureKeypad, setCursor } = require('../actions');
 const Settings = require('../settings');
 
 const App = React.createClass({
     render() {
         return <View>
-            <MathInput
-                onCursorMove={(cursor) => {
-                    /* eslint-disable no-console */
-                    console.log("Cursor context:", cursor.context);
-                }}
-            />
+            <MathInput onCursorMove={setCursor} />
             <Provider store={store}>
                 <MathKeypad />
             </Provider>
