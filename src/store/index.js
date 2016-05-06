@@ -57,14 +57,16 @@ const defaultKeypadType = Settings.keypadType;
 const initialKeypadState = {
     extraKeys: Keypads[defaultKeypadType].extraKeys,
     keypadType: defaultKeypadType,
+    active: true,
 };
 
 const keypadReducer = function(state = initialKeypadState, action) {
     switch (action.type) {
         case 'DismissKeypad':
-            /* eslint-disable no-console */
-            console.log("TODO(charlie): Figure out dismissal.");
-            return state;
+            return {
+                ...state,
+                active: false,
+            };
 
         case 'ConfigureKeypad':
             const { keypadType } = action.configuration;
@@ -76,14 +78,19 @@ const keypadReducer = function(state = initialKeypadState, action) {
                 // a single 'configuration' object.
                 extraKeys: Keypads[keypadType].extraKeys,
                 keypadType,
+                active: true,
             };
 
         case 'PressKey':
             const keyConfig = KeyConfigs[action.key];
+            // NOTE(charlie): Our keypad system operates by triggering key
+            // presses with key IDs in a dumb manner, such that the keys don't
+            // know what they can do--instead, the store is responsible for
+            // interpreting key presses and triggering the right actions when
+            // they occur. Hence, we figure off a dismissal here rather than
+            // dispatching a dismiss action in the first place.
             if (keyConfig.id === Keys.DISMISS) {
-                /* eslint-disable no-console */
-                console.log("TODO(charlie): Figure out dismissal.");
-                return state;
+                return keypadReducer(state, { type: 'DismissKeypad' });
             }
             return state;
 

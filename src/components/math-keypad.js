@@ -5,6 +5,7 @@ const DefaultKeypad = require('./default-keypad');
 const NumberKeypad = require('./number-keypad');
 const FractionKeypad = require('./fraction-keypad');
 const BasicExpressionKeypad = require('./basic-expression-keypad');
+const Dismissable = require('./dismissable');
 const AdvancedExpressionKeypad = require('./advanced-expression-keypad');
 const { getButtonHeightPx } = require('./common-style');
 const { setButtonHeightPx } = require('../actions');
@@ -13,8 +14,9 @@ const { keypadTypes } = require('../consts');
 
 const MathKeypad = React.createClass({
     propTypes: {
+        active: React.PropTypes.bool,
         extraKeys: React.PropTypes.arrayOf(keyIdPropType),
-        keypadType: React.PropTypes.oneOf(Object.keys(keypadTypes)),
+        keypadType: React.PropTypes.oneOf(Object.keys(keypadTypes)).isRequired,
     },
 
     componentDidMount() {
@@ -47,7 +49,7 @@ const MathKeypad = React.createClass({
         }
     },
 
-    render() {
+    renderKeypad() {
         // Extract props that some keypads will need.
         const { extraKeys, keypadType } = this.props;
 
@@ -75,6 +77,14 @@ const MathKeypad = React.createClass({
             default:
                 return <DefaultKeypad />;
         }
+    },
+
+    render() {
+        const { active } = this.props;
+
+        return <Dismissable active={active} id='keypad'>
+            {this.renderKeypad()}
+        </Dismissable>;
     },
 });
 

@@ -16,6 +16,7 @@
     "performance-now": "^0.2.0",
     "query-string": "^4.1.0",
     "react": "15.0.1",
+    "react-addons-create-fragment": "15.0.1",
     "react-addons-css-transition-group": "15.0.1",
     "react-dom": "15.0.1",
     "react-redux": "^4.4.5",
