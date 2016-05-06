@@ -11,18 +11,26 @@ const TwoPageKeypad = require('./two-page-keypad');
 const EmptyKeypadButton = require('./empty-keypad-button');
 const TouchableKeypadButton = require('./touchable-keypad-button');
 const { row, column, oneColumn } = require('./styles');
-const { borderStyles } = require('../consts');
+const { borderStyles, switchTypes } = require('../consts');
 const { keyIdPropType } = require('./prop-types');
 const KeyConfigs = require('../data/key-configs');
+const { keypadSwitch } = require('../settings');
 
 const AdvancedExpressionKeypad = React.createClass({
     propTypes: {
         currentPage: React.PropTypes.number.isRequired,
         extraKeys: React.PropTypes.arrayOf(keyIdPropType),
+        showToggle: React.PropTypes.bool,
+    },
+
+    getDefaultProps() {
+        return {
+            showToggle: keypadSwitch === switchTypes.TOGGLE,
+        };
     },
 
     render() {
-        const { currentPage } = this.props;
+        const { currentPage, showToggle } = this.props;
 
         const firstPage = <View style={[row, styles.fullPage]}>
             <View style={[column, oneColumn]}>
@@ -94,12 +102,18 @@ const AdvancedExpressionKeypad = React.createClass({
             </View>
         </View>;
 
-        const switchPageKey = currentPage === 0 ? KeyConfigs.MORE
-                                                : KeyConfigs.NUMBERS;
+        // TODO(charlie): Simplify after user-testing.
+        let topNavigationKey;
+        if (showToggle) {
+            topNavigationKey = currentPage === 0 ? KeyConfigs.MORE
+                                                 : KeyConfigs.NUMBERS;
+        } else {
+            topNavigationKey = KeyConfigs.LEFT;
+        }
+
         const sidebar = <View style={[column, oneColumn]}>
             <TouchableKeypadButton
-                key={switchPageKey.id}
-                keyConfig={switchPageKey}
+                keyConfig={topNavigationKey}
                 borders={borderStyles.LEFT}
             />
             <TouchableKeypadButton

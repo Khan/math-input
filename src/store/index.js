@@ -41,7 +41,7 @@ const handlersReducer = function(state = initialHandlersState, action) {
     }
 };
 
-const defaultKeypadType = Settings.keypadType.toUpperCase();
+const defaultKeypadType = Settings.keypadType;
 
 const initialKeypadState = {
     extraKeys: Keypads[defaultKeypadType].extraKeys,

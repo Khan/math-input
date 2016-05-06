@@ -40,4 +40,11 @@ module.exports = {
         ALL: ['LEFT', 'BOTTOM'],
         NONE: [],
     },
+
+    // Configurable settings.
+    switchTypes: {
+        TOGGLE: 'TOGGLE',
+        TAB_BAR: 'TAB_BAR',
+        PAGE_CONTROL: 'PAGE_CONTROL',
+    },
 };
