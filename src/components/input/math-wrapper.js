@@ -10,6 +10,7 @@ const MathQuill = window.MathQuill;
 const MQ = MathQuill.getInterface(2);
 
 const Keys = require('../../data/keys');
+const CursorContexts = require('./cursor-contexts');
 
 const WRITE = 'write';
 const CMD = 'cmd';
@@ -77,6 +78,12 @@ class MathWrapper {
         this.mathField.keystroke('Left');
     }
 
+    /**
+     * Handle a key press and return the resulting cursor state.
+     *
+     * @param {Key} key - an enum representing the key that was pressed
+     * @returns {object} a cursor object, consisting of a cursor context
+     */
     pressKey(key) {
         const cursor = this.mathField.__controller.cursor;
 
@@ -114,21 +121,35 @@ class MathWrapper {
         if (this.callbacks.onSelectionChanged) {
             this.callbacks.onSelectionChanged(cursor.selection);
         }
+
+        // NOTE(charlie): It's insufficient to do this as an `edited` handler
+        // on the MathField, as that handler isn't triggered on navigation
+        // events.
+        return {
+            context: this._contextForCursor(cursor),
+        };
     }
 
-    setCursorPosition(x, y) {
-        const el = document.elementFromPoint(x, y);
+    setCursorPosition(x, y, hitNode) {
+        const el = hitNode || document.elementFromPoint(x, y);
 
         if (el) {
+            const cursor = this.getCursor();
+
             if (el.hasAttribute('mq-root-block')) {
                 // If we're in the empty area place the cursor at the right
                 // end of the expression.
-                const cursor = this.getCursor();
                 cursor.insAtRightEnd(this.mathField.__controller.root);
             } else {
                 // Otherwise place beside the element at x, y.
                 const controller = this.mathField.__controller;
                 controller.seek($(el), x, y).cursor.startSelection();
+            }
+
+            if (this.callbacks.onCursorMove) {
+                this.callbacks.onCursorMove({
+                    context: this._contextForCursor(cursor),
+                });
             }
         }
     }
@@ -484,6 +505,18 @@ class MathWrapper {
         if (isEmpty) {
             this.mathField.keystroke('Backspace');
         }
+    }
+
+    _contextForCursor(cursor) {
+        if (this._isAtTopLevel(cursor)) {
+            return CursorContexts.TOP_LEVEL;
+        } else {
+            return CursorContexts.NESTED;
+        }
+    }
+
+    _isAtTopLevel(cursor) {
+        return !cursor.parent.parent;
     }
 }
 

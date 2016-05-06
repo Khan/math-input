@@ -14,7 +14,12 @@ const Settings = require('../settings');
 const App = React.createClass({
     render() {
         return <View>
-            <MathInput />
+            <MathInput
+                onCursorMove={(cursor) => {
+                    /* eslint-disable no-console */
+                    console.log("Cursor context:", cursor.context);
+                }}
+            />
             <Provider store={store}>
                 <MathKeypad />
             </Provider>

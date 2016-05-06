@@ -1,7 +1,6 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 const { StyleSheet } = require("aphrodite");
-const $ = require('jQuery');
 
 const actions = require('../../actions');
 const { View } = require('../../fake-react-native-web');
@@ -33,6 +32,17 @@ const unionRects = (rects) =>
     });
 
 const MathInput = React.createClass({
+    propTypes: {
+        /**
+         * A callback that's triggered whenever the cursor moves as a result of
+         * a non-key press (i.e., through direct user interaction).
+         *
+         * The callback takes, as argument, a cursor object consisting of a
+         * cursor context.
+         */
+        onCursorMove: React.PropTypes.func,
+    },
+
     getInitialState() {
         return {
             handle: {
@@ -47,6 +57,7 @@ const MathInput = React.createClass({
     componentDidMount() {
         this.mathField = new MathWrapper(this._mathContainer, {
             onSelectionChanged: this.onSelectionChanged,
+            onCursorMove: this.props.onCursorMove,
         });
 
         this._root = document.querySelector('.mq-root-block');
@@ -170,9 +181,7 @@ const MathInput = React.createClass({
      * @param {number} y
      */
     _moveCursorToNode(hitNode, x, y) {
-        const containerBounds = this._container.getBoundingClientRect();
-        const controller = this.mathField.mathField.__controller;
-        controller.seek($(hitNode), x, y).cursor.startSelection();
+        this.mathField.setCursorPosition(x, y, hitNode);
 
         const cursorNode = document.querySelector('.mq-cursor');
         const cursorBounds = cursorNode.getBoundingClientRect();
@@ -181,6 +190,7 @@ const MathInput = React.createClass({
         // the coordinates of the cursor to account for the fact that
         // the container is position:relative while the cursor handle
         // will be position:absolute.
+        const containerBounds = this._container.getBoundingClientRect();
         const left = cursorBounds.left - containerBounds.left;
         const bottom = cursorBounds.bottom - containerBounds.top;
 
