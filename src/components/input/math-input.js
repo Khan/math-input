@@ -356,15 +356,21 @@ const MathInput = React.createClass({
             return;
         }
 
-        // We've exhausted all of the options.  In this situation the cursor
-        // is probably to the right of the math so let's place it at the end
-        // of the math expression.
-        // TODO(kevinb) check if the cursor position is to the right of the
-        // math before placing the cursor there.
-        if (x > containerBounds.left) {
-            // Position the cursor at the right end of the line.
+        const firstChildBounds = this._root.firstChild.getBoundingClientRect();
+        const lastChildBounds = this._root.lastChild.getBoundingClientRect();
+
+        const left = firstChildBounds.left;
+        const right = lastChildBounds.right;
+
+        // We've exhausted all of the options. We're likely either to the right
+        // or left of all of the math, so we place the cursor at the end to
+        // which it's closest.
+        if (Math.abs(x - right) < Math.abs(x - left)) {
             const cursor = this.mathField.getCursor();
             cursor.insAtRightEnd(this.mathField.mathField.__controller.root);
+        } else {
+            const cursor = this.mathField.getCursor();
+            cursor.insAtLeftEnd(this.mathField.mathField.__controller.root);
         }
     },
 
