@@ -25,7 +25,6 @@ const Sqrt = React.createClass({
                     <g id="math_keypad_icon_radical_2" transform="translate(1272.000000, 834.000000)">
                         <g id="icon">
                             <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="48" height="48"></rect>
-                            <path d="M20.635,23 L20.635,21.5 L18.195,21.5 C19.855,20.34 20.585,19.47 20.585,18.45 C20.585,17.11 19.455,16.23 17.885,16.23 C16.955,16.23 15.895,16.56 15.185,17.34 L16.135,18.48 C16.615,18.03 17.175,17.75 17.915,17.75 C18.405,17.75 18.835,17.99 18.835,18.45 C18.835,19.11 18.295,19.57 15.405,21.66 L15.405,23 L20.635,23 Z" id="2" fill={this.props.primaryColor}></path>
                             <polyline id="root" stroke={this.props.primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" points="14 29 18 35 27 21 34 21"></polyline>
                         </g>
                     </g>

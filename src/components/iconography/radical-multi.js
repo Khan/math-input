@@ -26,8 +26,7 @@ const RadicalMulti = React.createClass({
                         <g id="icon">
                             <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="48" height="48"></rect>
                             <polyline id="root" stroke={this.props.primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" points="14 29 18 35 27 21 34 21"></polyline>
-                            <path d="M20.635,23 L20.635,21.5 L18.195,21.5 C19.855,20.34 20.585,19.47 20.585,18.45 C20.585,17.11 19.455,16.23 17.885,16.23 C16.955,16.23 15.895,16.56 15.185,17.34 L16.135,18.48 C16.615,18.03 17.175,17.75 17.915,17.75 C18.405,17.75 18.835,17.99 18.835,18.45 C18.835,19.11 18.295,19.57 15.405,21.66 L15.405,23 L20.635,23 Z" id="2" fill={this.props.primaryColor}></path>
-                            <rect id="base" fill={this.props.primaryColor} opacity="0.3" transform="translate(18.000000, 26.000000) scale(1, -1) translate(-18.000000, -26.000000) " x="15" y="25" width="6" height="2" rx="1"></rect>
+                            <path d="M13,16.9970301 C13,16.4463856 13.4530363,16 13.9970301,16 L20.0029699,16 C20.5536144,16 21,16.4530363 21,16.9970301 L21,23.0029699 C21,23.5536144 20.5469637,24 20.0029699,24 L13.9970301,24 C13.4463856,24 13,23.5469637 13,23.0029699 L13,16.9970301 Z M15,18 L19,18 L19,22 L15,22 L15,18 Z" id="block" fill={this.props.primaryColor} opacity="0.3"></path>
                         </g>
                     </g>
                 </g>

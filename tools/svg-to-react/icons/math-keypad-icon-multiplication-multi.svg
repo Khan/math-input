@@ -14,11 +14,11 @@
                         <path d="M7,2 C2.99999998,8 3.00000002,16 7,22" id="arc" stroke="#3B3E40" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                         <path d="M20,2 C16,8 16,16 20,22" id="arc" stroke="#3B3E40" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" transform="translate(18.500000, 12.000000) scale(-1, 1) translate(-18.500000, -12.000000) "></path>
                     </g>
-                    <g id="dot" opacity="0.6" transform="translate(34.000000, 12.000000)">
+                    <g id="dot" opacity="0.3" transform="translate(34.000000, 12.000000)">
                         <rect id="bounds" fill-opacity="0" fill="#FF0088" x="0" y="0" width="8" height="8"></rect>
                         <circle fill="#3B3E40" cx="4" cy="4" r="2"></circle>
                     </g>
-                    <g id="cross" opacity="0.6" transform="translate(34.000000, 28.000000)">
+                    <g id="cross" opacity="0.3" transform="translate(34.000000, 28.000000)">
                         <rect id="bounds" fill-opacity="0" fill="#FF0088" x="0" y="0" width="8" height="8"></rect>
                         <path d="M1,1 L7,7" id="line" stroke="#3B3E40" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                         <path d="M1,1 L7,7" id="line" stroke="#3B3E40" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" transform="translate(4.000000, 4.000000) scale(-1, 1) translate(-4.000000, -4.000000) "></path>

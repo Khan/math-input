@@ -8,7 +8,6 @@ const { connect } = require('react-redux');
 const { StyleSheet } = require('aphrodite');
 const { Text, View } = require('../fake-react-native-web');
 const Icon = require('./icon');
-const CornerDecal = require('./corner-decal');
 const MultiSymbolPopover = require('./multi-symbol-popover');
 const { keyTypes, borderDirections, borderStyles } = require('../consts');
 const { row, column, centered } = require('./styles');
@@ -152,8 +151,6 @@ const KeypadButton = React.createClass({
         const eventHandlers = {
             onTouchCancel, onTouchEnd, onTouchMove, onTouchStart,
         };
-        const maybeCornerDecal = childKeys && childKeys.length > 0 &&
-            <CornerDecal />;
         const maybePopoverContent = popoverEnabled &&
             <MultiSymbolPopover keys={childKeys} />;
 
@@ -184,7 +181,6 @@ const KeypadButton = React.createClass({
                         )}
                     </View>
                 </View>
-                {maybeCornerDecal}
                 {maybePopoverContent}
             </View>;
         } else {
@@ -193,7 +189,6 @@ const KeypadButton = React.createClass({
                 <View style={renderFocused && focusStyle}>
                     <Icon name={name} focused={renderFocused} />
                 </View>
-                {maybeCornerDecal}
                 {maybePopoverContent}
             </View>;
         }

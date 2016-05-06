@@ -3,10 +3,8 @@
  */
 
 const React = require('react');
-const { connect } = require('react-redux');
 const { StyleSheet } = require('aphrodite');
 
-const Shadow = require('./shadow');
 const Keypad = require('./keypad');
 const ViewPager = require('./view-pager');
 const TabBarIndicator = require('./tab-bar-indicator');
@@ -21,7 +19,6 @@ const { setKeypadCurrentPage } = require('../actions');
 const TwoPageKeypad = React.createClass({
     propTypes: {
         currentPage: React.PropTypes.oneOf([0, 1]).isRequired,
-        displayShadow: React.PropTypes.bool,
         firstPage: React.PropTypes.node.isRequired,
         secondPage: React.PropTypes.node.isRequired,
         showPagerIndicator: React.PropTypes.bool,
@@ -40,7 +37,6 @@ const TwoPageKeypad = React.createClass({
     render() {
         const {
             currentPage,
-            displayShadow,
             firstPage,
             secondPage,
             showPagerIndicator,
@@ -54,19 +50,6 @@ const TwoPageKeypad = React.createClass({
             showPagerIndicator && styles.borderTop,
         ];
 
-        // NOTE(charlie): Ideally, we would render and manage the shadow in the
-        // <Keypad>, and popovers would be displayed on top using z-indexing.
-        // Unfortunately, because we're using a transform on the pages in this
-        // component, that approach doesn't work due to some unknown interplay
-        // between transforms and z-indices. As such, we need to render the
-        // shadow here (inside of the node that is being transformed) and,
-        // worse still, render it twice. An alternative approach would be to
-        // render the popovers absolutely on top of the keypad, similarly to
-        // how we render the echoes. But this leads to a bunch of additional
-        // complexity and makes the layout far more brittle. If we ever need to
-        // display a shadow in a non-two-page keypad, we can add a
-        // `displayShadow` prop to the <Keypad> and override it here to render
-        // the shadow ourselves in this case.
         return <Keypad style={column}>
             {showTabBarIndicator &&
                 <TabBarIndicator
@@ -80,12 +63,10 @@ const TwoPageKeypad = React.createClass({
                     <ViewPager>
                         {firstPage}
                         {secondPage}
-                        {displayShadow && <Shadow />}
                     </ViewPager>
                 </View>
                 <View style={styles.sidebarContent}>
                     {sidebar}
-                    {displayShadow && <Shadow />}
                 </View>
             </View>
             {showPagerIndicator &&
@@ -123,10 +104,4 @@ const styles = StyleSheet.create({
     },
 });
 
-const mapStateToProps = (state) => {
-    return {
-        displayShadow: !!(state.gestures.popover && state.gestures.focus),
-    };
-};
-
-module.exports = connect(mapStateToProps)(TwoPageKeypad);
+module.exports = TwoPageKeypad;

@@ -31,7 +31,7 @@ const FracMulti = React.createClass({
                                 <rect id="bar" fill={this.props.primaryColor} x="2" y="11" width="20" height="2" rx="1"></rect>
                                 <path d="M8,0.997030139 C8,0.446385598 8.45303631,0 8.99703014,0 L15.0029699,0 C15.5536144,0 16,0.453036308 16,0.997030139 L16,7.00296986 C16,7.5536144 15.5469637,8 15.0029699,8 L8.99703014,8 C8.4463856,8 8,7.54696369 8,7.00296986 L8,0.997030139 Z M10,2 L14,2 L14,6 L10,6 L10,2 Z" id="block" fill={this.props.primaryColor}></path>
                             </g>
-                            <g id="division" opacity="0.6" transform="translate(34.000000, 12.000000)">
+                            <g id="division" opacity="0.3" transform="translate(34.000000, 12.000000)">
                                 <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="8" height="8"></rect>
                                 <circle id="dot" fill={this.props.primaryColor} cx="4" cy="7" r="1"></circle>
                                 <path d="M1,4 L7,4" id="bar" stroke={this.props.primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
