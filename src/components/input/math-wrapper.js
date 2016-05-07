@@ -24,10 +24,6 @@ const MQ_END = 0;
 const KeyActions = {
     [Keys.PLUS]: { str: '+', fn: WRITE },
     [Keys.MINUS]: { str: '-', fn: WRITE },
-    // TODO(charlie): The behavior of this key depends on the state of the
-    // input. Right now, it doesn't properly respect the "switch to positive"
-    // case.
-    [Keys.TOGGLE_SIGN]: { str: '-', fn: WRITE },
     [Keys.TIMES]: { str: '\\times', fn: WRITE },
     [Keys.DIVIDE]: { str: '\\div', fn: WRITE },
     [Keys.DECIMAL]: { str: '.', fn: WRITE },
@@ -107,6 +103,8 @@ class MathWrapper {
         } else if (key === Keys.CUBE_ROOT) {
             this.mathField.write('\\sqrt[3]{}');
             this.mathField.keystroke('Left'); // under the root
+        } else if (key === Keys.TOGGLE_SIGN) {
+            this._handleToggleSign(cursor);
         } else if (key === Keys.BACKSPACE) {
             this._handleBackspace(cursor);
         } else if (/^[a-z]$/.test(key)) {
@@ -505,6 +503,40 @@ class MathWrapper {
         // begin with.
         if (isEmpty) {
             this.mathField.keystroke('Backspace');
+        }
+    }
+
+    /**
+     * Handle the 'toggle sign' operation.
+     *
+     * This implementation makes non-trivial assumptions about the behavior of
+     * our keypads. Namely, it assumes that the 'toggle sign' operation can
+     * only be performed on keypads that will never have selection states, and
+     * will never have nested expressions.
+     */
+    _handleToggleSign(cursor) {
+        const leftNode = cursor[MQ.L];
+        const latex = this.getLatex();
+
+        const minusSign = '-';
+        if (latex.charAt(0) === minusSign) {
+            // If the input is leading with a minus sign, remove it.
+            this.mathField.moveToDirEnd(MQ.L);
+            this.mathField.keystroke('Right');
+            this.mathField.keystroke('Backspace');
+        } else {
+            // Otherwise, write it at the start of the expression.
+            this.mathField.moveToDirEnd(MQ.L);
+            this.mathField.write(minusSign);
+        }
+
+        // If our cursor was at the start or at the minus sign, then we can
+        // leave it in-place. Otherwise, we need to re-insert it.
+        // TODO(charlie): If we're inside an empty numerator or denominator,
+        // then the cursor gets positioned incorrectly (at the front of the
+        // expression).
+        if (leftNode !== MQ_END && leftNode.latex() !== minusSign) {
+            cursor.insRightOf(leftNode);
         }
     }
 
