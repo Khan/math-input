@@ -4,7 +4,6 @@
 
 const React = require('react');
 const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
-const { StyleSheet, css } = require('aphrodite');
 const { removeEcho } = require('../actions');
 const KeypadButton = require('./keypad-button');
 const { keyTypes, borderStyles } = require('../consts');
@@ -12,6 +11,8 @@ const {
     echoPropType, boundingBoxPropType, keyIdPropType,
 } = require('./prop-types');
 
+// NOTE(charlie): This must be kept in sync with the transition duration
+// specified in echo.css.
 const echoAnimationMs = 1000;
 
 const Echo = React.createClass({
@@ -34,16 +35,24 @@ const Echo = React.createClass({
     render() {
         const { id, initialBounds } = this.props;
 
-        const dynamicStyles = StyleSheet.create({
-            positioning: initialBounds,
-        });
+        const containerStyle = {
+            position: 'absolute',
+            pointerEvents: 'none',
+            ...initialBounds,
+        };
 
-        return <KeypadButton
-            name={id}
-            type={keyTypes.ECHO}
-            borders={borderStyles.NONE}
-            style={[styles.container, dynamicStyles.positioning]}
-        />;
+        // NOTE(charlie): In some browsers, Aphrodite doesn't seem to flush its
+        // styles quickly enough, so there's a flickering effect on the first
+        // animation. Thus, it's much safer to do the styles purely inline.
+        // <View> makes this difficult because some of its defaults, which are
+        // applied via StyleSheet, will override our inlines.
+        return <div style={containerStyle}>
+            <KeypadButton
+                name={id}
+                type={keyTypes.ECHO}
+                borders={borderStyles.NONE}
+            />
+        </div>;
     },
 });
 
@@ -55,14 +64,12 @@ const EchoManager = React.createClass({
     render() {
         const { echoes } = this.props;
 
-        // TODO(charlie): This works perfectly in the emulator but not at all
-        // on mobile Safari, due to a bug in Aphrodite.
-        //   See: https://github.com/Khan/aphrodite/issues/68
+        // TODO(charlie): Manage this animation with Aphrodite styles. Right
+        // now, there's a bug in the autoprefixer that breaks CSS transitions on
+        // mobile Safari. See: https://github.com/Khan/aphrodite/issues/68. As
+        // such, we have to do this with a stylesheet.
         return <ReactCSSTransitionGroup
-            transitionName={{
-                enter: css(styles.enter),
-                enterActive: css(styles.enterActive),
-            }}
+            transitionName='echo'
             transitionEnter={true}
             transitionLeave={false}
             transitionEnterTimeout={echoAnimationMs}
@@ -72,27 +79,6 @@ const EchoManager = React.createClass({
                 return <Echo key={animationId} {...echo} />;
             })}
         </ReactCSSTransitionGroup>;
-    },
-});
-
-const echoAnimationOffsetY = 50;
-
-const styles = StyleSheet.create({
-    container: {
-        position: 'absolute',
-        pointerEvents: 'none',
-    },
-
-    enter: {
-        opacity: 1,
-        transform: 'translateY(0)',
-    },
-
-    enterActive: {
-        opacity: 0,
-        transform: `translateY(-${echoAnimationOffsetY}px)`,
-        transition: `transform ${echoAnimationMs}ms, `
-            + `opacity ${echoAnimationMs}ms`,
     },
 });
 
