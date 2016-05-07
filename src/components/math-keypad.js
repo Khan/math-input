@@ -18,6 +18,10 @@ const MathKeypad = React.createClass({
     },
 
     componentDidMount() {
+        // Relay the initial button height to the system.
+        setButtonHeightPx(getButtonHeightPx());
+
+        // And update it on resize.
         window.addEventListener("resize", this._onResize);
     },
 
