@@ -11,28 +11,32 @@ const TwoPageKeypad = require('./two-page-keypad');
 const EmptyKeypadButton = require('./empty-keypad-button');
 const TouchableKeypadButton = require('./touchable-keypad-button');
 const { row, column, oneColumn } = require('./styles');
-const { borderStyles, switchTypes } = require('../consts');
+const { borderStyles, switchTypes, jumpOutTypes } = require('../consts');
 const { cursorContextPropType, keyIdPropType } = require('./prop-types');
 const KeyConfigs = require('../data/key-configs');
 const CursorContexts = require('./input/cursor-contexts');
-const { keypadSwitch } = require('../settings');
+const { keypadSwitch, jumpOutType } = require('../settings');
 
 const AdvancedExpressionKeypad = React.createClass({
     propTypes: {
         currentPage: React.PropTypes.number.isRequired,
         cursorContext: cursorContextPropType.isRequired,
+        dynamicJumpOut: React.PropTypes.bool,
         extraKeys: React.PropTypes.arrayOf(keyIdPropType),
         showToggle: React.PropTypes.bool,
     },
 
     getDefaultProps() {
         return {
+            dynamicJumpOut: jumpOutType === jumpOutTypes.DYNAMIC,
             showToggle: keypadSwitch === switchTypes.TOGGLE,
         };
     },
 
     render() {
-        const { currentPage, cursorContext, showToggle } = this.props;
+        const {
+            currentPage, cursorContext, dynamicJumpOut, showToggle,
+        } = this.props;
 
         const firstPage = <View style={[row, styles.fullPage]}>
             <View style={[column, oneColumn]}>
@@ -116,10 +120,8 @@ const AdvancedExpressionKeypad = React.createClass({
             goRightNavigationKey = KeyConfigs.RIGHT;
         }
 
-        // TODO(charlie): Enable this selectively. It's odd that we could show
-        // two `JUMP_OUT` keys right now.
         let dismissOrJumpOutKey;
-        if (cursorContext === CursorContexts.NESTED) {
+        if (dynamicJumpOut && cursorContext === CursorContexts.NESTED) {
             dismissOrJumpOutKey = KeyConfigs.JUMP_OUT;
         } else {
             dismissOrJumpOutKey = KeyConfigs.DISMISS;
@@ -130,10 +132,12 @@ const AdvancedExpressionKeypad = React.createClass({
                 keyConfig={topNavigationKey}
                 borders={borderStyles.LEFT}
             />
-            <TouchableKeypadButton
+            {dynamicJumpOut ? <EmptyKeypadButton
+                borders={borderStyles.LEFT}
+            /> : <TouchableKeypadButton
                 keyConfig={goRightNavigationKey}
                 borders={borderStyles.LEFT}
-            />
+            />}
             <TouchableKeypadButton
                 keyConfig={KeyConfigs.BACKSPACE}
                 borders={borderStyles.LEFT}

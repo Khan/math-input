@@ -47,4 +47,8 @@ module.exports = {
         TAB_BAR: 'TAB_BAR',
         PAGE_CONTROL: 'PAGE_CONTROL',
     },
+    jumpOutTypes: {
+        STATIC: 'STATIC',
+        DYNAMIC: 'DYNAMIC',
+    },
 };

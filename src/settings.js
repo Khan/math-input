@@ -1,5 +1,5 @@
 const queryString = require('query-string');
-const { keypadTypes, switchTypes } = require('./consts');
+const { keypadTypes, switchTypes, jumpOutTypes } = require('./consts');
 
 // test 1
 // keypad_switch: [toggle], page_control, tab_bar
@@ -12,11 +12,15 @@ const { keypadTypes, switchTypes } = require('./consts');
 
 // icon_style: simple, [fancy]
 
+// test 5
+// jump_out: static, dynamic
+
 const parsed = queryString.parse(location.search);
 
 const defaults = {
     keypadSwitch: switchTypes.TOGGLE,
     keypadType: keypadTypes.ADVANCED_EXPRESSION,
+    jumpOutType: jumpOutTypes.STATIC,
     echoState: 'yes',
     iconStyle: 'fancy',
     debugSwitcher: 'no',
@@ -25,6 +29,7 @@ const defaults = {
 const settings = {
     keypadSwitch: parsed.keypad_switch || defaults.keypadSwitch,
     keypadType: parsed.keypad_type || defaults.keypadType,
+    jumpOutType: parsed.jump_out_type || defaults.jumpOutType,
     echoState: parsed.echo_state || defaults.echoState,
     iconStyle: parsed.icon_style || defaults.iconStyle,
     debugSwitcher: parsed.debug_switcher || defaults.debugSwitcher,
