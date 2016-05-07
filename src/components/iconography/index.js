@@ -55,5 +55,6 @@ module.exports = {
     EXP_MULTI: require('./exp-multi'),
     LEQ: require('./leq'),
     MINUS: require('./minus'),
+    x: require('./x'),
     MORE: require('./more'),
 };

@@ -40,7 +40,7 @@ const AdvancedExpressionKeypad = React.createClass({
                 />
                 {/* TODO(charlie): Replace with the many-symbol button. */}
                 <TouchableKeypadButton
-                    keyConfig={KeyConfigs.PI}
+                    keyConfig={KeyConfigs.x}
                     borders={borderStyles.NONE}
                 />
             </View>

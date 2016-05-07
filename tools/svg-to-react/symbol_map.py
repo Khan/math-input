@@ -10,6 +10,7 @@ filename_to_symbol = {
     '7': 'NUM_7',
     '8': 'NUM_8',
     '9': 'NUM_9',
+    'var-x': 'x',
     'addition': 'PLUS',
     'subtraction': 'MINUS',
     'cos': 'COS',
