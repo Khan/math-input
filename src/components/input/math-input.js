@@ -7,6 +7,10 @@ const { View } = require('../../fake-react-native-web');
 const CursorHandle = require('./cursor-handle');
 const SelectionRect = require('./selection-rect');
 const MathWrapper = require('./math-wrapper');
+const {
+    cursorHandleRadiusPx,
+    cursorHandleDistanceMultiplier,
+ } = require('../common-style');
 
 const defaultSelectionRect = {
     visible: false,
@@ -47,6 +51,7 @@ const MathInput = React.createClass({
     getInitialState() {
         return {
             handle: {
+                animateIntoPosition: false,
                 visible: false,
                 x: 0,
                 y: 0,
@@ -113,23 +118,19 @@ const MathInput = React.createClass({
         this.setState({ selectionRect });
     },
 
-    _updateCursorHandle() {
-        const containerBounds = this._container.getBoundingClientRect();
+    _updateCursorHandle(animateIntoPosition) {
         const cursorBounds =
             document.querySelector('.mq-cursor').getBoundingClientRect();
 
-        // Subtract the upper left corner of the container bounds from the
-        // coordinates of the cursor to account for the fact that the
-        // container is position:relative while the cursor handle will be
-        // position:absolute.
-        const left = cursorBounds.left - containerBounds.left;
-        const bottom = cursorBounds.bottom - containerBounds.top;
+        const cursorWidth = 2;
+        const gapBelowCursor = 2;
 
         this.setState({
             handle: {
                 visible: true,
-                x: left,
-                y: bottom,
+                animateIntoPosition,
+                x: cursorBounds.left + cursorWidth / 2,
+                y: cursorBounds.bottom + gapBelowCursor,
             },
             selectionRect: defaultSelectionRect,
         });
@@ -304,19 +305,17 @@ const MathInput = React.createClass({
      * @param {number} y - pageY of a touchmove on the cursor handle
      */
     handleCursorHandleMove(x, y) {
-        this.setState({
-            handle: {
-                visible: true,
-                // The offsets cause the handle to be positioned with its
-                // center right where the user's finger is.
-                // TODO(kevinb) use percentages after the switch to SVG
-                x: x - 20,
-                y: y - 35,
-            },
-        });
-
         // TODO(kevinb) cache this in the touchstart of the CursorHandle
         const containerBounds = this._container.getBoundingClientRect();
+
+        this.setState({
+            handle: {
+                animateIntoPosition: false,
+                visible: true,
+                x: x,
+                y: y - cursorHandleRadiusPx * cursorHandleDistanceMultiplier,
+            },
+        });
 
         // Use a y-coordinate that's just above where the user is actually
         // touching because they're dragging the handle which is a little
@@ -370,7 +369,7 @@ const MathInput = React.createClass({
     },
 
     handleCursorHandleEnd(x, y) {
-        this._updateCursorHandle();
+        this._updateCursorHandle(true);
     },
 
     handleCursorHandleCancel(x, y) {
@@ -418,7 +417,7 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         marginRight: 20,
         marginBottom: 40,
-        position: 'relative',
+        position: 'static',
     },
 
     // TODO(kevinb) update border style to match mocks

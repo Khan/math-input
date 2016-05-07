@@ -7,5 +7,4 @@
 
 module.exports = {
     selectionRect: -1,
-    cursorHandle: 1,
 };

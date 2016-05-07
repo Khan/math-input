@@ -4,10 +4,15 @@
 
 const React = require('react');
 
-const zIndexes = require('./z-indexes');
+const {
+    cursorHandleRadiusPx,
+    brightGreen,
+    cursorHandleDistanceMultiplier,
+} = require('../common-style');
 
 const CursorHandle = React.createClass({
     propTypes: {
+        animateIntoPosition: React.PropTypes.bool,
         onEnd: React.PropTypes.func.isRequired,
         onMove: React.PropTypes.func.isRequired,
         visible: React.PropTypes.bool.isRequired,
@@ -17,6 +22,7 @@ const CursorHandle = React.createClass({
 
     getDefaultProps() {
         return {
+            animateIntoPosition: false,
             visible: false,
             x: 0,
             y: 0,
@@ -47,39 +53,52 @@ const CursorHandle = React.createClass({
     },
 
     render() {
-        const { x, y } = this.props;
+        const { x, y, animateIntoPosition } = this.props;
 
-        const style = {
-            ...handleStyle,
-            left: x,
-            top: y,
-            visible: this.props.visible ? 'block' : 'none',
+        const animationStyle = animateIntoPosition ? {
+            transitionDuration: '100ms',
+            transitionProperty: 'transform',
+        } : { };
+
+        const outerStyle = {
+            position: 'absolute',
+            left: 0,
+            top: 0,
+            transform: `translate(${x}px, ${y}px)`,
+            ...animationStyle,
         };
 
-        // TODO(kevinb) replace rotated div with SVG so the math makes sense
-        return <div
-            onTouchMove={this.handleTouchMove}
-            onTouchEnd={this.handleTouchEnd}
-            onTouchCancel={this.handleTouchCancel}
-            style={style}
-        />;
+        const innerStyle = {
+            marginLeft: '-50%',
+        };
+
+        const radius = cursorHandleRadiusPx;
+        const height = cursorHandleDistanceMultiplier * radius + radius;
+        const width = 2 * radius;
+
+        return <span style={outerStyle}>
+            <svg
+                width={width}
+                height={height}
+                viewBox={`-${radius} 0 ${width} ${height}`}
+                onTouchMove={this.handleTouchMove}
+                onTouchEnd={this.handleTouchEnd}
+                onTouchCancel={this.handleTouchCancel}
+                style={innerStyle}
+            >
+                <path
+                    d={
+                        `M 0 0
+                        L -${0.707 * radius} ${0.707 * radius}
+                        A ${radius} ${radius}, 0, 1, 0,
+                          ${0.707 * radius} ${0.707 * radius}
+                        Z`
+                    }
+                    fill={brightGreen}
+                />
+            </svg>
+        </span>;
     },
 });
-
-// This actually isn't the diameter, it's the diameter plus the distance
-// the triangle corner is outside of the the circle within the pointer.
-const cursorDiameterPx = 28;
-
-const handleStyle = {
-    position: 'absolute',
-    background: '#78c008',
-    width: cursorDiameterPx,
-    height: cursorDiameterPx,
-    borderRadius: '0 50% 50% 50%',
-    marginTop: 0.3 * cursorDiameterPx,
-    marginLeft: 1 - cursorDiameterPx / 2,
-    zIndex: zIndexes.cursorHandle,
-    transform: 'rotate(45deg)',
-};
 
 module.exports = CursorHandle;

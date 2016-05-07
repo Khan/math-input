@@ -38,4 +38,11 @@ module.exports = {
     },
     iconSizeHeightPx: 48,
     iconSizeWidthPx: 48,
+    cursorHandleRadiusPx: 20,
+
+    // The amount to multiply the radius by to get the distance from the
+    // center to the tip of the cursor handle.  The cursor is a circle with
+    // one quadrant replace with a square.  The hypotenuse of the square is
+    // 1.41 times the radius of the circle.
+    cursorHandleDistanceMultiplier: 1.41,
 };
