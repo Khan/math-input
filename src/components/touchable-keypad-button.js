@@ -11,10 +11,11 @@ const { connect } = require('react-redux');
 const KeypadButton = require('./keypad-button');
 const KeyConfigs = require('../data/key-configs');
 const GestureManager = require('./gesture-manager');
-const { keyIdPropType } = require('./prop-types');
+const { bordersPropType, keyIdPropType } = require('./prop-types');
 
 const TouchableKeypadButton = React.createClass({
     propTypes: {
+        borders: bordersPropType,
         childKeyIds: React.PropTypes.arrayOf(keyIdPropType),
         gestureManager: React.PropTypes.instanceOf(GestureManager),
         id: keyIdPropType.isRequired,
@@ -26,16 +27,19 @@ const TouchableKeypadButton = React.createClass({
     },
 
     render() {
-        const { childKeyIds, gestureManager, id, ...rest } = this.props;
+        const {
+            borders, childKeyIds, gestureManager, id, ...rest,
+        } = this.props;
 
         return <KeypadButton
             ref={(node) => gestureManager.registerDOMNode(
-                id, ReactDOM.findDOMNode(node), childKeyIds
+                id, ReactDOM.findDOMNode(node), childKeyIds, borders
             )}
             onTouchStart={(evt) => gestureManager.onTouchStart(evt)}
             onTouchEnd={(evt) => gestureManager.onTouchEnd(evt)}
             onTouchMove={(evt) => gestureManager.onTouchMove(evt)}
             onTouchCancel={(evt) => gestureManager.onTouchCancel(evt)}
+            borders={borders}
             {...rest}
         />;
     },

@@ -6,9 +6,9 @@ const React = require('react');
 const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 const { removeEcho } = require('../actions');
 const KeypadButton = require('./keypad-button');
-const { keyTypes, borderStyles } = require('../consts');
+const { keyTypes } = require('../consts');
 const {
-    echoPropType, boundingBoxPropType, keyIdPropType,
+    echoPropType, bordersPropType, boundingBoxPropType, keyIdPropType,
 } = require('./prop-types');
 
 // NOTE(charlie): This must be kept in sync with the transition duration
@@ -18,6 +18,7 @@ const echoAnimationMs = 1000;
 const Echo = React.createClass({
     propTypes: {
         animationId: React.PropTypes.string.isRequired,
+        borders: bordersPropType,
         id: keyIdPropType.isRequired,
         initialBounds: boundingBoxPropType.isRequired,
     },
@@ -33,7 +34,7 @@ const Echo = React.createClass({
     },
 
     render() {
-        const { id, initialBounds } = this.props;
+        const { borders, id, initialBounds } = this.props;
 
         const containerStyle = {
             position: 'absolute',
@@ -50,7 +51,7 @@ const Echo = React.createClass({
             <KeypadButton
                 name={id}
                 type={keyTypes.ECHO}
-                borders={borderStyles.NONE}
+                borders={borders}
             />
         </div>;
     },

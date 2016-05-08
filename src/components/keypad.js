@@ -13,6 +13,8 @@ const EchoManager = require('./echo-manager');
 const { lightGrey } = require('./common-style');
 const { echoPropType } = require('./prop-types');
 
+const keypadBorderWidthPx = 1;
+
 const Keypad = React.createClass({
     propTypes: {
         children: React.PropTypes.oneOfType([
@@ -59,9 +61,11 @@ const Keypad = React.createClass({
             return {
                 ...rest,
                 initialBounds: {
-                    top: initialBounds.top - this._container.top,
+                    top: initialBounds.top - this._container.top -
+                        keypadBorderWidthPx,
                     right: initialBounds.right - this._container.left,
-                    bottom: initialBounds.bottom - this._container.top,
+                    bottom: initialBounds.bottom - this._container.top -
+                        keypadBorderWidthPx,
                     left: initialBounds.left - this._container.left,
                     width: initialBounds.width,
                     height: initialBounds.height,
@@ -86,7 +90,7 @@ const styles = StyleSheet.create({
         position: 'fixed',
         bottom: 0,
         width: '100%',
-        borderTop: '1px solid rgba(0, 0, 0, 0.2)',
+        borderTop: `${keypadBorderWidthPx}px solid rgba(0, 0, 0, 0.2)`,
         backgroundColor: lightGrey,
     },
 });

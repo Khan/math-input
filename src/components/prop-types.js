@@ -5,8 +5,8 @@
 const React = require('react');
 
 const KeyConfigs = require('../data/key-configs');
-const { keyTypes } = require('../consts');
 const CursorContexts = require('./input/cursor-contexts');
+const { borderDirections, keyTypes } = require('../consts');
 
 const keyIdPropType = React.PropTypes.oneOf(Object.keys(KeyConfigs));
 
@@ -15,6 +15,10 @@ const keyConfigPropType = React.PropTypes.shape({
     type: React.PropTypes.oneOf(Object.keys(keyTypes)).isRequired,
     childKeyIds: React.PropTypes.arrayOf(keyIdPropType),
 });
+
+const bordersPropType =  React.PropTypes.arrayOf(
+    React.PropTypes.oneOf(Object.keys(borderDirections))
+);
 
 const boundingBoxPropType = React.PropTypes.shape({
     height: React.PropTypes.number,
@@ -27,6 +31,7 @@ const boundingBoxPropType = React.PropTypes.shape({
 
 const echoPropType = React.PropTypes.shape({
     animationId: React.PropTypes.string.isRequired,
+    borders: bordersPropType,
     id: keyIdPropType.isRequired,
     initialBounds: boundingBoxPropType.isRequired,
 });
@@ -40,9 +45,11 @@ const childrenPropType = React.PropTypes.oneOfType([
     React.PropTypes.node,
 ]);
 
+
 module.exports = {
     keyConfigPropType,
     keyIdPropType,
+    bordersPropType,
     boundingBoxPropType,
     echoPropType,
     cursorContextPropType,

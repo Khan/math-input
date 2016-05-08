@@ -239,11 +239,11 @@ const createGestureManager = (swipeEnabled) => {
                 activeNodes,
             });
         },
-        onClick: (key, initialBounds) => {
+        onClick: (key, layoutProps) => {
             store.dispatch({
                 type: 'PressKey',
                 key,
-                initialBounds,
+                ...layoutProps,
             });
         },
     });
@@ -303,6 +303,7 @@ const echoReducer = function(state = initialEchoState, action) {
                         ...state.echoes,
                         {
                             animationId: "" + _lastAnimationId++,
+                            borders: action.borders,
                             id: keyConfig.id,
                             initialBounds: action.initialBounds,
                         },

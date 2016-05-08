@@ -11,6 +11,10 @@ class NodeManager {
         // A mapping from IDs to DOM nodes.
         this._nodesById = {};
 
+        // A mapping from IDs to the borders around the DOM nodes, which can be
+        // useful for layout purposes.
+        this._bordersById = {};
+
         // An ordered list of IDs, where DOM nodes that are "higher" on the
         // page come earlier in the list. Note that an ID may be present in
         // this ordered list but not be registered to a DOM node (i.e., if it
@@ -24,9 +28,11 @@ class NodeManager {
      *
      * @param {string} id - the identifier of the given node
      * @param {node} domNode - the DOM node linked to the identifier
+     * @param {object} borders - an opaque object describing the node's borders
      */
-    registerDOMNode(id, domNode, childIds) {
+    registerDOMNode(id, domNode, childIds, borders) {
         this._nodesById[id] = domNode;
+        this._bordersById[id] = borders;
 
         // Make sure that any children appear first.
         // TODO(charlie): This is a very simplistic system that wouldn't
@@ -75,14 +81,19 @@ class NodeManager {
     }
 
     /**
-     * Return the bounding client rect for the node with the given identifier.
+     * Return the necessary layout information, including the bounds and border
+     * values, for the node with the given identifier.
      *
      * @param {string} id - the identifier of the node for which to return the
-     *                      bounding client rect
-     * @returns {rect} - the bounding client rect for the given node
+     *                      layout information
+     * @returns {object} - the bounding client rect for the given node, along
+     *                     with its borders
      */
-    boxForId(id) {
-        return this._nodesById[id].getBoundingClientRect();
+    layoutPropsForId(id) {
+        return {
+            initialBounds: this._nodesById[id].getBoundingClientRect(),
+            borders: this._bordersById[id],
+        };
     }
 }
 

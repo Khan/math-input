@@ -19,15 +19,13 @@ const {
     iconSizeHeightPx,
     iconSizeWidthPx,
 } = require('./common-style');
-const { keyConfigPropType } = require('./prop-types');
+const { keyConfigPropType, bordersPropType } = require('./prop-types');
 
 const KeypadButton = React.createClass({
     propTypes: {
         // The borders to display on the button. Typically, this should be set
         // using one of the preset `borderStyles` options.
-        borders: React.PropTypes.arrayOf(
-            React.PropTypes.oneOf(Object.keys(borderDirections))
-        ),
+        borders: bordersPropType,
         buttonHeightPx: React.PropTypes.number.isRequired,
         // Any additional keys that can be accessed by long-pressing on the
         // button.
@@ -121,6 +119,7 @@ const KeypadButton = React.createClass({
             styles.buttonBase,
             backgroundStyle,
             ...borderStyle,
+            type === keyTypes.ECHO && styles.echo,
             this.heightStyles.fullHeight,
             // React Native allows you to set the 'style' props on user defined
             // components, https://facebook.github.io/react-native/docs/style.html
@@ -209,9 +208,14 @@ const styles = StyleSheet.create({
         // Borders are made selectively visible.
         borderColor: buttonBorderColor,
         borderStyle: buttonBorderStyle,
-        boxSizing: 'border-box',
         // The focus state is inset slightly from the edge of the button.
         padding: focusInsetPx,
+    },
+
+    // Overrides for the echo state, where we want to render the borders for
+    // layout purposes, but we don't want them to be visible.
+    echo: {
+        borderColor: 'transparent',
     },
 
     // Styles used to create the 'additional symbols' button.

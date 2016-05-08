@@ -36,7 +36,9 @@ class GestureManager {
              * key, but animate the click on the popover button.
              */
             onClick: (keyId, domNodeId) => {
-                handlers.onClick(keyId, this.nodeManager.boxForId(domNodeId));
+                handlers.onClick(
+                    keyId, this.nodeManager.layoutPropsForId(domNodeId)
+                );
             },
         });
         this.gestureStateMachine = new GestureStateMachine({
@@ -125,9 +127,10 @@ class GestureManager {
      *                              should be considered children of this node,
      *                              in that they should take priority when
      *                              intercepting touch events
+     * @param {object} borders - an opaque object describing the node's borders
      */
-    registerDOMNode(id, domNode, childIds) {
-        this.nodeManager.registerDOMNode(id, domNode, childIds);
+    registerDOMNode(id, domNode, childIds, borders) {
+        this.nodeManager.registerDOMNode(id, domNode, childIds, borders);
         this.popoverStateMachine.registerPopover(id, childIds);
     }
 
