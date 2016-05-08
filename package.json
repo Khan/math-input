@@ -12,6 +12,7 @@
   "license": "MIT",
   "dependencies": {
     "aphrodite": "^0.2.0",
+    "jquery": "^1.12.2",
     "performance-now": "^0.2.0",
     "query-string": "^4.1.0",
     "react": "15.0.1",
