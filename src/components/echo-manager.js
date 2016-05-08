@@ -6,17 +6,15 @@ const React = require('react');
 const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 const { removeEcho } = require('../actions');
 const KeypadButton = require('./keypad-button');
-const { keyTypes } = require('../consts');
+const { keyTypes, echoAnimationTypes } = require('../consts');
 const {
     echoPropType, bordersPropType, boundingBoxPropType, keyIdPropType,
 } = require('./prop-types');
-
-// NOTE(charlie): This must be kept in sync with the transition duration
-// specified in echo.css.
-const echoAnimationMs = 1000;
+const Settings = require('../settings');
 
 const Echo = React.createClass({
     propTypes: {
+        animationDurationMs: React.PropTypes.number.isRequired,
         animationId: React.PropTypes.string.isRequired,
         borders: bordersPropType,
         id: keyIdPropType.isRequired,
@@ -29,8 +27,8 @@ const Echo = React.createClass({
         // ignorant. However, there doesn't seem to be a cleaner way to make
         // this happen, and at least here, all the animation context is
         // colocated in this file.
-        const { animationId } = this.props;
-        setTimeout(() => removeEcho(animationId), echoAnimationMs);
+        const { animationDurationMs, animationId } = this.props;
+        setTimeout(() => removeEcho(animationId), animationDurationMs);
     },
 
     render() {
@@ -59,25 +57,67 @@ const Echo = React.createClass({
 
 const EchoManager = React.createClass({
     propTypes: {
+        animationType: React.PropTypes.oneOf(Object.keys(echoAnimationTypes)),
         echoes: React.PropTypes.arrayOf(echoPropType),
     },
 
+    getDefaultProps() {
+        return {
+            animationType: Settings.echoAnimation,
+        };
+    },
+
+    _animationConfigForType(animationType) {
+        // NOTE(charlie): These must be kept in sync with the transition
+        // durations and classnames specified in echo.css.
+        let animationDurationMs;
+        let animationTransitionName;
+
+        switch (animationType) {
+            case echoAnimationTypes.SLIDE_AND_FADE:
+                animationDurationMs = 400;
+                animationTransitionName = 'echo-slide-and-fade';
+                break;
+
+            case echoAnimationTypes.FADE_ONLY:
+                animationDurationMs = 300;
+                animationTransitionName = 'echo-fade-only';
+                break;
+
+            default:
+                throw new Error(
+                    "Invalid echo animation type:", animationType);
+        }
+
+        return {
+            animationDurationMs,
+            animationTransitionName,
+        };
+    },
+
     render() {
-        const { echoes } = this.props;
+        const { animationType, echoes } = this.props;
+        const {
+            animationDurationMs, animationTransitionName
+        } = this._animationConfigForType(animationType);
 
         // TODO(charlie): Manage this animation with Aphrodite styles. Right
         // now, there's a bug in the autoprefixer that breaks CSS transitions on
         // mobile Safari. See: https://github.com/Khan/aphrodite/issues/68. As
         // such, we have to do this with a stylesheet.
         return <ReactCSSTransitionGroup
-            transitionName='echo'
+            transitionName={animationTransitionName}
             transitionEnter={true}
             transitionLeave={false}
-            transitionEnterTimeout={echoAnimationMs}
+            transitionEnterTimeout={animationDurationMs}
         >
             {echoes.map(echo => {
                 const { animationId } = echo;
-                return <Echo key={animationId} {...echo} />;
+                return <Echo
+                    key={animationId}
+                    animationDurationMs={animationDurationMs}
+                    {...echo}
+                />;
             })}
         </ReactCSSTransitionGroup>;
     },

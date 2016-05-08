@@ -51,6 +51,10 @@ module.exports = {
         STATIC: 'STATIC',
         DYNAMIC: 'DYNAMIC',
     },
+    echoAnimationTypes: {
+        SLIDE_AND_FADE: 'SLIDE_AND_FADE',
+        FADE_ONLY: 'FADE_ONLY',
+    },
     debugSwitcherTypes: {
         ENABLED: 'ENABLED',
         DISABLED: 'DISABLED',

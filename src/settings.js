@@ -1,6 +1,10 @@
 const queryString = require('query-string');
 const {
-    keypadTypes, switchTypes, jumpOutTypes, debugSwitcherTypes
+    keypadTypes,
+    switchTypes,
+    echoAnimationTypes,
+    jumpOutTypes,
+    debugSwitcherTypes,
 } = require('./consts');
 
 // test 1
@@ -25,7 +29,7 @@ const defaults = {
     keypadSwitch: switchTypes.TOGGLE,
     keypadType: keypadTypes.ADVANCED_EXPRESSION,
     jumpOutType: jumpOutTypes.STATIC,
-    echoState: 'yes',
+    echoAnimation: echoAnimationTypes.SLIDE_AND_FADE,
     iconStyle: 'fancy',
     debugSwitcher: containsConfigurationOptions ?
                    debugSwitcherTypes.DISABLED :
@@ -36,7 +40,7 @@ const settings = {
     keypadSwitch: parsed.keypad_switch || defaults.keypadSwitch,
     keypadType: parsed.keypad_type || defaults.keypadType,
     jumpOutType: parsed.jump_out_type || defaults.jumpOutType,
-    echoState: parsed.echo_state || defaults.echoState,
+    echoAnimation: parsed.echo_animation || defaults.echoAnimation,
     iconStyle: parsed.icon_style || defaults.iconStyle,
     debugSwitcher: parsed.debug_switcher || defaults.debugSwitcher,
 };
