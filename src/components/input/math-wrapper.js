@@ -215,6 +215,10 @@ class MathWrapper {
             } else if (this._isInsideLogIndex(cursor)) {
                 this._handleBackspaceInLogIndex(cursor);
 
+            } else if (leftNode.ctrlSeq === '\\ge ' ||
+                    leftNode.ctrlSeq === '\\le ') {
+                this._handleBackspaceAfterLigaturedSymbol(cursor);
+
             } else {
                 this.mathField.keystroke('Backspace');
             }
@@ -535,6 +539,11 @@ class MathWrapper {
         if (leftNode !== MQ_END && leftNode.latex() !== minusSign) {
             cursor.insRightOf(leftNode);
         }
+    }
+
+    _handleBackspaceAfterLigaturedSymbol(cursor) {
+        this.mathField.keystroke('Backspace');
+        this.mathField.keystroke('Backspace');
     }
 
     _contextForCursor(cursor) {
