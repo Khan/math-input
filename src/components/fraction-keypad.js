@@ -23,7 +23,7 @@ const FractionKeypad = React.createClass({
                 />
                 <TouchableKeypadButton keyConfig={KeyConfigs.NUM_8} />
                 <TouchableKeypadButton keyConfig={KeyConfigs.NUM_9} />
-                <TouchableKeypadButton keyConfig={KeyConfigs.DIVIDE} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.FRAC} />
             </View>
             <View style={row}>
                 <TouchableKeypadButton
