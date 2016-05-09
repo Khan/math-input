@@ -1,6 +1,6 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
-const { StyleSheet } = require("aphrodite");
+const { css, StyleSheet } = require("aphrodite");
 
 const actions = require('../../actions');
 const { View } = require('../../fake-react-native-web');
@@ -387,12 +387,12 @@ const MathInput = React.createClass({
             style={styles.input}
             onTouchStart={this.handleTouchStart}
         >
-            <View
+            <div
                 ref={(node) => this._mathContainer = ReactDOM.findDOMNode(node)}
-                style={styles.innerContainer}
+                className={css(styles.innerContainer)}
             >
                 {selectionRect.visible && <SelectionRect {...selectionRect}/>}
-            </View>
+            </div>
             {handle.visible && <CursorHandle
                 {...handle}
                 ref={(node) => this._cursorHandle = ReactDOM.findDOMNode(node)}
@@ -417,6 +417,8 @@ const styles = StyleSheet.create({
 
     // TODO(kevinb) update border style to match mocks
     innerContainer: {
+        display: 'flex',
+        position: 'relative',
         overflow: 'hidden',
         borderWidth: borderWidthPx,
         borderStyle: 'solid',
