@@ -206,9 +206,6 @@ class MathWrapper {
             } else if (this._isNthRootIndex(parent)) {
                 this._handleBackspaceInRootIndex(cursor);
 
-            } else if (this._isInsideEmptyParens(cursor)) {
-                this._handleBackspaceInEmptyParens(cursor);
-
             } else if (leftNode.ctrlSeq === '\\left(') {
                 this._handleBackspaceOutsideParens(cursor);
 
@@ -310,22 +307,8 @@ class MathWrapper {
         return false;
     }
 
-    _isInsideEmptyParens(cursor) {
-        return cursor[MQ.L].ctrlSeq === '\\left(' &&
-            cursor[MQ.R].ctrlSeq === '\\right)';
-    }
-
     _isInsideEmptyNode(cursor) {
         return cursor[MQ.L] === MQ_END && cursor[MQ.R] === MQ_END;
-    }
-
-    _handleBackspaceInEmptyParens(cursor) {
-        // handle deleting an empty set of parens
-        // (|) => |
-        this.mathField.keystroke('Right');
-        this.mathField.keystroke('Backspace');
-        this.mathField.keystroke('Backspace');
-        cursor.show();
     }
 
     _handleBackspaceInRootIndex(cursor) {
@@ -493,7 +476,21 @@ class MathWrapper {
         // Insert the cursor to the left of the command if there is one
         // or before the '\\left(` if there isn't
         const command = this._maybeFindCommand(grandparent);
-        cursor.insLeftOf(command.node || grandparent);
+
+        // Guard against one case: the node left to us is another set of parens.
+        // That would be a valid command (just like \log or \sin), but deleting
+        // it along with the current set of parens wouldn't give us the desired
+        // behavior.
+        let leftEdgeNode;
+        if (command.name === '\\left(') {
+            leftEdgeNode = grandparent;
+        } else if (command.node == null) {
+            leftEdgeNode = grandparent;
+        } else {
+            leftEdgeNode = command.node;
+        }
+
+        cursor.insLeftOf(leftEdgeNode);
         cursor.startSelection();
         cursor.insRightOf(grandparent);
         cursor.select();

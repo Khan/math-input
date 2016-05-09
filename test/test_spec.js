@@ -259,6 +259,13 @@ describe('MathQuill', () => {
             assert.equal(mathField.getContent(), '');
         });
 
+        it('should delete only the first parens when inside empty parens', () => {
+            mathField.setContent('\\left(\\right)\\left(\\right)');
+            mathField.pressKey(Keys.LEFT);
+            mathField.pressKey(Keys.BACKSPACE);
+            assert.equal(mathField.getContent(), '\\left(\\right)');
+        });
+
         it('should select an expression when deleting from outside (1)', () => {
             const expr = '\\left(35x+5\\right)';
             mathField.setContent(expr);
