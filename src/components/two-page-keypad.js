@@ -48,7 +48,7 @@ const TwoPageKeypad = React.createClass({
         const keypadContentsStyle = [
             row,
             showPagerIndicator && styles.borderBottom,
-            showPagerIndicator && styles.borderTop,
+            showTabBarIndicator && styles.borderTop,
         ];
 
         return <Keypad style={column}>
