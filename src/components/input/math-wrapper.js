@@ -143,6 +143,16 @@ class MathWrapper {
                 // Otherwise place beside the element at x, y.
                 const controller = this.mathField.__controller;
                 controller.seek($(el), x, y).cursor.startSelection();
+
+                // Unless that would leave us mid-command, in which case, we
+                // need to adjust and place the cursor inside the parens
+                // following the command.
+                const command = this._maybeFindCommand(cursor[MQ.L]);
+                if (command && command.endNode) {
+                    // NOTE(charlie): endNode should definitely be \left(.
+                    cursor.insLeftOf(command.endNode);
+                    this.mathField.keystroke('Right');
+                }
             }
 
             if (this.callbacks.onCursorMove) {
@@ -228,22 +238,26 @@ class MathWrapper {
     }
 
     /**
-     * Return the start node of the command to the left of `\\left(` or null
-     * if there is no command.
+     * Return the start node, end node, and full name of the command of which
+     * the initial node is a part, or `null` if the node is not part of a
+     * command.
      *
-     * @param {node} leftParenNode - node where .ctrlSeq == `\\left(`
-     * @returns {null|node} - null or the first node in the command
+     * @param {node} initialNode - the node to included as part of the command
+     * @returns {null|object} - `null` or an object containing the start node
+     *                          (`startNode`), end node (`endNode`), and full
+     *                          name (`name`) of the command
      * @private
      */
-    _maybeFindCommand(leftParenNode) {
-        let node = leftParenNode;
+    _maybeFindCommand(initialNode) {
+        if (!initialNode) {
+            return null;
+        }
 
         // MathQuill stores commands as separate characters so that
         // users can delete commands one character at a time.  Iterate over
         // the nodes from right to left until we hit a '\\' signifies the
         // start of a command and return that node.  If we encounter any
         // character that doesn't belong in a command, return null.
-
         const commandDelimiter = '\\';
 
         // We match a single character at a time.  The '\\' is optional because
@@ -251,24 +265,70 @@ class MathWrapper {
         // ['\\l', 'o', 'g ', '\\left(', ...]
         const commandCharRegex = /[\\]?[a-z]/;
 
-        let name = '';
+        // Note: We don't treat left-parens as a command in the same sense as
+        // cosine and log.
+        const ignoredCommands = ['\\left('];
 
-        while (node[MQ.L] !== 0) {
-            node = node[MQ.L];
+        let name = '';
+        let startNode;
+        let endNode;
+
+        // Collect the portion of the command from the current node, leftwards
+        // until the start of the command.
+        let node = initialNode;
+        while (node !== 0) {
             if (commandCharRegex.test(node.ctrlSeq)) {
                 name = node.ctrlSeq.trim() + name;
 
                 if (node.ctrlSeq.startsWith(commandDelimiter)) {
-                    return { name, node };
-                } else {
-                    continue;
+                    startNode = node;
+                    break;
                 }
             } else {
-                return { name: null, node: null };
+                break;
             }
+
+            node = node[MQ.L];
         }
 
-        return { name: null, node: null };
+        // If we hit the start of a command, then grab the rest of it by
+        // iterating rightwards to compute the full name of the command, along
+        // with its terminal node.
+        if (startNode) {
+            // Next, iterate from the start to the right.
+            node = initialNode[MQ.R];
+            while (node !== 0) {
+                if (commandCharRegex.test(node.ctrlSeq) &&
+                        !node.ctrlSeq.startsWith(commandDelimiter)) {
+                    name = name + node.ctrlSeq.trim();
+                } else {
+                    endNode = node;
+                }
+
+                node = node[MQ.R];
+            }
+            if (ignoredCommands.includes(name)) {
+                return null;
+            } else {
+                return { name, startNode, endNode };
+            }
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Return the start node, end node, and full name of the command to the left
+     * of `\\left(`, or `null` if there is no command.
+     *
+     * @param {node} leftParenNode - node where .ctrlSeq == `\\left(`
+     * @returns {null|object} - `null` or an object containing the start node
+     *                          (`startNode`), end node (`endNode`), and full
+     *                          name (`name`) of the command
+     * @private
+     */
+    _maybeFindCommandBeforeParens(leftParenNode) {
+        return this._maybeFindCommand(leftParenNode[MQ.L]);
     }
 
     _selectNode(node, cursor) {
@@ -301,9 +361,9 @@ class MathWrapper {
         const grandparent = cursor.parent.parent;
 
         if (grandparent && grandparent.jQ.hasClass('mq-supsub')) {
-            const command = this._maybeFindCommand(grandparent);
+            const command = this._maybeFindCommandBeforeParens(grandparent);
 
-            if (command.name === '\\log') {
+            if (command && command.name === '\\log') {
                 return true;
             }
         }
@@ -367,9 +427,9 @@ class MathWrapper {
     _handleBackspaceInLogIndex(cursor) {
         if (this._isInsideEmptyNode(cursor)) {
             const grandparent = cursor.parent.parent;
-            const command = this._maybeFindCommand(grandparent);
+            const command = this._maybeFindCommandBeforeParens(grandparent);
 
-            cursor.insLeftOf(command.node);
+            cursor.insLeftOf(command.startNode);
             cursor.startSelection();
 
             if (grandparent[MQ.R] !== MQ_END) {
@@ -404,12 +464,12 @@ class MathWrapper {
 
         const leftNode = cursor[MQ.L];
         const rightNode = cursor[MQ.R];
-        const command = this._maybeFindCommand(leftNode);
+        const command = this._maybeFindCommandBeforeParens(leftNode);
 
-        if (command.node) {
+        if (command && command.startNode) {
             // There's a command before the parens so we select it as well as
             // the parens.
-            cursor.insLeftOf(command.node);
+            cursor.insLeftOf(command.startNode);
             cursor.startSelection();
             if (rightNode === MQ_END) {
                 cursor.insAtRightEnd(cursor.parent);
@@ -479,22 +539,9 @@ class MathWrapper {
 
         // Insert the cursor to the left of the command if there is one
         // or before the '\\left(` if there isn't
-        const command = this._maybeFindCommand(grandparent);
+        const command = this._maybeFindCommandBeforeParens(grandparent);
 
-        // Guard against one case: the node left to us is another set of parens.
-        // That would be a valid command (just like \log or \sin), but deleting
-        // it along with the current set of parens wouldn't give us the desired
-        // behavior.
-        let leftEdgeNode;
-        if (command.name === '\\left(') {
-            leftEdgeNode = grandparent;
-        } else if (command.node == null) {
-            leftEdgeNode = grandparent;
-        } else {
-            leftEdgeNode = command.node;
-        }
-
-        cursor.insLeftOf(leftEdgeNode);
+        cursor.insLeftOf((command && command.startNode) || grandparent);
         cursor.startSelection();
         cursor.insRightOf(grandparent);
         cursor.select();
