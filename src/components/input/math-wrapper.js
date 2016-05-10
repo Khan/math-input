@@ -563,9 +563,16 @@ class MathWrapper {
      * will never have nested expressions.
      */
     _handleToggleSign(cursor) {
+        // Pre-compute a few values before mutating the cursor.
         const leftNode = cursor[MQ.L];
-        const latex = this.getLatex();
+        const parent = cursor.parent;
+        const isAtTopLevel = this._isAtTopLevel(cursor);
 
+        // Store the selection, if it exists.
+        const leftEnd = cursor.selection && cursor.selection.ends[MQ.L];
+        const rightEnd = cursor.selection && cursor.selection.ends[MQ.R];
+
+        const latex = this.getLatex();
         const minusSign = '-';
         if (latex.charAt(0) === minusSign) {
             // If the input is leading with a minus sign, remove it.
@@ -578,12 +585,22 @@ class MathWrapper {
             this.mathField.write(minusSign);
         }
 
-        // If our cursor was at the start or at the minus sign, then we can
-        // leave it in-place. Otherwise, we need to re-insert it.
-        // TODO(charlie): If we're inside an empty numerator or denominator,
-        // then the cursor gets positioned incorrectly (at the front of the
-        // expression).
-        if (leftNode !== MQ_END && leftNode.latex() !== minusSign) {
+        // If you had something selected, restore it.
+        if (leftEnd && rightEnd) {
+            cursor.insLeftOf(leftEnd);
+            cursor.startSelection();
+            cursor.insRightOf(rightEnd);
+            cursor.select();
+            cursor.endSelection();
+        } if (leftNode === MQ_END && !isAtTopLevel) {
+            // Otherwise, if we started in an empty, non-top-level node (like an
+            // empty numerator), then we need to re-insert into the end of that
+            // node.
+            cursor.insAtLeftEnd(parent);
+        } else if (leftNode !== MQ_END && leftNode.latex() !== minusSign) {
+            // Finally, if our cursor wasn't at the start of the expression and
+            // wasn't at the minus sign (in such cases, it would naturally be in
+            // the right place after insertion), re-insert it.
             cursor.insRightOf(leftNode);
         }
     }
