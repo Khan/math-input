@@ -68,6 +68,12 @@ const keypadReducer = function(state = initialKeypadState, action) {
                 active: false,
             };
 
+        case 'ActivateKeypad':
+            return {
+                ...state,
+                active: true,
+            };
+
         case 'ConfigureKeypad':
             const { keypadType } = action.configuration;
             return {

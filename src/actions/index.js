@@ -10,6 +10,12 @@ module.exports = {
         });
     },
 
+    activateKeypad: function() {
+        store.dispatch({
+            type: 'ActivateKeypad',
+        });
+    },
+
     configureKeypad: function(configuration) {
         store.dispatch({
             type: 'ConfigureKeypad',

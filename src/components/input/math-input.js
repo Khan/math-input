@@ -41,6 +41,7 @@ const MathInput = React.createClass({
          * cursor context.
          */
         onCursorMove: React.PropTypes.func,
+        onTouchStart: React.PropTypes.func,
     },
 
     getInitialState() {
@@ -158,10 +159,6 @@ const MathInput = React.createClass({
         }
     },
 
-    handleClick(e) {
-        this._setCursorLocation(e.pageX, e.pageY);
-    },
-
     handleTouchStart(e) {
         e.preventDefault();
 
@@ -172,6 +169,8 @@ const MathInput = React.createClass({
         if (e.target !== this._cursorHandle) {
             this._setCursorLocation(touch.pageX, touch.pageY);
         }
+
+        this.props.onTouchStart(e);
     },
 
     /**
@@ -386,7 +385,6 @@ const MathInput = React.createClass({
         return <View
             ref={(node) => this._container = ReactDOM.findDOMNode(node)}
             style={styles.input}
-            onClick={this.handleClick}
             onTouchStart={this.handleTouchStart}
         >
             <View
