@@ -1,5 +1,7 @@
 const queryString = require('query-string');
-const { keypadTypes, switchTypes, jumpOutTypes } = require('./consts');
+const {
+    keypadTypes, switchTypes, jumpOutTypes, debugSwitcherTypes
+} = require('./consts');
 
 // test 1
 // keypad_switch: [toggle], page_control, tab_bar
@@ -17,13 +19,17 @@ const { keypadTypes, switchTypes, jumpOutTypes } = require('./consts');
 
 const parsed = queryString.parse(location.search);
 
+const containsConfigurationOptions = Object.keys(parsed).length > 0;
+
 const defaults = {
     keypadSwitch: switchTypes.TOGGLE,
     keypadType: keypadTypes.ADVANCED_EXPRESSION,
     jumpOutType: jumpOutTypes.STATIC,
     echoState: 'yes',
     iconStyle: 'fancy',
-    debugSwitcher: 'no',
+    debugSwitcher: containsConfigurationOptions ?
+                   debugSwitcherTypes.DISABLED :
+                   debugSwitcherTypes.ENABLED,
 };
 
 const settings = {
@@ -40,4 +46,4 @@ for (const [key, value] of Object.entries(settings)) {
     settings[key] = value.toUpperCase();
 }
 
-module.exports =  settings;
+module.exports = settings;

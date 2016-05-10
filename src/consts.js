@@ -51,4 +51,8 @@ module.exports = {
         STATIC: 'STATIC',
         DYNAMIC: 'DYNAMIC',
     },
+    debugSwitcherTypes: {
+        ENABLED: 'ENABLED',
+        DISABLED: 'DISABLED',
+    },
 };
