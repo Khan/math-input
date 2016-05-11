@@ -17,6 +17,7 @@ const MathKeypad = React.createClass({
         active: React.PropTypes.bool,
         extraKeys: React.PropTypes.arrayOf(keyIdPropType),
         keypadType: React.PropTypes.oneOf(Object.keys(keypadTypes)).isRequired,
+        onDismiss: React.PropTypes.func,
     },
 
     componentDidMount() {
@@ -25,6 +26,12 @@ const MathKeypad = React.createClass({
 
         // And update it on resize.
         window.addEventListener("resize", this._onResize);
+    },
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.active && !this.props.active) {
+            this.props.onDismiss && this.props.onDismiss();
+        }
     },
 
     componentWillUnmount() {

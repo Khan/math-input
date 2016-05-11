@@ -49,10 +49,13 @@ const MathInput = React.createClass({
         onCursorMove: React.PropTypes.func,
 
         onFocus: React.PropTypes.func,
+
+        onTouchStart: React.PropTypes.func,
     },
 
     getInitialState() {
         return {
+            focused: false,
             handle: {
                 animateIntoPosition: false,
                 visible: false,
@@ -90,7 +93,7 @@ const MathInput = React.createClass({
             // We're using stopPropagation to avoid blur when interacting with
             // the keypad.
             if (!this._container.contains(evt.target)) {
-                this.props.onBlur && this.props.onBlur();
+                this.blur();
             }
         };
 
@@ -191,7 +194,21 @@ const MathInput = React.createClass({
             this._setCursorLocation(touch.pageX, touch.pageY);
         }
 
+        this.props.onTouchStart(e);
+
+        this.focus();
+    },
+
+    blur() {
+        this.mathField.getCursor().hide();
+        this.props.onBlur && this.props.onBlur();
+        this.setState({ focused: false, handle: { visible: false } });
+    },
+
+    focus() {
+        this.mathField.getCursor().show();
         this.props.onFocus && this.props.onFocus();
+        this.setState({ focused: true });
     },
 
     /**
@@ -409,7 +426,7 @@ const MathInput = React.createClass({
     },
 
     render() {
-        const { handle, selectionRect } = this.state;
+        const { focused, handle, selectionRect } = this.state;
 
         return <View
             style={styles.input}
@@ -419,9 +436,10 @@ const MathInput = React.createClass({
                 ref={(node) => this._mathContainer = ReactDOM.findDOMNode(node)}
                 className={css(styles.innerContainer)}
             >
-                {selectionRect.visible && <SelectionRect {...selectionRect}/>}
+                {focused && selectionRect.visible &&
+                    <SelectionRect {...selectionRect}/>}
             </div>
-            {handle.visible && <CursorHandle
+            {focused && handle.visible && <CursorHandle
                 {...handle}
                 ref={(node) => this._cursorHandle = ReactDOM.findDOMNode(node)}
                 onEnd={this.handleCursorHandleEnd}
