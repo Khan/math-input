@@ -5,7 +5,7 @@
 const React = require('react');
 
 const Iconography = require('./iconography');
-const MultiSymbolGrid = require('./multi-symbol-grid');
+const UnicodeIcon = require('./unicode-icon');
 
 const Icon = React.createClass({
     propTypes: {
@@ -27,8 +27,8 @@ const Icon = React.createClass({
             const componentProps = focused ? { primaryColor: '#FFF' } : {};
             return <Component {...componentProps} />;
         } else if (unicodeSymbol) {
-            return <MultiSymbolGrid
-                unicodeSymbols={[unicodeSymbol]}
+            return <UnicodeIcon
+                unicodeSymbol={unicodeSymbol}
                 focused={focused}
             />;
         } else {

@@ -8,6 +8,8 @@ module.exports = {
     brightGreen: '#78C008',
     darkGrey: '#888D93',
     lightGrey: '#D6D8DA',
+    iconGrey: '#3B3E40',
+    secondaryIconOpacity: 0.3,
     buttonBorderColor: '#ECECEC',
     buttonBorderStyle: 'solid',
     buttonBorderWidthPx: 1,
