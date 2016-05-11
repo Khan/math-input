@@ -37,6 +37,7 @@ const KeyActions = {
     [Keys.EXP_3]: { str: '^3', fn: WRITE },
     [Keys.SQRT]: { str: 'sqrt', fn: CMD },
     [Keys.PI]: { str: 'pi', fn: CMD },
+    [Keys.THETA]: { str: 'theta', fn: CMD },
     [Keys.RADICAL]: { str: 'nthroot', fn: CMD },
     [Keys.LEFT]: { str: 'Left', fn: KEYSTROKE },
     [Keys.RIGHT]: { str: 'Right', fn: KEYSTROKE },
@@ -107,8 +108,8 @@ class MathWrapper {
             this._handleToggleSign(cursor);
         } else if (key === Keys.BACKSPACE) {
             this._handleBackspace(cursor);
-        } else if (/^[a-z]$/.test(key)) {
-            this.mathField[WRITE](key).focus();
+        } else if (/^[A-Z]$/.test(key)) {
+            this.mathField[WRITE](key.toLowerCase()).focus();
         } else if (/^NUM_\d/.test(key)) {
             this.mathField[WRITE](key[4]).focus();
         }

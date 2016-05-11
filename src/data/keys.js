@@ -35,7 +35,10 @@ const Keys = {
     SIN: 'SIN',
     COS: 'COS',
     TAN: 'TAN',
+
+    // TODO(charlie): Add in additional Greek letters.
     PI: 'PI',
+    THETA: 'THETA',
 
     FRAC_MULTI: 'FRAC_MULTI',
     PARENS_MULTI: 'PARENS_MULTI',

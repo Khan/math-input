@@ -95,6 +95,10 @@ const KeyConfigs = {
         type: keyTypes.MATH,
         unicodeSymbol: '\u03C0',
     },
+    [Keys.THETA]: {
+        type: keyTypes.MATH,
+        unicodeSymbol: '\u03B8',
+    },
     [Keys.NOOP]: {
         type: keyTypes.EMPTY,
     },
@@ -176,10 +180,10 @@ for (const num of '0123456789') {
 }
 
 // Add in every variable.
-for (const letter of 'abcdefghijklmnopqrstuvwxyz') {
+for (const letter of 'ABCDEFGHIJKLMNOPQRSTUVWXYZ') {
     KeyConfigs[letter] = {
         type: keyTypes.MATH,
-        unicodeSymbol: letter,
+        unicodeSymbol: letter.toLowerCase(),
     };
 }
 
