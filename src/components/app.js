@@ -8,14 +8,20 @@ const MathKeypad = require('./math-keypad');
 const KeypadTypeSelector = require('./keypad-type-selector');
 
 const store = require('../store');
-const { activateKeypad, configureKeypad, setCursor } = require('../actions');
+const {
+    activateKeypad, configureKeypad, dismissKeypad, setCursor
+} = require('../actions');
 const { debugSwitcherTypes } = require('../consts');
 const Settings = require('../settings');
 
 const App = React.createClass({
     render() {
         return <View>
-            <MathInput onCursorMove={setCursor} onTouchStart={activateKeypad} />
+            <MathInput
+                onCursorMove={setCursor}
+                onBlur={dismissKeypad}
+                onFocus={activateKeypad}
+            />
             <Provider store={store}>
                 <MathKeypad />
             </Provider>

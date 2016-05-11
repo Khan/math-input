@@ -49,7 +49,6 @@ const MathInput = React.createClass({
         onCursorMove: React.PropTypes.func,
 
         onFocus: React.PropTypes.func,
-        onTouchStart: React.PropTypes.func,
     },
 
     getInitialState() {
@@ -192,8 +191,7 @@ const MathInput = React.createClass({
             this._setCursorLocation(touch.pageX, touch.pageY);
         }
 
-        this.props.onTouchStart(e);
-        this.props.onFocus();
+        this.props.onFocus && this.props.onFocus();
     },
 
     /**
