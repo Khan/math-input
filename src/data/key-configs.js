@@ -93,6 +93,7 @@ const KeyConfigs = {
     },
     [Keys.PI]: {
         type: keyTypes.MATH,
+        unicodeSymbol: '\u03C0',
     },
     [Keys.NOOP]: {
         type: keyTypes.EMPTY,
@@ -165,8 +166,12 @@ const KeyConfigs = {
 
 // Add in every numeral.
 for (const num of '0123456789') {
+    // TODO(charlie): Consider removing the SVG icons that we have for the
+    // numeral keys. They can be rendered just as easily with text (though that
+    // would mean that we'd be using text beyond the variable key).
     KeyConfigs[`NUM_${num}`] = {
         type: keyTypes.NUMERAL,
+        unicodeSymbol: num,
     };
 }
 
@@ -174,6 +179,7 @@ for (const num of '0123456789') {
 for (const letter of 'abcdefghijklmnopqrstuvwxyz') {
     KeyConfigs[letter] = {
         type: keyTypes.MATH,
+        unicodeSymbol: letter,
     };
 }
 

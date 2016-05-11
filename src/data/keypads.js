@@ -20,7 +20,7 @@ const Keypads = {
     },
     [keypadTypes.ADVANCED_EXPRESSION]: {
         numPages: 2,
-        extraKeys: ['x', Keys.PI, 'y', 'e', 'z'],
+        extraKeys: ['x', 'y'],
     },
     [keypadTypes.BASIC_EXPRESSION]: {
         numPages: 2,

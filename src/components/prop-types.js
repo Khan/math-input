@@ -14,6 +14,7 @@ const keyConfigPropType = React.PropTypes.shape({
     id: keyIdPropType.isRequired,
     type: React.PropTypes.oneOf(Object.keys(keyTypes)).isRequired,
     childKeyIds: React.PropTypes.arrayOf(keyIdPropType),
+    unicodeSymbol: React.PropTypes.string,
 });
 
 const bordersPropType =  React.PropTypes.arrayOf(
@@ -44,7 +45,6 @@ const childrenPropType = React.PropTypes.oneOfType([
     React.PropTypes.arrayOf(React.PropTypes.node),
     React.PropTypes.node,
 ]);
-
 
 module.exports = {
     keyConfigPropType,

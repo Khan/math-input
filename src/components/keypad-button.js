@@ -6,18 +6,16 @@ const React = require('react');
 const { connect } = require('react-redux');
 
 const { StyleSheet } = require('aphrodite');
-const { Text, View } = require('../fake-react-native-web');
+const { View } = require('../fake-react-native-web');
 const Icon = require('./icon');
 const MultiSymbolPopover = require('./multi-symbol-popover');
+const MultiSymbolGrid = require('./multi-symbol-grid');
 const { keyTypes, borderDirections, borderStyles } = require('../consts');
-const { row, column, centered } = require('./styles');
 const {
     brightGreen,
     buttonBorderColor,
     buttonBorderStyle,
     buttonBorderWidthPx,
-    iconSizeHeightPx,
-    iconSizeWidthPx,
 } = require('./common-style');
 const { keyConfigPropType, bordersPropType } = require('./prop-types');
 
@@ -41,6 +39,9 @@ const KeypadButton = React.createClass({
         popoverEnabled: React.PropTypes.bool,
         style: React.PropTypes.any,
         type: React.PropTypes.oneOf(Object.keys(keyTypes)).isRequired,
+        // The unicode symbol that can be used to depict the icon for the
+        // button, as a fall-back in case there is no SVG icon available.
+        unicodeSymbol: React.PropTypes.string,
     },
 
     getDefaultProps() {
@@ -140,12 +141,14 @@ const KeypadButton = React.createClass({
             popoverEnabled,
             style,
             type,
+            unicodeSymbol,
         } = this.props;
 
         // We render in the focus state if the key is focused, or if it's an
         // echo.
         const renderFocused = focused || type === keyTypes.ECHO;
         const buttonStyle = this._getButtonStyle(type, borders, style);
+        const focusStyle = this._getFocusStyle(type);
 
         const eventHandlers = {
             onTouchCancel, onTouchEnd, onTouchMove, onTouchStart,
@@ -156,37 +159,26 @@ const KeypadButton = React.createClass({
         if (type === keyTypes.EMPTY) {
             return <View style={buttonStyle} {...eventHandlers} />;
         } else if (type === keyTypes.MANY) {
-            // TODO(charlie): Figure out how we're going to get the symbols. We
-            // could re-add the symbol logic, but if we end up doing this with
-            // SVG as well (i.e., if we need button rescaling), then it's not
-            // worthwhile.
-            const maxKeysPerColumn = 2;
+            const unicodeSymbols = childKeys.map(keyConfig => {
+                return keyConfig.unicodeSymbol;
+            });
             return <View style={buttonStyle} {...eventHandlers}>
-                <View style={[row, centered, styles.singleIconSize]}>
-                    <View style={column}>
-                        {childKeys.slice(0, maxKeysPerColumn).map(key =>
-                            <Text style={styles.extraSymbolText} key={key.id}>
-                                {key.id}
-                            </Text>
-                        )}
-                    </View>
-                    <View style={column}>
-                        {childKeys.slice(
-                            maxKeysPerColumn, 2 * maxKeysPerColumn)
-                        .map(key =>
-                            <Text style={styles.extraSymbolText} key={key.id}>
-                                {key.id}
-                            </Text>
-                        )}
-                    </View>
+                <View style={renderFocused && focusStyle}>
+                    <MultiSymbolGrid
+                        unicodeSymbols={unicodeSymbols}
+                        focused={renderFocused}
+                    />
                 </View>
                 {maybePopoverContent}
             </View>;
         } else {
-            const focusStyle = this._getFocusStyle(type);
             return <View style={buttonStyle} {...eventHandlers}>
                 <View style={renderFocused && focusStyle}>
-                    <Icon name={name} focused={renderFocused} />
+                    <Icon
+                        name={name}
+                        unicodeSymbol={unicodeSymbol}
+                        focused={renderFocused}
+                    />
                 </View>
                 {maybePopoverContent}
             </View>;
@@ -216,19 +208,6 @@ const styles = StyleSheet.create({
     // layout purposes, but we don't want them to be visible.
     echo: {
         borderColor: 'transparent',
-    },
-
-    // Styles used to create the 'additional symbols' button.
-    singleIconSize: {
-        height: iconSizeHeightPx,
-        width: iconSizeWidthPx,
-    },
-
-    extraSymbolText: {
-        margin: 1,
-        // TODO(charlie): Include Proxima and set font appropriately.
-        fontSize: 12,
-        color: '#888d93',
     },
 
     // Background colors and other base styles that may vary between key types.

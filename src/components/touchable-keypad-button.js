@@ -64,7 +64,7 @@ const mapStateToProps = (state, ownProps) => {
     const { gestures } = state;
 
     const { keyConfig, ...rest } = ownProps;
-    const { id, childKeyIds, type } = keyConfig;
+    const { id, childKeyIds, type, unicodeSymbol } = keyConfig;
 
     return {
         ...rest,
@@ -78,6 +78,7 @@ const mapStateToProps = (state, ownProps) => {
         name: id,
         popoverEnabled: gestures.popover === id,
         type: type,
+        unicodeSymbol: unicodeSymbol,
     };
 };
 

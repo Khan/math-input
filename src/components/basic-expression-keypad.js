@@ -9,6 +9,7 @@ const { StyleSheet } = require('aphrodite');
 const { View } = require('../fake-react-native-web');
 const TwoPageKeypad = require('./two-page-keypad');
 const EmptyKeypadButton = require('./empty-keypad-button');
+const ManyKeypadButton = require('./many-keypad-button');
 const TouchableKeypadButton = require('./touchable-keypad-button');
 const { row, column, oneColumn } = require('./styles');
 const { borderStyles, switchTypes, jumpOutTypes } = require('../consts');
@@ -35,7 +36,7 @@ const BasicExpressionKeypad = React.createClass({
 
     render() {
         const {
-            currentPage, cursorContext, dynamicJumpOut, showToggle,
+            currentPage, cursorContext, dynamicJumpOut, extraKeys, showToggle,
         } = this.props;
 
         const firstPage = <View style={[row, styles.fullPage]}>
@@ -52,9 +53,8 @@ const BasicExpressionKeypad = React.createClass({
                     keyConfig={KeyConfigs.NUM_1}
                     borders={borderStyles.BOTTOM}
                 />
-                {/* TODO(charlie): Replace with the many-symbol button. */}
-                <TouchableKeypadButton
-                    keyConfig={KeyConfigs.x}
+                <ManyKeypadButton
+                    keys={extraKeys}
                     borders={borderStyles.NONE}
                 />
             </View>

@@ -6,6 +6,7 @@ const React = require('react');
 const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 const { removeEcho } = require('../actions');
 const KeypadButton = require('./keypad-button');
+const KeyConfigs = require('../data/key-configs');
 const { keyTypes, echoAnimationTypes } = require('../consts');
 const {
     echoPropType, bordersPropType, boundingBoxPropType, keyIdPropType,
@@ -33,6 +34,7 @@ const Echo = React.createClass({
 
     render() {
         const { borders, id, initialBounds } = this.props;
+        const { unicodeSymbol } = KeyConfigs[id];
 
         const containerStyle = {
             position: 'absolute',
@@ -48,6 +50,7 @@ const Echo = React.createClass({
         return <div style={containerStyle}>
             <KeypadButton
                 name={id}
+                unicodeSymbol={unicodeSymbol}
                 type={keyTypes.ECHO}
                 borders={borders}
             />

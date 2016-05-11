@@ -43,7 +43,6 @@ module.exports = {
     EQUAL_MULTI: require('./equal-multi'),
     TIMES: require('./times'),
     TOGGLE_SIGN: require('./toggle-sign'),
-    PI: require('./pi'),
     EXP_3: require('./exp-3'),
     EXP_2: require('./exp-2'),
     GREATER_MULTI: require('./greater-multi'),
@@ -56,6 +55,5 @@ module.exports = {
     LEQ: require('./leq'),
     MINUS: require('./minus'),
     RADICAL: require('./radical'),
-    x: require('./x'),
     MORE: require('./more'),
 };
