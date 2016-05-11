@@ -37,6 +37,8 @@ const unionRects = (rects) =>
 
 const MathInput = React.createClass({
     propTypes: {
+        onBlur: React.PropTypes.func,
+
         /**
          * A callback that's triggered whenever the cursor moves as a result of
          * a non-key press (i.e., through direct user interaction).
@@ -44,8 +46,8 @@ const MathInput = React.createClass({
          * The callback takes, as argument, a cursor object consisting of a
          * cursor context.
          */
-        onBlur: React.PropTypes.func,
         onCursorMove: React.PropTypes.func,
+
         onFocus: React.PropTypes.func,
         onTouchStart: React.PropTypes.func,
     },
@@ -85,21 +87,20 @@ const MathInput = React.createClass({
 
         this._container = ReactDOM.findDOMNode(this);
 
-        this.touchStartOutside = (evt) => {
-            // TODO(kevinb) refine this to ignore keypad
+        this.blurOnTouchStartOutside = (evt) => {
+            // We're using stopPropagation to avoid blur when interacting with
+            // the keypad.
             if (!this._container.contains(evt.target)) {
-                if (this.props.onBlur) {
-                    this.props.onBlur();
-                }
+                this.props.onBlur && this.props.onBlur();
             }
         };
 
-        window.addEventListener('touchstart', this.touchStartOutside);
+        window.addEventListener('touchstart', this.blurOnTouchStartOutside);
     },
 
     componentWillUnmount() {
 
-        window.removeEventListener('touchstart', this.touchStartOutside);
+        window.removeEventListener('touchstart', this.blurOnTouchStartOutside);
     },
 
     onSelectionChanged(selection) {
