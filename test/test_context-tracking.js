@@ -94,7 +94,7 @@ describe('Cursor context', () => {
         assert.equal(cursor.context, CursorContexts.TOP_LEVEL);
     });
 
-    it('should treat being within a top-level expression in a nested expression as nested', () => {
+    it('a top-level expression in a nested expression is nested', () => {
         mathField.pressKey(Keys.PARENS);
         mathField.pressKey('NUM_1');
         mathField.pressKey(Keys.CDOT);

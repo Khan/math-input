@@ -259,7 +259,7 @@ describe('MathQuill', () => {
             assert.equal(mathField.getContent(), '');
         });
 
-        it('should delete only the first parens when inside empty parens', () => {
+        it('deletes only the first parens when inside empty parens', () => {
             mathField.setContent('\\left(\\right)\\left(\\right)');
             mathField.pressKey(Keys.LEFT);
             mathField.pressKey(Keys.BACKSPACE);

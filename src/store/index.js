@@ -57,7 +57,7 @@ const defaultKeypadType = Settings.keypadType;
 const initialKeypadState = {
     extraKeys: Keypads[defaultKeypadType].extraKeys,
     keypadType: defaultKeypadType,
-    active: true,
+    active: false,
 };
 
 const keypadReducer = function(state = initialKeypadState, action) {

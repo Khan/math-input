@@ -44,7 +44,9 @@ const MathInput = React.createClass({
          * The callback takes, as argument, a cursor object consisting of a
          * cursor context.
          */
+        onBlur: React.PropTypes.func,
         onCursorMove: React.PropTypes.func,
+        onFocus: React.PropTypes.func,
         onTouchStart: React.PropTypes.func,
     },
 
@@ -80,6 +82,24 @@ const MathInput = React.createClass({
 
             return cursor;
         });
+
+        this._container = ReactDOM.findDOMNode(this);
+
+        this.touchStartOutside = (evt) => {
+            // TODO(kevinb) refine this to ignore keypad
+            if (!this._container.contains(evt.target)) {
+                if (this.props.onBlur) {
+                    this.props.onBlur();
+                }
+            }
+        };
+
+        window.addEventListener('touchstart', this.touchStartOutside);
+    },
+
+    componentWillUnmount() {
+
+        window.removeEventListener('touchstart', this.touchStartOutside);
     },
 
     onSelectionChanged(selection) {
@@ -172,6 +192,7 @@ const MathInput = React.createClass({
         }
 
         this.props.onTouchStart(e);
+        this.props.onFocus();
     },
 
     /**
@@ -392,7 +413,6 @@ const MathInput = React.createClass({
         const { handle, selectionRect } = this.state;
 
         return <View
-            ref={(node) => this._container = ReactDOM.findDOMNode(node)}
             style={styles.input}
             onTouchStart={this.handleTouchStart}
         >

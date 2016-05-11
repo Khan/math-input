@@ -75,6 +75,7 @@ class GestureManager {
         // If an event started in a view that we're managing, we'll handle it
         // all the way through.
         evt.preventDefault();
+        evt.stopPropagation();
     }
 
     /**

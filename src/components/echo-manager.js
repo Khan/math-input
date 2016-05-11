@@ -98,7 +98,7 @@ const EchoManager = React.createClass({
     render() {
         const { animationType, echoes } = this.props;
         const {
-            animationDurationMs, animationTransitionName
+            animationDurationMs, animationTransitionName,
         } = this._animationConfigForType(animationType);
 
         // TODO(charlie): Manage this animation with Aphrodite styles. Right
