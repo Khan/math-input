@@ -9,7 +9,7 @@ const KeypadTypeSelector = require('./keypad-type-selector');
 
 const store = require('../store');
 const {
-    activateKeypad, configureKeypad, dismissKeypad, setCursor
+    activateKeypad, configureKeypad, dismissKeypad, setCursor,
 } = require('../actions');
 const { debugSwitcherTypes } = require('../consts');
 const Settings = require('../settings');
