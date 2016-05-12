@@ -80,11 +80,11 @@ const MathInput = React.createClass({
 
         this.mathField.setContent(this.props.value);
 
-        this._root = document.querySelector('.mq-root-block');
+        this._container = ReactDOM.findDOMNode(this);
+
+        this._root = this._container.querySelector('.mq-root-block');
         this._root.style.border = `solid ${paddingWidthPx}px white`;
         this._root.style.fontSize = `${fontSizePt}pt`;
-
-        this._container = ReactDOM.findDOMNode(this);
 
         this.blurOnTouchStartOutside = (evt) => {
             // We're using stopPropagation to avoid blur when interacting with
@@ -116,7 +116,7 @@ const MathInput = React.createClass({
             return;
         }
 
-        const selectionRoot = document.querySelector('.mq-selection');
+        const selectionRoot = this._container.querySelector('.mq-selection');
         selectionRoot.setAttribute('id', 'selection-override');
 
         const bounds = unionRects(
@@ -146,8 +146,8 @@ const MathInput = React.createClass({
 
     _updateCursorHandle(animateIntoPosition) {
         const containerBounds = this._container.getBoundingClientRect();
-        const cursorBounds =
-            document.querySelector('.mq-cursor').getBoundingClientRect();
+        const cursor = this._container.querySelector('.mq-cursor');
+        const cursorBounds = cursor.getBoundingClientRect();
 
         const cursorWidth = 2;
         const gapBelowCursor = 2;
