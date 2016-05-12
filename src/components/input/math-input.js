@@ -476,26 +476,27 @@ const MathInput = React.createClass({
 });
 
 const fontSizePt = 18;
+const minSizePx = 32;
 const paddingWidthPx = 2;   // around _mathContainer and the selection rect
 const borderWidthPx = 1;    // black border around _mathContainer
 
 const styles = StyleSheet.create({
     input: {
-        marginTop: 10,
-        marginLeft: 20,
-        marginRight: 20,
-        marginBottom: 40,
         position: 'relative',
+        display: 'inline-block',
     },
 
     // TODO(kevinb) update border style to match mocks
     innerContainer: {
         display: 'flex',
+        minWidth: minSizePx,
+        minHeight: minSizePx,
         position: 'relative',
         overflow: 'hidden',
         borderWidth: borderWidthPx,
         borderStyle: 'solid',
-        borderColor: 'black',
+        borderColor: '#BABEC2',
+        borderRadius: 4,
     },
 });
 

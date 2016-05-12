@@ -22,13 +22,22 @@ const App = React.createClass({
 
     render() {
         return <View>
-            <MathInput
-                value={this.state.value}
-                onChange={value => this.setState({ value })}
-                onCursorMove={setCursor}
-                onBlur={dismissKeypad}
-                onFocus={activateKeypad}
-            />
+            <div
+                style={{
+                    marginTop: 10,
+                    marginLeft: 20,
+                    marginRight: 20,
+                    marginBottom: 40,
+                }}
+            >
+                <MathInput
+                    value={this.state.value}
+                    onChange={value => this.setState({ value })}
+                    onCursorMove={setCursor}
+                    onBlur={dismissKeypad}
+                    onFocus={activateKeypad}
+                />
+            </div>
             <Provider store={store}>
                 <MathKeypad />
             </Provider>
