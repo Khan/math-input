@@ -32,7 +32,7 @@ const App = React.createClass({
             >
                 <MathInput
                     value={this.state.value}
-                    onChange={value => this.setState({ value })}
+                    onChange={(value, cb) => this.setState({ value }, cb)}
                     onCursorMove={setCursor}
                     onBlur={dismissKeypad}
                     onFocus={activateKeypad}

@@ -38,7 +38,7 @@ const unionRects = (rects) =>
 const MathInput = React.createClass({
     propTypes: {
         onBlur: React.PropTypes.func,
-        onChange: React.PropTypes.func,
+        onChange: React.PropTypes.func.isRequired,
 
         /**
          * A callback that's triggered whenever the cursor moves as a result of
@@ -74,7 +74,6 @@ const MathInput = React.createClass({
 
     componentDidMount() {
         this.mathField = new MathWrapper(this._mathContainer, {
-            onSelectionChanged: this.onSelectionChanged,
             onCursorMove: this.props.onCursorMove,
         });
 
@@ -104,16 +103,12 @@ const MathInput = React.createClass({
     },
 
     componentWillUnmount() {
-
         window.removeEventListener('touchstart', this.blurOnTouchStartOutside);
     },
 
-    onSelectionChanged(selection) {
+    rectForSelection(selection) {
         if (!selection) {
-            this.setState({
-                selectionRect: defaultSelectionRect,
-            });
-            return;
+            return defaultSelectionRect;
         }
 
         const selectionRoot = this._container.querySelector('.mq-selection');
@@ -133,15 +128,13 @@ const MathInput = React.createClass({
         const borderWidth = borderWidthPx;
         const padding = paddingWidthPx;
 
-        const selectionRect = {
+        return {
             visible: true,
             x: bounds.left - mathContainerBounds.left - borderWidth - padding,
             y: bounds.top - mathContainerBounds.top - borderWidth - padding,
             width: bounds.right - bounds.left + 2 * padding,
             height: bounds.bottom - bounds.top + 2 * padding,
         };
-
-        this.setState({ selectionRect });
     },
 
     _updateCursorHandle(animateIntoPosition) {
@@ -215,14 +208,25 @@ const MathInput = React.createClass({
         setKeyHandler(key => {
             const cursor = this.mathField.pressKey(key);
 
-            // Trigger an `onChange` if the value in the input changed.
+            // Trigger an `onChange` if the value in the input changed, and hide
+            // the cursor handle and update the selection rect whenever the user
+            // types a key. If the value changed as a result of a keypress, we
+            // need to be careful not to call `setState` until after `onChange`
+            // has resolved.
+            const hideCursorAndUpdateSelectionRect = () => {
+                this.setState({
+                    handle: {
+                        visible: false,
+                    },
+                    selectionRect: this.rectForSelection(cursor.selection),
+                });
+            };
             const value = this.mathField.getContent();
             if (this.props.value !== value) {
-                this.props.onChange && this.props.onChange(value);
+                this.props.onChange(value, hideCursorAndUpdateSelectionRect);
+            } else {
+                hideCursorAndUpdateSelectionRect();
             }
-
-            // Hide the cursor handle whenever the user types a key.
-            this.setState({ handle: { visible: false } });
 
             return cursor;
         });
@@ -486,7 +490,6 @@ const styles = StyleSheet.create({
         display: 'inline-block',
     },
 
-    // TODO(kevinb) update border style to match mocks
     innerContainer: {
         display: 'flex',
         minWidth: minSizePx,
