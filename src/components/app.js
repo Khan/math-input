@@ -14,9 +14,17 @@ const { debugSwitcherTypes } = require('../consts');
 const Settings = require('../settings');
 
 const App = React.createClass({
+    getInitialState() {
+        return {
+            value: "",
+        };
+    },
+
     render() {
         return <View>
             <MathInput
+                value={this.state.value}
+                onChange={value => this.setState({ value })}
                 onCursorMove={setCursor}
                 onBlur={dismissKeypad}
                 onFocus={activateKeypad}
