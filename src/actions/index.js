@@ -69,9 +69,9 @@ module.exports = {
         });
     },
 
-    registerKeyHandler: function(keyHandler) {
+    setKeyHandler: function(keyHandler) {
         store.dispatch({
-            type: 'RegisterKeyHandler',
+            type: 'SetKeyHandler',
             keyHandler,
         });
     },

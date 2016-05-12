@@ -2,7 +2,7 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 const { css, StyleSheet } = require("aphrodite");
 
-const actions = require('../../actions');
+const { setKeyHandler } = require('../../actions');
 const { View } = require('../../fake-react-native-web');
 const CursorHandle = require('./cursor-handle');
 const SelectionRect = require('./selection-rect');
@@ -49,8 +49,6 @@ const MathInput = React.createClass({
         onCursorMove: React.PropTypes.func,
 
         onFocus: React.PropTypes.func,
-
-        onTouchStart: React.PropTypes.func,
     },
 
     getInitialState() {
@@ -75,17 +73,6 @@ const MathInput = React.createClass({
         this._root = document.querySelector('.mq-root-block');
         this._root.style.border = `solid ${paddingWidthPx}px white`;
         this._root.style.fontSize = `${fontSizePt}pt`;
-
-        // pass this component's handleKey method to the store so it can call
-        // it whenever the store gets an KeyPress action from the keypad
-        actions.registerKeyHandler(key => {
-            const cursor = this.mathField.pressKey(key);
-
-            // Hide the cursor handle whenever the user types a key.
-            this.setState({ handle: { visible: false } });
-
-            return cursor;
-        });
 
         this._container = ReactDOM.findDOMNode(this);
 
@@ -194,8 +181,6 @@ const MathInput = React.createClass({
             this._setCursorLocation(touch.pageX, touch.pageY);
         }
 
-        this.props.onTouchStart(e);
-
         this.focus();
     },
 
@@ -206,6 +191,17 @@ const MathInput = React.createClass({
     },
 
     focus() {
+        // Pass this component's handleKey method to the store so it can call
+        // it whenever the store gets a keypress action from the keypad.
+        setKeyHandler(key => {
+            const cursor = this.mathField.pressKey(key);
+
+            // Hide the cursor handle whenever the user types a key.
+            this.setState({ handle: { visible: false } });
+
+            return cursor;
+        });
+
         this.mathField.getCursor().show();
         this.props.onFocus && this.props.onFocus();
         this.setState({ focused: true });

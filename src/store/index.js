@@ -20,7 +20,7 @@ const initialInputState = {
 
 const inputReducer = function(state = initialInputState, action) {
     switch (action.type) {
-        case 'RegisterKeyHandler':
+        case 'SetKeyHandler':
             return {
                 ...state,
                 keyHandler: action.keyHandler,
@@ -75,16 +75,9 @@ const keypadReducer = function(state = initialKeypadState, action) {
             };
 
         case 'ConfigureKeypad':
-            const { keypadType } = action.configuration;
             return {
-                // TODO(charlie): For now, we're hardcoding the extra
-                // symbols. However, once we've integrated with Perseus,
-                // they'll be providing both the keypad type and the extra
-                // symbols in one call; hence, they're packaged together as
-                // a single 'configuration' object.
-                extraKeys: Keypads[keypadType].extraKeys,
-                keypadType,
-                active: true,
+                ...state,
+                ...action.configuration,
             };
 
         case 'PressKey':
