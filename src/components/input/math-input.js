@@ -38,6 +38,7 @@ const unionRects = (rects) =>
 const MathInput = React.createClass({
     propTypes: {
         onBlur: React.PropTypes.func,
+        onChange: React.PropTypes.func,
 
         /**
          * A callback that's triggered whenever the cursor moves as a result of
@@ -49,6 +50,13 @@ const MathInput = React.createClass({
         onCursorMove: React.PropTypes.func,
 
         onFocus: React.PropTypes.func,
+        value: React.PropTypes.string,
+    },
+
+    getDefaultProps() {
+        return {
+            value: "",
+        };
     },
 
     getInitialState() {
@@ -70,6 +78,8 @@ const MathInput = React.createClass({
             onCursorMove: this.props.onCursorMove,
         });
 
+        this.mathField.setContent(this.props.value);
+
         this._root = document.querySelector('.mq-root-block');
         this._root.style.border = `solid ${paddingWidthPx}px white`;
         this._root.style.fontSize = `${fontSizePt}pt`;
@@ -85,6 +95,12 @@ const MathInput = React.createClass({
         };
 
         window.addEventListener('touchstart', this.blurOnTouchStartOutside);
+    },
+
+    componentDidUpdate() {
+        if (this.mathField.getContent() !== this.props.value) {
+            this.mathField.setContent(this.props.value);
+        }
     },
 
     componentWillUnmount() {
@@ -157,7 +173,7 @@ const MathInput = React.createClass({
         this.mathField.setCursorPosition(x, y);
         this.mathField.getCursor().show();
 
-        if (this.mathField.getLatex() === "") {
+        if (this.mathField.getContent() === "") {
             this.setState({
                 handle: {
                     visible: false,
@@ -195,6 +211,12 @@ const MathInput = React.createClass({
         // it whenever the store gets a keypress action from the keypad.
         setKeyHandler(key => {
             const cursor = this.mathField.pressKey(key);
+
+            // Trigger an `onChange` if the value in the input changed.
+            const value = this.mathField.getContent();
+            if (this.props.value !== value) {
+                this.props.onChange && this.props.onChange(value);
+            }
 
             // Hide the cursor handle whenever the user types a key.
             this.setState({ handle: { visible: false } });

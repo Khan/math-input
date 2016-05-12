@@ -5,10 +5,6 @@ const MQ = MathQuill.getInterface(2);
 const MathWrapper = require('../src/components/input/math-wrapper');
 
 class TestMathWrapper extends MathWrapper {
-    setContent(latex) {
-        this.mathField.latex(latex);
-    }
-
     getContent() {
         return this.mathField.latex();
     }

@@ -172,8 +172,12 @@ class MathWrapper {
         return this.getCursor().selection;
     }
 
-    getLatex() {
+    getContent() {
         return this.mathField.latex();
+    }
+
+    setContent(latex) {
+        this.mathField.latex(latex);
     }
 
     // Notes about MathQuill
@@ -573,7 +577,7 @@ class MathWrapper {
         const leftEnd = cursor.selection && cursor.selection.ends[MQ.L];
         const rightEnd = cursor.selection && cursor.selection.ends[MQ.R];
 
-        const latex = this.getLatex();
+        const latex = this.getContent();
         const minusSign = '-';
         if (latex.charAt(0) === minusSign) {
             // If the input is leading with a minus sign, remove it.
