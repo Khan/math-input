@@ -145,6 +145,7 @@ const MathInput = React.createClass({
     },
 
     _updateCursorHandle(animateIntoPosition) {
+        const containerBounds = this._container.getBoundingClientRect();
         const cursorBounds =
             document.querySelector('.mq-cursor').getBoundingClientRect();
 
@@ -155,8 +156,10 @@ const MathInput = React.createClass({
             handle: {
                 visible: true,
                 animateIntoPosition,
-                x: cursorBounds.left + cursorWidth / 2,
-                y: cursorBounds.bottom + gapBelowCursor,
+                // We subtract containerBounds' left/top to correct for the
+                // position of the container within the page.
+                x: cursorBounds.left + cursorWidth / 2 - containerBounds.left,
+                y: cursorBounds.bottom + gapBelowCursor - containerBounds.top,
             },
             selectionRect: defaultSelectionRect,
         });
@@ -363,12 +366,16 @@ const MathInput = React.createClass({
         // TODO(kevinb) cache this in the touchstart of the CursorHandle
         const containerBounds = this._container.getBoundingClientRect();
 
+        // We subtract the containerBounds left/top to correct for the
+        // MathInput's position on the page.  We subtract scrollTop/Left to
+        // correct for any scrolling that's occurred.
         this.setState({
             handle: {
                 animateIntoPosition: false,
                 visible: true,
-                x: x,
-                y: y - cursorHandleRadiusPx * cursorHandleDistanceMultiplier,
+                x: x - containerBounds.left - document.body.scrollLeft,
+                y: y - cursorHandleRadiusPx * cursorHandleDistanceMultiplier
+                     - containerBounds.top - document.body.scrollTop,
             },
         });
 
@@ -478,7 +485,7 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         marginRight: 20,
         marginBottom: 40,
-        position: 'static',
+        position: 'relative',
     },
 
     // TODO(kevinb) update border style to match mocks
