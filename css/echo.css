@@ -11,15 +11,15 @@
 
 .echo-slide-and-fade-enter {
     opacity: 1 !important;
-    transform: translateY(0) !important;
-    -webkit-transform: translateY(0) !important;
-    -moz-transform: translateY(0) !important;
-    -ms-transform: translateY(0) !important;
+    transform: translate3d(0, 0, 0) !important;
+    -webkit-transform: translate3d(0, 0, 0) !important;
+    -moz-transform: translate3d(0, 0, 0) !important;
+    -ms-transform: translate3d(0, 0, 0) !important;
 }
 
 .echo-slide-and-fade-enter.echo-slide-and-fade-enter-active {
     opacity: 0 !important;
-    transform: translateY(-33%) !important;
+    transform: translate3d(0, -33%, 0) !important;
     /**
      * TODO(charlie): These times are intentionally different, which means that
      * the animation really "ends" after 400ms cubic-bezier(1, 0, 0.9, 1) (since
@@ -28,9 +28,9 @@
      * transform's Bezier curve and total displacement.
      */
     transition: -webkit-transform 800ms cubic-bezier(0, 1, 0.25, 1),-moz-transform 800ms cubic-bezier(0, 1, 0.25, 1),-ms-transform 800ms cubic-bezier(0, 1, 0.25, 1),transform 800ms cubic-bezier(0, 1, 0.25, 1), opacity 400ms cubic-bezier(1, 0, 0.9, 1) !important;
-    -webkit-transform: translateY(-33%) !important;
-    -moz-transform: translateY(-33%) !important;
-    -ms-transform: translateY(-33%) !important;
+    -webkit-transform: translate3d(0, -33%, 0) !important;
+    -moz-transform: translate3d(0, -33%, 0) !important;
+    -ms-transform: translate3d(0, -33%, 0) !important;
     -webkit-transition: -webkit-transform 800ms cubic-bezier(0, 1, 0.25, 1),transform 800ms cubic-bezier(0, 1, 0.25, 1), opacity 400ms cubic-bezier(1, 0, 0.9, 1) !important;
     -moz-transition: -moz-transform 800ms cubic-bezier(0, 1, 0.25, 1),transform 800ms cubic-bezier(0, 1, 0.25, 1), opacity 400ms cubic-bezier(1, 0, 0.9, 1) !important;
     -ms-transition: -ms-transform 800ms cubic-bezier(0, 1, 0.25, 1),transform 800ms cubic-bezier(0, 1, 0.25, 1), opacity 400ms cubic-bezier(1, 0, 0.9, 1) !important;

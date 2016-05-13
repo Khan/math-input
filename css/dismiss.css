@@ -8,54 +8,54 @@
  */
 
  .dismissable-appear {
-     transform: translateY(100%) !important;
-     -webkit-transform: translateY(100%) !important;
-     -moz-transform: translateY(100%) !important;
-     -ms-transform: translateY(100%) !important;
+     transform: translate3d(0, 100%, 0) !important;
+     -webkit-transform: translate3d(0, 100%, 0) !important;
+     -moz-transform: translate3d(0, 100%, 0) !important;
+     -ms-transform: translate3d(0, 100%, 0) !important;
  }
 
  .dismissable-appear.dismissable-appear-active {
-     transform: translateY(0) !important;
+     transform: translate3d(0, 0, 0) !important;
      transition: -webkit-transform 300ms ease-out,-moz-transform 300ms ease-out,-ms-transform 300ms ease-out,transform 300ms ease-out !important;
-     -webkit-transform: translateY(0) !important;
-     -moz-transform: translateY(0) !important;
-     -ms-transform: translateY(0) !important;
+     -webkit-transform: translate3d(0, 0, 0) !important;
+     -moz-transform: translate3d(0, 0, 0) !important;
+     -ms-transform: translate3d(0, 0, 0) !important;
      -webkit-transition: -webkit-transform 300ms ease-out,transform 300ms ease-out !important;
      -moz-transition: -moz-transform 300ms ease-out,transform 300ms ease-out !important;
      -ms-transition: -ms-transform 300ms ease-out,transform 300ms ease-out !important;
  }
 
 .dismissable-enter {
-    transform: translateY(100%) !important;
-    -webkit-transform: translateY(100%) !important;
-    -moz-transform: translateY(100%) !important;
-    -ms-transform: translateY(100%) !important;
+    transform: translate3d(0, 100%, 0) !important;
+    -webkit-transform: translate3d(0, 100%, 0) !important;
+    -moz-transform: translate3d(0, 100%, 0) !important;
+    -ms-transform: translate3d(0, 100%, 0) !important;
 }
 
 .dismissable-enter.dismissable-enter-active {
-    transform: translateY(0) !important;
+    transform: translate3d(0, 0, 0) !important;
     transition: -webkit-transform 300ms ease-out,-moz-transform 300ms ease-out,-ms-transform 300ms ease-out,transform 300ms ease-out !important;
-    -webkit-transform: translateY(0) !important;
-    -moz-transform: translateY(0) !important;
-    -ms-transform: translateY(0) !important;
+    -webkit-transform: translate3d(0, 0, 0) !important;
+    -moz-transform: translate3d(0, 0, 0) !important;
+    -ms-transform: translate3d(0, 0, 0) !important;
     -webkit-transition: -webkit-transform 300ms ease-out,transform 300ms ease-out !important;
     -moz-transition: -moz-transform 300ms ease-out,transform 300ms ease-out !important;
     -ms-transition: -ms-transform 300ms ease-out,transform 300ms ease-out !important;
 }
 
 .dismissable-leave {
-    transform: translateY(0) !important;
-    -webkit-transform: translateY(0) !important;
-    -moz-transform: translateY(0) !important;
-    -ms-transform: translateY(0) !important;
+    transform: translate3d(0, 0, 0) !important;
+    -webkit-transform: translate3d(0, 0, 0) !important;
+    -moz-transform: translate3d(0, 0, 0) !important;
+    -ms-transform: translate3d(0, 0, 0) !important;
 }
 
 .dismissable-leave.dismissable-leave-active {
-    transform: translateY(100%) !important;
+    transform: translate3d(0, 100%, 0) !important;
     transition: -webkit-transform 300ms ease-out,-moz-transform 300ms ease-out,-ms-transform 300ms ease-out,transform 300ms ease-out !important;
-    -webkit-transform: translateY(100%) !important;
-    -moz-transform: translateY(100%) !important;
-    -ms-transform: translateY(100%) !important;
+    -webkit-transform: translate3d(0, 100%, 0) !important;
+    -moz-transform: translate3d(0, 100%, 0) !important;
+    -ms-transform: translate3d(0, 100%, 0) !important;
     -webkit-transition: -webkit-transform 300ms ease-out,transform 300ms ease-out !important;
     -moz-transition: -moz-transform 300ms ease-out,transform 300ms ease-out !important;
     -ms-transition: -ms-transform 300ms ease-out,transform 300ms ease-out !important;
