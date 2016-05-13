@@ -9,7 +9,7 @@ const PopoverStateMachine = require('./popover-state-machine');
 const GestureStateMachine = require('./gesture-state-machine');
 
 const coordsForEvent = (evt) => {
-    return [evt.changedTouches[0].pageX, evt.changedTouches[0].pageY];
+    return [evt.changedTouches[0].clientX, evt.changedTouches[0].clientY];
 };
 
 class GestureManager {
