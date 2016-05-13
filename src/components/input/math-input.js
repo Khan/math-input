@@ -488,6 +488,7 @@ const styles = StyleSheet.create({
     input: {
         position: 'relative',
         display: 'inline-block',
+        verticalAlign: 'middle',
     },
 
     innerContainer: {
