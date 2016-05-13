@@ -62,6 +62,7 @@ const CursorHandle = React.createClass({
 
         const outerStyle = {
             position: 'absolute',
+            zIndex: 1,
             left: 0,
             top: 0,
             transform: `translate(${x}px, ${y}px)`,
