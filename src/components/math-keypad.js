@@ -10,13 +10,13 @@ const AdvancedExpressionKeypad = require('./advanced-expression-keypad');
 const { getButtonHeightPx } = require('./common-style');
 const { setButtonHeightPx } = require('../actions');
 const { keyIdPropType } = require('./prop-types');
-const { keypadTypes } = require('../consts');
+const { KeypadTypes } = require('../consts');
 
 const MathKeypad = React.createClass({
     propTypes: {
         active: React.PropTypes.bool,
         extraKeys: React.PropTypes.arrayOf(keyIdPropType),
-        keypadType: React.PropTypes.oneOf(Object.keys(keypadTypes)).isRequired,
+        keypadType: React.PropTypes.oneOf(Object.keys(KeypadTypes)).isRequired,
         onDismiss: React.PropTypes.func,
     },
 
@@ -68,19 +68,19 @@ const MathKeypad = React.createClass({
         // clear what that format would look like exactly. Plus, there aren't
         // very many of them. So to keep us moving, we'll just hardcode.
         switch (keypadType) {
-            case keypadTypes.NUMBER:
+            case KeypadTypes.NUMBER:
                 return <NumberKeypad />;
 
-            case keypadTypes.FRACTION:
+            case KeypadTypes.FRACTION:
                 return <FractionKeypad />;
 
-            case keypadTypes.ADVANCED_EXPRESSION:
+            case KeypadTypes.ADVANCED_EXPRESSION:
                 return <AdvancedExpressionKeypad extraKeys={extraKeys} />;
 
-            case keypadTypes.BASIC_EXPRESSION:
+            case KeypadTypes.BASIC_EXPRESSION:
                 return <BasicExpressionKeypad extraKeys={extraKeys} />;
 
-            case keypadTypes.DEFAULT:
+            case KeypadTypes.DEFAULT:
             default:
                 return <DefaultKeypad />;
         }

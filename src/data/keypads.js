@@ -3,26 +3,26 @@
  */
 
 const Keys = require('./keys');
-const { keypadTypes } = require('../consts');
+const { KeypadTypes } = require('../consts');
 
 const Keypads = {
-    [keypadTypes.NUMBER]: {
+    [KeypadTypes.NUMBER]: {
         numPages: 1,
         extraKeys: [],
     },
-    [keypadTypes.FRACTION]: {
+    [KeypadTypes.FRACTION]: {
         numPages: 1,
         extraKeys: [],
     },
-    [keypadTypes.DEFAULT]: {
+    [KeypadTypes.DEFAULT]: {
         numPages: 1,
         extraKeys: [],
     },
-    [keypadTypes.ADVANCED_EXPRESSION]: {
+    [KeypadTypes.ADVANCED_EXPRESSION]: {
         numPages: 2,
         extraKeys: ['X', 'Y', Keys.PI, Keys.THETA],
     },
-    [keypadTypes.BASIC_EXPRESSION]: {
+    [KeypadTypes.BASIC_EXPRESSION]: {
         numPages: 2,
         extraKeys: [],
     },

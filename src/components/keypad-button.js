@@ -10,7 +10,7 @@ const { View } = require('../fake-react-native-web');
 const Icon = require('./icon');
 const MultiSymbolPopover = require('./multi-symbol-popover');
 const MultiSymbolGrid = require('./multi-symbol-grid');
-const { keyTypes, borderDirections, borderStyles } = require('../consts');
+const { KeyTypes, BorderDirections, BorderStyles } = require('../consts');
 const {
     brightGreen,
     buttonBorderColor,
@@ -22,7 +22,7 @@ const { keyConfigPropType, bordersPropType } = require('./prop-types');
 const KeypadButton = React.createClass({
     propTypes: {
         // The borders to display on the button. Typically, this should be set
-        // using one of the preset `borderStyles` options.
+        // using one of the preset `BorderStyles` options.
         borders: bordersPropType,
         buttonHeightPx: React.PropTypes.number.isRequired,
         // Any additional keys that can be accessed by long-pressing on the
@@ -38,7 +38,7 @@ const KeypadButton = React.createClass({
         onTouchStart: React.PropTypes.func,
         popoverEnabled: React.PropTypes.bool,
         style: React.PropTypes.any,
-        type: React.PropTypes.oneOf(Object.keys(keyTypes)).isRequired,
+        type: React.PropTypes.oneOf(Object.keys(KeyTypes)).isRequired,
         // The unicode symbol that can be used to depict the icon for the
         // button, as a fall-back in case there is no SVG icon available.
         unicodeSymbol: React.PropTypes.string,
@@ -46,7 +46,7 @@ const KeypadButton = React.createClass({
 
     getDefaultProps() {
         return {
-            borders: borderStyles.ALL,
+            borders: BorderStyles.ALL,
             childKeys: [],
             focused: false,
             popoverEnabled: false,
@@ -71,8 +71,8 @@ const KeypadButton = React.createClass({
 
     _getFocusStyle(type) {
         let focusBackgroundStyle;
-        if (type === keyTypes.INPUT_NAVIGATION ||
-                type === keyTypes.KEYPAD_NAVIGATION) {
+        if (type === KeyTypes.INPUT_NAVIGATION ||
+                type === KeyTypes.KEYPAD_NAVIGATION) {
             focusBackgroundStyle = styles.light;
         } else {
             focusBackgroundStyle = styles.bright;
@@ -85,34 +85,34 @@ const KeypadButton = React.createClass({
         // Select the appropriate style for the button.
         let backgroundStyle;
         switch (type) {
-            case keyTypes.EMPTY:
+            case KeyTypes.EMPTY:
                 backgroundStyle = styles.disabled;
                 break;
 
-            case keyTypes.NUMERAL:
+            case KeyTypes.NUMERAL:
                 backgroundStyle = styles.numeral;
                 break;
 
-            case keyTypes.MANY:
-            case keyTypes.MATH:
+            case KeyTypes.MANY:
+            case KeyTypes.MATH:
                 backgroundStyle = styles.command;
                 break;
 
-            case keyTypes.INPUT_NAVIGATION:
-            case keyTypes.KEYPAD_NAVIGATION:
+            case KeyTypes.INPUT_NAVIGATION:
+            case KeyTypes.KEYPAD_NAVIGATION:
                 backgroundStyle = styles.control;
                 break;
 
-            case keyTypes.ECHO:
+            case KeyTypes.ECHO:
                 backgroundStyle = null;
                 break;
         }
 
         const borderStyle = [];
-        if (borders.indexOf(borderDirections.LEFT) !== -1) {
+        if (borders.indexOf(BorderDirections.LEFT) !== -1) {
             borderStyle.push(styles.leftBorder);
         }
-        if (borders.indexOf(borderDirections.BOTTOM) !== -1) {
+        if (borders.indexOf(BorderDirections.BOTTOM) !== -1) {
             borderStyle.push(styles.bottomBorder);
         }
 
@@ -120,7 +120,7 @@ const KeypadButton = React.createClass({
             styles.buttonBase,
             backgroundStyle,
             ...borderStyle,
-            type === keyTypes.ECHO && styles.echo,
+            type === KeyTypes.ECHO && styles.echo,
             this.heightStyles.fullHeight,
             // React Native allows you to set the 'style' props on user defined
             // components, https://facebook.github.io/react-native/docs/style.html
@@ -146,7 +146,7 @@ const KeypadButton = React.createClass({
 
         // We render in the focus state if the key is focused, or if it's an
         // echo.
-        const renderFocused = focused || type === keyTypes.ECHO;
+        const renderFocused = focused || type === KeyTypes.ECHO;
         const buttonStyle = this._getButtonStyle(type, borders, style);
         const focusStyle = this._getFocusStyle(type);
 
@@ -156,9 +156,9 @@ const KeypadButton = React.createClass({
         const maybePopoverContent = popoverEnabled &&
             <MultiSymbolPopover keys={childKeys} />;
 
-        if (type === keyTypes.EMPTY) {
+        if (type === KeyTypes.EMPTY) {
             return <View style={buttonStyle} {...eventHandlers} />;
-        } else if (type === keyTypes.MANY) {
+        } else if (type === KeyTypes.MANY) {
             const unicodeSymbols = childKeys.map(keyConfig => {
                 return keyConfig.unicodeSymbol;
             });

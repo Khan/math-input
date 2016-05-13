@@ -10,7 +10,7 @@ const {
     activateKeypad, configureKeypad, dismissKeypad, setCursor,
 } = require('../actions');
 const Keypads = require('../data/keypads');
-const { debugSwitcherTypes } = require('../consts');
+const { DebugSwitcherTypes } = require('../consts');
 const Settings = require('../settings');
 
 const App = React.createClass({
@@ -41,7 +41,7 @@ const App = React.createClass({
             <Provider store={store}>
                 <MathKeypad />
             </Provider>
-            {Settings.debugSwitcher === debugSwitcherTypes.ENABLED &&
+            {Settings.debugSwitcher === DebugSwitcherTypes.ENABLED &&
                 <KeypadTypeSelector onChange={keypadType => {
                     configureKeypad({
                         keypadType,

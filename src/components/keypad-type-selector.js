@@ -4,7 +4,7 @@
 
 const React = require('react');
 
-const { keypadTypes } = require('../consts');
+const { KeypadTypes } = require('../consts');
 
 const KeypadTypeSelector = React.createClass({
     propTypes: {
@@ -21,7 +21,7 @@ const KeypadTypeSelector = React.createClass({
     },
 
     render() {
-        return <div>{Object.keys(keypadTypes).map(this._buttonForType)}</div>;
+        return <div>{Object.keys(KeypadTypes).map(this._buttonForType)}</div>;
     },
 });
 

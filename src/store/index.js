@@ -1,7 +1,7 @@
 const Redux = require('redux');
 
 const { defaultButtonHeightPx } = require('../components/common-style');
-const { keyTypes } = require('../consts');
+const { KeyTypes } = require('../consts');
 const Keys = require('../data/keys');
 const KeyConfigs = require('../data/key-configs');
 const Keypads = require('../data/keypads');
@@ -28,7 +28,7 @@ const inputReducer = function(state = initialInputState, action) {
 
         case 'PressKey':
             const keyConfig = KeyConfigs[action.key];
-            if (keyConfig.type !== keyTypes.KEYPAD_NAVIGATION) {
+            if (keyConfig.type !== KeyTypes.KEYPAD_NAVIGATION) {
                 // This is probably an anti-pattern but it works for the case
                 // where we don't actually control the state but we still want
                 // to communicate with the other object
@@ -132,10 +132,10 @@ const pagerReducer = function(state = initialPagerState, action) {
             const keyConfig = KeyConfigs[action.key];
 
             // Reset the keypad page if the user performs a math operation.
-            if (keyConfig.type === keyTypes.MATH ||
-                    keyConfig.type === keyTypes.NUMERAL) {
+            if (keyConfig.type === KeyTypes.MATH ||
+                    keyConfig.type === KeyTypes.NUMERAL) {
                 return pagerReducer(state, { type: 'ResetKeypadPage' });
-            } else if (keyConfig.type === keyTypes.KEYPAD_NAVIGATION) {
+            } else if (keyConfig.type === KeyTypes.KEYPAD_NAVIGATION) {
                 if (keyConfig.id === Keys.NUMBERS) {
                     return pagerReducer(state, { type: 'ResetKeypadPage' });
                 } else if (keyConfig.id === Keys.MORE) {
@@ -303,8 +303,8 @@ const echoReducer = function(state = initialEchoState, action) {
             const keyConfig = KeyConfigs[action.key];
 
             // Reset the keypad if the user performs a math operation.
-            if (keyConfig.type === keyTypes.MATH ||
-                    keyConfig.type === keyTypes.NUMERAL) {
+            if (keyConfig.type === KeyTypes.MATH ||
+                    keyConfig.type === KeyTypes.NUMERAL) {
                 // Add in the echo animation.
                 return {
                     ...state,

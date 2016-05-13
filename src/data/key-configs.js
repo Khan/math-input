@@ -3,167 +3,167 @@
  */
 
 const Keys = require('../data/keys');
-const { keyTypes } = require('../consts');
+const { KeyTypes } = require('../consts');
 
 const KeyConfigs = {
     // Basic math keys.
     [Keys.PLUS]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
     },
     [Keys.MINUS]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
     },
     [Keys.TOGGLE_SIGN]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
     },
     [Keys.TIMES]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
     },
     [Keys.DIVIDE]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
     },
     [Keys.DECIMAL]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
     },
     [Keys.PERCENT]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
     },
     [Keys.CDOT]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
     },
     [Keys.EQUAL]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
     },
     [Keys.NEQ]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
     },
     [Keys.GT]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
     },
     [Keys.LT]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
     },
     [Keys.GEQ]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
     },
     [Keys.LEQ]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
     },
     [Keys.FRAC]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
     },
     [Keys.EXP]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
     },
     [Keys.EXP_2]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
     },
     [Keys.EXP_3]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
     },
     [Keys.SQRT]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
     },
     [Keys.CUBE_ROOT]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
     },
     [Keys.RADICAL]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
     },
     [Keys.PARENS]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
     },
     [Keys.LN]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
     },
     [Keys.LOG]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
     },
     [Keys.LOG_N]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
     },
     [Keys.SIN]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
     },
     [Keys.COS]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
     },
     [Keys.TAN]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
     },
     [Keys.PI]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
         unicodeSymbol: '\u03C0',
     },
     [Keys.THETA]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
         unicodeSymbol: '\u03B8',
     },
     [Keys.NOOP]: {
-        type: keyTypes.EMPTY,
+        type: KeyTypes.EMPTY,
     },
 
     // Input navigation keys.
     [Keys.LEFT]: {
-        type: keyTypes.INPUT_NAVIGATION,
+        type: KeyTypes.INPUT_NAVIGATION,
     },
     [Keys.RIGHT]: {
-        type: keyTypes.INPUT_NAVIGATION,
+        type: KeyTypes.INPUT_NAVIGATION,
     },
     [Keys.JUMP_OUT]: {
-        type: keyTypes.INPUT_NAVIGATION,
+        type: KeyTypes.INPUT_NAVIGATION,
     },
     [Keys.BACKSPACE]: {
-        type: keyTypes.INPUT_NAVIGATION,
+        type: KeyTypes.INPUT_NAVIGATION,
     },
 
     // Keypad navigation keys.
     [Keys.DISMISS]: {
-        type: keyTypes.KEYPAD_NAVIGATION,
+        type: KeyTypes.KEYPAD_NAVIGATION,
     },
     [Keys.MORE]: {
-        type: keyTypes.KEYPAD_NAVIGATION,
+        type: KeyTypes.KEYPAD_NAVIGATION,
     },
     [Keys.NUMBERS]: {
-        type: keyTypes.KEYPAD_NAVIGATION,
+        type: KeyTypes.KEYPAD_NAVIGATION,
     },
 
     // Multi-symboled keys.
     [Keys.FRAC_MULTI]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
         childKeyIds: [Keys.FRAC, Keys.DIVIDE],
     },
     [Keys.PARENS_MULTI]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
         childKeyIds: [Keys.PARENS, Keys.CDOT, Keys.TIMES],
     },
     [Keys.EQUAL_MULTI]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
         childKeyIds: [Keys.EQUAL, Keys.NEQ],
     },
     [Keys.LESS_MULTI]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
         childKeyIds: [Keys.LT, Keys.LEQ],
     },
     [Keys.GREATER_MULTI]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
         childKeyIds: [Keys.GT, Keys.GEQ],
     },
     [Keys.EXP_MULTI]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
         childKeyIds: [Keys.EXP_2, Keys.EXP_3, Keys.EXP],
     },
     [Keys.RADICAL_MULTI]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
         childKeyIds: [Keys.SQRT, Keys.CUBE_ROOT, Keys.RADICAL],
     },
     [Keys.LOG_MULTI]: {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
         childKeyIds: [Keys.LOG, Keys.LN, Keys.LOG_N],
     },
 
     [Keys.MANY]: {
-        type: keyTypes.MANY,
+        type: KeyTypes.MANY,
         // childKeyIds will be configured by the client.
     },
 };
@@ -174,7 +174,7 @@ for (const num of '0123456789') {
     // numeral keys. They can be rendered just as easily with text (though that
     // would mean that we'd be using text beyond the variable key).
     KeyConfigs[`NUM_${num}`] = {
-        type: keyTypes.NUMERAL,
+        type: KeyTypes.NUMERAL,
         unicodeSymbol: num,
     };
 }
@@ -182,7 +182,7 @@ for (const num of '0123456789') {
 // Add in every variable.
 for (const letter of 'ABCDEFGHIJKLMNOPQRSTUVWXYZ') {
     KeyConfigs[letter] = {
-        type: keyTypes.MATH,
+        type: KeyTypes.MATH,
         unicodeSymbol: letter.toLowerCase(),
     };
 }

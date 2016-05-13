@@ -1,10 +1,10 @@
 const queryString = require('query-string');
 const {
-    keypadTypes,
-    switchTypes,
-    echoAnimationTypes,
-    jumpOutTypes,
-    debugSwitcherTypes,
+    KeypadTypes,
+    SwitchTypes,
+    EchoAnimationTypes,
+    JumpOutTypes,
+    DebugSwitcherTypes,
 } = require('./consts');
 
 // test 1
@@ -26,14 +26,14 @@ const parsed = queryString.parse(location.search);
 const containsConfigurationOptions = Object.keys(parsed).length > 0;
 
 const defaults = {
-    keypadSwitch: switchTypes.TOGGLE,
-    keypadType: keypadTypes.ADVANCED_EXPRESSION,
-    jumpOutType: jumpOutTypes.STATIC,
-    echoAnimation: echoAnimationTypes.SLIDE_AND_FADE,
+    keypadSwitch: SwitchTypes.TOGGLE,
+    keypadType: KeypadTypes.ADVANCED_EXPRESSION,
+    jumpOutType: JumpOutTypes.STATIC,
+    echoAnimation: EchoAnimationTypes.SLIDE_AND_FADE,
     iconStyle: 'fancy',
     debugSwitcher: containsConfigurationOptions ?
-                   debugSwitcherTypes.DISABLED :
-                   debugSwitcherTypes.ENABLED,
+                   DebugSwitcherTypes.DISABLED :
+                   DebugSwitcherTypes.ENABLED,
 };
 
 const settings = {

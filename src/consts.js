@@ -3,7 +3,7 @@
  */
 
 module.exports = {
-    keypadTypes: {
+    KeypadTypes: {
         NUMBER: 'NUMBER',
         FRACTION: 'FRACTION',
         DEFAULT: 'DEFAULT',
@@ -11,7 +11,7 @@ module.exports = {
         BASIC_EXPRESSION: 'BASIC_EXPRESSION',
     },
 
-    keyTypes: {
+    KeyTypes: {
         EMPTY: 'EMPTY',
         // For buttons that insert or adjust math in an input.
         MATH: 'MATH',
@@ -30,11 +30,11 @@ module.exports = {
         ECHO: 'ECHO',
     },
 
-    borderDirections: {
+    BorderDirections: {
         LEFT: 'LEFT',
         BOTTOM: 'BOTTOM',
     },
-    borderStyles: {
+    BorderStyles: {
         LEFT: ['LEFT'],
         BOTTOM: ['BOTTOM'],
         ALL: ['LEFT', 'BOTTOM'],
@@ -42,20 +42,20 @@ module.exports = {
     },
 
     // Configurable settings.
-    switchTypes: {
+    SwitchTypes: {
         TOGGLE: 'TOGGLE',
         TAB_BAR: 'TAB_BAR',
         PAGE_CONTROL: 'PAGE_CONTROL',
     },
-    jumpOutTypes: {
+    JumpOutTypes: {
         STATIC: 'STATIC',
         DYNAMIC: 'DYNAMIC',
     },
-    echoAnimationTypes: {
+    EchoAnimationTypes: {
         SLIDE_AND_FADE: 'SLIDE_AND_FADE',
         FADE_ONLY: 'FADE_ONLY',
     },
-    debugSwitcherTypes: {
+    DebugSwitcherTypes: {
         ENABLED: 'ENABLED',
         DISABLED: 'DISABLED',
     },

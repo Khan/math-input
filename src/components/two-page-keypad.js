@@ -15,7 +15,7 @@ const {
     buttonBorderColor, buttonBorderStyle, buttonBorderWidthPx,
 } = require('./common-style');
 const { setKeypadCurrentPage } = require('../actions');
-const { switchTypes } = require('../consts');
+const { SwitchTypes } = require('../consts');
 const { keypadSwitch } = require('../settings');
 
 const TwoPageKeypad = React.createClass({
@@ -30,8 +30,8 @@ const TwoPageKeypad = React.createClass({
 
     getDefaultProps() {
         return {
-            showPagerIndicator: keypadSwitch === switchTypes.PAGE_CONTROL,
-            showTabBarIndicator: keypadSwitch === switchTypes.TAB_BAR,
+            showPagerIndicator: keypadSwitch === SwitchTypes.PAGE_CONTROL,
+            showTabBarIndicator: keypadSwitch === SwitchTypes.TAB_BAR,
         };
     },
 

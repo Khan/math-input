@@ -7,7 +7,7 @@ const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 const { removeEcho } = require('../actions');
 const KeypadButton = require('./keypad-button');
 const KeyConfigs = require('../data/key-configs');
-const { keyTypes, echoAnimationTypes } = require('../consts');
+const { KeyTypes, EchoAnimationTypes } = require('../consts');
 const {
     echoPropType, bordersPropType, boundingBoxPropType, keyIdPropType,
 } = require('./prop-types');
@@ -51,7 +51,7 @@ const Echo = React.createClass({
             <KeypadButton
                 name={id}
                 unicodeSymbol={unicodeSymbol}
-                type={keyTypes.ECHO}
+                type={KeyTypes.ECHO}
                 borders={borders}
             />
         </div>;
@@ -60,7 +60,7 @@ const Echo = React.createClass({
 
 const EchoManager = React.createClass({
     propTypes: {
-        animationType: React.PropTypes.oneOf(Object.keys(echoAnimationTypes)),
+        animationType: React.PropTypes.oneOf(Object.keys(EchoAnimationTypes)),
         echoes: React.PropTypes.arrayOf(echoPropType),
     },
 
@@ -77,12 +77,12 @@ const EchoManager = React.createClass({
         let animationTransitionName;
 
         switch (animationType) {
-            case echoAnimationTypes.SLIDE_AND_FADE:
+            case EchoAnimationTypes.SLIDE_AND_FADE:
                 animationDurationMs = 400;
                 animationTransitionName = 'echo-slide-and-fade';
                 break;
 
-            case echoAnimationTypes.FADE_ONLY:
+            case EchoAnimationTypes.FADE_ONLY:
                 animationDurationMs = 300;
                 animationTransitionName = 'echo-fade-only';
                 break;

@@ -12,7 +12,7 @@ const KeypadButton = require('./keypad-button');
 const KeyConfigs = require('../data/key-configs');
 const GestureManager = require('./gesture-manager');
 const { bordersPropType, keyIdPropType } = require('./prop-types');
-const { keyTypes } = require('../consts');
+const { KeyTypes } = require('../consts');
 
 const TouchableKeypadButton = React.createClass({
     propTypes: {
@@ -22,7 +22,7 @@ const TouchableKeypadButton = React.createClass({
         gestureManager: React.PropTypes.instanceOf(GestureManager),
         id: keyIdPropType.isRequired,
         popoverEnabled: React.PropTypes.bool,
-        type: React.PropTypes.oneOf(Object.keys(keyTypes)).isRequired,
+        type: React.PropTypes.oneOf(Object.keys(KeyTypes)).isRequired,
     },
 
     shouldComponentUpdate(newProps) {

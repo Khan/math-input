@@ -10,7 +10,7 @@ const TouchableKeypadButton = require('./touchable-keypad-button');
 
 const Keys = require('../data/keys');
 const KeyConfigs = require('../data/key-configs');
-const { keyTypes } = require('../consts');
+const { KeyTypes } = require('../consts');
 const { keyIdPropType } = require('./prop-types');
 
 const ManyKeypadButton = React.createClass({
@@ -32,7 +32,7 @@ const ManyKeypadButton = React.createClass({
         } else {
             const keyConfig = {
                 id: Keys.MANY,
-                type: keyTypes.MANY,
+                type: KeyTypes.MANY,
                 childKeyIds: keys,
             };
             return <TouchableKeypadButton keyConfig={keyConfig} {...rest} />;

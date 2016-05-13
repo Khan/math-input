@@ -8,7 +8,7 @@ const { View } = require('../fake-react-native-web');
 const Keypad = require('./keypad');
 const TouchableKeypadButton = require('./touchable-keypad-button');
 const { row } = require('./styles');
-const { borderStyles } = require('../consts');
+const { BorderStyles } = require('../consts');
 
 const KeyConfigs = require('../data/key-configs');
 
@@ -18,7 +18,7 @@ const NumberKeypad = React.createClass({
             <View style={row}>
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.NUM_7}
-                    borders={borderStyles.BOTTOM}
+                    borders={BorderStyles.BOTTOM}
                 />
                 <TouchableKeypadButton keyConfig={KeyConfigs.NUM_8} />
                 <TouchableKeypadButton keyConfig={KeyConfigs.NUM_9} />
@@ -26,7 +26,7 @@ const NumberKeypad = React.createClass({
             <View style={row}>
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.NUM_4}
-                    borders={borderStyles.BOTTOM}
+                    borders={BorderStyles.BOTTOM}
                 />
                 <TouchableKeypadButton keyConfig={KeyConfigs.NUM_5} />
                 <TouchableKeypadButton keyConfig={KeyConfigs.NUM_6} />
@@ -34,7 +34,7 @@ const NumberKeypad = React.createClass({
             <View style={row}>
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.NUM_1}
-                    borders={borderStyles.BOTTOM}
+                    borders={BorderStyles.BOTTOM}
                 />
                 <TouchableKeypadButton keyConfig={KeyConfigs.NUM_2} />
                 <TouchableKeypadButton keyConfig={KeyConfigs.NUM_3} />
@@ -42,15 +42,15 @@ const NumberKeypad = React.createClass({
             <View style={row}>
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.BACKSPACE}
-                    borders={borderStyles.NONE}
+                    borders={BorderStyles.NONE}
                 />
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.NUM_0}
-                    borders={borderStyles.LEFT}
+                    borders={BorderStyles.LEFT}
                 />
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.DISMISS}
-                    borders={borderStyles.LEFT}
+                    borders={BorderStyles.LEFT}
                 />
             </View>
         </Keypad>;

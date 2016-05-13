@@ -6,24 +6,24 @@ const React = require('react');
 
 const KeyConfigs = require('../data/key-configs');
 const CursorContexts = require('./input/cursor-contexts');
-const { borderDirections, keyTypes, keypadTypes } = require('../consts');
+const { BorderDirections, KeyTypes, KeypadTypes } = require('../consts');
 
 const keyIdPropType = React.PropTypes.oneOf(Object.keys(KeyConfigs));
 
 const keyConfigPropType = React.PropTypes.shape({
     id: keyIdPropType.isRequired,
-    type: React.PropTypes.oneOf(Object.keys(keyTypes)).isRequired,
+    type: React.PropTypes.oneOf(Object.keys(KeyTypes)).isRequired,
     childKeyIds: React.PropTypes.arrayOf(keyIdPropType),
     unicodeSymbol: React.PropTypes.string,
 });
 
 const keypadConfigurationPropType = React.PropTypes.shape({
-    keypadType: React.PropTypes.oneOf(Object.keys(keypadTypes)).isRequired,
+    keypadType: React.PropTypes.oneOf(Object.keys(KeypadTypes)).isRequired,
     extraKeys: React.PropTypes.arrayOf(keyIdPropType),
 });
 
 const bordersPropType =  React.PropTypes.arrayOf(
-    React.PropTypes.oneOf(Object.keys(borderDirections))
+    React.PropTypes.oneOf(Object.keys(BorderDirections))
 );
 
 const boundingBoxPropType = React.PropTypes.shape({

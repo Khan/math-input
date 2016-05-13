@@ -12,7 +12,7 @@ const EmptyKeypadButton = require('./empty-keypad-button');
 const ManyKeypadButton = require('./many-keypad-button');
 const TouchableKeypadButton = require('./touchable-keypad-button');
 const { row, column, oneColumn } = require('./styles');
-const { borderStyles, switchTypes, jumpOutTypes } = require('../consts');
+const { BorderStyles, SwitchTypes, JumpOutTypes } = require('../consts');
 const { cursorContextPropType, keyIdPropType } = require('./prop-types');
 const KeyConfigs = require('../data/key-configs');
 const CursorContexts = require('./input/cursor-contexts');
@@ -29,8 +29,8 @@ const BasicExpressionKeypad = React.createClass({
 
     getDefaultProps() {
         return {
-            dynamicJumpOut: jumpOutType === jumpOutTypes.DYNAMIC,
-            showToggle: keypadSwitch === switchTypes.TOGGLE,
+            dynamicJumpOut: jumpOutType === JumpOutTypes.DYNAMIC,
+            showToggle: keypadSwitch === SwitchTypes.TOGGLE,
         };
     },
 
@@ -43,19 +43,19 @@ const BasicExpressionKeypad = React.createClass({
             <View style={[column, oneColumn]}>
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.NUM_7}
-                    borders={borderStyles.BOTTOM}
+                    borders={BorderStyles.BOTTOM}
                 />
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.NUM_4}
-                    borders={borderStyles.BOTTOM}
+                    borders={BorderStyles.BOTTOM}
                 />
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.NUM_1}
-                    borders={borderStyles.BOTTOM}
+                    borders={BorderStyles.BOTTOM}
                 />
                 <ManyKeypadButton
                     keys={extraKeys}
-                    borders={borderStyles.NONE}
+                    borders={BorderStyles.NONE}
                 />
             </View>
             <View style={[column, oneColumn]}>
@@ -64,7 +64,7 @@ const BasicExpressionKeypad = React.createClass({
                 <TouchableKeypadButton keyConfig={KeyConfigs.NUM_2} />
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.NUM_0}
-                    borders={borderStyles.LEFT}
+                    borders={BorderStyles.LEFT}
                 />
             </View>
             <View style={[column, oneColumn]}>
@@ -73,7 +73,7 @@ const BasicExpressionKeypad = React.createClass({
                 <TouchableKeypadButton keyConfig={KeyConfigs.NUM_3} />
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.DECIMAL}
-                    borders={borderStyles.LEFT}
+                    borders={BorderStyles.LEFT}
                 />
             </View>
             <View style={[column, oneColumn]}>
@@ -82,7 +82,7 @@ const BasicExpressionKeypad = React.createClass({
                 <TouchableKeypadButton keyConfig={KeyConfigs.MINUS} />
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.PLUS}
-                    borders={borderStyles.LEFT}
+                    borders={BorderStyles.LEFT}
                 />
             </View>
         </View>;
@@ -92,13 +92,13 @@ const BasicExpressionKeypad = React.createClass({
                 <TouchableKeypadButton keyConfig={KeyConfigs.EQUAL_MULTI} />
                 <TouchableKeypadButton keyConfig={KeyConfigs.LESS_MULTI} />
                 <TouchableKeypadButton keyConfig={KeyConfigs.GREATER_MULTI} />
-                <EmptyKeypadButton borders={borderStyles.LEFT} />
+                <EmptyKeypadButton borders={BorderStyles.LEFT} />
             </View>
             <View style={[column, oneColumn]}>
                 <TouchableKeypadButton keyConfig={KeyConfigs.EXP_MULTI} />
                 <TouchableKeypadButton keyConfig={KeyConfigs.RADICAL_MULTI} />
                 <EmptyKeypadButton />
-                <EmptyKeypadButton borders={borderStyles.LEFT} />
+                <EmptyKeypadButton borders={BorderStyles.LEFT} />
             </View>
         </View>;
 
@@ -124,21 +124,21 @@ const BasicExpressionKeypad = React.createClass({
         const sidebar = <View style={[column, oneColumn]}>
             <TouchableKeypadButton
                 keyConfig={topNavigationKey}
-                borders={borderStyles.LEFT}
+                borders={BorderStyles.LEFT}
             />
             {dynamicJumpOut ? <EmptyKeypadButton
-                borders={borderStyles.LEFT}
+                borders={BorderStyles.LEFT}
             /> : <TouchableKeypadButton
                 keyConfig={goRightNavigationKey}
-                borders={borderStyles.LEFT}
+                borders={BorderStyles.LEFT}
             />}
             <TouchableKeypadButton
                 keyConfig={KeyConfigs.BACKSPACE}
-                borders={borderStyles.LEFT}
+                borders={BorderStyles.LEFT}
             />
             <TouchableKeypadButton
                 keyConfig={dismissOrJumpOutKey}
-                borders={borderStyles.LEFT}
+                borders={BorderStyles.LEFT}
             />
         </View>;
 

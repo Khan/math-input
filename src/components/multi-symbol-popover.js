@@ -7,7 +7,7 @@ const { StyleSheet } = require('aphrodite');
 
 const { View } = require('../fake-react-native-web');
 const { keyConfigPropType } = require('./prop-types');
-const { keyTypes, borderStyles } = require('../consts');
+const { KeyTypes, BorderStyles } = require('../consts');
 
 const MultiSymbolPopover = React.createClass({
     propTypes: {
@@ -29,12 +29,12 @@ const MultiSymbolPopover = React.createClass({
                 // logic to mimic a different button type.
                 const keyConfig = {
                     ...key,
-                    type: keyTypes.NUMERAL,
+                    type: KeyTypes.NUMERAL,
                 };
                 return <TouchableKeypadButton
                     key={keyConfig.id}
                     keyConfig={keyConfig}
-                    borders={borderStyles.NONE}
+                    borders={BorderStyles.NONE}
                 />;
             })}
         </View>;
