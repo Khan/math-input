@@ -21,7 +21,8 @@ const {
 // test 5
 // jump_out: static, dynamic
 
-const parsed = queryString.parse(location.search);
+const search = typeof location === 'undefined' ? '' : location.search;
+const parsed = queryString.parse(search);
 
 const containsConfigurationOptions = Object.keys(parsed).length > 0;
 
