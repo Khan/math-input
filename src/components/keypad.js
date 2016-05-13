@@ -10,6 +10,7 @@ const { StyleSheet } = require('aphrodite');
 
 const { View } = require('../fake-react-native-web');
 const EchoManager = require('./echo-manager');
+const zIndexes = require('./input/z-indexes');
 const { lightGrey } = require('./common-style');
 const { echoPropType } = require('./prop-types');
 
@@ -92,6 +93,7 @@ const styles = StyleSheet.create({
         width: '100%',
         borderTop: `${keypadBorderWidthPx}px solid rgba(0, 0, 0, 0.2)`,
         backgroundColor: lightGrey,
+        zIndex: zIndexes.keypad,
     },
 });
 

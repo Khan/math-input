@@ -7,4 +7,5 @@
 
 module.exports = {
     selectionRect: -1,
+    keypad: 1000,
 };
