@@ -7,7 +7,6 @@
 const $ = require('jQuery');
 // TODO(kevinb) allow test code to use const MathQuill = require('mathquill');
 const MathQuill = window.MathQuill;
-const MQ = MathQuill.getInterface(2);
 
 const Keys = require('../../data/keys');
 const CursorContexts = require('./cursor-contexts');
@@ -67,7 +66,8 @@ class MathWrapper {
             },
         };
 
-        this.mathField = MQ.MathField(element, options);
+        this.MQ = MathQuill.getInterface(2);
+        this.mathField = this.MQ.MathField(element, options);
         this.callbacks = callbacks;
     }
 
@@ -148,7 +148,7 @@ class MathWrapper {
                 // Unless that would leave us mid-command, in which case, we
                 // need to adjust and place the cursor inside the parens
                 // following the command.
-                const command = this._maybeFindCommand(cursor[MQ.L]);
+                const command = this._maybeFindCommand(cursor[this.MQ.L]);
                 if (command && command.endNode) {
                     // NOTE(charlie): endNode should definitely be \left(.
                     cursor.insLeftOf(command.endNode);
@@ -183,8 +183,8 @@ class MathWrapper {
     // Notes about MathQuill
     //
     // MathQuill's stores its layout as nested linked lists.  Each node in the
-    // list has MQ.L '-1' and MQ.R '1' properties that define links to the
-    // left and right nodes respectively.  They also have
+    // list has this.MQ.L '-1' and this.MQ.R '1' properties that define links to
+    // the left and right nodes respectively.  They also have
     //
     // ctrlSeq: contains the latex code snippet that defines that node.
     // jQ: jQuery object for the DOM node(s) for this MathQuill node.
@@ -207,7 +207,7 @@ class MathWrapper {
         if (!cursor.selection) {
             const parent = cursor.parent;
             const grandparent = parent.parent;
-            const leftNode = cursor[MQ.L];
+            const leftNode = cursor[this.MQ.L];
 
             if (this._isFraction(leftNode)) {
                 this._selectNode(leftNode, cursor);
@@ -293,7 +293,7 @@ class MathWrapper {
                 break;
             }
 
-            node = node[MQ.L];
+            node = node[this.MQ.L];
         }
 
         // If we hit the start of a command, then grab the rest of it by
@@ -301,7 +301,7 @@ class MathWrapper {
         // with its terminal node.
         if (startNode) {
             // Next, iterate from the start to the right.
-            node = initialNode[MQ.R];
+            node = initialNode[this.MQ.R];
             while (node !== 0) {
                 if (commandCharRegex.test(node.ctrlSeq) &&
                         !node.ctrlSeq.startsWith(commandDelimiter)) {
@@ -310,7 +310,7 @@ class MathWrapper {
                     endNode = node;
                 }
 
-                node = node[MQ.R];
+                node = node[this.MQ.R];
             }
             if (ignoredCommands.includes(name)) {
                 return null;
@@ -333,7 +333,7 @@ class MathWrapper {
      * @private
      */
     _maybeFindCommandBeforeParens(leftParenNode) {
-        return this._maybeFindCommand(leftParenNode[MQ.L]);
+        return this._maybeFindCommand(leftParenNode[this.MQ.L]);
     }
 
     _selectNode(node, cursor) {
@@ -377,7 +377,7 @@ class MathWrapper {
     }
 
     _isInsideEmptyNode(cursor) {
-        return cursor[MQ.L] === MQ_END && cursor[MQ.R] === MQ_END;
+        return cursor[this.MQ.L] === MQ_END && cursor[this.MQ.R] === MQ_END;
     }
 
     _handleBackspaceInRootIndex(cursor) {
@@ -388,7 +388,7 @@ class MathWrapper {
 
             const grandparent = cursor.parent.parent;
             const latex = grandparent.latex();
-            const reinsertionPoint = grandparent[MQ.L];
+            const reinsertionPoint = grandparent[this.MQ.L];
 
             this._selectNode(grandparent, cursor);
 
@@ -411,13 +411,13 @@ class MathWrapper {
 
                 // Adjust the cursor to be to the left the sqrt.
                 if (reinsertionPoint === MQ_END) {
-                    this.mathField.moveToDirEnd(MQ.L);
+                    this.mathField.moveToDirEnd(this.MQ.L);
                 } else {
                     cursor.insRightOf(reinsertionPoint);
                 }
             }
         } else {
-            if (cursor[MQ.L] !== MQ_END) {
+            if (cursor[this.MQ.L] !== MQ_END) {
                 // If the cursor is not at the leftmost position inside the
                 // root's index, delete a character.
                 this.mathField.keystroke('Backspace');
@@ -437,8 +437,8 @@ class MathWrapper {
             cursor.insLeftOf(command.startNode);
             cursor.startSelection();
 
-            if (grandparent[MQ.R] !== MQ_END) {
-                cursor.insRightOf(grandparent[MQ.R]);
+            if (grandparent[this.MQ.R] !== MQ_END) {
+                cursor.insRightOf(grandparent[this.MQ.R]);
             } else {
                 cursor.insRightOf(grandparent);
             }
@@ -446,7 +446,8 @@ class MathWrapper {
             cursor.select();
             cursor.endSelection();
 
-            const isLogBodyEmpty = grandparent[MQ.R].contentjQ.text() === '';
+            const isLogBodyEmpty =
+                grandparent[this.MQ.R].contentjQ.text() === '';
 
             if (isLogBodyEmpty) {
                 // If there's no content inside the log's parens then delete the
@@ -467,8 +468,8 @@ class MathWrapper {
         // (x+1)| => |(x+1)|
         // \log(x+1)| => |\log(x+1)|
 
-        const leftNode = cursor[MQ.L];
-        const rightNode = cursor[MQ.R];
+        const leftNode = cursor[this.MQ.L];
+        const rightNode = cursor[this.MQ.R];
         const command = this._maybeFindCommandBeforeParens(leftNode);
 
         if (command && command.startNode) {
@@ -516,7 +517,7 @@ class MathWrapper {
         // - \log(|x+1) => |\log(x+1)|
         // - \log(|) => |
 
-        if (cursor[MQ.L] !== MQ_END) {
+        if (cursor[this.MQ.L] !== MQ_END) {
             // This command contains math and there's some math to
             // the left of the cursor that we should delete normally
             // before doing anything special.
@@ -530,10 +531,10 @@ class MathWrapper {
         // has a subscript as is the case in log_n then move the cursor into
         // the subscript, e.g. \log_{5}(|x+1) => \log_{5|}(x+1)
 
-        if (grandparent[MQ.L].sub) {    // if there is a subscript
-            if (grandparent[MQ.L].sub.jQ.text()) {    // and it contains text
+        if (grandparent[this.MQ.L].sub) {  // if there is a subscript
+            if (grandparent[this.MQ.L].sub.jQ.text()) {  // and it contains text
                 // move the cursor to the right end of the subscript
-                cursor.insAtRightEnd(grandparent[MQ.L].sub);
+                cursor.insAtRightEnd(grandparent[this.MQ.L].sub);
                 return;
             }
         }
@@ -569,24 +570,24 @@ class MathWrapper {
      */
     _handleToggleSign(cursor) {
         // Pre-compute a few values before mutating the cursor.
-        const leftNode = cursor[MQ.L];
+        const leftNode = cursor[this.MQ.L];
         const parent = cursor.parent;
         const isAtTopLevel = this._isAtTopLevel(cursor);
 
         // Store the selection, if it exists.
-        const leftEnd = cursor.selection && cursor.selection.ends[MQ.L];
-        const rightEnd = cursor.selection && cursor.selection.ends[MQ.R];
+        const leftEnd = cursor.selection && cursor.selection.ends[this.MQ.L];
+        const rightEnd = cursor.selection && cursor.selection.ends[this.MQ.R];
 
         const latex = this.getContent();
         const minusSign = '-';
         if (latex.charAt(0) === minusSign) {
             // If the input is leading with a minus sign, remove it.
-            this.mathField.moveToDirEnd(MQ.L);
+            this.mathField.moveToDirEnd(this.MQ.L);
             this.mathField.keystroke('Right');
             this.mathField.keystroke('Backspace');
         } else {
             // Otherwise, write it at the start of the expression.
-            this.mathField.moveToDirEnd(MQ.L);
+            this.mathField.moveToDirEnd(this.MQ.L);
             this.mathField.write(minusSign);
         }
 
