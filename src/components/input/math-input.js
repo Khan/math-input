@@ -112,8 +112,6 @@ const MathInput = React.createClass({
         }
 
         const selectionRoot = this._container.querySelector('.mq-selection');
-        selectionRoot.setAttribute('id', 'selection-override');
-
         const bounds = unionRects(
             // Grab all the DOMNodes within the selection and calculate the
             // union of all of their bounding boxes.
@@ -461,12 +459,18 @@ const MathInput = React.createClass({
             style={styles.input}
             onTouchStart={this.handleTouchStart}
         >
-            <div
-                ref={(node) => this._mathContainer = ReactDOM.findDOMNode(node)}
-                className={css(styles.innerContainer)}
-            >
-                {focused && selectionRect.visible &&
-                    <SelectionRect {...selectionRect}/>}
+            {/* NOTE(charlie): This is used purely to namespace the styles in
+                overrides.css. */}
+            <div className='keypad-input'>
+                <div
+                    ref={(node) => {
+                        this._mathContainer = ReactDOM.findDOMNode(node);
+                    }}
+                    className={css(styles.innerContainer)}
+                >
+                    {focused && selectionRect.visible &&
+                        <SelectionRect {...selectionRect}/>}
+                </div>
             </div>
             {focused && handle.visible && <CursorHandle
                 {...handle}
