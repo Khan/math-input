@@ -194,6 +194,16 @@ const MathInput = React.createClass({
         this.focus();
     },
 
+    _scrollToElement(element) {
+        const containerTop = element.getBoundingClientRect().top;
+        const scrollTop = document.body.scrollTop;
+        const marginPx = 16;
+
+        setTimeout(() => {
+            document.body.scrollTop = scrollTop + containerTop - marginPx;
+        });
+    },
+
     blur() {
         this.mathField.getCursor().hide();
         this.props.onBlur && this.props.onBlur();
@@ -232,6 +242,9 @@ const MathInput = React.createClass({
         this.mathField.getCursor().show();
         this.props.onFocus && this.props.onFocus();
         this.setState({ focused: true });
+
+        // Scroll the input into view.
+        this._scrollToElement(this._container);
     },
 
     /**
