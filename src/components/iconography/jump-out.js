@@ -7,19 +7,13 @@ const React = require('react');
 
 const JumpOut = () => {
     return <svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1">
-        <defs>
-            <rect id="path-1" x="0" y="3" width="13" height="18" rx="2"></rect>
-            <mask id="mask-2" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="13" height="18" fill="white">
-                <use xlinkHref="#path-1"></use>
-            </mask>
-        </defs>
         <g id="Math-Input" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
             <g id="[Assets]-Math-Input" transform="translate(-1408.000000, -200.000000)">
                 <g id="math_keypad_icon_jump_out" transform="translate(1408.000000, 200.000000)">
                     <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="48" height="48"></rect>
                     <g id="icon" strokeWidth="1" transform="translate(12.000000, 12.000000)">
                         <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="24" height="24"></rect>
-                        <use id="Rectangle-356" stroke="#888D93" mask="url(#mask-2)" strokeWidth="4" xlinkHref="#path-1"></use>
+                        <path d="M2,4.99508929 L2,4.99508929 L2,19.0049107 C2,19.0007808 1.99921607,19 2.00276013,19 L10.9972399,19 C11.0020427,19 11,19.002037 11,19.0049107 L11,4.99508929 C11,4.99921924 11.0007839,5 10.9972399,5 L2.00276013,5 C1.99795733,5 2,4.99796296 2,4.99508929 L2,4.99508929 Z M0,4.99508929 C0,3.8932319 0.893542647,3 2.00276013,3 L10.9972399,3 C12.1033337,3 13,3.8926228 13,4.99508929 L13,19.0049107 C13,20.1067681 12.1064574,21 10.9972399,21 L2.00276013,21 C0.896666251,21 0,20.1073772 0,19.0049107 L0,4.99508929 L0,4.99508929 Z" id="box" fill="#888D93"></path>
                         <path d="M18,12 L9,12" id="tail" stroke="#78C008" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
                         <polyline id="head" stroke="#78C008" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" points="16 9 19 12 16 15"></polyline>
                         <path d="M23,4 L23,20" id="caret" stroke="#78C008" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
