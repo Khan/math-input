@@ -115,8 +115,11 @@ const pagerReducer = function(state = initialPagerState, action) {
             const { keypadType } = action.configuration;
             const { numPages } = Keypads[keypadType];
             return {
-                ...initialPagerState,
+                ...state,
                 numPages,
+                animateToPosition: false,
+                currentPage: 0,
+                dx: 0,
             };
 
         case 'SetPageWidthPx':
