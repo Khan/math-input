@@ -3,6 +3,7 @@
  */
 
 const React = require('react');
+const ReactDOM = require('react-dom');
 
 const Iconography = require('./iconography');
 const UnicodeIcon = require('./unicode-icon');
@@ -12,6 +13,15 @@ const Icon = React.createClass({
         focused: React.PropTypes.bool,
         name: React.PropTypes.string.isRequired,
         unicodeSymbol: React.PropTypes.string,
+    },
+
+    // TODO(kevinb) remove this when we upgrade to React 15
+    componentDidMount() {
+        const node = ReactDOM.findDOMNode(this);
+        if (node instanceof SVGElement) {
+            const firstGroup = node.querySelector('g');
+            firstGroup.setAttributeNS(null, 'fill-rule', 'evenodd');
+        }
     },
 
     render() {
