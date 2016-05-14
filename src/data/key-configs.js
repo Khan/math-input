@@ -169,18 +169,23 @@ const KeyConfigs = {
 };
 
 // Add in every numeral.
-for (const num of '0123456789') {
+const NUMBERS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+for (const num of NUMBERS) {
     // TODO(charlie): Consider removing the SVG icons that we have for the
     // numeral keys. They can be rendered just as easily with text (though that
     // would mean that we'd be using text beyond the variable key).
     KeyConfigs[`NUM_${num}`] = {
         type: KeyTypes.NUMERAL,
-        unicodeSymbol: num,
+        unicodeSymbol: `${num}`,
     };
 }
 
 // Add in every variable.
-for (const letter of 'ABCDEFGHIJKLMNOPQRSTUVWXYZ') {
+const LETTERS = [
+    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
+    'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+];
+for (const letter of LETTERS) {
     KeyConfigs[letter] = {
         type: KeyTypes.MATH,
         unicodeSymbol: letter.toLowerCase(),
