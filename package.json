@@ -15,10 +15,6 @@
     "jquery": "^1.12.2",
     "performance-now": "^0.2.0",
     "query-string": "^4.1.0",
-    "react": "15.0.1",
-    "react-addons-create-fragment": "15.0.1",
-    "react-addons-css-transition-group": "15.0.1",
-    "react-dom": "15.0.1",
     "react-redux": "^4.4.5",
     "redux": "^3.5.0"
   },
@@ -35,6 +31,10 @@
     "jsdom": "^8.4.0",
     "mocha": "^2.4.5",
     "mocha-jsdom": "^1.1.0",
+    "react": "15.0.1",
+    "react-addons-create-fragment": "15.0.1",
+    "react-addons-css-transition-group": "15.0.1",
+    "react-dom": "15.0.1",
     "webpack": "^1.13.0"
   }
 }
