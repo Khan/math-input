@@ -3,7 +3,7 @@ const webpack = require('webpack');
 
 module.exports = {
     entry: {
-        app: './src/index',
+        app: './src/app',
         deps: [
             'react',
             'react-dom',

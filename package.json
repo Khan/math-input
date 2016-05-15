@@ -2,11 +2,12 @@
   "name": "math-input",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "mocha test/test_*.js --compilers js:babel-register",
     "watch_test": "mocha test/test_spec.js --watch --compilers js:babel-register",
-    "watch": "webpack --config webpack.config.dev.js --watch"
+    "watch": "webpack --config webpack.config.dev.js --watch",
+    "postinstall": "babel src --out-dir lib"
   },
   "author": "",
   "license": "MIT",
@@ -19,6 +20,7 @@
     "redux": "^3.5.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.8.0",
     "babel-core": "^6.7.6",
     "babel-loader": "^6.2.4",
     "babel-polyfill": "^6.7.4",
