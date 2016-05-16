@@ -4,7 +4,7 @@
  * from MathQuill changes.
  */
 
-const $ = require('jQuery');
+const $ = require('jquery');
 // TODO(kevinb) allow test code to use const MathQuill = require('mathquill');
 const MathQuill = window.MathQuill;
 
