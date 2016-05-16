@@ -1,3 +1,5 @@
+/* globals $_ */
+
 const React = require('react');
 const ReactDOM = require('react-dom');
 const { css, StyleSheet } = require("aphrodite");
@@ -471,6 +473,8 @@ const MathInput = React.createClass({
         return <View
             style={styles.input}
             onTouchStart={this.handleTouchStart}
+            role={'textbox'}
+            ariaLabel={$_('Math input box')}
         >
             {/* NOTE(charlie): This is used purely to namespace the styles in
                 overrides.css. */}

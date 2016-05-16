@@ -11,6 +11,7 @@ const { BorderDirections, KeyTypes, KeypadTypes } = require('../consts');
 const keyIdPropType = React.PropTypes.oneOf(Object.keys(KeyConfigs));
 
 const keyConfigPropType = React.PropTypes.shape({
+    ariaLabel: React.PropTypes.string,
     id: keyIdPropType.isRequired,
     type: React.PropTypes.oneOf(Object.keys(KeyTypes)).isRequired,
     childKeyIds: React.PropTypes.arrayOf(keyIdPropType),

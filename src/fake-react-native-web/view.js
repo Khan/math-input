@@ -3,6 +3,7 @@ const { StyleSheet, css } = require('aphrodite');
 
 const View = React.createClass({
     propTypes: {
+        ariaLabel: React.PropTypes.string,
         children: React.PropTypes.oneOfType([
             React.PropTypes.arrayOf(React.PropTypes.node),
             React.PropTypes.node,
@@ -18,6 +19,7 @@ const View = React.createClass({
         onTouchEnd: React.PropTypes.func,
         onTouchMove: React.PropTypes.func,
         onTouchStart: React.PropTypes.func,
+        role: React.PropTypes.string,
         style: React.PropTypes.any,
     },
 
@@ -34,6 +36,8 @@ const View = React.createClass({
             onTouchEnd={this.props.onTouchEnd}
             onTouchMove={this.props.onTouchMove}
             onTouchStart={this.props.onTouchStart}
+            aria-label={this.props.ariaLabel}
+            role={this.props.role}
         >
             {this.props.children}
         </div>;

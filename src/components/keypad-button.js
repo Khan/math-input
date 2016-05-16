@@ -21,6 +21,7 @@ const { keyConfigPropType, bordersPropType } = require('./prop-types');
 
 const KeypadButton = React.createClass({
     propTypes: {
+        ariaLabel: React.PropTypes.string,
         // The borders to display on the button. Typically, this should be set
         // using one of the preset `BorderStyles` options.
         borders: bordersPropType,
@@ -130,6 +131,7 @@ const KeypadButton = React.createClass({
 
     render() {
         const {
+            ariaLabel,
             borders,
             childKeys,
             focused,
@@ -159,10 +161,20 @@ const KeypadButton = React.createClass({
         if (type === KeyTypes.EMPTY) {
             return <View style={buttonStyle} {...eventHandlers} />;
         } else if (type === KeyTypes.MANY) {
+            // TODO(charlie): Make the long-press interaction accessible. See
+            // the TODO in key-configs.js for more.
+            const manyButtonA11yMarkup = {
+                role: 'button',
+                ariaLabel: childKeys[0].ariaLabel,
+            };
             const unicodeSymbols = childKeys.map(keyConfig => {
                 return keyConfig.unicodeSymbol;
             });
-            return <View style={buttonStyle} {...eventHandlers}>
+            return <View
+                style={buttonStyle}
+                {...eventHandlers}
+                {...manyButtonA11yMarkup}
+            >
                 <View style={renderFocused && focusStyle}>
                     <MultiSymbolGrid
                         unicodeSymbols={unicodeSymbols}
@@ -172,7 +184,12 @@ const KeypadButton = React.createClass({
                 {maybePopoverContent}
             </View>;
         } else {
-            return <View style={buttonStyle} {...eventHandlers}>
+            const a11yMarkup = {
+                role: 'button',
+                ariaLabel: ariaLabel,
+            };
+
+            return <View style={buttonStyle} {...eventHandlers} {...a11yMarkup}>
                 <View style={renderFocused && focusStyle}>
                     <Icon
                         name={name}

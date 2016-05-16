@@ -64,7 +64,7 @@ const mapStateToProps = (state, ownProps) => {
     const { gestures } = state;
 
     const { keyConfig, ...rest } = ownProps;
-    const { id, childKeyIds, type, unicodeSymbol } = keyConfig;
+    const { ariaLabel, id, childKeyIds, type, unicodeSymbol } = keyConfig;
 
     return {
         ...rest,
@@ -73,6 +73,7 @@ const mapStateToProps = (state, ownProps) => {
         id: id,
 
         // Sanitze various props for the KeypadButton.
+        ariaLabel: ariaLabel,
         childKeys: childKeyIds && childKeyIds.map(id => KeyConfigs[id]),
         focused: gestures.focus === id,
         name: id,
