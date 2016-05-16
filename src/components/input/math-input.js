@@ -87,15 +87,33 @@ const MathInput = React.createClass({
         this._root.style.border = `solid ${paddingWidthPx}px white`;
         this._root.style.fontSize = `${fontSizePt}pt`;
 
-        this.blurOnTouchStartOutside = (evt) => {
-            // We're using stopPropagation to avoid blur when interacting with
-            // the keypad.
-            if (!this._container.contains(evt.target)) {
-                this.blur();
+        // Record the initial scroll displacement on touch start. This allows
+        // us to detect whether a touch event was a scroll and only blur the
+        // input on non-scrolls--blurring the input on scroll makes for a
+        // frustrating user experience.
+        this.touchStartInitialScroll = null;
+        this.recordTouchStartOutside = (evt) => {
+            // NOTE(kevinb): We're using stopPropagation to avoid blur when
+            // interacting with the keypad.
+            if (this.state.focused && !this._container.contains(evt.target)) {
+                this.touchStartInitialScroll = document.body.scrollTop;
             }
         };
 
-        window.addEventListener('touchstart', this.blurOnTouchStartOutside);
+        this.blurOnTouchEndOutside = (evt) => {
+            // If the user didn't scroll, blur the input. This won't work
+            // properly in the case that the user scrolls, but returns to the
+            // original scroll position, but that seems exceptionally unlikely.
+            if (this.state.focused &&
+                    this.touchStartInitialScroll === document.body.scrollTop) {
+                this.blur();
+            }
+            this.touchStartInitialScroll = null;
+        };
+
+        window.addEventListener('touchstart', this.recordTouchStartOutside);
+        window.addEventListener('touchend', this.blurOnTouchEndOutside);
+        window.addEventListener('touchcancel', this.blurOnTouchEndOutside);
     },
 
     componentDidUpdate() {
@@ -105,7 +123,9 @@ const MathInput = React.createClass({
     },
 
     componentWillUnmount() {
-        window.removeEventListener('touchstart', this.blurOnTouchStartOutside);
+        window.removeEventListener('touchstart', this.recordTouchStartOutside);
+        window.removeEventListener('touchend', this.blurOnTouchEndOutside);
+        window.removeEventListener('touchcancel', this.blurOnTouchEndOutside);
     },
 
     rectForSelection(selection) {
