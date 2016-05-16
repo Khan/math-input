@@ -497,7 +497,7 @@ const MathInput = React.createClass({
 });
 
 const fontSizePt = 18;
-const minSizePx = 32;
+const minSizePx = 34;
 const paddingWidthPx = 2;   // around _mathContainer and the selection rect
 const borderWidthPx = 1;    // black border around _mathContainer
 
