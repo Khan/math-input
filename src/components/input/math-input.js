@@ -509,6 +509,7 @@ const styles = StyleSheet.create({
     },
 
     innerContainer: {
+        backgroundColor: 'white',
         display: 'flex',
         minWidth: minSizePx,
         minHeight: minSizePx,
