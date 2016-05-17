@@ -10,6 +10,15 @@ const {
     cursorHandleDistanceMultiplier,
 } = require('../common-style');
 
+const touchTargetRadiusPx = 22;
+const touchTargetHeightPx = 2 * touchTargetRadiusPx;
+const touchTargetWidthPx = 2 * touchTargetRadiusPx;
+
+const cursorRadiusPx = cursorHandleRadiusPx;
+const cursorHeightPx = cursorHandleDistanceMultiplier * cursorRadiusPx +
+    cursorRadiusPx;
+const cursorWidthPx = 2 * cursorRadiusPx;
+
 const CursorHandle = React.createClass({
     propTypes: {
         animateIntoPosition: React.PropTypes.bool,
@@ -63,36 +72,38 @@ const CursorHandle = React.createClass({
         const outerStyle = {
             position: 'absolute',
             zIndex: 1,
-            left: 0,
+            left: -touchTargetWidthPx / 2,
             top: 0,
             transform: `translate(${x}px, ${y}px)`,
+            width: touchTargetWidthPx,
+            height: touchTargetHeightPx,
             ...animationStyle,
         };
 
         const innerStyle = {
-            marginLeft: '-50%',
+            marginLeft: touchTargetRadiusPx - cursorRadiusPx,
         };
 
-        const radius = cursorHandleRadiusPx;
-        const height = cursorHandleDistanceMultiplier * radius + radius;
-        const width = 2 * radius;
-
-        return <span style={outerStyle}>
+        return <span
+            style={outerStyle}
+            onTouchMove={this.handleTouchMove}
+            onTouchEnd={this.handleTouchEnd}
+            onTouchCancel={this.handleTouchCancel}
+        >
             <svg
-                width={width}
-                height={height}
-                viewBox={`-${radius} 0 ${width} ${height}`}
-                onTouchMove={this.handleTouchMove}
-                onTouchEnd={this.handleTouchEnd}
-                onTouchCancel={this.handleTouchCancel}
+                width={cursorWidthPx}
+                height={cursorHeightPx}
+                viewBox={
+                    `-${cursorRadiusPx} 0 ${cursorWidthPx} ${cursorHeightPx}`
+                }
                 style={innerStyle}
             >
                 <path
                     d={
                         `M 0 0
-                        L -${0.707 * radius} ${0.707 * radius}
-                        A ${radius} ${radius}, 0, 1, 0,
-                          ${0.707 * radius} ${0.707 * radius}
+                        L -${0.707 * cursorRadiusPx} ${0.707 * cursorRadiusPx}
+                        A ${cursorRadiusPx} ${cursorRadiusPx}, 0, 1, 0,
+                          ${0.707 * cursorRadiusPx} ${0.707 * cursorRadiusPx}
                         Z`
                     }
                     fill={brightGreen}

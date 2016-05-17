@@ -40,7 +40,7 @@ module.exports = {
     },
     iconSizeHeightPx: 48,
     iconSizeWidthPx: 48,
-    cursorHandleRadiusPx: 20,
+    cursorHandleRadiusPx: 11,
 
     // The amount to multiply the radius by to get the distance from the
     // center to the tip of the cursor handle.  The cursor is a circle with

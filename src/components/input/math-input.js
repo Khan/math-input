@@ -405,13 +405,16 @@ const MathInput = React.createClass({
 
         // We subtract the containerBounds left/top to correct for the
         // MathInput's position on the page.  We subtract scrollTop/Left to
-        // correct for any scrolling that's occurred.
+        // correct for any scrolling that's occurred.  On top of all that, we
+        // subtract an additional 2 x {height of the cursor} so that the bottom
+        // of the cursor tracks the user's finger, to make it visible under
+        // their touch.
         this.setState({
             handle: {
                 animateIntoPosition: false,
                 visible: true,
                 x: x - containerBounds.left - document.body.scrollLeft,
-                y: y - cursorHandleRadiusPx * cursorHandleDistanceMultiplier
+                y: y - 2 * cursorHandleRadiusPx * cursorHandleDistanceMultiplier
                      - containerBounds.top - document.body.scrollTop,
             },
         });
