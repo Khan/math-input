@@ -18,26 +18,44 @@ const NumberKeypad = React.createClass({
             <View style={row}>
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.NUM_7}
-                    borders={BorderStyles.BOTTOM}
+                    borders={BorderStyles.NONE}
                 />
-                <TouchableKeypadButton keyConfig={KeyConfigs.NUM_8} />
-                <TouchableKeypadButton keyConfig={KeyConfigs.NUM_9} />
+                <TouchableKeypadButton
+                    keyConfig={KeyConfigs.NUM_8}
+                    borders={BorderStyles.NONE}
+                />
+                <TouchableKeypadButton
+                    keyConfig={KeyConfigs.NUM_9}
+                    borders={BorderStyles.NONE}
+                />
             </View>
             <View style={row}>
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.NUM_4}
-                    borders={BorderStyles.BOTTOM}
+                    borders={BorderStyles.NONE}
                 />
-                <TouchableKeypadButton keyConfig={KeyConfigs.NUM_5} />
-                <TouchableKeypadButton keyConfig={KeyConfigs.NUM_6} />
+                <TouchableKeypadButton
+                    keyConfig={KeyConfigs.NUM_5}
+                    borders={BorderStyles.NONE}
+                />
+                <TouchableKeypadButton
+                    keyConfig={KeyConfigs.NUM_6}
+                    borders={BorderStyles.NONE}
+                />
             </View>
             <View style={row}>
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.NUM_1}
                     borders={BorderStyles.BOTTOM}
                 />
-                <TouchableKeypadButton keyConfig={KeyConfigs.NUM_2} />
-                <TouchableKeypadButton keyConfig={KeyConfigs.NUM_3} />
+                <TouchableKeypadButton
+                    keyConfig={KeyConfigs.NUM_2}
+                    borders={BorderStyles.NONE}
+                />
+                <TouchableKeypadButton
+                    keyConfig={KeyConfigs.NUM_3}
+                    borders={BorderStyles.BOTTOM}
+                />
             </View>
             <View style={row}>
                 <TouchableKeypadButton
