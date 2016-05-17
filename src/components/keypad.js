@@ -10,9 +10,10 @@ const { StyleSheet } = require('aphrodite');
 
 const { View } = require('../fake-react-native-web');
 const EchoManager = require('./echo-manager');
+const PopoverManager = require('./popover-manager');
 const zIndexes = require('./input/z-indexes');
 const { lightGrey } = require('./common-style');
-const { echoPropType } = require('./prop-types');
+const { echoPropType, popoverPropType } = require('./prop-types');
 
 const keypadBorderWidthPx = 1;
 
@@ -23,6 +24,7 @@ const Keypad = React.createClass({
             React.PropTypes.node,
         ]),
         echoes: React.PropTypes.arrayOf(echoPropType).isRequired,
+        popover: popoverPropType,
         style: React.PropTypes.any,
     },
 
@@ -40,20 +42,27 @@ const Keypad = React.createClass({
 
     componentWillReceiveProps(newProps) {
         // We cheat a bit and only re-measure the container if we're about to
-        // kick off a new animation.
+        // kick off a new animation, be it an echo or a popover reveal.
+        let shouldComputeContainer = false;
         const existingIds = this.props.echoes.map((echo) => echo.animationId);
         const newIds = newProps.echoes.map((echo) => echo.animationId);
         for (const newAnimationId of newIds) {
             if (!existingIds.includes(newAnimationId)) {
-                const domNode = ReactDOM.findDOMNode(this);
-                this._container = domNode.getBoundingClientRect();
+                shouldComputeContainer = true;
                 break;
             }
+        }
+
+        shouldComputeContainer |= this.props.popover !== newProps.popover;
+
+        if (shouldComputeContainer) {
+            const domNode = ReactDOM.findDOMNode(this);
+            this._container = domNode.getBoundingClientRect();
         }
     },
 
     render() {
-        const { children, echoes, style } = this.props;
+        const { children, echoes, popover, style } = this.props;
 
         // Translate the echo boxes, as they'll be positioned absolutely to
         // this relative container.
@@ -74,6 +83,19 @@ const Keypad = React.createClass({
             };
         });
 
+        // Translate the popover bounds from page-absolute to keypad-relative.
+        // Note that we only need three bounds, since popovers are anchored to
+        // the bottom left corners of the keys over which they appear.
+        const relativePopover = popover && {
+            ...popover,
+            bounds: {
+                bottom: this._container.height - (popover.bounds.bottom -
+                    this._container.top) - keypadBorderWidthPx,
+                left: popover.bounds.left - this._container.left,
+                width: popover.bounds.width,
+            },
+        };
+
         const keypadStyle = [
             styles.keypad,
             ...(Array.isArray(style) ? style : [style]),
@@ -82,6 +104,7 @@ const Keypad = React.createClass({
         return <View style={keypadStyle}>
             {children}
             <EchoManager echoes={relativeEchoes} />
+            <PopoverManager popover={relativePopover} />
         </View>;
     },
 });
@@ -98,7 +121,10 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-    return state.echoes;
+    return {
+        ...state.echoes,
+        popover: state.gestures.popover,
+    };
 };
 
 module.exports = connect(mapStateToProps)(Keypad);

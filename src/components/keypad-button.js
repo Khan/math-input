@@ -8,7 +8,6 @@ const { connect } = require('react-redux');
 const { StyleSheet } = require('aphrodite');
 const { View } = require('../fake-react-native-web');
 const Icon = require('./icon');
-const MultiSymbolPopover = require('./multi-symbol-popover');
 const MultiSymbolGrid = require('./multi-symbol-grid');
 const { KeyTypes, BorderDirections, BorderStyles } = require('../consts');
 const {
@@ -37,7 +36,6 @@ const KeypadButton = React.createClass({
         onTouchEnd: React.PropTypes.func,
         onTouchMove: React.PropTypes.func,
         onTouchStart: React.PropTypes.func,
-        popoverEnabled: React.PropTypes.bool,
         style: React.PropTypes.any,
         type: React.PropTypes.oneOf(Object.keys(KeyTypes)).isRequired,
         // The unicode symbol that can be used to depict the icon for the
@@ -50,7 +48,6 @@ const KeypadButton = React.createClass({
             borders: BorderStyles.ALL,
             childKeys: [],
             focused: false,
-            popoverEnabled: false,
         };
     },
 
@@ -140,7 +137,6 @@ const KeypadButton = React.createClass({
             onTouchEnd,
             onTouchMove,
             onTouchStart,
-            popoverEnabled,
             style,
             type,
             unicodeSymbol,
@@ -155,8 +151,6 @@ const KeypadButton = React.createClass({
         const eventHandlers = {
             onTouchCancel, onTouchEnd, onTouchMove, onTouchStart,
         };
-        const maybePopoverContent = popoverEnabled &&
-            <MultiSymbolPopover keys={childKeys} />;
 
         if (type === KeyTypes.EMPTY) {
             return <View style={buttonStyle} {...eventHandlers} />;
@@ -181,7 +175,6 @@ const KeypadButton = React.createClass({
                         focused={renderFocused}
                     />
                 </View>
-                {maybePopoverContent}
             </View>;
         } else {
             const a11yMarkup = {
@@ -197,7 +190,6 @@ const KeypadButton = React.createClass({
                         focused={renderFocused}
                     />
                 </View>
-                {maybePopoverContent}
             </View>;
         }
     },

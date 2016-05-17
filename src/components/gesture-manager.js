@@ -20,7 +20,17 @@ class GestureManager {
 
         this.nodeManager = new NodeManager();
         this.popoverStateMachine = new PopoverStateMachine({
-            onActiveNodesChanged: handlers.onActiveNodesChanged,
+            onActiveNodesChanged: (activeNodes) => {
+                const { popover, ...rest } = activeNodes;
+                handlers.onActiveNodesChanged({
+                    popover: popover && {
+                        bounds: this.nodeManager.layoutPropsForId(
+                            popover.parentId).initialBounds,
+                        childKeyIds: popover.childIds,
+                    },
+                    ...rest,
+                });
+            },
             /**
              * `onClick` takes two arguments:
              *

@@ -44,9 +44,7 @@ const MultiSymbolPopover = React.createClass({
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'column-reverse',
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
+        position: 'relative',
         width: '100%',
         borderRadius: 2,
         boxShadow: '0 2px 6px rgba(0, 0, 0, 0.3)',

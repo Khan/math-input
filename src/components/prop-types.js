@@ -47,6 +47,11 @@ const cursorContextPropType = React.PropTypes.oneOf(
     Object.keys(CursorContexts)
 );
 
+const popoverPropType = React.PropTypes.shape({
+    bounds: boundingBoxPropType.isRequired,
+    childKeyIds: React.PropTypes.arrayOf(keyIdPropType).isRequired,
+});
+
 const childrenPropType = React.PropTypes.oneOfType([
     React.PropTypes.arrayOf(React.PropTypes.node),
     React.PropTypes.node,
@@ -60,5 +65,6 @@ module.exports = {
     boundingBoxPropType,
     echoPropType,
     cursorContextPropType,
+    popoverPropType,
     childrenPropType,
 };

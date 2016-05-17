@@ -63,12 +63,18 @@ class PopoverStateMachine {
             // node if it's in the popover, and remove any highlight otherwise.
             if (this._isNodeInsidePopover(this.activePopover, id)) {
                 this.handlers.onActiveNodesChanged({
-                    popover: this.activePopover,
+                    popover: {
+                        parentId: this.activePopover,
+                        childIds: this.popovers[this.activePopover],
+                    },
                     focus: id,
                 });
             } else {
                 this.handlers.onActiveNodesChanged({
-                    popover: this.activePopover,
+                    popover: {
+                        parentId: this.activePopover,
+                        childIds: this.popovers[this.activePopover],
+                    },
                     focus: null,
                 });
             }
@@ -97,7 +103,10 @@ class PopoverStateMachine {
             // change as well.
             this.activePopover = id;
             this.handlers.onActiveNodesChanged({
-                popover: this.activePopover,
+                popover: {
+                    parentId: this.activePopover,
+                    childIds: this.popovers[this.activePopover],
+                },
                 focus: this._defaultNodeForPopover(this.activePopover),
             });
         }
