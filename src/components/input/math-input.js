@@ -79,6 +79,21 @@ const MathInput = React.createClass({
             onCursorMove: this.props.onCursorMove,
         });
 
+        // NOTE(charlie): MathQuill binds this handler to manage its
+        // drag-to-select behavior. For reasons that I can't explain, the event
+        // itself gets triggered even if you tap slightly outside of the
+        // bound container (maybe 5px outside of any boundary). As a result, the
+        // cursor appears when tapping at those locations, even though the input
+        // itself doesn't receive any touch start or mouse down event and, as
+        // such, doesn't focus itself. This makes for a confusing UX, as the
+        // cursor appears, but the keypad does not and the input otherwise
+        // treats itself as unfocused. Thankfully, we don't need this behavior--
+        // we manage all of the cursor interactions ourselves--so we can safely
+        // unbind the handler.
+        this.mathField.mathField.__controller.container.unbind(
+            'mousedown.mathquill'
+        );
+
         this.mathField.setContent(this.props.value);
 
         this._container = ReactDOM.findDOMNode(this);
