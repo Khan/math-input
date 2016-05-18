@@ -15,8 +15,11 @@ const components = {
 const { KeypadTypes } = require('./src/consts');
 const consts = { KeypadTypes };
 
-const { keypadConfigurationPropType } = require('./src/components/prop-types');
-const propTypes = { keypadConfigurationPropType };
+const {
+    keypadConfigurationPropType,
+    keypadElementPropType,
+} = require('./src/components/prop-types');
+const propTypes = { keypadConfigurationPropType, keypadElementPropType };
 
 module.exports = {
     actions,

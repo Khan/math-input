@@ -18,6 +18,9 @@ const MathKeypad = React.createClass({
         extraKeys: React.PropTypes.arrayOf(keyIdPropType),
         keypadType: React.PropTypes.oneOf(Object.keys(KeypadTypes)).isRequired,
         onDismiss: React.PropTypes.func,
+        // A callback that should be triggered with the root React element on
+        // mount.
+        onElementMounted: React.PropTypes.func,
     },
 
     componentDidMount() {
@@ -58,7 +61,7 @@ const MathKeypad = React.createClass({
 
     renderKeypad() {
         // Extract props that some keypads will need.
-        const { extraKeys, keypadType } = this.props;
+        const { extraKeys, keypadType, onElementMounted } = this.props;
 
         // Select the appropriate keyboard given the type.
         // TODO(charlie): In the future, we might want to move towards a
@@ -69,20 +72,26 @@ const MathKeypad = React.createClass({
         // very many of them. So to keep us moving, we'll just hardcode.
         switch (keypadType) {
             case KeypadTypes.NUMBER:
-                return <NumberKeypad />;
+                return <NumberKeypad ref={onElementMounted} />;
 
             case KeypadTypes.FRACTION:
-                return <FractionKeypad />;
+                return <FractionKeypad ref={onElementMounted} />;
 
             case KeypadTypes.ADVANCED_EXPRESSION:
-                return <AdvancedExpressionKeypad extraKeys={extraKeys} />;
+                return <AdvancedExpressionKeypad
+                    extraKeys={extraKeys}
+                    ref={onElementMounted}
+                />;
 
             case KeypadTypes.BASIC_EXPRESSION:
-                return <BasicExpressionKeypad extraKeys={extraKeys} />;
+                return <BasicExpressionKeypad
+                    extraKeys={extraKeys}
+                    ref={onElementMounted}
+                />;
 
             case KeypadTypes.DEFAULT:
             default:
-                return <DefaultKeypad />;
+                return <DefaultKeypad ref={onElementMounted} />;
         }
     },
 

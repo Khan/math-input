@@ -9,10 +9,12 @@ const { View } = require('../../fake-react-native-web');
 const CursorHandle = require('./cursor-handle');
 const SelectionRect = require('./selection-rect');
 const MathWrapper = require('./math-wrapper');
+const scrollIntoView = require('./scroll-into-view');
 const {
     cursorHandleRadiusPx,
     cursorHandleDistanceMultiplier,
  } = require('../common-style');
+const { keypadElementPropType } = require('../prop-types');
 
 const defaultSelectionRect = {
     visible: false,
@@ -39,6 +41,12 @@ const unionRects = (rects) =>
 
 const MathInput = React.createClass({
     propTypes: {
+        // The React element node associated with the keypad that will send
+        // key-press events to this input. If provided, this can be used to:
+        //   (1) Avoid blurring the input, on user interaction with the keypad.
+        //   (2) Scroll the input into view, if it would otherwise be obscured
+        //       by the keypad on focus.
+        keypadElement: keypadElementPropType,
         onBlur: React.PropTypes.func,
         onChange: React.PropTypes.func.isRequired,
 
@@ -108,10 +116,19 @@ const MathInput = React.createClass({
         // frustrating user experience.
         this.touchStartInitialScroll = null;
         this.recordTouchStartOutside = (evt) => {
-            // NOTE(kevinb): We're using stopPropagation to avoid blur when
-            // interacting with the keypad.
-            if (this.state.focused && !this._container.contains(evt.target)) {
-                this.touchStartInitialScroll = document.body.scrollTop;
+            if (this.state.focused) {
+                // Only blur if the touch is both outside of the input, and
+                // outside of the keypad (if it has been provided).
+                if (!this._container.contains(evt.target)) {
+                    const maybeKeypadNode = this.props.keypadElement &&
+                        ReactDOM.findDOMNode(this.props.keypadElement);
+                    const touchStartInKeypad = maybeKeypadNode &&
+                        maybeKeypadNode.contains(evt.target);
+
+                    if (!touchStartInKeypad) {
+                        this.touchStartInitialScroll = document.body.scrollTop;
+                    }
+                }
             }
         };
 
@@ -231,16 +248,6 @@ const MathInput = React.createClass({
         this.focus();
     },
 
-    _scrollToElement(element) {
-        const containerTop = element.getBoundingClientRect().top;
-        const scrollTop = document.body.scrollTop;
-        const marginPx = 16;
-
-        setTimeout(() => {
-            document.body.scrollTop = scrollTop + containerTop - marginPx;
-        });
-    },
-
     blur() {
         this.mathField.getCursor().hide();
         this.props.onBlur && this.props.onBlur();
@@ -278,10 +285,19 @@ const MathInput = React.createClass({
 
         this.mathField.getCursor().show();
         this.props.onFocus && this.props.onFocus();
-        this.setState({ focused: true });
-
-        // Scroll the input into view.
-        this._scrollToElement(this._container);
+        this.setState({ focused: true }, () => {
+            // NOTE(charlie): We use `setTimeout` to allow for a layout pass to
+            // occur. Otherwise, the keypad is measured incorrectly. Ideally,
+            // we'd use requestAnimationFrame here, but it's unsupported on
+            // Android Browser 4.3.
+            setTimeout(() => {
+                if (this.isMounted()) {
+                    const maybeKeypadNode = this.props.keypadElement &&
+                        ReactDOM.findDOMNode(this.props.keypadElement);
+                    scrollIntoView(this._container, maybeKeypadNode);
+                }
+            });
+        });
     },
 
     /**

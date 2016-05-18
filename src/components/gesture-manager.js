@@ -87,12 +87,6 @@ class GestureManager {
         // If an event started in a view that we're managing, we'll handle it
         // all the way through.
         evt.preventDefault();
-
-        // MathInput adds a touchstart listener on window to know when to
-        // dismiss the keypad.  We stop propagation so keypad events don't
-        // reach the window.  This avoids keypad events dismissing the keypad.
-        // TODO(kevinb) figure out how to avoid stopPropagation if possible
-        evt.stopPropagation();
     }
 
     /**
