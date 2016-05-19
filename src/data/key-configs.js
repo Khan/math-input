@@ -2,7 +2,7 @@
  * This file contains configuration settings for the buttons in the keypad.
  */
 
-/* globals $_ */
+/* globals i18n */
 
 const Keys = require('../data/keys');
 const { KeyTypes } = require('../consts');
@@ -12,12 +12,12 @@ const KeyConfigs = {
     [Keys.PLUS]: {
         type: KeyTypes.MATH,
         // I18N: A label for a plus sign.
-        ariaLabel: $_('Plus'),
+        ariaLabel: i18n._('Plus'),
     },
     [Keys.MINUS]: {
         type: KeyTypes.MATH,
         // I18N: A label for a minus sign.
-        ariaLabel: $_('Minus'),
+        ariaLabel: i18n._('Minus'),
     },
     [Keys.TOGGLE_SIGN]: {
         type: KeyTypes.MATH,
@@ -27,130 +27,130 @@ const KeyConfigs = {
         // ignorant of the contents of the input.
         // I18N: A label for a button that will change the input from positive
         // to negative or the other way around.
-        ariaLabel: $_('Toggle positive/negative'),
+        ariaLabel: i18n._('Toggle positive/negative'),
     },
     [Keys.TIMES]: {
         type: KeyTypes.MATH,
         // I18N: A label for a multiplication sign (represented with an 'x').
-        ariaLabel: $_('Multiply'),
+        ariaLabel: i18n._('Multiply'),
     },
     [Keys.DIVIDE]: {
         type: KeyTypes.MATH,
         // I18N: A label for a division sign.
-        ariaLabel: $_('Divide'),
+        ariaLabel: i18n._('Divide'),
     },
     [Keys.DECIMAL]: {
         type: KeyTypes.MATH,
         // I18N: A label for a percent symbol.
-        ariaLabel: $_('Decimal'),
+        ariaLabel: i18n._('Decimal'),
     },
     [Keys.PERCENT]: {
         type: KeyTypes.MATH,
         // I18N: A label for a percent sign.
-        ariaLabel: $_('Percent'),
+        ariaLabel: i18n._('Percent'),
     },
     [Keys.CDOT]: {
         type: KeyTypes.MATH,
         // I18N: A label for a multiplication sign (represented as a dot).
-        ariaLabel: $_('Multiply'),
+        ariaLabel: i18n._('Multiply'),
     },
     [Keys.EQUAL]: {
         type: KeyTypes.MATH,
-        ariaLabel: $_('Equals sign'),
+        ariaLabel: i18n._('Equals sign'),
     },
     [Keys.NEQ]: {
         type: KeyTypes.MATH,
-        ariaLabel: $_('Not-equals sign'),
+        ariaLabel: i18n._('Not-equals sign'),
     },
     [Keys.GT]: {
         type: KeyTypes.MATH,
         // I18N: A label for a 'greater than' sign (represented as '>').
-        ariaLabel: $_('Greater than sign'),
+        ariaLabel: i18n._('Greater than sign'),
     },
     [Keys.LT]: {
         type: KeyTypes.MATH,
         // I18N: A label for a 'less than' sign (represented as '<').
-        ariaLabel: $_('Less than sign'),
+        ariaLabel: i18n._('Less than sign'),
     },
     [Keys.GEQ]: {
         type: KeyTypes.MATH,
-        ariaLabel: $_('Greater than or equal to sign'),
+        ariaLabel: i18n._('Greater than or equal to sign'),
     },
     [Keys.LEQ]: {
         type: KeyTypes.MATH,
-        ariaLabel: $_('Less than or equal to sign'),
+        ariaLabel: i18n._('Less than or equal to sign'),
     },
     [Keys.FRAC]: {
         type: KeyTypes.MATH,
         // I18N: A label for a 'fraction' symbol.
-        ariaLabel: $_('Fraction'),
+        ariaLabel: i18n._('Fraction'),
     },
     [Keys.EXP]: {
         type: KeyTypes.MATH,
         // I18N: A label for a button that will allow the user to input a custom
         // exponent.
-        ariaLabel: $_('Custom exponent'),
+        ariaLabel: i18n._('Custom exponent'),
     },
     [Keys.EXP_2]: {
         type: KeyTypes.MATH,
         // I18N: A label for a button that will square (take to the second
         // power) some math.
-        ariaLabel: $_('Square'),
+        ariaLabel: i18n._('Square'),
     },
     [Keys.EXP_3]: {
         type: KeyTypes.MATH,
         // I18N: A label for a button that will cube (take to the third power)
         // some math.
-        ariaLabel: $_('Cube'),
+        ariaLabel: i18n._('Cube'),
     },
     [Keys.SQRT]: {
         type: KeyTypes.MATH,
-        ariaLabel: $_('Square root'),
+        ariaLabel: i18n._('Square root'),
     },
     [Keys.CUBE_ROOT]: {
         type: KeyTypes.MATH,
-        ariaLabel: $_('Cube root'),
+        ariaLabel: i18n._('Cube root'),
     },
     [Keys.RADICAL]: {
         type: KeyTypes.MATH,
-        ariaLabel: $_('Radical with custom root'),
+        ariaLabel: i18n._('Radical with custom root'),
     },
     [Keys.PARENS]: {
         type: KeyTypes.MATH,
-        ariaLabel: $_('Parentheses'),
+        ariaLabel: i18n._('Parentheses'),
     },
     [Keys.LN]: {
         type: KeyTypes.MATH,
-        ariaLabel: $_('Natural logarithm'),
+        ariaLabel: i18n._('Natural logarithm'),
     },
     [Keys.LOG]: {
         type: KeyTypes.MATH,
-        ariaLabel: $_('Logarithm with base 10'),
+        ariaLabel: i18n._('Logarithm with base 10'),
     },
     [Keys.LOG_N]: {
         type: KeyTypes.MATH,
-        ariaLabel: $_('Logarithm with custom base'),
+        ariaLabel: i18n._('Logarithm with custom base'),
     },
     [Keys.SIN]: {
         type: KeyTypes.MATH,
-        ariaLabel: $_('Sine'),
+        ariaLabel: i18n._('Sine'),
     },
     [Keys.COS]: {
         type: KeyTypes.MATH,
-        ariaLabel: $_('Cosine'),
+        ariaLabel: i18n._('Cosine'),
     },
     [Keys.TAN]: {
         type: KeyTypes.MATH,
-        ariaLabel: $_('Tangent'),
+        ariaLabel: i18n._('Tangent'),
     },
     [Keys.PI]: {
         type: KeyTypes.MATH,
-        ariaLabel: $_('Pi'),
+        ariaLabel: i18n._('Pi'),
         unicodeSymbol: '\u03C0',
     },
     [Keys.THETA]: {
         type: KeyTypes.MATH,
-        ariaLabel: $_('Theta'),
+        ariaLabel: i18n._('Theta'),
         unicodeSymbol: '\u03B8',
     },
     [Keys.NOOP]: {
@@ -160,35 +160,35 @@ const KeyConfigs = {
     // Input navigation keys.
     [Keys.LEFT]: {
         type: KeyTypes.INPUT_NAVIGATION,
-        ariaLabel: $_('Left arrow'),
+        ariaLabel: i18n._('Left arrow'),
     },
     [Keys.RIGHT]: {
         type: KeyTypes.INPUT_NAVIGATION,
-        ariaLabel: $_('Right arrow'),
+        ariaLabel: i18n._('Right arrow'),
     },
     [Keys.JUMP_OUT]: {
         type: KeyTypes.INPUT_NAVIGATION,
-        ariaLabel: $_('Navigate right'),
+        ariaLabel: i18n._('Navigate right'),
     },
     [Keys.BACKSPACE]: {
         type: KeyTypes.INPUT_NAVIGATION,
         // I18N: A label for a button that will delete some input.
-        ariaLabel: $_('Delete'),
+        ariaLabel: i18n._('Delete'),
     },
 
     // Keypad navigation keys.
     [Keys.DISMISS]: {
         type: KeyTypes.KEYPAD_NAVIGATION,
         // I18N: A label for a button that will dismiss/hide a keypad.
-        ariaLabel: $_('Dismiss'),
+        ariaLabel: i18n._('Dismiss'),
     },
     [Keys.MORE]: {
         type: KeyTypes.KEYPAD_NAVIGATION,
-        ariaLabel: $_('Go to advanced button set'),
+        ariaLabel: i18n._('Go to advanced button set'),
     },
     [Keys.NUMBERS]: {
         type: KeyTypes.KEYPAD_NAVIGATION,
-        ariaLabel: $_('Go to basic button set'),
+        ariaLabel: i18n._('Go to basic button set'),
     },
 };
 

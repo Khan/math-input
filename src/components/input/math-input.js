@@ -1,4 +1,4 @@
-/* globals $_ */
+/* globals i18n */
 
 const React = require('react');
 const ReactDOM = require('react-dom');
@@ -497,7 +497,7 @@ const MathInput = React.createClass({
             style={styles.input}
             onTouchStart={this.handleTouchStart}
             role={'textbox'}
-            ariaLabel={$_('Math input box')}
+            ariaLabel={i18n._('Math input box')}
         >
             {/* NOTE(charlie): This is used purely to namespace the styles in
                 overrides.css. */}
