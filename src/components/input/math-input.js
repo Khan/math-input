@@ -220,18 +220,6 @@ const MathInput = React.createClass({
         });
     },
 
-    /**
-     * Set the position of the cursor and update the cursor handle if the
-     * text field isn't empty.
-     *
-     * @param {number} x
-     * @param {number} y
-     */
-    _setCursorLocation(x, y) {
-        this.mathField.setCursorPosition(x, y);
-        this.mathField.getCursor().show();
-    },
-
     blur() {
         this.mathField.getCursor().hide();
         this.props.onBlur && this.props.onBlur();
@@ -285,18 +273,6 @@ const MathInput = React.createClass({
     },
 
     /**
-     * Move the cursor beside the hitNode.  MathQuill uses the x, y coordinates
-     * to decide which side of the hitNode the cursor should be on.
-     *
-     * @param {DOMNode} hitNode
-     * @param {number} x
-     * @param {number} y
-     */
-    _moveCursorToNode(hitNode, x, y) {
-        this.mathField.setCursorPosition(x, y, hitNode);
-    },
-
-    /**
      * Tries to determine which DOM node to place the cursor next to based on
      * where the user drags the cursor handle.  If it finds a node it will
      * place the cursor next to it, update the handle to be under the cursor,
@@ -313,8 +289,8 @@ const MathInput = React.createClass({
      * containerBounds.
      *
      * @param {ClientRect} containerBounds - bounds of the container node
-     * @param {number} x  - initial x coordinate
-     * @param {number} y  - initial y coordinate
+     * @param {number} x - the initial x coordinate in the viewport
+     * @param {number} y - the initial y coordinate in the viewport
      * @param {number} dx - horizontal spacing between elementFromPoint calls
      * @param {number} dy - vertical spacing between elementFromPoint calls,
      *                      sign determines direction.
@@ -399,7 +375,7 @@ const MathInput = React.createClass({
             }
 
             if (hitNode !== null) {
-                this._moveCursorToNode(hitNode, x, y);
+                this.mathField.setCursorPosition(x, y, hitNode);
                 return true;
             }
         }
@@ -411,8 +387,8 @@ const MathInput = React.createClass({
      * Inserts the cursor at the DOM node closest to the given coordinates,
      * based on hit-tests conducted using #_findHitNode.
      *
-     * @param {number} x  - x coordinate
-     * @param {number} y  - y coordinate
+     * @param {number} x - the x coordinate in the viewport
+     * @param {number} y - the y coordinate in the viewport
      */
     _insertCursorAtClosestNode(x, y) {
         const cursor = this.mathField.getCursor();
@@ -482,7 +458,7 @@ const MathInput = React.createClass({
 
         // Set the handle-less cursor's location.
         const touch = e.changedTouches[0];
-        this._insertCursorAtClosestNode(touch.pageX, touch.pageY);
+        this._insertCursorAtClosestNode(touch.clientX, touch.clientY);
 
         // Cache the container bounds, so as to avoid re-computing.
         this._containerBounds = this._container.getBoundingClientRect();
@@ -493,7 +469,7 @@ const MathInput = React.createClass({
     handleTouchMove(e) {
         // Update the handle-less cursor's location on move.
         const touch = e.changedTouches[0];
-        this._insertCursorAtClosestNode(touch.pageX, touch.pageY);
+        this._insertCursorAtClosestNode(touch.clientX, touch.clientY);
     },
 
     handleTouchEnd(e) {
@@ -534,15 +510,14 @@ const MathInput = React.createClass({
     onCursorHandleTouchMove(e) {
         e.stopPropagation();
 
-        const x = e.changedTouches[0].pageX;
-        const y = e.changedTouches[0].pageY;
+        const x = e.changedTouches[0].clientX;
+        const y = e.changedTouches[0].clientY;
 
         // We subtract the containerBounds left/top to correct for the
-        // MathInput's position on the page.  We subtract scrollTop/Left to
-        // correct for any scrolling that's occurred.  On top of all that, we
-        // subtract an additional 2 x {height of the cursor} so that the bottom
-        // of the cursor tracks the user's finger, to make it visible under
-        // their touch.
+        // MathInput's position on the page. On top of that, we subtract an
+        // additional 2 x {height of the cursor} so that the bottom of the
+        // cursor tracks the user's finger, to make it visible under their
+        // touch.
         this.setState({
             handle: {
                 animateIntoPosition: false,
@@ -551,9 +526,9 @@ const MathInput = React.createClass({
                 // scroll offsets. This likely also means that the cursor
                 // detection doesn't work when scrolled, since we're not
                 // offsetting those values.
-                x: x - this._containerBounds.left - document.body.scrollLeft,
+                x: x - this._containerBounds.left,
                 y: y - 2 * cursorHandleRadiusPx * cursorHandleDistanceMultiplier
-                     - this._containerBounds.top - document.body.scrollTop,
+                     - this._containerBounds.top,
             },
         });
 

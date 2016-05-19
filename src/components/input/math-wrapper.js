@@ -130,6 +130,16 @@ class MathWrapper {
         };
     }
 
+    /**
+     * Place the cursor beside the node located at the given coordinates.
+     *
+     * @param {number} x - the x coordinate in the viewport
+     * @param {number} y - the y coordinate in the viewport
+     * @param {Node} hitNode - the node next to which the cursor should be
+     *                         placed; if provided, the coordinates will be used
+     *                         to determine on which side of the node the cursor
+     *                         should be placed
+     */
     setCursorPosition(x, y, hitNode) {
         const el = hitNode || document.elementFromPoint(x, y);
 
@@ -143,7 +153,10 @@ class MathWrapper {
             } else {
                 // Otherwise place beside the element at x, y.
                 const controller = this.mathField.__controller;
-                controller.seek($(el), x, y).cursor.startSelection();
+
+                const pageX = x - document.body.scrollLeft;
+                const pageY = y - document.body.scrollTop;
+                controller.seek($(el), pageX, pageY).cursor.startSelection();
 
                 // Unless that would leave us mid-command, in which case, we
                 // need to adjust and place the cursor inside the parens
