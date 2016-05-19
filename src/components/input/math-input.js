@@ -424,14 +424,10 @@ const MathInput = React.createClass({
             return;
         }
 
-        // TODO(charlie): Avoid re-computing this. It should be cached at the
-        // start of a touch event.
-        const containerBounds = this._container.getBoundingClientRect();
-
-        if (y > containerBounds.bottom) {
-            y = containerBounds.bottom;
-        } else if (y < containerBounds.top) {
-            y = containerBounds.top + 10;
+        if (y > this._containerBounds.bottom) {
+            y = this._containerBounds.bottom;
+        } else if (y < this._containerBounds.top) {
+            y = this._containerBounds.top + 10;
         }
 
         let dx;
@@ -447,17 +443,17 @@ const MathInput = React.createClass({
         // shouldn't.
         dx = 5;
 
-        if (this._findHitNode(containerBounds, x, y, dx, dy)) {
+        if (this._findHitNode(this._containerBounds, x, y, dx, dy)) {
             return;
         }
 
         // If we haven't found anything start from the top.
-        y = containerBounds.top;
+        y = this._containerBounds.top;
 
         // dy is positive b/c we're going downwards.
         dy = 8;
 
-        if (this._findHitNode(containerBounds, x, y, dx, dy)) {
+        if (this._findHitNode(this._containerBounds, x, y, dx, dy)) {
             return;
         }
 
@@ -487,6 +483,9 @@ const MathInput = React.createClass({
         // Set the handle-less cursor's location.
         const touch = e.changedTouches[0];
         this._insertCursorAtClosestNode(touch.pageX, touch.pageY);
+
+        // Cache the container bounds, so as to avoid re-computing.
+        this._containerBounds = this._container.getBoundingClientRect();
 
         this.focus();
     },
@@ -519,6 +518,11 @@ const MathInput = React.createClass({
         // events that are being handled by the cursor, so as to avoid handling
         // them in our own touch handlers.
         e.stopPropagation();
+
+        e.preventDefault();
+
+        // Cache the container bounds, so as to avoid re-computing.
+        this._containerBounds = this._container.getBoundingClientRect();
     },
 
     /**
@@ -529,9 +533,6 @@ const MathInput = React.createClass({
      */
     onCursorHandleTouchMove(e) {
         e.stopPropagation();
-
-        // TODO(kevinb) cache this in the touchstart of the CursorHandle
-        const containerBounds = this._container.getBoundingClientRect();
 
         const x = e.changedTouches[0].pageX;
         const y = e.changedTouches[0].pageY;
@@ -550,9 +551,9 @@ const MathInput = React.createClass({
                 // scroll offsets. This likely also means that the cursor
                 // detection doesn't work when scrolled, since we're not
                 // offsetting those values.
-                x: x - containerBounds.left - document.body.scrollLeft,
+                x: x - this._containerBounds.left - document.body.scrollLeft,
                 y: y - 2 * cursorHandleRadiusPx * cursorHandleDistanceMultiplier
-                     - containerBounds.top - document.body.scrollTop,
+                     - this._containerBounds.top - document.body.scrollTop,
             },
         });
 
