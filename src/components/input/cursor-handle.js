@@ -22,8 +22,10 @@ const cursorWidthPx = 2 * cursorRadiusPx;
 const CursorHandle = React.createClass({
     propTypes: {
         animateIntoPosition: React.PropTypes.bool,
-        onEnd: React.PropTypes.func.isRequired,
-        onMove: React.PropTypes.func.isRequired,
+        onTouchCancel: React.PropTypes.func.isRequired,
+        onTouchEnd: React.PropTypes.func.isRequired,
+        onTouchMove: React.PropTypes.func.isRequired,
+        onTouchStart: React.PropTypes.func.isRequired,
         visible: React.PropTypes.bool.isRequired,
         x: React.PropTypes.number.isRequired,
         y: React.PropTypes.number.isRequired,
@@ -36,29 +38,6 @@ const CursorHandle = React.createClass({
             x: 0,
             y: 0,
         };
-    },
-
-    handleTouchMove(e) {
-        e.preventDefault();
-
-        const x = e.changedTouches[0].pageX;
-        const y = e.changedTouches[0].pageY;
-
-        this.props.onMove(x, y);
-    },
-
-    handleTouchEnd(e) {
-        const x = e.changedTouches[0].pageX;
-        const y = e.changedTouches[0].pageY;
-
-        this.props.onEnd(x, y);
-    },
-
-    handleTouchCancel(e) {
-        const x = e.changedTouches[0].pageX;
-        const y = e.changedTouches[0].pageY;
-
-        this.props.onEnd(x, y);
     },
 
     render() {
@@ -86,9 +65,10 @@ const CursorHandle = React.createClass({
 
         return <span
             style={outerStyle}
-            onTouchMove={this.handleTouchMove}
-            onTouchEnd={this.handleTouchEnd}
-            onTouchCancel={this.handleTouchCancel}
+            onTouchStart={this.props.onTouchStart}
+            onTouchMove={this.props.onTouchMove}
+            onTouchEnd={this.props.onTouchEnd}
+            onTouchCancel={this.props.onTouchCancel}
         >
             <svg
                 width={cursorWidthPx}

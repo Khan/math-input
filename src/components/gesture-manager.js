@@ -73,7 +73,7 @@ class GestureManager {
      * Handle a touch-start event that originated in a node registered with the
      * gesture system.
      *
-     * @param {event} evt - the raw touch event from the browser
+     * @param {TouchEvent} evt - the raw touch event from the browser
      * @param {string} id - the identifier of the DOM node in which the touch
      *                      occurred
      */
@@ -93,7 +93,7 @@ class GestureManager {
      * Handle a touch-move event that originated in a node registered with the
      * gesture system.
      *
-     * @param {event} evt - the raw touch event from the browser
+     * @param {TouchEvent} evt - the raw touch event from the browser
      */
     onTouchMove(evt) {
         const swipeLocked = this.popoverStateMachine.isPopoverVisible();
@@ -110,7 +110,7 @@ class GestureManager {
      * Handle a touch-end event that originated in a node registered with the
      * gesture system.
      *
-     * @param {event} evt - the raw touch event from the browser
+     * @param {TouchEvent} evt - the raw touch event from the browser
      */
     onTouchEnd(evt) {
         const [x, y] = coordsForEvent(evt);
@@ -124,7 +124,7 @@ class GestureManager {
      * Handle a touch-cancel event that originated in a node registered with the
      * gesture system.
      *
-     * @param {event} evt - the raw touch event from the browser
+     * @param {TouchEvent} evt - the raw touch event from the browser
      */
     onTouchCancel(evt) {
         this.gestureStateMachine.onTouchCancel();

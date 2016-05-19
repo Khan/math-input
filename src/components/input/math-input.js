@@ -210,6 +210,16 @@ const MathInput = React.createClass({
         });
     },
 
+    _hideCursorHandle() {
+        this.setState({
+            handle: {
+                visible: false,
+                x: 0,
+                y: 0,
+            },
+        });
+    },
+
     /**
      * Set the position of the cursor and update the cursor handle if the
      * text field isn't empty.
@@ -220,32 +230,6 @@ const MathInput = React.createClass({
     _setCursorLocation(x, y) {
         this.mathField.setCursorPosition(x, y);
         this.mathField.getCursor().show();
-
-        if (this.mathField.getContent() === "") {
-            this.setState({
-                handle: {
-                    visible: false,
-                    x: 0,
-                    y: 0,
-                },
-            });
-        } else {
-            this._updateCursorHandle();
-        }
-    },
-
-    handleTouchStart(e) {
-        e.preventDefault();
-
-        const touch = e.changedTouches[0];
-
-        // If the user starts to grab the handle let the touchmove handler
-        // handle positioning of the cursor.
-        if (e.target !== this._cursorHandle) {
-            this._setCursorLocation(touch.pageX, touch.pageY);
-        }
-
-        this.focus();
     },
 
     blur() {
@@ -424,37 +408,25 @@ const MathInput = React.createClass({
     },
 
     /**
-     * When the user moves the cursor handle update the position of the cursor
-     * and the handle.
+     * Inserts the cursor at the DOM node closest to the given coordinates,
+     * based on hit-tests conducted using #_findHitNode.
      *
-     * @param {number} x - pageX of a touchmove on the cursor handle
-     * @param {number} y - pageY of a touchmove on the cursor handle
+     * @param {number} x  - x coordinate
+     * @param {number} y  - y coordinate
      */
-    handleCursorHandleMove(x, y) {
-        // TODO(kevinb) cache this in the touchstart of the CursorHandle
+    _insertCursorAtClosestNode(x, y) {
+        const cursor = this.mathField.getCursor();
+
+        // Pre-emptively check if the input has any child nodes; if not, the
+        // input is empty, so we throw the cursor at the start.
+        if (!this._root.hasChildNodes()) {
+            cursor.insAtLeftEnd(this.mathField.mathField.__controller.root);
+            return;
+        }
+
+        // TODO(charlie): Avoid re-computing this. It should be cached at the
+        // start of a touch event.
         const containerBounds = this._container.getBoundingClientRect();
-
-        // We subtract the containerBounds left/top to correct for the
-        // MathInput's position on the page.  We subtract scrollTop/Left to
-        // correct for any scrolling that's occurred.  On top of all that, we
-        // subtract an additional 2 x {height of the cursor} so that the bottom
-        // of the cursor tracks the user's finger, to make it visible under
-        // their touch.
-        this.setState({
-            handle: {
-                animateIntoPosition: false,
-                visible: true,
-                x: x - containerBounds.left - document.body.scrollLeft,
-                y: y - 2 * cursorHandleRadiusPx * cursorHandleDistanceMultiplier
-                     - containerBounds.top - document.body.scrollTop,
-            },
-        });
-
-        // Use a y-coordinate that's just above where the user is actually
-        // touching because they're dragging the handle which is a little
-        // below where the cursor actually is.
-        const distanceAboveFingerToTrySelecting = 30;
-        y = y - distanceAboveFingerToTrySelecting;
 
         if (y > containerBounds.bottom) {
             y = containerBounds.bottom;
@@ -499,26 +471,120 @@ const MathInput = React.createClass({
         // or left of all of the math, so we place the cursor at the end to
         // which it's closest.
         if (Math.abs(x - right) < Math.abs(x - left)) {
-            const cursor = this.mathField.getCursor();
             cursor.insAtRightEnd(this.mathField.mathField.__controller.root);
         } else {
-            const cursor = this.mathField.getCursor();
             cursor.insAtLeftEnd(this.mathField.mathField.__controller.root);
         }
     },
 
-    handleCursorHandleEnd(x, y) {
+    handleTouchStart(e) {
+        e.preventDefault();
+
+        // Hide the cursor handle on touch start, if the handle itself isn't
+        // handling the touch event.
+        this._hideCursorHandle();
+
+        // Set the handle-less cursor's location.
+        const touch = e.changedTouches[0];
+        this._insertCursorAtClosestNode(touch.pageX, touch.pageY);
+
+        this.focus();
+    },
+
+    handleTouchMove(e) {
+        // Update the handle-less cursor's location on move.
+        const touch = e.changedTouches[0];
+        this._insertCursorAtClosestNode(touch.pageX, touch.pageY);
+    },
+
+    handleTouchEnd(e) {
+        // And on touch-end, reveal the cursor, unless the input is empty.
+        if (this.mathField.getContent() !== "") {
+            this._updateCursorHandle();
+        }
+    },
+
+    /**
+     * When a touch starts in the cursor handle, we track it so as to avoid
+     * handling any touch events ourself.
+     *
+     * @param {TouchEvent} e - the raw touch event from the browser
+     */
+    onCursorHandleTouchStart(e) {
+        // NOTE(charlie): The cursor handle is a child of this view, so whenever
+        // it receives a touch event, that event would also typically be bubbled
+        // up to our own handlers. However, we want the cursor to handle its own
+        // touch events, and for this view to only handle touch events that
+        // don't affect the cursor. As such, we `stopPropagation` on any touch
+        // events that are being handled by the cursor, so as to avoid handling
+        // them in our own touch handlers.
+        e.stopPropagation();
+    },
+
+    /**
+     * When the user moves the cursor handle update the position of the cursor
+     * and the handle.
+     *
+     * @param {TouchEvent} e - the raw touch event from the browser
+     */
+    onCursorHandleTouchMove(e) {
+        e.stopPropagation();
+
+        // TODO(kevinb) cache this in the touchstart of the CursorHandle
+        const containerBounds = this._container.getBoundingClientRect();
+
+        const x = e.changedTouches[0].pageX;
+        const y = e.changedTouches[0].pageY;
+
+        // We subtract the containerBounds left/top to correct for the
+        // MathInput's position on the page.  We subtract scrollTop/Left to
+        // correct for any scrolling that's occurred.  On top of all that, we
+        // subtract an additional 2 x {height of the cursor} so that the bottom
+        // of the cursor tracks the user's finger, to make it visible under
+        // their touch.
+        this.setState({
+            handle: {
+                animateIntoPosition: false,
+                visible: true,
+                // TODO(charlie): Use clientX and clientY to avoid the need for
+                // scroll offsets. This likely also means that the cursor
+                // detection doesn't work when scrolled, since we're not
+                // offsetting those values.
+                x: x - containerBounds.left - document.body.scrollLeft,
+                y: y - 2 * cursorHandleRadiusPx * cursorHandleDistanceMultiplier
+                     - containerBounds.top - document.body.scrollTop,
+            },
+        });
+
+        // Use a y-coordinate that's just above where the user is actually
+        // touching because they're dragging the handle which is a little
+        // below where the cursor actually is.
+        const distanceAboveFingerToTrySelecting = 22;
+        const adjustedY = y - distanceAboveFingerToTrySelecting;
+
+        this._insertCursorAtClosestNode(x, adjustedY);
+    },
+
+    /**
+     * When the user releases the cursor handle, animate it back into place.
+     *
+     * @param {TouchEvent} e - the raw touch event from the browser
+     */
+    onCursorHandleTouchEnd(e) {
+        e.stopPropagation();
+
         this._updateCursorHandle(true);
     },
 
-    handleCursorHandleCancel(x, y) {
-        this.setState({
-            handle: {
-                visible: false,
-                x: 0,
-                y: 0,
-            },
-        });
+    /**
+     * If the gesture is cancelled mid-drag, simply hide it.
+     *
+     * @param {TouchEvent} e - the raw touch event from the browser
+     */
+    onCursorHandleTouchCancel(e) {
+        e.stopPropagation();
+
+        this._updateCursorHandle(true);
     },
 
     render() {
@@ -527,6 +593,8 @@ const MathInput = React.createClass({
         return <View
             style={styles.input}
             onTouchStart={this.handleTouchStart}
+            onTouchMove={this.handleTouchMove}
+            onTouchEnd={this.handleTouchEnd}
             role={'textbox'}
             ariaLabel={i18n._('Math input box')}
         >
@@ -545,10 +613,10 @@ const MathInput = React.createClass({
             </div>
             {focused && handle.visible && <CursorHandle
                 {...handle}
-                ref={(node) => this._cursorHandle = ReactDOM.findDOMNode(node)}
-                onEnd={this.handleCursorHandleEnd}
-                onCancel={this.handleCursorHandleCancel}
-                onMove={this.handleCursorHandleMove}
+                onTouchStart={this.onCursorHandleTouchStart}
+                onTouchMove={this.onCursorHandleTouchMove}
+                onTouchEnd={this.onCursorHandleTouchEnd}
+                onTouchCancel={this.onCursorHandleTouchCancel}
             />}
         </View>;
     },
