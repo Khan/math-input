@@ -25,8 +25,6 @@ const Dismissable = React.createClass({
 
         return <ReactCSSTransitionGroup
             transitionName='dismissable'
-            transitionAppear={true}
-            transitionAppearTimeout={dismissAnimationMs}
             transitionEnterTimeout={dismissAnimationMs}
             transitionLeaveTimeout={dismissAnimationMs}
         >

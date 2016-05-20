@@ -10,24 +10,6 @@
  * must change as well.
  */
 
- .dismissable-appear {
-     transform: translate3d(0, 100%, 0) !important;
-     -webkit-transform: translate3d(0, 100%, 0) !important;
-     -moz-transform: translate3d(0, 100%, 0) !important;
-     -ms-transform: translate3d(0, 100%, 0) !important;
- }
-
- .dismissable-appear.dismissable-appear-active {
-     transform: translate3d(0, 0, 0) !important;
-     transition: -webkit-transform 300ms ease-out,-moz-transform 300ms ease-out,-ms-transform 300ms ease-out,transform 300ms ease-out !important;
-     -webkit-transform: translate3d(0, 0, 0) !important;
-     -moz-transform: translate3d(0, 0, 0) !important;
-     -ms-transform: translate3d(0, 0, 0) !important;
-     -webkit-transition: -webkit-transform 300ms ease-out,transform 300ms ease-out !important;
-     -moz-transition: -moz-transform 300ms ease-out,transform 300ms ease-out !important;
-     -ms-transition: -ms-transform 300ms ease-out,transform 300ms ease-out !important;
- }
-
 .dismissable-enter {
     transform: translate3d(0, 100%, 0) !important;
     -webkit-transform: translate3d(0, 100%, 0) !important;
