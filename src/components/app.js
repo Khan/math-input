@@ -16,6 +16,7 @@ const Settings = require('../settings');
 const App = React.createClass({
     getInitialState() {
         return {
+            keypadElement: null,
             value: "",
         };
     },
@@ -32,6 +33,7 @@ const App = React.createClass({
             >
                 <MathInput
                     value={this.state.value}
+                    keypadElement={this.state.keypadElement}
                     onChange={(value, cb) => this.setState({ value }, cb)}
                     onCursorMove={setCursor}
                     onBlur={dismissKeypad}
@@ -39,7 +41,11 @@ const App = React.createClass({
                 />
             </div>
             <Provider store={store}>
-                <MathKeypad />
+                <MathKeypad onElementMounted={node => {
+                    if (node && node !== this.state.keypadElement) {
+                        this.setState({ keypadElement: node});
+                    }
+                }}/>
             </Provider>
             {Settings.debugSwitcher === DebugSwitcherTypes.ENABLED &&
                 <KeypadTypeSelector onChange={keypadType => {
