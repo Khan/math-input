@@ -13,6 +13,7 @@ const scrollIntoView = require('./scroll-into-view');
 const {
     cursorHandleRadiusPx,
     cursorHandleDistanceMultiplier,
+    mediumGrey,
  } = require('../common-style');
 const { keypadElementPropType } = require('../prop-types');
 
@@ -619,7 +620,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         borderWidth: borderWidthPx,
         borderStyle: 'solid',
-        borderColor: '#BABEC2',
+        borderColor: mediumGrey,
         borderRadius: 4,
     },
 });

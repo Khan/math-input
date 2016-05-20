@@ -9,6 +9,7 @@ const { StyleSheet } = require('aphrodite');
 const { View } = require('../fake-react-native-web');
 const Icon = require('./icon');
 const MultiSymbolGrid = require('./multi-symbol-grid');
+const CornerDecal = require('./corner-decal');
 const { KeyTypes, BorderDirections, BorderStyles } = require('../consts');
 const {
     brightGreen,
@@ -156,6 +157,9 @@ const KeypadButton = React.createClass({
             onTouchCancel, onTouchEnd, onTouchMove, onTouchStart,
         };
 
+        const maybeCornerDecal = childKeys && childKeys.length > 0 &&
+            <CornerDecal />;
+
         if (type === KeyTypes.EMPTY) {
             return <View style={buttonStyle} {...eventHandlers} />;
         } else if (type === KeyTypes.MANY) {
@@ -179,6 +183,7 @@ const KeypadButton = React.createClass({
                         focused={renderFocused}
                     />
                 </View>
+                {maybeCornerDecal}
             </View>;
         } else {
             const a11yMarkup = {
@@ -194,6 +199,7 @@ const KeypadButton = React.createClass({
                         focused={renderFocused}
                     />
                 </View>
+                {maybeCornerDecal}
             </View>;
         }
     },

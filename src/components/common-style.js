@@ -9,6 +9,7 @@ module.exports = {
     darkGrey: '#888D93',
     lightGrey: '#D6D8DA',
     iconGrey: '#3B3E40',
+    mediumGrey: '#BABEC2',
     secondaryIconOpacity: 0.3,
     buttonBorderColor: '#ECECEC',
     buttonBorderStyle: 'solid',
