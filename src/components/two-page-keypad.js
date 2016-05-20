@@ -12,7 +12,7 @@ const PagerIndicator = require('./pager-indicator');
 const { View } = require('../fake-react-native-web');
 const { column, row } = require('./styles');
 const {
-    buttonBorderColor, buttonBorderStyle, buttonBorderWidthPx,
+    buttonBorderColor, buttonBorderStyle, buttonBorderWidthPx, lightGrey,
 } = require('./common-style');
 const { setKeypadCurrentPage } = require('../actions');
 const { SwitchTypes } = require('../consts');
@@ -51,7 +51,7 @@ const TwoPageKeypad = React.createClass({
             showTabBarIndicator && styles.borderTop,
         ];
 
-        return <Keypad style={column}>
+        return <Keypad style={[column, styles.keypad]}>
             {showTabBarIndicator &&
                 <TabBarIndicator
                     currentPage={currentPage}
@@ -84,6 +84,12 @@ const TwoPageKeypad = React.createClass({
 const numColumns = 5;
 
 const styles = StyleSheet.create({
+    keypad: {
+        // Set the background to light grey, so that when the user drags the
+        // keypad pages past the edges, there's a grey backdrop.
+        backgroundColor: lightGrey,
+    },
+
     mainContent: {
         // The main content (i.e., the non-sidebar keys) should take up all but
         // one of the columns (with the last column being reserved for the

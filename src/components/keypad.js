@@ -12,7 +12,7 @@ const { View } = require('../fake-react-native-web');
 const EchoManager = require('./echo-manager');
 const PopoverManager = require('./popover-manager');
 const zIndexes = require('./input/z-indexes');
-const { lightGrey } = require('./common-style');
+const { numeralGrey } = require('./common-style');
 const { echoPropType, popoverPropType } = require('./prop-types');
 
 const keypadBorderWidthPx = 1;
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         width: '100%',
         borderTop: `${keypadBorderWidthPx}px solid rgba(0, 0, 0, 0.2)`,
-        backgroundColor: lightGrey,
+        backgroundColor: numeralGrey,
         zIndex: zIndexes.keypad,
     },
 });

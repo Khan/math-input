@@ -47,4 +47,10 @@ module.exports = {
     // one quadrant replace with a square.  The hypotenuse of the square is
     // 1.41 times the radius of the circle.
     cursorHandleDistanceMultiplier: 1.41,
+
+    // Keypad button colors
+    numeralGrey: '#FFF',
+    commandGrey : '#FAFAFA',
+    controlGrey : '#F6F7F7',
+    disabledGrey : '#F0F1F2',
 };

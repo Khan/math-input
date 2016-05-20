@@ -15,6 +15,10 @@ const {
     buttonBorderColor,
     buttonBorderStyle,
     buttonBorderWidthPx,
+    numeralGrey,
+    commandGrey,
+    controlGrey,
+    disabledGrey,
 } = require('./common-style');
 const { keyConfigPropType, bordersPropType } = require('./prop-types');
 
@@ -221,16 +225,16 @@ const styles = StyleSheet.create({
 
     // Background colors and other base styles that may vary between key types.
     numeral: {
-        backgroundColor: '#FFF',
+        backgroundColor: numeralGrey,
     },
     command: {
-        backgroundColor: '#FAFAFA',
+        backgroundColor: commandGrey,
     },
     control: {
-        backgroundColor: '#F6F7F7',
+        backgroundColor: controlGrey,
     },
     disabled: {
-        backgroundColor: '#F0F1F2',
+        backgroundColor: disabledGrey,
         cursor: 'default',
     },
 

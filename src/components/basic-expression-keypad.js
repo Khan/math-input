@@ -13,6 +13,7 @@ const ManyKeypadButton = require('./many-keypad-button');
 const TouchableKeypadButton = require('./touchable-keypad-button');
 const { row, column, oneColumn } = require('./styles');
 const { BorderStyles, SwitchTypes, JumpOutTypes } = require('../consts');
+const { numeralGrey, commandGrey } = require('./common-style');
 const { cursorContextPropType, keyIdPropType } = require('./prop-types');
 const KeyConfigs = require('../data/key-configs');
 const CursorContexts = require('./input/cursor-contexts');
@@ -39,7 +40,8 @@ const BasicExpressionKeypad = React.createClass({
             currentPage, cursorContext, dynamicJumpOut, extraKeys, showToggle,
         } = this.props;
 
-        const firstPage = <View style={[row, styles.fullPage]}>
+        const firstPageStyle = [row, styles.fullPage, styles.firstPage];
+        const firstPage = <View style={firstPageStyle}>
             <View style={[column, oneColumn]}>
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.NUM_7}
@@ -139,7 +141,7 @@ const BasicExpressionKeypad = React.createClass({
             dismissOrJumpOutKey = KeyConfigs.DISMISS;
         }
 
-        const sidebar = <View style={[column, oneColumn]}>
+        const sidebar = <View style={[column, oneColumn, styles.sidebar]}>
             <TouchableKeypadButton
                 keyConfig={topNavigationKey}
                 borders={BorderStyles.LEFT}
@@ -172,6 +174,14 @@ const BasicExpressionKeypad = React.createClass({
 const styles = StyleSheet.create({
     fullPage: {
         flexBasis: '100%',
+    },
+
+    firstPage: {
+        backgroundColor: numeralGrey,
+    },
+
+    sidebar: {
+        backgroundColor: commandGrey,
     },
 });
 
