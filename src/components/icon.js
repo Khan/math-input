@@ -7,12 +7,13 @@ const ReactDOM = require('react-dom');
 
 const Iconography = require('./iconography');
 const UnicodeIcon = require('./unicode-icon');
+const { unicodeSymbolPropType } = require('./prop-types');
 
 const Icon = React.createClass({
     propTypes: {
         focused: React.PropTypes.bool,
         name: React.PropTypes.string.isRequired,
-        unicodeSymbol: React.PropTypes.string,
+        unicodeSymbol: unicodeSymbolPropType,
     },
 
     // TODO(kevinb) remove this when we upgrade to React 15

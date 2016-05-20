@@ -8,6 +8,11 @@ const KeyConfigs = require('../data/key-configs');
 const CursorContexts = require('./input/cursor-contexts');
 const { BorderDirections, KeyTypes, KeypadTypes } = require('../consts');
 
+const unicodeSymbolPropType = React.PropTypes.shape({
+    character: React.PropTypes.string.isRequired,
+    italicized: React.PropTypes.bool,
+});
+
 const keyIdPropType = React.PropTypes.oneOf(Object.keys(KeyConfigs));
 
 const keyConfigPropType = React.PropTypes.shape({
@@ -15,7 +20,7 @@ const keyConfigPropType = React.PropTypes.shape({
     id: keyIdPropType.isRequired,
     type: React.PropTypes.oneOf(Object.keys(KeyTypes)).isRequired,
     childKeyIds: React.PropTypes.arrayOf(keyIdPropType),
-    unicodeSymbol: React.PropTypes.string,
+    unicodeSymbol: unicodeSymbolPropType,
 });
 
 const keypadConfigurationPropType = React.PropTypes.shape({
@@ -72,5 +77,6 @@ module.exports = {
     echoPropType,
     cursorContextPropType,
     popoverPropType,
+    unicodeSymbolPropType,
     childrenPropType,
 };

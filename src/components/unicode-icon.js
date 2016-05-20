@@ -5,7 +5,8 @@
 const React = require('react');
 const { StyleSheet } = require('aphrodite');
 
-const { Text, View } = require('../fake-react-native-web');
+const { View } = require('../fake-react-native-web');
+const UnicodeSymbol = require('./unicode-symbol');
 const { row, centered } = require('./styles');
 const {
     iconGrey, iconSizeHeightPx, iconSizeWidthPx,
@@ -14,7 +15,10 @@ const {
 const UnicodeIcon = React.createClass({
     propTypes: {
         focused: React.PropTypes.bool,
-        unicodeSymbol: React.PropTypes.string.isRequired,
+        unicodeSymbol: React.PropTypes.shape({
+            character: React.PropTypes.string.isRequired,
+            italicized: React.PropTypes.boolean,
+        }).isRequired,
     },
 
     render() {
@@ -24,12 +28,11 @@ const UnicodeIcon = React.createClass({
         const iconStyle = [
             styles.iconFont,
             styles.iconColor,
+            unicodeSymbol.italicized && styles.italicized,
             focused && styles.focused,
         ];
         return <View style={containerStyle}>
-            <Text style={iconStyle}>
-                {unicodeSymbol}
-            </Text>
+            <UnicodeSymbol style={iconStyle} unicodeSymbol={unicodeSymbol} />
         </View>;
     },
 });
@@ -42,8 +45,10 @@ const styles = StyleSheet.create({
 
     iconFont: {
         fontFamily: 'Proxima Nova',
-        fontStyle: 'italic',
         fontSize: 25,
+    },
+    italicized: {
+        fontStyle: 'italic',
     },
     iconColor: {
         color: iconGrey,

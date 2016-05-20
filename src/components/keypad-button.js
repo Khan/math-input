@@ -21,7 +21,11 @@ const {
     controlGrey,
     disabledGrey,
 } = require('./common-style');
-const { keyConfigPropType, bordersPropType } = require('./prop-types');
+const {
+    keyConfigPropType,
+    bordersPropType,
+    unicodeSymbolPropType,
+} = require('./prop-types');
 
 const KeypadButton = React.createClass({
     propTypes: {
@@ -45,7 +49,7 @@ const KeypadButton = React.createClass({
         type: React.PropTypes.oneOf(Object.keys(KeyTypes)).isRequired,
         // The unicode symbol that can be used to depict the icon for the
         // button, as a fall-back in case there is no SVG icon available.
-        unicodeSymbol: React.PropTypes.string,
+        unicodeSymbol: unicodeSymbolPropType,
     },
 
     getDefaultProps() {

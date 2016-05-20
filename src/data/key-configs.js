@@ -146,12 +146,18 @@ const KeyConfigs = {
     [Keys.PI]: {
         type: KeyTypes.MATH,
         ariaLabel: i18n._('Pi'),
-        unicodeSymbol: '\u03C0',
+        unicodeSymbol: {
+            character: '\u03C0',
+            italicized: true,
+        },
     },
     [Keys.THETA]: {
         type: KeyTypes.MATH,
         ariaLabel: i18n._('Theta'),
-        unicodeSymbol: '\u03B8',
+        unicodeSymbol: {
+            character: '\u03B8',
+            italicized: true,
+        },
     },
     [Keys.NOOP]: {
         type: KeyTypes.EMPTY,
@@ -252,7 +258,10 @@ for (const num of NUMBERS) {
     KeyConfigs[`NUM_${num}`] = {
         type: KeyTypes.NUMERAL,
         ariaLabel: textRepresentation,
-        unicodeSymbol: textRepresentation,
+        unicodeSymbol: {
+            character: textRepresentation,
+            italicized: false,
+        },
     };
 }
 
@@ -266,7 +275,10 @@ for (const letter of LETTERS) {
     KeyConfigs[letter] = {
         type: KeyTypes.MATH,
         ariaLabel: textRepresentation,
-        unicodeSymbol: textRepresentation,
+        unicodeSymbol: {
+            character: textRepresentation,
+            italicized: true,
+        },
     };
 }
 

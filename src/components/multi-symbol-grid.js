@@ -6,18 +6,20 @@
 const React = require('react');
 const { StyleSheet } = require('aphrodite');
 
-const { Text, View } = require('../fake-react-native-web');
+const { View } = require('../fake-react-native-web');
 const UnicodeIcon = require('./unicode-icon');
+const UnicodeSymbol = require('./unicode-symbol');
 const { row, column, centered, fullWidth } = require('./styles');
 const {
     iconGrey, secondaryIconOpacity, iconSizeHeightPx, iconSizeWidthPx,
 } = require('./common-style');
+const { unicodeSymbolPropType } = require('./prop-types');
 
 const MultiSymbolGrid = React.createClass({
     propTypes: {
         focused: React.PropTypes.bool,
         unicodeSymbols: React.PropTypes.arrayOf(
-            React.PropTypes.string
+            unicodeSymbolPropType
         ).isRequired,
     },
 
@@ -41,14 +43,16 @@ const MultiSymbolGrid = React.createClass({
             if (unicodeSymbols.length === 2) {
                 return <View style={[row, styles.iconSize]}>
                     <View style={[column, centered, fullWidth]}>
-                        <Text style={primaryIconStyle}>
-                            {unicodeSymbols[0]}
-                        </Text>
+                        <UnicodeSymbol
+                            style={primaryIconStyle}
+                            unicodeSymbol={unicodeSymbols[0]}
+                        />
                     </View>
                     <View style={[column, centered, fullWidth]}>
-                        <Text style={secondaryIconStyle}>
-                            {unicodeSymbols[1]}
-                        </Text>
+                        <UnicodeSymbol
+                            style={secondaryIconStyle}
+                            unicodeSymbol={unicodeSymbols[1]}
+                        />
                     </View>
                 </View>;
             } else if (unicodeSymbols.length >= 3) {
@@ -60,26 +64,30 @@ const MultiSymbolGrid = React.createClass({
                 >
                     <View style={row}>
                         <View style={[centered, fullWidth]}>
-                            <Text style={primaryIconStyle}>
-                                {unicodeSymbols[0]}
-                            </Text>
+                            <UnicodeSymbol
+                                style={primaryIconStyle}
+                                unicodeSymbol={unicodeSymbols[0]}
+                            />
                         </View>
                         <View style={[centered, fullWidth]}>
-                            <Text style={secondaryIconStyle}>
-                                {unicodeSymbols[1]}
-                            </Text>
+                            <UnicodeSymbol
+                                style={secondaryIconStyle}
+                                unicodeSymbol={unicodeSymbols[1]}
+                            />
                         </View>
                     </View>
                     <View style={row}>
                         <View style={[centered, fullWidth]}>
-                            <Text style={secondaryIconStyle}>
-                                {unicodeSymbols[2]}
-                            </Text>
+                            <UnicodeSymbol
+                                style={secondaryIconStyle}
+                                unicodeSymbol={unicodeSymbols[2]}
+                            />
                         </View>
                         <View style={[centered, fullWidth]}>
-                            <Text style={secondaryIconStyle}>
-                                {unicodeSymbols[3]}
-                            </Text>
+                            <UnicodeSymbol
+                                style={secondaryIconStyle}
+                                unicodeSymbol={unicodeSymbols[3]}
+                            />
                         </View>
                     </View>
                 </View>;
@@ -104,7 +112,6 @@ const styles = StyleSheet.create({
 
     iconFont: {
         fontFamily: 'Proxima Nova Semibold',
-        fontStyle: 'italic',
         fontSize: 18,
     },
     // TODO(charlie): Make the SVG icons import these defaults from
