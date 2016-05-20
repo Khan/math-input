@@ -47,8 +47,7 @@ const TwoPageKeypad = React.createClass({
 
         const keypadContentsStyle = [
             row,
-            showPagerIndicator && styles.borderBottom,
-            showTabBarIndicator && styles.borderTop,
+            (showPagerIndicator || showTabBarIndicator) && styles.borderTop,
         ];
 
         return <Keypad style={[column, styles.keypad]}>
@@ -58,6 +57,9 @@ const TwoPageKeypad = React.createClass({
                     onSelectTab={setKeypadCurrentPage}
                     pageTitles={['Basic', 'Advanced']}
                 />
+            }
+            {showPagerIndicator &&
+                <PagerIndicator numPages={2} currentPage={currentPage} />
             }
             <View style={keypadContentsStyle}>
                 <View style={styles.mainContent}>
@@ -70,9 +72,6 @@ const TwoPageKeypad = React.createClass({
                     {sidebar}
                 </View>
             </View>
-            {showPagerIndicator &&
-                <PagerIndicator numPages={2} currentPage={currentPage} />
-            }
         </Keypad>;
     },
 });
