@@ -213,20 +213,25 @@ KeyConfigs[Keys.PARENS_MULTI] = {
     childKeyIds: [Keys.PARENS, Keys.CDOT, Keys.TIMES],
     ariaLabel: KeyConfigs[Keys.PARENS].ariaLabel,
 };
+
+// NOTE(charlie): The multi-functional keys below use the icons of their
+// 'default' keys by pointing to them in iconography/index.js. If the defaults
+// change for any of these keys, the reference in iconography/index.js should
+// change as well.
 KeyConfigs[Keys.EQUAL_MULTI] = {
     type: KeyTypes.MATH,
     childKeyIds: [Keys.EQUAL, Keys.NEQ],
     ariaLabel: KeyConfigs[Keys.EQUAL].ariaLabel,
 };
-KeyConfigs[Keys.LESS_MULTI] = {
-    type: KeyTypes.MATH,
-    childKeyIds: [Keys.LT, Keys.LEQ],
-    ariaLabel: KeyConfigs[Keys.LT].ariaLabel,
-};
 KeyConfigs[Keys.GREATER_MULTI] = {
     type: KeyTypes.MATH,
     childKeyIds: [Keys.GT, Keys.GEQ],
     ariaLabel: KeyConfigs[Keys.GT].ariaLabel,
+};
+KeyConfigs[Keys.LESS_MULTI] = {
+    type: KeyTypes.MATH,
+    childKeyIds: [Keys.LT, Keys.LEQ],
+    ariaLabel: KeyConfigs[Keys.LT].ariaLabel,
 };
 KeyConfigs[Keys.EXP_MULTI] = {
     type: KeyTypes.MATH,
@@ -243,6 +248,7 @@ KeyConfigs[Keys.LOG_MULTI] = {
     childKeyIds: [Keys.LOG, Keys.LN, Keys.LOG_N],
     ariaLabel: KeyConfigs[Keys.LOG].ariaLabel,
 };
+
 KeyConfigs[Keys.MANY] = {
     type: KeyTypes.MANY,
     // childKeyIds will be configured by the client.
