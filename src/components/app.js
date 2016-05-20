@@ -44,7 +44,7 @@ const App = React.createClass({
                 <MathKeypad
                     onElementMounted={node => {
                         if (node && node !== this.state.keypadElement) {
-                            this.setState({ keypadElement: node});
+                            this.setState({ keypadElement: node });
                         }
                     }}
                 />
