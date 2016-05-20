@@ -41,11 +41,13 @@ const App = React.createClass({
                 />
             </div>
             <Provider store={store}>
-                <MathKeypad onElementMounted={node => {
-                    if (node && node !== this.state.keypadElement) {
-                        this.setState({ keypadElement: node});
-                    }
-                }}/>
+                <MathKeypad
+                    onElementMounted={node => {
+                        if (node && node !== this.state.keypadElement) {
+                            this.setState({ keypadElement: node});
+                        }
+                    }}
+                />
             </Provider>
             {Settings.debugSwitcher === DebugSwitcherTypes.ENABLED &&
                 <KeypadTypeSelector onChange={keypadType => {
