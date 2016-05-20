@@ -27,7 +27,7 @@ const parsed = queryString.parse(search);
 const containsConfigurationOptions = Object.keys(parsed).length > 0;
 
 const defaults = {
-    keypadSwitch: SwitchTypes.TOGGLE,
+    keypadSwitch: SwitchTypes.PAGE_CONTROL,
     keypadType: KeypadTypes.ADVANCED_EXPRESSION,
     jumpOutType: JumpOutTypes.STATIC,
     echoAnimation: EchoAnimationTypes.SLIDE_AND_FADE,
