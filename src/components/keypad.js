@@ -19,6 +19,9 @@ const keypadBorderWidthPx = 1;
 
 const Keypad = React.createClass({
     propTypes: {
+        // Whether the keypad is active, i.e., whether it should be rendered as
+        // visible or invisible.
+        active: React.PropTypes.bool,
         children: React.PropTypes.oneOfType([
             React.PropTypes.arrayOf(React.PropTypes.node),
             React.PropTypes.node,
@@ -101,7 +104,14 @@ const Keypad = React.createClass({
             ...(Array.isArray(style) ? style : [style]),
         ];
 
-        return <View style={keypadStyle}>
+        // NOTE(charlie): We render the transforms as pure inline styles to
+        // avoid an Aphrodite bug in mobile Safari.
+        //   See: https://github.com/Khan/aphrodite/issues/68.
+        const dynamicStyle = this.props.active
+                           ? inlineStyles.active
+                           : inlineStyles.hidden;
+
+        return <View style={keypadStyle} dynamicStyle={dynamicStyle}>
             {children}
             <EchoManager echoes={relativeEchoes} />
             <PopoverManager popover={relativePopover} />
@@ -117,12 +127,24 @@ const styles = StyleSheet.create({
         borderTop: `${keypadBorderWidthPx}px solid rgba(0, 0, 0, 0.2)`,
         backgroundColor: numeralGrey,
         zIndex: zIndexes.keypad,
+        transition: '300ms ease-out',
     },
 });
+
+const inlineStyles = {
+    hidden: {
+        transform: 'translate3d(0, 100%, 0)',
+    },
+
+    active: {
+        transform: 'translate3d(0, 0, 0)',
+    },
+};
 
 const mapStateToProps = (state) => {
     return {
         ...state.echoes,
+        active: state.keypad.active,
         popover: state.gestures.popover,
     };
 };
