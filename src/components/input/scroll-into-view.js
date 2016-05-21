@@ -10,6 +10,8 @@
  */
 
 const scrollIntoView = (containerNode, keypadNode) => {
+    // TODO(charlie): See if we can cache all of the reads here to avoid
+    // introducing jank into the initial dismiss animation.
     const containerBounds = containerNode.getBoundingClientRect();
     const containerBottomPx = containerBounds.bottom;
     const containerTopPx = containerBounds.top;

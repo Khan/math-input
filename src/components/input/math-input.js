@@ -88,6 +88,7 @@ const MathInput = React.createClass({
             onCursorMove: this.props.onCursorMove,
         });
 
+
         // NOTE(charlie): MathQuill binds this handler to manage its
         // drag-to-select behavior. For reasons that I can't explain, the event
         // itself gets triggered even if you tap slightly outside of the
@@ -102,6 +103,13 @@ const MathInput = React.createClass({
         this.mathField.mathField.__controller.container.unbind(
             'mousedown.mathquill'
         );
+
+        // NOTE(charlie): MathQuill uses this method to do some layout in the
+        // case that an input overflows its bounds and must become scrollable.
+        // We're not taking advantage of that behavior (our input expands
+        // arbitrarily), and it causes layout jank due to jQuery animations of
+        // scroll properties, so we stub it out for now.
+        this.mathField.mathField.__controller.scrollHoriz = function() {};
 
         this.mathField.setContent(this.props.value);
 
@@ -127,21 +135,25 @@ const MathInput = React.createClass({
                         maybeKeypadNode.contains(evt.target);
 
                     if (!touchStartInKeypad) {
-                        this.touchStartInitialScroll = document.body.scrollTop;
+                        this.didTouchOutside = true;
+                        this.scrollListener = () => {
+                            this.didScroll = true;
+                        };
+                        window.addEventListener('scroll', this.scrollListener);
                     }
                 }
             }
         };
 
         this.blurOnTouchEndOutside = (evt) => {
-            // If the user didn't scroll, blur the input. This won't work
-            // properly in the case that the user scrolls, but returns to the
-            // original scroll position, but that seems exceptionally unlikely.
-            if (this.state.focused &&
-                    this.touchStartInitialScroll === document.body.scrollTop) {
+            // If the user didn't scroll, blur the input.
+            if (this.state.focused && this.didTouchOutside && !this.didScroll) {
                 this.blur();
             }
-            this.touchStartInitialScroll = null;
+
+            this.didTouchOutside = false;
+            this.didScroll = false;
+            window.removeEventListener('scroll', this.scrollListener);
         };
 
         window.addEventListener('touchstart', this.recordTouchStartOutside);
@@ -222,7 +234,7 @@ const MathInput = React.createClass({
     },
 
     blur() {
-        this.mathField.getCursor().hide();
+        this.mathField.blur();
         this.props.onBlur && this.props.onBlur();
         this.setState({ focused: false, handle: { visible: false } });
     },
@@ -256,7 +268,7 @@ const MathInput = React.createClass({
             return cursor;
         });
 
-        this.mathField.getCursor().show();
+        this.mathField.focus();
         this.props.onFocus && this.props.onFocus();
         this.setState({ focused: true }, () => {
             // NOTE(charlie): We use `setTimeout` to allow for a layout pass to
@@ -457,20 +469,27 @@ const MathInput = React.createClass({
         // handling the touch event.
         this._hideCursorHandle();
 
-        // Set the handle-less cursor's location.
-        const touch = e.changedTouches[0];
-        this._insertCursorAtClosestNode(touch.clientX, touch.clientY);
+        // Cache the container bounds, so as to avoid re-computing. If we don't
+        // have any content, then it's not necessary, since the cursor can't be
+        // moved anyway.
+        if (this.mathField.getContent() !== "") {
+            this._containerBounds = this._container.getBoundingClientRect();
 
-        // Cache the container bounds, so as to avoid re-computing.
-        this._containerBounds = this._container.getBoundingClientRect();
+            // Set the handle-less cursor's location.
+            const touch = e.changedTouches[0];
+            this._insertCursorAtClosestNode(touch.clientX, touch.clientY);
+        }
 
         this.focus();
     },
 
     handleTouchMove(e) {
-        // Update the handle-less cursor's location on move.
-        const touch = e.changedTouches[0];
-        this._insertCursorAtClosestNode(touch.clientX, touch.clientY);
+        // Update the handle-less cursor's location on move, if there's any
+        // content in the box.
+        if (this.mathField.getContent() !== "") {
+            const touch = e.changedTouches[0];
+            this._insertCursorAtClosestNode(touch.clientX, touch.clientY);
+        }
     },
 
     handleTouchEnd(e) {

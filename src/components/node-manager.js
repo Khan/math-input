@@ -21,6 +21,19 @@ class NodeManager {
         // is registered as a child of another DOM node, but hasn't appeared in
         // the DOM yet).
         this._orderedIds = [];
+
+        // Cache bounding boxes aggressively, re-computing on page resize. Our
+        // caching here makes the strict assumption that if a node is reasonably
+        // assumed to be on-screen, its bounds won't change. For example, if we
+        // see that a touch occurred within the bounds of a node, we cache those
+        // bounds.
+        // TODO(charlie): It'd be great if we could pre-compute these when the
+        // page is idle and the keypad is visible (i.e., the nodes are in their
+        // proper positions).
+        this._cachedBoundingBoxesById = {};
+        window.addEventListener('resize', () => {
+            this._cachedBoundingBoxesById = {};
+        });
     }
 
     /**
@@ -71,11 +84,15 @@ class NodeManager {
      *                          the given coordinates
      */
     idForCoords(x, y) {
-        const endNode = document.elementFromPoint(x, y);
         for (const id of this._orderedIds) {
             const domNode = this._nodesById[id];
-            if (domNode && domNode.contains(endNode)) {
-                return id;
+            if (domNode) {
+                const bounds = domNode.getBoundingClientRect();
+                if (bounds.left <= x && bounds.right > x
+                        && bounds.top <= y && bounds.bottom > y) {
+                    this._cachedBoundingBoxesById[id] = bounds;
+                    return id;
+                }
             }
         }
     }
@@ -90,8 +107,13 @@ class NodeManager {
      *                     with its borders
      */
     layoutPropsForId(id) {
+        if (!this._cachedBoundingBoxesById[id]) {
+            this._cachedBoundingBoxesById[id] =
+                this._nodesById[id].getBoundingClientRect();
+        }
+
         return {
-            initialBounds: this._nodesById[id].getBoundingClientRect(),
+            initialBounds: this._cachedBoundingBoxesById[id],
             borders: this._bordersById[id],
         };
     }

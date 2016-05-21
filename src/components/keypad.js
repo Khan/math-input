@@ -17,6 +17,8 @@ const { echoPropType, popoverPropType } = require('./prop-types');
 
 const keypadBorderWidthPx = 1;
 
+const animationDurationMs = 300;
+
 const Keypad = React.createClass({
     propTypes: {
         // Whether the keypad is active, i.e., whether it should be rendered as
@@ -31,36 +33,54 @@ const Keypad = React.createClass({
         style: React.PropTypes.any,
     },
 
-    componentWillMount() {
-        // NOTE(charlie): We assume that there are no echoes in the initial
-        // render, since we can't measure the container beforehand and thus any
-        // echoes would be improperly offset.
-        this._container = {
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0,
-        };
+    componentDidMount() {
+        window.addEventListener("resize", this._onResize);
     },
 
     componentWillReceiveProps(newProps) {
-        // We cheat a bit and only re-measure the container if we're about to
-        // kick off a new animation, be it an echo or a popover reveal.
-        let shouldComputeContainer = false;
-        const existingIds = this.props.echoes.map((echo) => echo.animationId);
-        const newIds = newProps.echoes.map((echo) => echo.animationId);
-        for (const newAnimationId of newIds) {
-            if (!existingIds.includes(newAnimationId)) {
-                shouldComputeContainer = true;
-                break;
-            }
+        if (!this._container && !this.props.active && newProps.active) {
+            // On first appearance, compute the bounds of the container, but be
+            // sure to wait until the view has finished animating into place,
+            // taking care not to creep into the end of the animation, lest we
+            // introduce jank.
+            setTimeout(() => {
+                if (this.isMounted()) {
+                    this._computeContainer();
+                }
+            }, 2 * animationDurationMs);
         }
 
-        shouldComputeContainer |= this.props.popover !== newProps.popover;
+        // If the user was interacts with the keypad before the timer went off,
+        // be sure to compute the container.
+        if (!this._container && (newProps.popover || newProps.echoes.length)) {
+            this._computeContainer();
+        }
+    },
 
-        if (shouldComputeContainer) {
-            const domNode = ReactDOM.findDOMNode(this);
-            this._container = domNode.getBoundingClientRect();
+    componentWillUnmount() {
+        window.removeEventListener("resize", this._onResize);
+    },
+
+    _computeContainer() {
+        const domNode = ReactDOM.findDOMNode(this);
+        this._container = domNode.getBoundingClientRect();
+    },
+
+    _onResize() {
+        // Whenever the page resizes, we need to recompute the container's
+        // bounding box. This is the only time that the bounding box can change.
+
+        // Throttle resize events -- taken from:
+        //    https://developer.mozilla.org/en-US/docs/Web/Events/resize
+        if (this._resizeTimeout == null) {
+            this._resizeTimeout = setTimeout(() => {
+                this._resizeTimeout = null;
+
+                // Recompute the bounding box.
+                if (this.isMounted()) {
+                    this._computeContainer();
+                }
+            }, 66);
         }
     },
 
@@ -127,7 +147,7 @@ const styles = StyleSheet.create({
         borderTop: `${keypadBorderWidthPx}px solid rgba(0, 0, 0, 0.2)`,
         backgroundColor: numeralGrey,
         zIndex: zIndexes.keypad,
-        transition: '300ms ease-out',
+        transition: `${animationDurationMs}ms ease-out`,
     },
 });
 

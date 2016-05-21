@@ -75,6 +75,25 @@ class MathWrapper {
         this.callbacks = callbacks;
     }
 
+    focus() {
+        // HACK(charlie): We shouldn't reaching into MathQuill internals like
+        // this, but it's the easiest way to allow us to manage the focus state
+        // ourselves.
+        const controller = this.mathField.__controller;
+        controller.cursor.show();
+
+        // Set MathQuill's internal state to reflect the focus, otherwise it
+        // will consistently try to hide the cursor on key-press and introduce
+        // layout jank.
+        controller.blurred = false;
+    }
+
+    blur() {
+        const controller = this.mathField.__controller;
+        controller.cursor.hide();
+        controller.blurred = true;
+    }
+
     _writeNormalFunction(name) {
         this.mathField.write(`\\${name}\\left(\\right)`);
         this.mathField.keystroke('Left');
@@ -93,7 +112,7 @@ class MathWrapper {
             const {str, fn} = KeyActions[key];
 
             if (str && fn) {
-                this.mathField[fn](str).focus();
+                this.mathField[fn](str);
             }
         } else if (key === Keys.PARENS) {
             this.mathField.write('\\left(\\right)');
@@ -113,9 +132,9 @@ class MathWrapper {
         } else if (key === Keys.BACKSPACE) {
             this._handleBackspace(cursor);
         } else if (/^[A-Z]$/.test(key)) {
-            this.mathField[WRITE](key.toLowerCase()).focus();
+            this.mathField[WRITE](key.toLowerCase());
         } else if (/^NUM_\d/.test(key)) {
-            this.mathField[WRITE](key[4]).focus();
+            this.mathField[WRITE](key[4]);
         }
 
         if (!cursor.selection) {  // don't show the cursor for selections
