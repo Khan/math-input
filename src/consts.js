@@ -47,6 +47,10 @@ module.exports = {
         TAB_BAR: 'TAB_BAR',
         PAGE_CONTROL: 'PAGE_CONTROL',
     },
+    FractionBehaviorTypes: {
+        INCLUSIVE: 'INCLUSIVE',
+        EXCLUSIVE: 'EXCLUSIVE',
+    },
     JumpOutTypes: {
         STATIC: 'STATIC',
         DYNAMIC: 'DYNAMIC',

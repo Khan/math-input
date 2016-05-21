@@ -10,6 +10,8 @@ const MathQuill = window.MathQuill;
 
 const Keys = require('../../data/keys');
 const CursorContexts = require('./cursor-contexts');
+const { FractionBehaviorTypes } = require('../../consts');
+const { fractionBehavior } = require('../../settings');
 
 const WRITE = 'write';
 const CMD = 'cmd';
@@ -30,7 +32,9 @@ const KeyActions = {
     [Keys.NEQ]: { str: '\\neq', fn: WRITE },
     [Keys.CDOT]: { str: '\\cdot', fn: WRITE },
     [Keys.PERCENT]: { str: '%', fn: WRITE },
-    [Keys.FRAC]: { str: '/', fn: CMD },
+    [Keys.FRAC]: (fractionBehavior === FractionBehaviorTypes.INCLUSIVE)
+                 ? { str: '/', fn: CMD }
+                 : { str: '\\frac', fn: CMD },
     [Keys.EXP]: { str: '^', fn: CMD },
     [Keys.EXP_2]: { str: '^2', fn: WRITE },
     [Keys.EXP_3]: { str: '^3', fn: WRITE },
