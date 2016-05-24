@@ -2,12 +2,11 @@
   "name": "math-input",
   "version": "0.0.1",
   "description": "",
-  "main": "lib/index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "mocha test/test_*.js --compilers js:babel-register",
     "watch_test": "mocha test/test_spec.js --watch --compilers js:babel-register",
-    "watch": "webpack --config webpack.config.dev.js --watch",
-    "postinstall": "babel src --out-dir lib"
+    "watch": "webpack --config webpack.config.dev.js --watch"
   },
   "author": "",
   "license": "MIT",
