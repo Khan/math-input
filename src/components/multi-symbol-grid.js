@@ -84,10 +84,10 @@ const MultiSymbolGrid = React.createClass({
                             />
                         </View>
                         <View style={[centered, fullWidth]}>
-                            <UnicodeSymbol
+                            {unicodeSymbols[3] && <UnicodeSymbol
                                 style={secondaryIconStyle}
                                 unicodeSymbol={unicodeSymbols[3]}
-                            />
+                            />}
                         </View>
                     </View>
                 </View>;

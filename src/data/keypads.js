@@ -24,7 +24,7 @@ const Keypads = {
     },
     [KeypadTypes.BASIC_EXPRESSION]: {
         numPages: 2,
-        extraKeys: [],
+        extraKeys: ['X', 'Y', 'Z'],
     },
 };
 
