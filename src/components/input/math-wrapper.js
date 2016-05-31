@@ -131,8 +131,8 @@ class MathWrapper {
             this._handleToggleSign(cursor);
         } else if (key === Keys.BACKSPACE) {
             this._handleBackspace(cursor);
-        } else if (/^[A-Z]$/.test(key)) {
-            this.mathField[WRITE](key.toLowerCase());
+        } else if (/^[a-zA-Z]$/.test(key)) {
+            this.mathField[WRITE](key);
         } else if (/^NUM_\d/.test(key)) {
             this.mathField[WRITE](key[4]);
         }

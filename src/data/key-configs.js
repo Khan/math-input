@@ -277,15 +277,19 @@ const LETTERS = [
     'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
 ];
 for (const letter of LETTERS) {
-    const textRepresentation = letter.toLowerCase();
-    KeyConfigs[letter] = {
-        type: KeyTypes.MATH,
-        ariaLabel: textRepresentation,
-        unicodeSymbol: {
-            character: textRepresentation,
-            italicized: true,
-        },
-    };
+    const lowerCaseVariable = letter.toLowerCase();
+    const upperCaseVariable = letter.toUpperCase();
+
+    for (const textRepresentation of [lowerCaseVariable, upperCaseVariable]) {
+        KeyConfigs[textRepresentation] = {
+            type: KeyTypes.MATH,
+            ariaLabel: textRepresentation,
+            unicodeSymbol: {
+                character: textRepresentation,
+                italicized: true,
+            },
+        };
+    }
 }
 
 for (const key of Object.keys(KeyConfigs)) {
