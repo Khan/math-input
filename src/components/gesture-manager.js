@@ -24,6 +24,7 @@ class GestureManager {
                 const { popover, ...rest } = activeNodes;
                 handlers.onActiveNodesChanged({
                     popover: popover && {
+                        parentId: popover.parentId,
                         bounds: this.nodeManager.layoutPropsForId(
                             popover.parentId).initialBounds,
                         childKeyIds: popover.childIds,

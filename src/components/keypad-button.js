@@ -45,6 +45,7 @@ const KeypadButton = React.createClass({
         onTouchEnd: React.PropTypes.func,
         onTouchMove: React.PropTypes.func,
         onTouchStart: React.PropTypes.func,
+        popoverEnabled: React.PropTypes.bool,
         style: React.PropTypes.any,
         type: React.PropTypes.oneOf(Object.keys(KeyTypes)).isRequired,
         // The unicode symbol that can be used to depict the icon for the
@@ -57,6 +58,7 @@ const KeypadButton = React.createClass({
             borders: BorderStyles.ALL,
             childKeys: [],
             focused: false,
+            popoverEnabled: false,
         };
     },
 
@@ -146,6 +148,7 @@ const KeypadButton = React.createClass({
             onTouchEnd,
             onTouchMove,
             onTouchStart,
+            popoverEnabled,
             style,
             type,
             unicodeSymbol,
@@ -161,8 +164,8 @@ const KeypadButton = React.createClass({
             onTouchCancel, onTouchEnd, onTouchMove, onTouchStart,
         };
 
-        const maybeCornerDecal = childKeys && childKeys.length > 0 &&
-            <CornerDecal />;
+        const maybeCornerDecal = !renderFocused && !popoverEnabled &&
+            childKeys && childKeys.length > 0 && <CornerDecal />;
 
         if (type === KeyTypes.EMPTY) {
             return <View style={buttonStyle} {...eventHandlers} />;

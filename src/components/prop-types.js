@@ -58,6 +58,7 @@ const cursorContextPropType = React.PropTypes.oneOf(
 );
 
 const popoverPropType = React.PropTypes.shape({
+    parentId: keyIdPropType.isRequired,
     bounds: boundingBoxPropType.isRequired,
     childKeyIds: React.PropTypes.arrayOf(keyIdPropType).isRequired,
 });

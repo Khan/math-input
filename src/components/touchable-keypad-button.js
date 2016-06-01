@@ -21,6 +21,7 @@ const TouchableKeypadButton = React.createClass({
         focused: React.PropTypes.bool,
         gestureManager: React.PropTypes.instanceOf(GestureManager),
         id: keyIdPropType.isRequired,
+        popoverEnabled: React.PropTypes.bool,
         type: React.PropTypes.oneOf(Object.keys(KeyTypes)).isRequired,
     },
 
@@ -31,6 +32,7 @@ const TouchableKeypadButton = React.createClass({
         return newProps.id !== this.props.id ||
             newProps.gestureManager !== this.props.gestureManager ||
             newProps.focused !== this.props.focused ||
+            newProps.popoverEnabled !== this.props.popoverEnabled ||
             newProps.type !== this.props.type;
     },
 
@@ -74,6 +76,7 @@ const mapStateToProps = (state, ownProps) => {
         ariaLabel: ariaLabel,
         childKeys: childKeyIds && childKeyIds.map(id => KeyConfigs[id]),
         focused: gestures.focus === id,
+        popoverEnabled: gestures.popover && gestures.popover.parentId === id,
         name: id,
         type: type,
         unicodeSymbol: unicodeSymbol,
