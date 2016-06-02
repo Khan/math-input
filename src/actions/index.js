@@ -52,24 +52,6 @@ module.exports = {
         });
     },
 
-    resetKeypadPage: function() {
-        store.dispatch({
-            type: 'ResetKeypadPage',
-        });
-    },
-
-    pageKeypadRight: function() {
-        store.dispatch({
-            type: 'PageKeypadRight',
-        });
-    },
-
-    pageKeypadLeft: function() {
-        store.dispatch({
-            type: 'PageKeypadLeft',
-        });
-    },
-
     setKeypadCurrentPage: function(page) {
         store.dispatch({
             type: 'SetKeypadCurrentPage',
@@ -77,13 +59,14 @@ module.exports = {
         });
     },
 
-    pressKey: function(key) {
+    removeEcho: function(animationId) {
         store.dispatch({
-            type: 'PressKey',
-            key,
+            type: 'RemoveEcho',
+            animationId,
         });
     },
 
+    // Input-related actions
     setKeyHandler: function(keyHandler) {
         store.dispatch({
             type: 'SetKeyHandler',
@@ -95,20 +78,6 @@ module.exports = {
         store.dispatch({
             type: 'SetCursor',
             cursor,
-        });
-    },
-
-    setActiveNodes: function(activeNodes) {
-        store.dispatch({
-            type: 'SetActiveNodes',
-            activeNodes,
-        });
-    },
-
-    removeEcho: function(animationId) {
-        store.dispatch({
-            type: 'RemoveEcho',
-            animationId,
         });
     },
 };
