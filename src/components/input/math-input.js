@@ -2,7 +2,7 @@
 
 const React = require('react');
 const ReactDOM = require('react-dom');
-const { css, StyleSheet } = require("aphrodite");
+const { StyleSheet } = require("aphrodite");
 
 const { setKeyHandler } = require('../../actions');
 const { View } = require('../../fake-react-native-web');
@@ -61,11 +61,14 @@ const MathInput = React.createClass({
         onCursorMove: React.PropTypes.func,
 
         onFocus: React.PropTypes.func,
+        // An extra, vanilla style object, to be applied to the math input.
+        style: React.PropTypes.any,
         value: React.PropTypes.string,
     },
 
     getDefaultProps() {
         return {
+            style: {},
             value: "",
         };
     },
@@ -87,7 +90,6 @@ const MathInput = React.createClass({
         this.mathField = new MathWrapper(this._mathContainer, {
             onCursorMove: this.props.onCursorMove,
         });
-
 
         // NOTE(charlie): MathQuill binds this handler to manage its
         // drag-to-select behavior. For reasons that I can't explain, the event
@@ -116,7 +118,7 @@ const MathInput = React.createClass({
         this._container = ReactDOM.findDOMNode(this);
 
         this._root = this._container.querySelector('.mq-root-block');
-        this._root.style.border = `solid ${paddingWidthPx}px white`;
+        this._root.style.border = `solid ${paddingWidthPx}px transparent`;
         this._root.style.fontSize = `${fontSizePt}pt`;
 
         // Record the initial scroll displacement on touch start. This allows
@@ -585,6 +587,12 @@ const MathInput = React.createClass({
 
     render() {
         const { focused, handle, selectionRect } = this.state;
+        const { style } = this.props;
+
+        const innerStyle = {
+            ...inlineStyles.innerContainer,
+            ...style,
+        };
 
         return <View
             style={styles.input}
@@ -597,11 +605,14 @@ const MathInput = React.createClass({
             {/* NOTE(charlie): This is used purely to namespace the styles in
                 overrides.css. */}
             <div className='keypad-input'>
+                {/* NOTE(charlie): This element must be styled with inline
+                    styles rather than with Aphrodite classes, as MathQuill
+                    modifies the class names on the DOM node. */}
                 <div
                     ref={(node) => {
                         this._mathContainer = ReactDOM.findDOMNode(node);
                     }}
-                    className={css(styles.innerContainer)}
+                    style={innerStyle}
                 >
                     {focused && selectionRect.visible &&
                         <SelectionRect {...selectionRect}/>}
@@ -629,7 +640,18 @@ const styles = StyleSheet.create({
         display: 'inline-block',
         verticalAlign: 'middle',
     },
+});
 
+const inlineStyles = {
+    // Styles for the inner, MathQuill-ified input element. It's important that
+    // these are done with regular inline styles rather than Aphrodite classes
+    // as MathQuill adds CSS class names to the element outside of the typical
+    // React flow; assigning a class to the element can thus disrupt MathQuill
+    // behavior. For example, if the client provided new styles to be applied
+    // on focus and the styles here were applied with Aphrodite, then Aphrodite
+    // would merge the provided styles with the base styles here, producing a
+    // new CSS class name that we would apply to the element, clobbering any CSS
+    // class names that MathQuill had applied itself.
     innerContainer: {
         backgroundColor: 'white',
         display: 'flex',
@@ -642,6 +664,6 @@ const styles = StyleSheet.create({
         borderColor: mediumGrey,
         borderRadius: 4,
     },
-});
+};
 
 module.exports = MathInput;
