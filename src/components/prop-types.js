@@ -28,10 +28,13 @@ const keypadConfigurationPropType = React.PropTypes.shape({
     extraKeys: React.PropTypes.arrayOf(keyIdPropType),
 });
 
-// TODO(charlie): This should be `React.PropTypes.element`, but I keep getting
-// errors. It may be related to the fact that the keypad is rendered in a
-// different component tree (w/r/t Perseus)?
-const keypadElementPropType = React.PropTypes.object;
+// NOTE(charlie): This is a React element.
+const keypadElementPropType = React.PropTypes.shape({
+    activate: React.PropTypes.func.isRequired,
+    dismiss: React.PropTypes.func.isRequired,
+    configure: React.PropTypes.func.isRequired,
+    setKeyHandler: React.PropTypes.func.isRequired,
+});
 
 const bordersPropType =  React.PropTypes.arrayOf(
     React.PropTypes.oneOf(Object.keys(BorderDirections))

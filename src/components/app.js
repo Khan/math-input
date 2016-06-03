@@ -1,17 +1,9 @@
 const React = require('react');
-const { Provider } = require('react-redux');
 
 const { View } = require('../fake-react-native-web');
-const MathInput = require('./input/math-input');
-const MathKeypad = require('./math-keypad');
-const KeypadTypeSelector = require('./keypad-type-selector');
-const store = require('../store');
-const {
-    activateKeypad, configureKeypad, dismissKeypad, setCursor,
-} = require('../actions');
-const Keypads = require('../data/keypads');
-const { DebugSwitcherTypes } = require('../consts');
-const Settings = require('../settings');
+const { components } = require('../index');
+
+const { Keypad, KeypadInput } = components;
 
 const App = React.createClass({
     getInitialState() {
@@ -31,34 +23,21 @@ const App = React.createClass({
                     marginBottom: 40,
                 }}
             >
-                <MathInput
+                <KeypadInput
                     value={this.state.value}
                     keypadElement={this.state.keypadElement}
                     onChange={(value, cb) => this.setState({ value }, cb)}
-                    onCursorMove={setCursor}
-                    onBlur={dismissKeypad}
-                    onFocus={activateKeypad}
+                    onFocus={() => this.state.keypadElement.activate()}
+                    onBlur={() => this.state.keypadElement.dismiss()}
                 />
             </div>
-            <Provider store={store}>
-                <MathKeypad
-                    onElementMounted={node => {
-                        if (node && node !== this.state.keypadElement) {
-                            this.setState({ keypadElement: node });
-                        }
-                    }}
-                />
-            </Provider>
-            {Settings.debugSwitcher === DebugSwitcherTypes.ENABLED &&
-                <KeypadTypeSelector onChange={keypadType => {
-                    configureKeypad({
-                        keypadType,
-                        // NOTE(charlie): In the playground, we hardcode the
-                        // list of symbols for each keypad.
-                        extraKeys: Keypads[keypadType].extraKeys,
-                    });
+            <Keypad
+                onElementMounted={node => {
+                    if (node && !this.state.keypadElement) {
+                        this.setState({ keypadElement: node });
+                    }
                 }}
-                />}
+            />
         </View>;
     },
 });

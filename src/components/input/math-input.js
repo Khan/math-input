@@ -4,7 +4,6 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 const { StyleSheet } = require("aphrodite");
 
-const { setKeyHandler } = require('../../actions');
 const { View } = require('../../fake-react-native-web');
 const CursorHandle = require('./cursor-handle');
 const SelectionRect = require('./selection-rect');
@@ -249,9 +248,9 @@ const MathInput = React.createClass({
     },
 
     focus() {
-        // Pass this component's handleKey method to the store so it can call
-        // it whenever the store gets a keypress action from the keypad.
-        setKeyHandler(key => {
+        // Pass this component's handleKey method to the keypad so it can call
+        // it whenever it needs to trigger a keypress action.
+        this.props.keypadElement.setKeyHandler(key => {
             const cursor = this.mathField.pressKey(key);
 
             // Trigger an `onChange` if the value in the input changed, and hide
