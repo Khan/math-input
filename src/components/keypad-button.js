@@ -156,7 +156,8 @@ const KeypadButton = React.createClass({
 
         // We render in the focus state if the key is focused, or if it's an
         // echo.
-        const renderFocused = focused || type === KeyTypes.ECHO;
+        const renderFocused = focused || popoverEnabled ||
+            type === KeyTypes.ECHO;
         const buttonStyle = this._getButtonStyle(type, borders, style);
         const focusStyle = this._getFocusStyle(type);
 
@@ -164,8 +165,8 @@ const KeypadButton = React.createClass({
             onTouchCancel, onTouchEnd, onTouchMove, onTouchStart,
         };
 
-        const maybeCornerDecal = !renderFocused && !popoverEnabled &&
-            childKeys && childKeys.length > 0 && <CornerDecal />;
+        const maybeCornerDecal = !renderFocused && childKeys &&
+            childKeys.length > 0 && <CornerDecal />;
 
         if (type === KeyTypes.EMPTY) {
             return <View style={buttonStyle} {...eventHandlers} />;
