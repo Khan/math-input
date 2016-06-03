@@ -20,6 +20,7 @@ const ViewPager = React.createClass({
         // Whether the page should animate to its next specified position.
         animateToPosition: React.PropTypes.bool,
         children: childrenPropType,
+        onPageWidthPxChange: React.PropTypes.func.isRequired,
         translateX: React.PropTypes.number.isRequired,
     },
 
@@ -40,7 +41,7 @@ const ViewPager = React.createClass({
         // NOTE(charlie): We can't measure the container immediately in
         // componentDidMount, as the layout pass hasn't occurred yet.
         if (this._shouldMeasureContainer) {
-            setPageWidthPx(this._pagerContainer.offsetWidth);
+            this.props.onPageWidthPxChange(this._pagerContainer.offsetWidth);
             this._shouldMeasureContainer = false;
         }
 
@@ -76,8 +77,10 @@ const ViewPager = React.createClass({
             this._resizeTimeout = setTimeout(() => {
                 this._resizeTimeout = null;
 
-                // Notify the store that the pager width has changed.
-                setPageWidthPx(this._pagerContainer.offsetWidth);
+                // Notify that the pager width has changed.
+                this.props.onPageWidthPxChange(
+                    this._pagerContainer.offsetWidth
+                );
             }, 66);
         }
     },
@@ -127,4 +130,12 @@ const mapStateToProps = (state) => {
     };
 };
 
-module.exports = connect(mapStateToProps)(ViewPager);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onPageWidthPxChange: (pageWidthPx) => {
+            dispatch(setPageWidthPx(pageWidthPx));
+        },
+    };
+};
+
+module.exports = connect(mapStateToProps, mapDispatchToProps)(ViewPager);

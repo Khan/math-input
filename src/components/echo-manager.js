@@ -4,7 +4,6 @@
 
 const React = require('react');
 const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
-const { removeEcho } = require('../actions');
 const KeypadButton = require('./keypad-button');
 const KeyConfigs = require('../data/key-configs');
 const { KeyTypes, EchoAnimationTypes } = require('../consts');
@@ -16,10 +15,10 @@ const Settings = require('../settings');
 const Echo = React.createClass({
     propTypes: {
         animationDurationMs: React.PropTypes.number.isRequired,
-        animationId: React.PropTypes.string.isRequired,
         borders: bordersPropType,
         id: keyIdPropType.isRequired,
         initialBounds: boundingBoxPropType.isRequired,
+        onAnimationFinish: React.PropTypes.func.isRequired,
     },
 
     componentDidMount() {
@@ -28,8 +27,8 @@ const Echo = React.createClass({
         // ignorant. However, there doesn't seem to be a cleaner way to make
         // this happen, and at least here, all the animation context is
         // colocated in this file.
-        const { animationDurationMs, animationId } = this.props;
-        setTimeout(() => removeEcho(animationId), animationDurationMs);
+        const { animationDurationMs, onAnimationFinish } = this.props;
+        setTimeout(() => onAnimationFinish(), animationDurationMs);
     },
 
     render() {
@@ -62,6 +61,7 @@ const EchoManager = React.createClass({
     propTypes: {
         animationType: React.PropTypes.oneOf(Object.keys(EchoAnimationTypes)),
         echoes: React.PropTypes.arrayOf(echoPropType),
+        onAnimationFinish: React.PropTypes.func.isRequired,
     },
 
     getDefaultProps() {
@@ -99,7 +99,7 @@ const EchoManager = React.createClass({
     },
 
     render() {
-        const { animationType, echoes } = this.props;
+        const { animationType, echoes, onAnimationFinish } = this.props;
         const {
             animationDurationMs, animationTransitionName,
         } = this._animationConfigForType(animationType);
@@ -119,6 +119,7 @@ const EchoManager = React.createClass({
                 return <Echo
                     key={animationId}
                     animationDurationMs={animationDurationMs}
+                    onAnimationFinish={() => onAnimationFinish(animationId)}
                     {...echo}
                 />;
             })}

@@ -4,6 +4,8 @@ module.exports = {
     // naming convetion: verb + noun
     // the noun should be one of the other properties in the object that's
     // being dispatched
+
+    // TODO(charlie): Remove direct store access from these keypad methods.
     dismissKeypad: function() {
         store.dispatch({
             type: 'DismissKeypad',
@@ -38,35 +40,36 @@ module.exports = {
         setTimeout(() => cb && cb());
     },
 
-    setButtonHeightPx: function(buttonHeightPx) {
-        store.dispatch({
+    setButtonHeightPx(buttonHeightPx) {
+        return {
             type: 'SetButtonHeightPx',
             buttonHeightPx,
-        });
+        };
     },
 
-    setPageWidthPx: function(pageWidthPx) {
-        store.dispatch({
+    setPageWidthPx(pageWidthPx) {
+        return {
             type: 'SetPageWidthPx',
             pageWidthPx,
-        });
+        };
     },
 
-    setKeypadCurrentPage: function(page) {
-        store.dispatch({
+    setKeypadCurrentPage(page) {
+        return {
             type: 'SetKeypadCurrentPage',
             page,
-        });
+        };
     },
 
-    removeEcho: function(animationId) {
-        store.dispatch({
+    removeEcho(animationId) {
+        return {
             type: 'RemoveEcho',
             animationId,
-        });
+        };
     },
 
     // Input-related actions
+    // TODO(charlie): Remove direct store access from these input methods.
     setKeyHandler: function(keyHandler) {
         store.dispatch({
             type: 'SetKeyHandler',

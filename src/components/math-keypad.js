@@ -16,6 +16,7 @@ const MathKeypad = React.createClass({
         active: React.PropTypes.bool,
         extraKeys: React.PropTypes.arrayOf(keyIdPropType),
         keypadType: React.PropTypes.oneOf(Object.keys(KeypadTypes)).isRequired,
+        onButtonHeightPxChange: React.PropTypes.func.isRequired,
         onDismiss: React.PropTypes.func,
         // A callback that should be triggered with the root React element on
         // mount.
@@ -23,8 +24,8 @@ const MathKeypad = React.createClass({
     },
 
     componentDidMount() {
-        // Relay the initial button height to the system.
-        setButtonHeightPx(getButtonHeightPx());
+        // Relay the initial button height.
+        this.props.onButtonHeightPxChange(getButtonHeightPx());
 
         // And update it on resize.
         window.addEventListener("resize", this._onResize);
@@ -52,8 +53,8 @@ const MathKeypad = React.createClass({
             this._resizeTimeout = setTimeout(() => {
                 this._resizeTimeout = null;
 
-                // Notify the store that the button height has changed.
-                setButtonHeightPx(getButtonHeightPx());
+                // Notify that the button height has changed.
+                this.props.onButtonHeightPxChange(getButtonHeightPx());
             }, 66);
         }
     },
@@ -99,4 +100,12 @@ const mapStateToProps = (state) => {
     return state.keypad;
 };
 
-module.exports = connect(mapStateToProps)(MathKeypad);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onButtonHeightPxChange: (pageWidthPx) => {
+            dispatch(setButtonHeightPx(pageWidthPx));
+        },
+    };
+};
+
+module.exports = connect(mapStateToProps, mapDispatchToProps)(MathKeypad);

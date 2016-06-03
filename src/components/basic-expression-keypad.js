@@ -6,6 +6,7 @@ const React = require('react');
 const { connect } = require('react-redux');
 const { StyleSheet } = require('aphrodite');
 
+const { setKeypadCurrentPage } = require('../actions');
 const { View } = require('../fake-react-native-web');
 const TwoPageKeypad = require('./two-page-keypad');
 const EmptyKeypadButton = require('./empty-keypad-button');
@@ -25,6 +26,7 @@ const BasicExpressionKeypad = React.createClass({
         cursorContext: cursorContextPropType.isRequired,
         dynamicJumpOut: React.PropTypes.bool,
         extraKeys: React.PropTypes.arrayOf(keyIdPropType),
+        onSelectTab: React.PropTypes.func,
         showToggle: React.PropTypes.bool,
     },
 
@@ -37,7 +39,12 @@ const BasicExpressionKeypad = React.createClass({
 
     render() {
         const {
-            currentPage, cursorContext, dynamicJumpOut, extraKeys, showToggle,
+            currentPage,
+            cursorContext,
+            dynamicJumpOut,
+            extraKeys,
+            onSelectTab,
+            showToggle,
         } = this.props;
 
         const firstPageStyle = [row, styles.fullPage, styles.firstPage];
@@ -167,6 +174,7 @@ const BasicExpressionKeypad = React.createClass({
             firstPage={firstPage}
             secondPage={secondPage}
             sidebar={sidebar}
+            onSelectTab={onSelectTab}
         />;
     },
 });
@@ -192,4 +200,14 @@ const mapStateToProps = (state) => {
     };
 };
 
-module.exports = connect(mapStateToProps)(BasicExpressionKeypad);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onSelectTab: (tabIndex) => {
+            dispatch(setKeypadCurrentPage(tabIndex));
+        },
+    };
+};
+
+module.exports = connect(
+    mapStateToProps, mapDispatchToProps
+)(BasicExpressionKeypad);

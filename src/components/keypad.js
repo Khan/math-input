@@ -8,6 +8,7 @@ const ReactDOM = require('react-dom');
 const { connect } = require('react-redux');
 const { StyleSheet } = require('aphrodite');
 
+const { removeEcho } = require('../actions');
 const { View } = require('../fake-react-native-web');
 const EchoManager = require('./echo-manager');
 const PopoverManager = require('./popover-manager');
@@ -30,6 +31,7 @@ const Keypad = React.createClass({
         ]),
         echoes: React.PropTypes.arrayOf(echoPropType).isRequired,
         popover: popoverPropType,
+        removeEcho: React.PropTypes.func.isRequired,
         style: React.PropTypes.any,
     },
 
@@ -85,7 +87,13 @@ const Keypad = React.createClass({
     },
 
     render() {
-        const { children, echoes, popover, style } = this.props;
+        const {
+            children,
+            echoes,
+            removeEcho,
+            popover,
+            style,
+        } = this.props;
 
         // Translate the echo boxes, as they'll be positioned absolutely to
         // this relative container.
@@ -133,7 +141,10 @@ const Keypad = React.createClass({
 
         return <View style={keypadStyle} dynamicStyle={dynamicStyle}>
             {children}
-            <EchoManager echoes={relativeEchoes} />
+            <EchoManager
+                echoes={relativeEchoes}
+                onAnimationFinish={removeEcho}
+            />
             <PopoverManager popover={relativePopover} />
         </View>;
     },
@@ -169,4 +180,12 @@ const mapStateToProps = (state) => {
     };
 };
 
-module.exports = connect(mapStateToProps)(Keypad);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        removeEcho: (animationId) => {
+            dispatch(removeEcho(animationId));
+        },
+    };
+};
+
+module.exports = connect(mapStateToProps, mapDispatchToProps)(Keypad);

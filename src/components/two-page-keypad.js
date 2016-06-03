@@ -14,7 +14,6 @@ const { column, row } = require('./styles');
 const {
     buttonBorderColor, buttonBorderStyle, buttonBorderWidthPx, lightGrey,
 } = require('./common-style');
-const { setKeypadCurrentPage } = require('../actions');
 const { SwitchTypes } = require('../consts');
 const { keypadSwitch } = require('../settings');
 
@@ -22,6 +21,7 @@ const TwoPageKeypad = React.createClass({
     propTypes: {
         currentPage: React.PropTypes.oneOf([0, 1]).isRequired,
         firstPage: React.PropTypes.node.isRequired,
+        onSelectTab: React.PropTypes.func,
         secondPage: React.PropTypes.node.isRequired,
         showPagerIndicator: React.PropTypes.bool,
         showTabBarIndicator: React.PropTypes.bool,
@@ -39,6 +39,7 @@ const TwoPageKeypad = React.createClass({
         const {
             currentPage,
             firstPage,
+            onSelectTab,
             secondPage,
             showPagerIndicator,
             showTabBarIndicator,
@@ -54,7 +55,7 @@ const TwoPageKeypad = React.createClass({
             {showTabBarIndicator &&
                 <TabBarIndicator
                     currentPage={currentPage}
-                    onSelectTab={setKeypadCurrentPage}
+                    onSelectTab={onSelectTab}
                     pageTitles={['Basic', 'Advanced']}
                 />
             }
