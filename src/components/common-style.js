@@ -53,5 +53,5 @@ module.exports = {
     numeralGrey: '#FFF',
     commandGrey : '#FAFAFA',
     controlGrey : '#F6F7F7',
-    disabledGrey : '#F0F1F2',
+    emptyGrey : '#F0F1F2',
 };

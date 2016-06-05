@@ -654,7 +654,15 @@ class MathWrapper {
 
     _contextForCursor(cursor) {
         if (this._isAtTopLevel(cursor)) {
-            return CursorContexts.TOP_LEVEL;
+            if (this._isInsideEmptyNode(cursor)) {
+                return CursorContexts.EMPTY;
+            } else if (cursor[this.MQ.L] === MQ_END) {
+                return CursorContexts.LEFT_END;
+            } else if (cursor[this.MQ.R] === MQ_END) {
+                return CursorContexts.RIGHT_END;
+            } else {
+                return CursorContexts.TOP_LEVEL;
+            }
         } else {
             return CursorContexts.NESTED;
         }

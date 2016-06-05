@@ -19,7 +19,7 @@ const {
     numeralGrey,
     commandGrey,
     controlGrey,
-    disabledGrey,
+    emptyGrey,
 } = require('./common-style');
 const {
     keyConfigPropType,
@@ -37,6 +37,9 @@ const KeypadButton = React.createClass({
         // Any additional keys that can be accessed by long-pressing on the
         // button.
         childKeys: React.PropTypes.arrayOf(keyConfigPropType),
+        // Whether the button should be rendered in a 'disabled' state, i.e.,
+        // without any touch feedback.
+        disabled: React.PropTypes.bool,
         focused: React.PropTypes.bool,
         // The name of the button, used to select the appropriate SVG
         // background image.
@@ -57,6 +60,7 @@ const KeypadButton = React.createClass({
         return {
             borders: BorderStyles.ALL,
             childKeys: [],
+            disabled: false,
             focused: false,
             popoverEnabled: false,
         };
@@ -95,7 +99,7 @@ const KeypadButton = React.createClass({
         let backgroundStyle;
         switch (type) {
             case KeyTypes.EMPTY:
-                backgroundStyle = styles.disabled;
+                backgroundStyle = styles.empty;
                 break;
 
             case KeyTypes.NUMERAL:
@@ -142,6 +146,7 @@ const KeypadButton = React.createClass({
             ariaLabel,
             borders,
             childKeys,
+            disabled,
             focused,
             name,
             onTouchCancel,
@@ -156,7 +161,7 @@ const KeypadButton = React.createClass({
 
         // We render in the focus state if the key is focused, or if it's an
         // echo.
-        const renderFocused = focused || popoverEnabled ||
+        const renderFocused = !disabled && focused || popoverEnabled ||
             type === KeyTypes.ECHO;
         const buttonStyle = this._getButtonStyle(type, borders, style);
         const focusStyle = this._getFocusStyle(type);
@@ -247,8 +252,8 @@ const styles = StyleSheet.create({
     control: {
         backgroundColor: controlGrey,
     },
-    disabled: {
-        backgroundColor: disabledGrey,
+    empty: {
+        backgroundColor: emptyGrey,
         cursor: 'default',
     },
 

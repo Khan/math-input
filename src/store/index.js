@@ -14,7 +14,7 @@ const Settings = require('../settings');
 const initialInputState = {
     keyHandler: null,
     cursor: {
-        context: CursorContexts.TOP_LEVEL,
+        context: CursorContexts.EMPTY,
     },
 };
 
