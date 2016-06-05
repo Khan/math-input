@@ -49,14 +49,6 @@ const MathInput = React.createClass({
         keypadElement: keypadElementPropType,
         onBlur: React.PropTypes.func,
         onChange: React.PropTypes.func.isRequired,
-        /**
-         * A callback that's triggered whenever the cursor moves as a result of
-         * a non-key press (i.e., through direct user interaction).
-         *
-         * The callback takes, as argument, a cursor object consisting of a
-         * cursor context.
-         */
-        onCursorMove: React.PropTypes.func,
         onFocus: React.PropTypes.func,
         // Whether the input should be scrollable. This is typically only
         // necessary when a fixed width has been provided through the `style`
@@ -89,10 +81,16 @@ const MathInput = React.createClass({
     },
 
     componentDidMount() {
-        const { onCursorMove, value } = this.props;
-
         this.mathField = new MathWrapper(this._mathContainer, {
-            onCursorMove,
+            onCursorMove: (cursor) => {
+                // TODO(charlie): It's not great that there is so much coupling
+                // between this keypad and the input behavior. We should wrap
+                // this `MathInput` component in an intermediary component
+                // that translates accesses on the keypad into vanilla props,
+                // to make this input keypad-agnostic.
+                this.props.keypadElement &&
+                    this.props.keypadElement.setCursor(cursor);
+            },
         });
 
         // NOTE(charlie): MathQuill binds this handler to manage its
@@ -119,7 +117,7 @@ const MathInput = React.createClass({
             this.mathField.mathField.__controller.scrollHoriz = function() {};
         }
 
-        this.mathField.setContent(value);
+        this.mathField.setContent(this.props.value);
 
         this._container = ReactDOM.findDOMNode(this);
 

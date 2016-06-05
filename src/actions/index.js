@@ -62,9 +62,6 @@ module.exports = {
         };
     },
 
-    // TODO(charlie): Wire this up, somehow. It's not being used in webapp
-    // but it should be supported. We'll likely need to throw it on
-    // `ProvidedKeypad` and then thread it through to the `MathWrapper`.
     setCursor(cursor) {
         return {
             type: 'SetCursor',

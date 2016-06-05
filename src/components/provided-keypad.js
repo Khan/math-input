@@ -6,6 +6,7 @@ const {
     activateKeypad,
     dismissKeypad,
     configureKeypad,
+    setCursor,
     setKeyHandler,
 } = require('../actions');
 const createStore = require('../store');
@@ -40,6 +41,10 @@ const ProvidedKeypad = React.createClass({
         setTimeout(() => cb && cb());
     },
 
+    setCursor(cursor) {
+        this.store.dispatch(setCursor(cursor));
+    },
+
     setKeyHandler(keyHandler) {
         this.store.dispatch(setKeyHandler(keyHandler));
     },
@@ -57,6 +62,7 @@ const ProvidedKeypad = React.createClass({
                         activate: this.activate,
                         dismiss: this.dismiss,
                         configure: this.configure,
+                        setCursor: this.setCursor,
                         setKeyHandler: this.setKeyHandler,
                     };
                     onElementMounted &&

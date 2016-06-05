@@ -33,6 +33,7 @@ const keypadElementPropType = React.PropTypes.shape({
     activate: React.PropTypes.func.isRequired,
     dismiss: React.PropTypes.func.isRequired,
     configure: React.PropTypes.func.isRequired,
+    setCursor: React.PropTypes.func.isRequired,
     setKeyHandler: React.PropTypes.func.isRequired,
 });
 
