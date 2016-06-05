@@ -50,7 +50,6 @@ const MathInput = React.createClass({
         keypadElement: keypadElementPropType,
         onBlur: React.PropTypes.func,
         onChange: React.PropTypes.func.isRequired,
-
         /**
          * A callback that's triggered whenever the cursor moves as a result of
          * a non-key press (i.e., through direct user interaction).
@@ -59,8 +58,11 @@ const MathInput = React.createClass({
          * cursor context.
          */
         onCursorMove: React.PropTypes.func,
-
         onFocus: React.PropTypes.func,
+        // Whether the input should be scrollable. This is typically only
+        // necessary when a fixed width has been provided through the `style`
+        // prop.
+        scrollable: React.PropTypes.bool,
         // An extra, vanilla style object, to be applied to the math input.
         style: React.PropTypes.any,
         value: React.PropTypes.string,
@@ -68,6 +70,7 @@ const MathInput = React.createClass({
 
     getDefaultProps() {
         return {
+            scrollable: false,
             style: {},
             value: "",
         };
@@ -87,8 +90,10 @@ const MathInput = React.createClass({
     },
 
     componentDidMount() {
+        const { onCursorMove, value } = this.props;
+
         this.mathField = new MathWrapper(this._mathContainer, {
-            onCursorMove: this.props.onCursorMove,
+            onCursorMove,
         });
 
         // NOTE(charlie): MathQuill binds this handler to manage its
@@ -108,12 +113,14 @@ const MathInput = React.createClass({
 
         // NOTE(charlie): MathQuill uses this method to do some layout in the
         // case that an input overflows its bounds and must become scrollable.
-        // We're not taking advantage of that behavior (our input expands
-        // arbitrarily), and it causes layout jank due to jQuery animations of
-        // scroll properties, so we stub it out for now.
-        this.mathField.mathField.__controller.scrollHoriz = function() {};
+        // As it causes layout jank due to jQuery animations of scroll
+        // properties, we disable it unless it is explicitly requested (as it
+        // should be in the case of a fixed-width input).
+        if (!this.props.scrollable) {
+            this.mathField.mathField.__controller.scrollHoriz = function() {};
+        }
 
-        this.mathField.setContent(this.props.value);
+        this.mathField.setContent(value);
 
         this._container = ReactDOM.findDOMNode(this);
 
