@@ -113,6 +113,15 @@ class PopoverStateMachine {
     }
 
     /**
+     * Handle the trigger (click or hold) of the node with the given identifier.
+     *
+     * @param {string} id - the identifier of the node that was triggered
+    */
+    onTrigger(id) {
+        this.handlers.onClick(id, id);
+    }
+
+    /**
      * Handle a touch-end event on the node with the given identifier.
      *
      * @param {string} id - the identifier of the node over which the touch
@@ -135,7 +144,7 @@ class PopoverStateMachine {
         } else if (id != null) {
             // Finally, if we have no active popover, and we touched up over a
             // valid key, trigger a click.
-            this.handlers.onClick(id, id);
+            this.onTrigger(id);
         }
 
         this.onBlur();

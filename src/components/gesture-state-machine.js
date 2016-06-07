@@ -8,11 +8,13 @@
 // TODO(charlie): Substitute in proper constants. These are just for testing.
 const longPressWaitTimeMs = 100;
 const swipeThresholdPx = 20;
+const { holdInterval } = require('../settings');
 
 class GestureStateMachine {
-    constructor(handlers, swipeDisabledNodeIds) {
+    constructor(handlers, swipeDisabledNodeIds, multiPressableKeys) {
         this.handlers = handlers;
         this.swipeDisabledNodeIds = swipeDisabledNodeIds;
+        this.multiPressableKeys = multiPressableKeys;
 
         this.swiping = false;
         this.startX = null;
@@ -23,6 +25,14 @@ class GestureStateMachine {
         if (this._longPressTimeoutId) {
             clearTimeout(this._longPressTimeoutId);
             this._longPressTimeoutId = null;
+        }
+    }
+
+    _maybeCancelPressAndHold() {
+        if (this._pressAndHoldIntervalId) {
+            // If there was an interval set to detect holds, clear it out.
+            clearInterval(this._pressAndHoldIntervalId);
+            this._pressAndHoldIntervalId = null;
         }
     }
 
@@ -38,6 +48,9 @@ class GestureStateMachine {
         // If we're in the middle of a long-press, cancel it.
         this._maybeCancelLongPress();
 
+        // Reset any existing hold-detecting interval.
+        this._maybeCancelPressAndHold();
+
         // Set the focused node ID and handle the focus event.
         // Note: we can call `onFocus` with `null` IDs. The semantics of an
         // `onFocus` with a `null` ID differs from that of `onBlur`. The former
@@ -48,11 +61,23 @@ class GestureStateMachine {
         this.handlers.onFocus(this._focusedNodeId);
 
         if (id) {
-            const self = this;
-            this._longPressTimeoutId = setTimeout(() => {
-                self.handlers.onLongPress(id);
-                self._longPressTimeoutId = null;
-            }, longPressWaitTimeMs);
+            // Handle logic for repeating button presses.
+            if (this.multiPressableKeys.includes(id)) {
+                // Start by triggering a click, iOS style.
+                this.handlers.onTrigger(id);
+
+                // Set up a new hold detector for the current button.
+                this._pressAndHoldIntervalId = setInterval(() => {
+                    // On every cycle, trigger the click handler.
+                    this.handlers.onTrigger(id);
+                }, holdInterval);
+            } else {
+                const self = this;
+                this._longPressTimeoutId = setTimeout(() => {
+                    self.handlers.onLongPress(id);
+                    self._longPressTimeoutId = null;
+                }, longPressWaitTimeMs);
+            }
         }
     }
 
@@ -64,6 +89,8 @@ class GestureStateMachine {
     _onBlur() {
         // If we're in the middle of a long-press, cancel it.
         this._maybeCancelLongPress();
+
+        this._maybeCancelPressAndHold();
 
         this._focusedNodeId = null;
         this.handlers.onBlur();
@@ -138,6 +165,11 @@ class GestureStateMachine {
     onTouchEnd(getId, pageX) {
         if (this.swiping) {
             this.handlers.onSwipeEnd(pageX - this.startX);
+        } else if (this._pressAndHoldIntervalId) {
+            // We don't trigger a touch end if there was a press and hold,
+            // because the key has been triggered at least once and calling the
+            // onTouchEnd handler would add an extra trigger.
+            this._onBlur();
         } else {
             // Trigger a touch-end. There's no need to notify clients of a blur
             // as clients are responsible for handling any cleanup in their
@@ -152,6 +184,7 @@ class GestureStateMachine {
             } else {
                 id = getId();
             }
+
             this.handlers.onTouchEnd(id);
 
             // Clean-up any lingering long-press events.

@@ -37,6 +37,7 @@ const defaults = {
     debugSwitcher: containsConfigurationOptions ?
                    DebugSwitcherTypes.DISABLED :
                    DebugSwitcherTypes.ENABLED,
+    holdInterval: 250,
 };
 
 const settings = {
@@ -47,11 +48,14 @@ const settings = {
     echoAnimation: parsed.echo_animation || defaults.echoAnimation,
     iconStyle: parsed.icon_style || defaults.iconStyle,
     debugSwitcher: parsed.debug_switcher || defaults.debugSwitcher,
+    holdInterval: parseInt(parsed.hold_interval) || defaults.holdInterval,
 };
 
 // Map any values to caps.
 for (const [key, value] of Object.entries(settings)) {
-    settings[key] = value.toUpperCase();
+    if (typeof value !== "number") {
+        settings[key] = value.toUpperCase();
+    }
 }
 
 module.exports = settings;

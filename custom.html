@@ -26,7 +26,7 @@
             flex-direction: column;
         }
 
-        select {
+        select, input {
             -webkit-appearance: none;
             font-size: 14pt;
             padding-left: 4px;
@@ -122,6 +122,14 @@
     Show semi-transparent parts of icons.
 </p>
 </div>
+<div class='row'>
+    <label>hold_interval:</label>
+    <input id='hold_interval' value='250'></input>
+</div>
+<p>
+    How long to wait before repeating the action of a held key. Right now, this is only applied to the deletion and arrow keys.
+</p>
+</div>
 </form>
 
 <div id='link_container'>
@@ -154,6 +162,10 @@
 
     document.querySelectorAll('select').forEach(function(select) {
          values[select.id] = select.value;
+    });
+
+    document.querySelectorAll('input').forEach(function(input) {
+         values[input.id] = input.value;
     });
 
     // The user might be coming to the page by navigating back which

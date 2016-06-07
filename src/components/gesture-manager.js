@@ -13,7 +13,7 @@ const coordsForEvent = (evt) => {
 };
 
 class GestureManager {
-    constructor(options, handlers, disabledSwipeKeys) {
+    constructor(options, handlers, disabledSwipeKeys, multiPressableKeys) {
         const { swipeEnabled } = options;
 
         this.swipeEnabled = swipeEnabled;
@@ -70,7 +70,10 @@ class GestureManager {
             },
             onSwipeChange: handlers.onSwipeChange,
             onSwipeEnd: handlers.onSwipeEnd,
-        }, disabledSwipeKeys);
+            onTrigger: (id) => {
+                this.popoverStateMachine.onTrigger(id);
+            },
+        }, disabledSwipeKeys, multiPressableKeys);
     }
 
     /**

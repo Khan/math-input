@@ -257,8 +257,19 @@ const createStore = () => {
                     ...layoutProps,
                 });
             },
-        }, [Keys.LEFT, Keys.RIGHT, Keys.BACKSPACE, Keys.DISMISS,
-            Keys.JUMP_OUT, Keys.MORE, Keys.NUMBERS]);
+        }, [
+            Keys.LEFT,
+            Keys.RIGHT,
+            Keys.BACKSPACE,
+            Keys.DISMISS,
+            Keys.JUMP_OUT,
+            Keys.MORE,
+            Keys.NUMBERS,
+        ], [
+            Keys.BACKSPACE,
+            Keys.LEFT,
+            Keys.RIGHT,
+        ]);
     };
 
     const initialGestureState = {
