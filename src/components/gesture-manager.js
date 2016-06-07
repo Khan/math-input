@@ -18,6 +18,9 @@ class GestureManager {
 
         this.swipeEnabled = swipeEnabled;
 
+        // Events aren't tracked until event tracking is enabled.
+        this.trackEvents = false;
+
         this.nodeManager = new NodeManager();
         this.popoverStateMachine = new PopoverStateMachine({
             onActiveNodesChanged: (activeNodes) => {
@@ -79,6 +82,10 @@ class GestureManager {
      *                      occurred
      */
     onTouchStart(evt, id) {
+        if (!this.trackEvents) {
+            return;
+        }
+
         const [x] = coordsForEvent(evt);
         this.gestureStateMachine.onTouchStart(
             () => id,
@@ -97,6 +104,10 @@ class GestureManager {
      * @param {TouchEvent} evt - the raw touch event from the browser
      */
     onTouchMove(evt) {
+        if (!this.trackEvents) {
+            return;
+        }
+
         const swipeLocked = this.popoverStateMachine.isPopoverVisible();
         const swipeEnabled = this.swipeEnabled && !swipeLocked;
         const [x, y] = coordsForEvent(evt);
@@ -114,6 +125,10 @@ class GestureManager {
      * @param {TouchEvent} evt - the raw touch event from the browser
      */
     onTouchEnd(evt) {
+        if (!this.trackEvents) {
+            return;
+        }
+
         const [x, y] = coordsForEvent(evt);
         this.gestureStateMachine.onTouchEnd(
             () => this.nodeManager.idForCoords(x, y),
@@ -128,6 +143,10 @@ class GestureManager {
      * @param {TouchEvent} evt - the raw touch event from the browser
      */
     onTouchCancel(evt) {
+        if (!this.trackEvents) {
+            return;
+        }
+
         this.gestureStateMachine.onTouchCancel();
     }
 
@@ -155,6 +174,21 @@ class GestureManager {
     unregisterDOMNode(id) {
         this.nodeManager.unregisterDOMNode(id);
         this.popoverStateMachine.unregisterPopover(id);
+    }
+
+    /**
+     * Enable event tracking for the gesture manager.
+     */
+    enableEventTracking() {
+        this.trackEvents = true;
+    }
+
+    /**
+     * Disable event tracking for the gesture manager. When called, the gesture
+     * manager will drop any events received by managed nodes.
+     */
+    disableEventTracking() {
+        this.trackEvents = false;
     }
 }
 
