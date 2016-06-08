@@ -257,7 +257,8 @@ const createStore = () => {
                     ...layoutProps,
                 });
             },
-        });
+        }, [Keys.LEFT, Keys.RIGHT, Keys.BACKSPACE, Keys.DISMISS,
+            Keys.JUMP_OUT, Keys.MORE, Keys.NUMBERS]);
     };
 
     const initialGestureState = {

@@ -13,7 +13,7 @@ const coordsForEvent = (evt) => {
 };
 
 class GestureManager {
-    constructor(options, handlers) {
+    constructor(options, handlers, disabledSwipeKeys) {
         const { swipeEnabled } = options;
 
         this.swipeEnabled = swipeEnabled;
@@ -70,7 +70,7 @@ class GestureManager {
             },
             onSwipeChange: handlers.onSwipeChange,
             onSwipeEnd: handlers.onSwipeEnd,
-        });
+        }, disabledSwipeKeys);
     }
 
     /**

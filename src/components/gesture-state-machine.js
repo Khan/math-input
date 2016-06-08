@@ -10,11 +10,13 @@ const longPressWaitTimeMs = 100;
 const swipeThresholdPx = 20;
 
 class GestureStateMachine {
-    constructor(handlers) {
+    constructor(handlers, swipeDisabledNodeIds) {
         this.handlers = handlers;
+        this.swipeDisabledNodeIds = swipeDisabledNodeIds;
 
         this.swiping = false;
         this.startX = null;
+        this._swipeDisabledForGesture = false;
     }
 
     _maybeCancelLongPress() {
@@ -88,8 +90,12 @@ class GestureStateMachine {
      */
     onTouchStart(getId, pageX) {
         this.startX = pageX;
+        const startingNode = getId();
 
-        this._onFocus(getId());
+        this._swipeDisabledForGesture =
+            this.swipeDisabledNodeIds.includes(startingNode);
+
+        this._onFocus(startingNode);
     }
 
     /**
@@ -104,7 +110,7 @@ class GestureStateMachine {
     onTouchMove(getId, pageX, swipeEnabled) {
         const dx = pageX - this.startX;
         const shouldBeginSwiping = !this.swiping && swipeEnabled &&
-            Math.abs(dx) > swipeThresholdPx;
+            Math.abs(dx) > swipeThresholdPx && !this._swipeDisabledForGesture;
 
         if (this.swiping) {
             this.handlers.onSwipeChange(dx);
@@ -155,6 +161,7 @@ class GestureStateMachine {
 
         this.swiping = false;
         this.startX = null;
+        this._swipeDisabledForGesture = false;
     }
 
     /**
@@ -174,6 +181,7 @@ class GestureStateMachine {
 
         this.swiping = false;
         this.startX = null;
+        this._swipeDisabledForGesture = false;
     }
 }
 
