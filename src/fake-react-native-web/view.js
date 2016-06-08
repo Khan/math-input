@@ -23,10 +23,42 @@ const View = React.createClass({
         style: React.PropTypes.any,
     },
 
+    statics: {
+        styles: StyleSheet.create({
+            // From: https://github.com/necolas/react-native-web/blob/master/src/components/View/index.js
+            initial: {
+                alignItems: 'stretch',
+                borderWidth: 0,
+                borderStyle: 'solid',
+                boxSizing: 'border-box',
+                display: 'flex',
+                flexBasis: 'auto',
+                flexDirection: 'column',
+                margin: 0,
+                padding: 0,
+                position: 'relative',
+                // button and anchor reset
+                backgroundColor: 'transparent',
+                color: 'inherit',
+                font: 'inherit',
+                textAlign: 'inherit',
+                textDecorationLine: 'none',
+                // list reset
+                listStyle: 'none',
+                // fix flexbox bugs
+                maxWidth: '100%',
+                minHeight: 0,
+                minWidth: 0,
+            },
+        }),
+    },
+
     render() {
-        const className = Array.isArray(this.props.style)
-            ? css(styles.initial, ...this.props.style)
-            : css(styles.initial, this.props.style);
+        const className = css(
+            View.styles.initial,
+            ...(Array.isArray(this.props.style) ? this.props.style
+                                                : [this.props.style])
+        );
 
         return <div
             className={className}
@@ -41,34 +73,6 @@ const View = React.createClass({
         >
             {this.props.children}
         </div>;
-    },
-});
-
-// https://github.com/necolas/react-native-web/blob/master/src/components/View/index.js
-const styles = StyleSheet.create({
-    initial: {
-        alignItems: 'stretch',
-        borderWidth: 0,
-        borderStyle: 'solid',
-        boxSizing: 'border-box',
-        display: 'flex',
-        flexBasis: 'auto',
-        flexDirection: 'column',
-        margin: 0,
-        padding: 0,
-        position: 'relative',
-        // button and anchor reset
-        backgroundColor: 'transparent',
-        color: 'inherit',
-        font: 'inherit',
-        textAlign: 'inherit',
-        textDecorationLine: 'none',
-        // list reset
-        listStyle: 'none',
-        // fix flexbox bugs
-        maxWidth: '100%',
-        minHeight: 0,
-        minWidth: 0,
     },
 });
 

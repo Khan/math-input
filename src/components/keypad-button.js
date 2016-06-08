@@ -5,7 +5,7 @@
 const React = require('react');
 const { connect } = require('react-redux');
 
-const { StyleSheet } = require('aphrodite');
+const { StyleSheet, css } = require('aphrodite');
 const { View } = require('../fake-react-native-web');
 const Icon = require('./icon');
 const MultiSymbolGrid = require('./multi-symbol-grid');
@@ -70,6 +70,10 @@ const KeypadButton = React.createClass({
         this.heightStyles = stylesForButtonHeightPx(this.props.buttonHeightPx);
     },
 
+    componentDidMount() {
+        this._preInjectStyles();
+    },
+
     componentWillUpdate(newProps, newState) {
         // Only recompute the Aphrodite StyleSheet when the button height has
         // changed. Though it is safe to recompute the StyleSheet (since
@@ -79,6 +83,32 @@ const KeypadButton = React.createClass({
             this.heightStyles = stylesForButtonHeightPx(
                 newProps.buttonHeightPx
             );
+
+            this._preInjectStyles();
+        }
+    },
+
+    _preInjectStyles() {
+        // HACK(charlie): Pre-inject all of the possible styles for the button.
+        // This avoids a flickering effect in the echo animation whereby the
+        // echoes vary in size as they animate. Note that we need to account for
+        // the "initial" styles that `View` will include, as these styles are
+        // applied to `View` components and Aphrodite will consolidate the style
+        // object. This method must be called whenever a property that
+        // influences the possible outcomes of `this._getFocusStyle` and
+        // `this._getButtonStyle` changes (such as `this.heightStyles`).
+        for (const type of Object.keys(KeyTypes)) {
+            css(
+                View.styles.initial,
+                ...this._getFocusStyle(type)
+            );
+
+            for (const borders of Object.values(BorderStyles)) {
+                css(
+                    View.styles.initial,
+                    ...this._getButtonStyle(type, borders)
+                );
+            }
         }
     },
 
@@ -136,7 +166,8 @@ const KeypadButton = React.createClass({
             type === KeyTypes.ECHO && styles.echo,
             this.heightStyles.fullHeight,
             // React Native allows you to set the 'style' props on user defined
-            // components, https://facebook.github.io/react-native/docs/style.html
+            // components.
+            //   See: https://facebook.github.io/react-native/docs/style.html
             ...(Array.isArray(style) ? style : [style]),
         ];
     },
