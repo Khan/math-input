@@ -18,6 +18,7 @@ const TouchableKeypadButton = React.createClass({
     propTypes: {
         borders: bordersPropType,
         childKeyIds: React.PropTypes.arrayOf(keyIdPropType),
+        disabled: React.PropTypes.bool,
         focused: React.PropTypes.bool,
         gestureManager: React.PropTypes.instanceOf(GestureManager),
         id: keyIdPropType.isRequired,
@@ -32,6 +33,7 @@ const TouchableKeypadButton = React.createClass({
         return newProps.id !== this.props.id ||
             newProps.gestureManager !== this.props.gestureManager ||
             newProps.focused !== this.props.focused ||
+            newProps.disabled !== this.props.disabled ||
             newProps.popoverEnabled !== this.props.popoverEnabled ||
             newProps.type !== this.props.type;
     },
