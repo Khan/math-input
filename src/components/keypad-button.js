@@ -165,6 +165,8 @@ const KeypadButton = React.createClass({
             type === KeyTypes.ECHO;
         const buttonStyle = this._getButtonStyle(type, borders, style);
         const focusStyle = this._getFocusStyle(type);
+        const iconWrapperStyle = (renderFocused && focusStyle) ||
+            (disabled && styles.disabled);
 
         const eventHandlers = {
             onTouchCancel, onTouchEnd, onTouchMove, onTouchStart,
@@ -190,7 +192,7 @@ const KeypadButton = React.createClass({
                 {...eventHandlers}
                 {...manyButtonA11yMarkup}
             >
-                <View style={renderFocused && focusStyle}>
+                <View style={iconWrapperStyle}>
                     <MultiSymbolGrid
                         unicodeSymbols={unicodeSymbols}
                         focused={renderFocused}
@@ -205,7 +207,7 @@ const KeypadButton = React.createClass({
             };
 
             return <View style={buttonStyle} {...eventHandlers} {...a11yMarkup}>
-                <View style={renderFocused && focusStyle}>
+                <View style={iconWrapperStyle}>
                     <Icon
                         name={name}
                         unicodeSymbol={unicodeSymbol}
@@ -269,6 +271,10 @@ const styles = StyleSheet.create({
     },
     light: {
         backgroundColor: 'rgba(33, 36, 44, 0.1)',
+    },
+
+    disabled: {
+        opacity: 0.3,
     },
 
     // Styles used to render the appropriate borders. Buttons are only allowed
