@@ -152,12 +152,20 @@ const BasicExpressionKeypad = React.createClass({
             <TouchableKeypadButton
                 keyConfig={topNavigationKey}
                 borders={BorderStyles.LEFT}
+                disabled={
+                    cursorContext === CursorContexts.LEFT_END ||
+                    cursorContext === CursorContexts.EMPTY
+                }
             />
             {dynamicJumpOut ? <EmptyKeypadButton
                 borders={BorderStyles.LEFT}
             /> : <TouchableKeypadButton
                 keyConfig={goRightNavigationKey}
                 borders={BorderStyles.LEFT}
+                disabled={
+                    cursorContext === CursorContexts.RIGHT_END ||
+                    cursorContext === CursorContexts.EMPTY
+                }
             />}
             <TouchableKeypadButton
                 keyConfig={KeyConfigs.BACKSPACE}
