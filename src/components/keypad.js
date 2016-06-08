@@ -162,12 +162,17 @@ const styles = StyleSheet.create({
     },
 });
 
+// Note: these don't go through an autoprefixer/aphrodite.
 const inlineStyles = {
     hidden: {
+        msTransform: 'translate3d(0, 100%, 0)',
+        WebkitTransform: 'translate3d(0, 100%, 0)',
         transform: 'translate3d(0, 100%, 0)',
     },
 
     active: {
+        msTransform: 'translate3d(0, 0, 0)',
+        WebkitTransform: 'translate3d(0, 0, 0)',
         transform: 'translate3d(0, 0, 0)',
     },
 };
