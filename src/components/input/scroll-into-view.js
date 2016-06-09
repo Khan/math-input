@@ -24,7 +24,7 @@ const scrollIntoView = (containerNode, keypadNode) => {
         // calculate its top, we make the strong assumption that the
         // keypad will end up anchored at the bottom of the page and use
         // its height, which is known at this point.
-        const pageHeightPx = document.body.clientHeight;
+        const pageHeightPx = window.innerHeight;
         const keypadHeightPx = keypadNode.clientHeight;
         const keypadTopPx = pageHeightPx - keypadHeightPx;
 
