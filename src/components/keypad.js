@@ -17,8 +17,7 @@ const { numeralGrey } = require('./common-style');
 const { echoPropType, popoverPropType } = require('./prop-types');
 
 const keypadBorderWidthPx = 1;
-
-const animationDurationMs = 300;
+const keypadAnimationDurationMs = 300;
 
 const Keypad = React.createClass({
     propTypes: {
@@ -35,8 +34,20 @@ const Keypad = React.createClass({
         style: React.PropTypes.any,
     },
 
+    getInitialState() {
+        // Use (partially unsupported) viewport units until componentDidMount.
+        // It's okay to use the viewport units since they'll be overridden as
+        // soon as the JavaScript kicks in.
+        return {
+            viewportHeight: "100vh",
+            viewportWidth: "100vw",
+        };
+    },
+
     componentDidMount() {
         window.addEventListener("resize", this._onResize);
+
+        this._updateSizeAndPosition();
     },
 
     componentWillReceiveProps(newProps) {
@@ -49,7 +60,7 @@ const Keypad = React.createClass({
                 if (this.isMounted()) {
                     this._computeContainer();
                 }
-            }, 2 * animationDurationMs);
+            }, 2 * keypadAnimationDurationMs);
         }
 
         // If the user was interacts with the keypad before the timer went off,
@@ -68,6 +79,28 @@ const Keypad = React.createClass({
         this._container = domNode.getBoundingClientRect();
     },
 
+    _updateSizeAndPosition() {
+        // We don't use viewport units because of compatibility reasons.
+        this.setState({
+            viewportHeight: window.innerHeight,
+            viewportWidth: window.innerWidth,
+        }, () => {
+            if (this.props.active) {
+                // Recalculate the container after the keypad animates to the
+                // new position and size.
+                setTimeout(() => {
+                    if (this.isMounted()) {
+                        this._computeContainer();
+                    }
+                }, 2 * keypadAnimationDurationMs);
+            }
+
+            // Mark the container for recalculation next time the keypad
+            // is opened.
+            this._container = null;
+        });
+    },
+
     _onResize() {
         // Whenever the page resizes, we need to recompute the container's
         // bounding box. This is the only time that the bounding box can change.
@@ -78,9 +111,8 @@ const Keypad = React.createClass({
             this._resizeTimeout = setTimeout(() => {
                 this._resizeTimeout = null;
 
-                // Recompute the bounding box.
                 if (this.isMounted()) {
-                    this._computeContainer();
+                    this._updateSizeAndPosition();
                 }
             }, 66);
         }
@@ -94,6 +126,11 @@ const Keypad = React.createClass({
             popover,
             style,
         } = this.props;
+
+        const {
+            viewportHeight,
+            viewportWidth,
+        } = this.state;
 
         // Translate the echo boxes, as they'll be positioned absolutely to
         // this relative container.
@@ -135,9 +172,12 @@ const Keypad = React.createClass({
         // NOTE(charlie): We render the transforms as pure inline styles to
         // avoid an Aphrodite bug in mobile Safari.
         //   See: https://github.com/Khan/aphrodite/issues/68.
-        const dynamicStyle = this.props.active
-                           ? inlineStyles.active
-                           : inlineStyles.hidden;
+        const dynamicStyle = {
+            ...(this.props.active ? inlineStyles.active : inlineStyles.hidden),
+            top: viewportHeight,
+            width: viewportWidth,
+            maxWidth: viewportWidth,
+        };
 
         return <View style={keypadStyle} dynamicStyle={dynamicStyle}>
             {children}
@@ -153,27 +193,27 @@ const Keypad = React.createClass({
 const styles = StyleSheet.create({
     keypad: {
         position: 'fixed',
-        bottom: 0,
-        width: '100%',
+        overflowX: 'hidden',
         borderTop: `${keypadBorderWidthPx}px solid rgba(0, 0, 0, 0.2)`,
         backgroundColor: numeralGrey,
         zIndex: zIndexes.keypad,
-        transition: `${animationDurationMs}ms ease-out`,
+        transition: `${keypadAnimationDurationMs}ms ease-out`,
+        transitionProperty: 'transform',
     },
 });
 
 // Note: these don't go through an autoprefixer/aphrodite.
 const inlineStyles = {
     hidden: {
-        msTransform: 'translate3d(0, 100%, 0)',
-        WebkitTransform: 'translate3d(0, 100%, 0)',
-        transform: 'translate3d(0, 100%, 0)',
-    },
-
-    active: {
         msTransform: 'translate3d(0, 0, 0)',
         WebkitTransform: 'translate3d(0, 0, 0)',
         transform: 'translate3d(0, 0, 0)',
+    },
+
+    active: {
+        msTransform: 'translate3d(0, -100%, 0)',
+        WebkitTransform: 'translate3d(0, -100%, 0)',
+        transform: 'translate3d(0, -100%, 0)',
     },
 };
 

@@ -41,7 +41,7 @@ const ViewPager = React.createClass({
         // NOTE(charlie): We can't measure the container immediately in
         // componentDidMount, as the layout pass hasn't occurred yet.
         if (this._shouldMeasureContainer) {
-            this.props.onPageWidthPxChange(this._pagerContainer.offsetWidth);
+            this._updatePageWidth();
             this._shouldMeasureContainer = false;
         }
 
@@ -67,6 +67,19 @@ const ViewPager = React.createClass({
         window.removeEventListener("resize", this._onResize);
     },
 
+    _updatePageWidth() {
+        // Instead of immediately calculating the width, we give time for the
+        // parent keypad to be rerendered. This can be removed once the new
+        // layout for landscape screens is introduced, where there is only
+        // one page.
+        setTimeout(() => {
+            if (this.isMounted()) {
+                this.props.onPageWidthPxChange(
+                    this._pagerContainer.offsetWidth);
+            }
+        });
+    },
+
     _onResize() {
         // Whenever the page resizes, we need to force an update to recompute
         // the width of the view pager's pages.
@@ -78,9 +91,7 @@ const ViewPager = React.createClass({
                 this._resizeTimeout = null;
 
                 // Notify that the pager width has changed.
-                this.props.onPageWidthPxChange(
-                    this._pagerContainer.offsetWidth
-                );
+                this._updatePageWidth();
             }, 66);
         }
     },
