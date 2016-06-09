@@ -23,6 +23,10 @@
 .echo-slide-and-fade-enter.echo-slide-and-fade-enter-active {
     opacity: 0 !important;
     transform: translate3d(0, -33%, 0) !important;
+    -webkit-transform: translate3d(0, -33%, 0) !important;
+    -moz-transform: translate3d(0, -33%, 0) !important;
+    -ms-transform: translate3d(0, -33%, 0) !important;
+
     /**
      * TODO(charlie): These times are intentionally different, which means that
      * the animation really "ends" after 400ms cubic-bezier(1, 0, 0.9, 1) (since

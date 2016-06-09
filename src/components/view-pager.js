@@ -92,11 +92,19 @@ const ViewPager = React.createClass({
         const pagerStyle = [row, styles.twoPagePager];
 
         const transform = {
+            msTransform: `translate3d(${translateX}px, 0, 0)`,
+            WebkitTransform: `translate3d(${translateX}px, 0, 0)`,
             transform: `translate3d(${translateX}px, 0, 0)`,
         };
         const animate = animationDurationMs ? {
+            msTransitionProperty: 'transform',
+            WebkitTransitionProperty: 'transform',
             transitionProperty: 'transform',
+            msTransitionDuration: `${animationDurationMs}ms`,
+            WebkitTransitionDuration: `${animationDurationMs}ms`,
             transitionDuration: `${animationDurationMs}ms`,
+            msTransitionTimingFunction: 'ease-out',
+            WebkitTransitionTimingFunction: 'ease-out',
             transitionTimingFunction: 'ease-out',
         } : {};
         const dynamicStyle = {

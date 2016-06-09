@@ -44,16 +44,23 @@ const CursorHandle = React.createClass({
         const { x, y, animateIntoPosition } = this.props;
 
         const animationStyle = animateIntoPosition ? {
+            msTransitionDuration: '100ms',
+            WebkitTransitionDuration: '100ms',
             transitionDuration: '100ms',
+            msTransitionProperty: 'transform',
+            WebkitTransitionProperty: 'transform',
             transitionProperty: 'transform',
         } : { };
+        const transformString = `translate(${x}px, ${y}px)`;
 
         const outerStyle = {
             position: 'absolute',
             zIndex: 1,
             left: -touchTargetWidthPx / 2,
             top: 0,
-            transform: `translate(${x}px, ${y}px)`,
+            msTransform: transformString,
+            WebkitTransform: transformString,
+            transform: transformString,
             width: touchTargetWidthPx,
             height: touchTargetHeightPx,
             ...animationStyle,

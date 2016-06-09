@@ -255,8 +255,9 @@ const focusInsetPx = 4;
 
 const styles = StyleSheet.create({
     buttonBase: {
-        width: '100%',
-        flexDirection: 'row',
+        // HACK(benkomalo): support old style flex box in Android browsers
+        '-webkit-box-flex': '1',
+        flex: 1,
         cursor: 'pointer',
         // Make the text unselectable
         userSelect: 'none',
