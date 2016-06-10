@@ -14,6 +14,8 @@ const {
     cursorHandleDistanceMultiplier,
     mediumGrey,
  } = require('../common-style');
+const { fractionBehavior } = require('../../settings');
+const { FractionBehaviorTypes } = require('../../consts');
 const { keypadElementPropType } = require('../prop-types');
 
 const defaultSelectionRect = {
@@ -41,6 +43,11 @@ const unionRects = (rects) =>
 
 const MathInput = React.createClass({
     propTypes: {
+        // The behavior that the input should exhibit when the fraction key is
+        // pressed. See the settings descriptors in `custom.html` for more.
+        fractionBehavior: React.PropTypes.oneOf(
+            Object.keys(FractionBehaviorTypes)
+        ),
         // The React element node associated with the keypad that will send
         // key-press events to this input. If provided, this can be used to:
         //   (1) Avoid blurring the input, on user interaction with the keypad.
@@ -61,6 +68,7 @@ const MathInput = React.createClass({
 
     getDefaultProps() {
         return {
+            fractionBehavior,
             scrollable: false,
             style: {},
             value: "",
@@ -82,6 +90,8 @@ const MathInput = React.createClass({
 
     componentDidMount() {
         this.mathField = new MathWrapper(this._mathContainer, {
+            fractionBehavior: this.props.fractionBehavior,
+        }, {
             onCursorMove: (cursor) => {
                 // TODO(charlie): It's not great that there is so much coupling
                 // between this keypad and the input behavior. We should wrap

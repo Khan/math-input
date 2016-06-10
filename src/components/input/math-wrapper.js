@@ -11,7 +11,6 @@ const MathQuill = window.MathQuill;
 const Keys = require('../../data/keys');
 const CursorContexts = require('./cursor-contexts');
 const { FractionBehaviorTypes } = require('../../consts');
-const { fractionBehavior } = require('../../settings');
 
 const WRITE = 'write';
 const CMD = 'cmd';
@@ -32,9 +31,6 @@ const KeyActions = {
     [Keys.NEQ]: { str: '\\neq', fn: WRITE },
     [Keys.CDOT]: { str: '\\cdot', fn: WRITE },
     [Keys.PERCENT]: { str: '%', fn: WRITE },
-    [Keys.FRAC]: (fractionBehavior === FractionBehaviorTypes.INCLUSIVE)
-                 ? { str: '/', fn: CMD }
-                 : { str: '\\frac', fn: CMD },
     [Keys.EXP]: { str: '^', fn: CMD },
     [Keys.EXP_2]: { str: '^2', fn: WRITE },
     [Keys.EXP_3]: { str: '^3', fn: WRITE },
@@ -61,17 +57,18 @@ const NormalCommands = {
 
 class MathWrapper {
 
-    constructor(element, callbacks = {}) {
-        const options = {
+    constructor(element, options, callbacks = {}) {
+        const { fractionBehavior } = options;
+        this.fractionBehavior = fractionBehavior;
+
+        this.MQ = MathQuill.getInterface(2);
+        this.mathField = this.MQ.MathField(element, {
             // use a span instead of a textarea so that we don't bring up the
             // native keyboard on mobile when selecting the input
             substituteTextarea: function() {
                 return document.createElement('span');
             },
-        };
-
-        this.MQ = MathQuill.getInterface(2);
-        this.mathField = this.MQ.MathField(element, options);
+        });
         this.callbacks = callbacks;
     }
 
@@ -113,6 +110,12 @@ class MathWrapper {
 
             if (str && fn) {
                 this.mathField[fn](str);
+            }
+        } else if (key === Keys.FRAC) {
+            if (this.fractionBehavior === FractionBehaviorTypes.INCLUSIVE) {
+                this.mathField.cmd('/');
+            } else {
+                this.mathField.cmd('\\frac');
             }
         } else if (key === Keys.PARENS) {
             this.mathField.write('\\left(\\right)');
