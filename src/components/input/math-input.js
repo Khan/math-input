@@ -486,7 +486,10 @@ const MathInput = React.createClass({
             this._insertCursorAtClosestNode(touch.clientX, touch.clientY);
         }
 
-        this.focus();
+        // Trigger a focus event, if we're not already focused.
+        if (!this.state.focused) {
+            this.focus();
+        }
     },
 
     handleTouchMove(e) {
