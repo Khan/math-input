@@ -307,8 +307,9 @@ class MathWrapper {
         const commandCharRegex = /[\\]?[a-z]/;
 
         // Note: We don't treat left-parens as a command in the same sense as
-        // cosine and log.
-        const ignoredCommands = ['\\left('];
+        // cosine and log. Similarly, Pi and Theta are not treated as "commands"
+        // since they aren't functions.
+        const ignoredCommands = ['\\left(', '\\pi', '\\theta'];
 
         let name = '';
         let startNode;
