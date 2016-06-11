@@ -176,6 +176,9 @@ const Keypad = React.createClass({
             ...(this.props.active ? inlineStyles.active : inlineStyles.hidden),
             top: viewportHeight,
             width: viewportWidth,
+            // TODO(charlie): This is being overridden by the `View` elements
+            // own `maxWidth: 100%`, which is injected with Aphrodite and so has
+            // an `!important` annotation.
             maxWidth: viewportWidth,
         };
 
@@ -193,7 +196,13 @@ const Keypad = React.createClass({
 const styles = StyleSheet.create({
     keypad: {
         position: 'fixed',
-        overflowX: 'hidden',
+        // TODO(charlie): We'd like to use `overflowX: 'hidden'` to avoid making
+        // the second page of keys visible during page resizes. However, adding
+        // `overflowX: 'hidden'` makes the keypad cutoff its content vertically,
+        // even after adding `overflowY: 'visible'`. So, for example, the
+        // popover menus get cutoff at the top of the keypad, as do the echo
+        // animations.
+        // overflowX: 'hidden',
         borderTop: `${keypadBorderWidthPx}px solid rgba(0, 0, 0, 0.2)`,
         backgroundColor: numeralGrey,
         zIndex: zIndexes.keypad,
