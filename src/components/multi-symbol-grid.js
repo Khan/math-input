@@ -42,13 +42,19 @@ const MultiSymbolGrid = React.createClass({
 
             if (unicodeSymbols.length === 2) {
                 return <View style={[row, styles.iconSize]}>
-                    <View style={[column, centered, fullWidth]}>
+                    <View style={[
+                        column, centered, fullWidth, styles.middleLeft,
+                    ]}
+                    >
                         <UnicodeSymbol
                             style={primaryIconStyle}
                             unicodeSymbol={unicodeSymbols[0]}
                         />
                     </View>
-                    <View style={[column, centered, fullWidth]}>
+                    <View style={[
+                        column, centered, fullWidth, styles.middleRight,
+                    ]}
+                    >
                         <UnicodeSymbol
                             style={secondaryIconStyle}
                             unicodeSymbol={unicodeSymbols[1]}
@@ -56,20 +62,15 @@ const MultiSymbolGrid = React.createClass({
                     </View>
                 </View>;
             } else if (unicodeSymbols.length >= 3) {
-                return <View style={[
-                    column,
-                    styles.iconSize,
-                    styles.fourQuadrantGrid,
-                ]}
-                >
+                return <View style={[column, styles.iconSize]}>
                     <View style={row}>
-                        <View style={[centered, fullWidth]}>
+                        <View style={[centered, fullWidth, styles.topLeft]}>
                             <UnicodeSymbol
                                 style={primaryIconStyle}
                                 unicodeSymbol={unicodeSymbols[0]}
                             />
                         </View>
-                        <View style={[centered, fullWidth]}>
+                        <View style={[centered, fullWidth, styles.topRight]}>
                             <UnicodeSymbol
                                 style={secondaryIconStyle}
                                 unicodeSymbol={unicodeSymbols[1]}
@@ -77,13 +78,13 @@ const MultiSymbolGrid = React.createClass({
                         </View>
                     </View>
                     <View style={row}>
-                        <View style={[centered, fullWidth]}>
+                        <View style={[centered, fullWidth, styles.bottomLeft]}>
                             <UnicodeSymbol
                                 style={secondaryIconStyle}
                                 unicodeSymbol={unicodeSymbols[2]}
                             />
                         </View>
-                        <View style={[centered, fullWidth]}>
+                        <View style={[centered, fullWidth, styles.bottomRight]}>
                             {unicodeSymbols[3] && <UnicodeSymbol
                                 style={secondaryIconStyle}
                                 unicodeSymbol={unicodeSymbols[3]}
@@ -98,16 +99,39 @@ const MultiSymbolGrid = React.createClass({
     },
 });
 
-const fourQuadrantGridVerticalPaddingPx = 4;
+const verticalInsetPx = 2;
+const horizontalInsetPx = 4;
 
 const styles = StyleSheet.create({
     iconSize: {
         height: iconSizeHeightPx,
         width: iconSizeWidthPx,
     },
-    fourQuadrantGrid: {
-        paddingTop: fourQuadrantGridVerticalPaddingPx,
-        paddingBottom: fourQuadrantGridVerticalPaddingPx,
+
+    // For the three- and four-icon layouts.
+    bottomLeft: {
+        marginBottom: verticalInsetPx,
+        marginLeft: horizontalInsetPx,
+    },
+    topLeft: {
+        marginTop: verticalInsetPx,
+        marginLeft: horizontalInsetPx,
+    },
+    topRight: {
+        marginTop: verticalInsetPx,
+        marginRight: horizontalInsetPx,
+    },
+    bottomRight: {
+        marginBottom: verticalInsetPx,
+        marginRight: horizontalInsetPx,
+    },
+
+    // For the two-icon layout.
+    middleLeft: {
+        marginLeft: horizontalInsetPx,
+    },
+    middleRight: {
+        marginRight: horizontalInsetPx,
     },
 
     iconFont: {

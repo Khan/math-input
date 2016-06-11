@@ -21,4 +21,7 @@ module.exports = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    centeredText: {
+        textAlign: 'center',
+    },
 });
