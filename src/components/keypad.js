@@ -39,7 +39,6 @@ const Keypad = React.createClass({
         // It's okay to use the viewport units since they'll be overridden as
         // soon as the JavaScript kicks in.
         return {
-            viewportHeight: "100vh",
             viewportWidth: "100vw",
         };
     },
@@ -82,7 +81,6 @@ const Keypad = React.createClass({
     _updateSizeAndPosition() {
         // We don't use viewport units because of compatibility reasons.
         this.setState({
-            viewportHeight: window.innerHeight,
             viewportWidth: window.innerWidth,
         }, () => {
             if (this.props.active) {
@@ -128,7 +126,6 @@ const Keypad = React.createClass({
         } = this.props;
 
         const {
-            viewportHeight,
             viewportWidth,
         } = this.state;
 
@@ -174,7 +171,6 @@ const Keypad = React.createClass({
         //   See: https://github.com/Khan/aphrodite/issues/68.
         const dynamicStyle = {
             ...(this.props.active ? inlineStyles.active : inlineStyles.hidden),
-            top: viewportHeight,
             width: viewportWidth,
             // TODO(charlie): This is being overridden by the `View` elements
             // own `maxWidth: 100%`, which is injected with Aphrodite and so has
@@ -195,13 +191,15 @@ const Keypad = React.createClass({
 
 const styles = StyleSheet.create({
     keypad: {
+        bottom: 0,
         position: 'fixed',
         // TODO(charlie): We'd like to use `overflowX: 'hidden'` to avoid making
         // the second page of keys visible during page resizes. However, adding
         // `overflowX: 'hidden'` makes the keypad cutoff its content vertically,
         // even after adding `overflowY: 'visible'`. So, for example, the
         // popover menus get cutoff at the top of the keypad, as do the echo
-        // animations.
+        // animations. In addition, `overflowX: 'hidden'` was making the second
+        // page of keys appear above the sidebar on focus in mobile Safari.
         // overflowX: 'hidden',
         borderTop: `${keypadBorderWidthPx}px solid rgba(0, 0, 0, 0.2)`,
         backgroundColor: numeralGrey,
@@ -214,15 +212,15 @@ const styles = StyleSheet.create({
 // Note: these don't go through an autoprefixer/aphrodite.
 const inlineStyles = {
     hidden: {
-        msTransform: 'translate3d(0, 0, 0)',
-        WebkitTransform: 'translate3d(0, 0, 0)',
-        transform: 'translate3d(0, 0, 0)',
+        msTransform: 'translate3d(0, 100%, 0)',
+        WebkitTransform: 'translate3d(0, 100%, 0)',
+        transform: 'translate3d(0, 100%, 0)',
     },
 
     active: {
-        msTransform: 'translate3d(0, -100%, 0)',
-        WebkitTransform: 'translate3d(0, -100%, 0)',
-        transform: 'translate3d(0, -100%, 0)',
+        msTransform: 'translate3d(0, 0, 0)',
+        WebkitTransform: 'translate3d(0, 0, 0)',
+        transform: 'translate3d(0, 0, 0)',
     },
 };
 
