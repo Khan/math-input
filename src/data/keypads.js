@@ -20,11 +20,11 @@ const Keypads = {
     },
     [KeypadTypes.ADVANCED_EXPRESSION]: {
         numPages: 2,
-        extraKeys: ['X', 'y', Keys.PI, Keys.THETA],
+        extraKeys: ['x', 'y', Keys.PI, Keys.THETA],
     },
     [KeypadTypes.BASIC_EXPRESSION]: {
         numPages: 2,
-        extraKeys: ['X', 'Y', 'Z'],
+        extraKeys: ['x', 'y', 'z'],
     },
 };
 
