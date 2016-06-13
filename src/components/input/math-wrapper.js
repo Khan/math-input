@@ -309,11 +309,11 @@ class MathWrapper {
         // ['\\l', 'o', 'g ', '\\left(', ...]
         const commandCharRegex = /[\\]?[a-z]/;
 
-        // Note: We don't treat parentheses and fractions as commands in the
-        // same sense as cosine and log, since we want the user to be able to
-        // place the cursor after those nodes. Similarly, Pi and Theta are not
-        // treated as "commands" since they aren't functions.
-        const ignoredCommands = ['\\left(', '\\frac', '\\pi', '\\theta'];
+        // Note: We whitelist the set of valid commands, since relying solely on
+        // a command being prefixed with a backslash leads to undesired
+        // behavior. For example, Greek symbols, left parentheses, and square
+        // roots all get treated as commands.
+        const validCommands = ['\\log', '\\cos', '\\sin', '\\tan'];
 
         let name = '';
         let startNode;
@@ -353,10 +353,10 @@ class MathWrapper {
 
                 node = node[this.MQ.R];
             }
-            if (ignoredCommands.includes(name)) {
-                return null;
-            } else {
+            if (validCommands.includes(name)) {
                 return { name, startNode, endNode };
+            } else {
+                return null;
             }
         } else {
             return null;
