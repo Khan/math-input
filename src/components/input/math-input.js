@@ -41,6 +41,8 @@ const unionRects = (rects) =>
         left: Infinity,
     });
 
+const constrainingFrictionFactor = 0.8;
+
 const MathInput = React.createClass({
     propTypes: {
         // The behavior that the input should exhibit when the fraction key is
@@ -540,6 +542,16 @@ const MathInput = React.createClass({
         this._containerBounds = this._container.getBoundingClientRect();
     },
 
+    _constrainToBound(value, min, max, friction) {
+        if (value < min) {
+            return min + (value - min) * friction;
+        } else if (value > max) {
+            return max + (value - max) * friction;
+        } else {
+            return value;
+        }
+    },
+
     /**
      * When the user moves the cursor handle update the position of the cursor
      * and the handle.
@@ -551,6 +563,11 @@ const MathInput = React.createClass({
 
         const x = e.changedTouches[0].clientX;
         const y = e.changedTouches[0].clientY;
+
+        const relativeX = x - this._containerBounds.left;
+        const relativeY =
+            y - 2 * cursorHandleRadiusPx * cursorHandleDistanceMultiplier
+                - this._containerBounds.top;
 
         // We subtract the containerBounds left/top to correct for the
         // MathInput's position on the page. On top of that, we subtract an
@@ -565,9 +582,18 @@ const MathInput = React.createClass({
                 // scroll offsets. This likely also means that the cursor
                 // detection doesn't work when scrolled, since we're not
                 // offsetting those values.
-                x: x - this._containerBounds.left,
-                y: y - 2 * cursorHandleRadiusPx * cursorHandleDistanceMultiplier
-                     - this._containerBounds.top,
+                x: this._constrainToBound(
+                    relativeX,
+                    0,
+                    this._containerBounds.width,
+                    constrainingFrictionFactor
+                ),
+                y: this._constrainToBound(
+                    relativeY,
+                    0,
+                    this._containerBounds.height,
+                    constrainingFrictionFactor
+                ),
             },
         });
 
