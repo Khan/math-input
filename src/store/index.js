@@ -78,6 +78,8 @@ const createStore = () => {
             case 'ConfigureKeypad':
                 return {
                     ...state,
+                    // Default `extraKeys` to the empty array.
+                    extraKeys: [],
                     ...action.configuration,
                 };
 
