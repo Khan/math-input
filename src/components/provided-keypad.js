@@ -1,7 +1,7 @@
 const React = require('react');
 const { Provider } = require('react-redux');
 
-const MathKeypad = require('./math-keypad');
+const KeypadContainer = require('./keypad-container');
 const {
     activateKeypad,
     dismissKeypad,
@@ -53,7 +53,7 @@ const ProvidedKeypad = React.createClass({
         const { onElementMounted, ...rest } = this.props;
 
         return <Provider store={this.store}>
-            <MathKeypad
+            <KeypadContainer
                 onElementMounted={(element) => {
                     // Append the dispatch methods that we want to expose
                     // externally to the returned React element.

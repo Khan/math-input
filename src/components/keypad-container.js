@@ -1,17 +1,20 @@
 const React = require('react');
 const { connect } = require('react-redux');
+const { StyleSheet } = require('aphrodite');
 
+const { View } = require('../fake-react-native-web');
 const DefaultKeypad = require('./default-keypad');
 const NumberKeypad = require('./number-keypad');
 const FractionKeypad = require('./fraction-keypad');
 const BasicExpressionKeypad = require('./basic-expression-keypad');
 const AdvancedExpressionKeypad = require('./advanced-expression-keypad');
+const zIndexes = require('./input/z-indexes');
 const { getButtonHeightPx } = require('./common-style');
 const { setButtonHeightPx } = require('../actions');
 const { keyIdPropType } = require('./prop-types');
 const { KeypadTypes } = require('../consts');
 
-const MathKeypad = React.createClass({
+const KeypadContainer = React.createClass({
     propTypes: {
         active: React.PropTypes.bool,
         extraKeys: React.PropTypes.arrayOf(keyIdPropType),
@@ -59,7 +62,7 @@ const MathKeypad = React.createClass({
         }
     },
 
-    render() {
+    renderKeypad() {
         // Extract props that some keypads will need.
         const { extraKeys, keypadType, onElementMounted } = this.props;
 
@@ -94,7 +97,45 @@ const MathKeypad = React.createClass({
                 return <DefaultKeypad ref={onElementMounted} />;
         }
     },
+
+    render() {
+        // NOTE(charlie): We render the transforms as pure inline styles to
+        // avoid an Aphrodite bug in mobile Safari.
+        //   See: https://github.com/Khan/aphrodite/issues/68.
+        const dynamicStyle = this.props.active ? inlineStyles.active
+                                               : inlineStyles.hidden;
+        return <View style={styles.keypadContainer} dynamicStyle={dynamicStyle}>
+            {this.renderKeypad()}
+        </View>;
+    },
 });
+
+const keypadAnimationDurationMs = 300;
+
+const styles = StyleSheet.create({
+    keypadContainer: {
+        bottom: 0,
+        position: 'fixed',
+        transition: `${keypadAnimationDurationMs}ms ease-out`,
+        transitionProperty: 'transform',
+        zIndex: zIndexes.keypad,
+    },
+});
+
+// Note: these don't go through an autoprefixer/aphrodite.
+const inlineStyles = {
+    hidden: {
+        msTransform: 'translate3d(0, 100%, 0)',
+        WebkitTransform: 'translate3d(0, 100%, 0)',
+        transform: 'translate3d(0, 100%, 0)',
+    },
+
+    active: {
+        msTransform: 'translate3d(0, 0, 0)',
+        WebkitTransform: 'translate3d(0, 0, 0)',
+        transform: 'translate3d(0, 0, 0)',
+    },
+};
 
 const mapStateToProps = (state) => {
     return state.keypad;
@@ -108,4 +149,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(MathKeypad);
+module.exports = connect(mapStateToProps, mapDispatchToProps)(KeypadContainer);

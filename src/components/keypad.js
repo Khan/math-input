@@ -12,12 +12,10 @@ const { removeEcho } = require('../actions');
 const { View } = require('../fake-react-native-web');
 const EchoManager = require('./echo-manager');
 const PopoverManager = require('./popover-manager');
-const zIndexes = require('./input/z-indexes');
 const { numeralGrey } = require('./common-style');
 const { echoPropType, popoverPropType } = require('./prop-types');
 
 const keypadBorderWidthPx = 1;
-const keypadAnimationDurationMs = 300;
 
 const Keypad = React.createClass({
     propTypes: {
@@ -50,20 +48,6 @@ const Keypad = React.createClass({
     },
 
     componentWillReceiveProps(newProps) {
-        if (!this._container && !this.props.active && newProps.active) {
-            // On first appearance, compute the bounds of the container, but be
-            // sure to wait until the view has finished animating into place,
-            // taking care not to creep into the end of the animation, lest we
-            // introduce jank.
-            setTimeout(() => {
-                if (this.isMounted()) {
-                    this._computeContainer();
-                }
-            }, 2 * keypadAnimationDurationMs);
-        }
-
-        // If the user was interacts with the keypad before the timer went off,
-        // be sure to compute the container.
         if (!this._container && (newProps.popover || newProps.echoes.length)) {
             this._computeContainer();
         }
@@ -83,18 +67,13 @@ const Keypad = React.createClass({
         this.setState({
             viewportWidth: window.innerWidth,
         }, () => {
-            if (this.props.active) {
-                // Recalculate the container after the keypad animates to the
-                // new position and size.
-                setTimeout(() => {
-                    if (this.isMounted()) {
-                        this._computeContainer();
-                    }
-                }, 2 * keypadAnimationDurationMs);
-            }
-
-            // Mark the container for recalculation next time the keypad
-            // is opened.
+            // Mark the container for recalculation next time the keypad is
+            // opened.
+            // TODO(charlie): Since we're not recalculating the container
+            // immediately, if you were to resize the page while a popover were
+            // active, you'd likely get unexpected behavior. This seems very
+            // difficult to do and, as such, incredibly unlikely, but we may
+            // want to reconsider the caching here.
             this._container = null;
         });
     },
@@ -166,11 +145,7 @@ const Keypad = React.createClass({
             ...(Array.isArray(style) ? style : [style]),
         ];
 
-        // NOTE(charlie): We render the transforms as pure inline styles to
-        // avoid an Aphrodite bug in mobile Safari.
-        //   See: https://github.com/Khan/aphrodite/issues/68.
         const dynamicStyle = {
-            ...(this.props.active ? inlineStyles.active : inlineStyles.hidden),
             width: viewportWidth,
             // TODO(charlie): This is being overridden by the `View` elements
             // own `maxWidth: 100%`, which is injected with Aphrodite and so has
@@ -191,8 +166,6 @@ const Keypad = React.createClass({
 
 const styles = StyleSheet.create({
     keypad: {
-        bottom: 0,
-        position: 'fixed',
         // TODO(charlie): We'd like to use `overflowX: 'hidden'` to avoid making
         // the second page of keys visible during page resizes. However, adding
         // `overflowX: 'hidden'` makes the keypad cutoff its content vertically,
@@ -203,26 +176,8 @@ const styles = StyleSheet.create({
         // overflowX: 'hidden',
         borderTop: `${keypadBorderWidthPx}px solid rgba(0, 0, 0, 0.2)`,
         backgroundColor: numeralGrey,
-        zIndex: zIndexes.keypad,
-        transition: `${keypadAnimationDurationMs}ms ease-out`,
-        transitionProperty: 'transform',
     },
 });
-
-// Note: these don't go through an autoprefixer/aphrodite.
-const inlineStyles = {
-    hidden: {
-        msTransform: 'translate3d(0, 100%, 0)',
-        WebkitTransform: 'translate3d(0, 100%, 0)',
-        transform: 'translate3d(0, 100%, 0)',
-    },
-
-    active: {
-        msTransform: 'translate3d(0, 0, 0)',
-        WebkitTransform: 'translate3d(0, 0, 0)',
-        transform: 'translate3d(0, 0, 0)',
-    },
-};
 
 const mapStateToProps = (state) => {
     return {
