@@ -309,10 +309,11 @@ class MathWrapper {
         // ['\\l', 'o', 'g ', '\\left(', ...]
         const commandCharRegex = /[\\]?[a-z]/;
 
-        // Note: We don't treat left-parens as a command in the same sense as
-        // cosine and log. Similarly, Pi and Theta are not treated as "commands"
-        // since they aren't functions.
-        const ignoredCommands = ['\\left(', '\\pi', '\\theta'];
+        // Note: We don't treat parentheses and fractions as commands in the
+        // same sense as cosine and log, since we want the user to be able to
+        // place the cursor after those nodes. Similarly, Pi and Theta are not
+        // treated as "commands" since they aren't functions.
+        const ignoredCommands = ['\\left(', '\\frac', '\\pi', '\\theta'];
 
         let name = '';
         let startNode;
