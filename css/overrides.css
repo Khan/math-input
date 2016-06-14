@@ -1,7 +1,34 @@
 .keypad-input .mq-editable-field .mq-cursor {
     border-left: 2px solid #78c008 !important;
+    border-radius: 1px;
+
     margin-left: -1px !important;
     margin-right: -1px !important;
+    margin-bottom: 2px;
+}
+
+.keypad-input .mq-editable-field .mq-non-leaf .mq-cursor:only-child {
+    border: 2px solid #78c008 !important; /* bright-green color */
+    padding: 0 4px 0 4px;
+}
+
+.keypad-input .mq-empty {
+  background: transparent !important;
+}
+
+.keypad-input .mq-empty:not(.mq-root-block):after {
+  visibility: visible !important;
+
+  /* hides the 'c' content added by MathQuill to measure the width */
+  color: transparent;
+
+  display: inline-block;
+  border: 2px solid #ccc;
+  border-radius: 1px;
+  padding: 0 4px 0 4px;
+  margin-left: -1px;
+  margin-right: -1px;
+  margin-bottom: 2px;
 }
 
 .keypad-input .mq-math-mode .mq-selection,

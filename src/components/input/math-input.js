@@ -225,7 +225,7 @@ const MathInput = React.createClass({
         const cursor = this._container.querySelector('.mq-cursor');
         const cursorBounds = cursor.getBoundingClientRect();
 
-        const cursorWidth = 2;
+        const cursorWidth = cursorBounds.width;
         const gapBelowCursor = 2;
 
         this.setState({
