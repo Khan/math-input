@@ -299,16 +299,16 @@ class MathWrapper {
         }
 
         // MathQuill stores commands as separate characters so that
-        // users can delete commands one character at a time.  Iterate over
-        // the nodes from right to left until we hit a '\\' signifies the
-        // start of a command and return that node.  If we encounter any
-        // character that doesn't belong in a command, return null.
-        const commandDelimiter = '\\';
-
-        // We match a single character at a time.  The '\\' is optional because
-        // only the first node in the sequence contains a '\\', e.g.
-        // ['\\l', 'o', 'g ', '\\left(', ...]
-        const commandCharRegex = /[\\]?[a-z]/;
+        // users can delete commands one character at a time.  We iterate over
+        // the nodes from right to left until we hit a sequence starting with a
+        // '\\', which signifies the start of a command; then we iterate from
+        // left to right until we hit a '\\left(', which signifies the end of a
+        // command.  If we encounter any character that doesn't belong in a
+        // command, we return null.  We match a single character at a time.
+        // Ex) ['\\l', 'o', 'g ', '\\left(', ...]
+        const commandCharRegex = /^[a-z]$/;
+        const commandStartRegex = /^\\[a-z]$/;
+        const commandEndSeq = '\\left(';
 
         // Note: We whitelist the set of valid commands, since relying solely on
         // a command being prefixed with a backslash leads to undesired
@@ -324,13 +324,13 @@ class MathWrapper {
         // until the start of the command.
         let node = initialNode;
         while (node !== 0) {
-            if (commandCharRegex.test(node.ctrlSeq)) {
-                name = node.ctrlSeq.trim() + name;
-
-                if (node.ctrlSeq.startsWith(commandDelimiter)) {
-                    startNode = node;
-                    break;
-                }
+            const ctrlSeq = node.ctrlSeq.trim();
+            if (commandCharRegex.test(ctrlSeq)) {
+                name = ctrlSeq + name;
+            } else if (commandStartRegex.test(ctrlSeq)) {
+                name = ctrlSeq + name;
+                startNode = node;
+                break;
             } else {
                 break;
             }
@@ -345,11 +345,16 @@ class MathWrapper {
             // Next, iterate from the start to the right.
             node = initialNode[this.MQ.R];
             while (node !== 0) {
-                if (commandCharRegex.test(node.ctrlSeq) &&
-                        !node.ctrlSeq.startsWith(commandDelimiter)) {
-                    name = name + node.ctrlSeq.trim();
-                } else {
+                const ctrlSeq = node.ctrlSeq.trim();
+                if (commandCharRegex.test(ctrlSeq)) {
+                    // If we have a single character, add it to the command
+                    // name.
+                    name = name + ctrlSeq;
+                } else if (ctrlSeq === commandEndSeq)  {
+                    // If we hit the command end delimiter (the left
+                    // parentheses surrounding its arguments), stop.
                     endNode = node;
+                    break;
                 }
 
                 node = node[this.MQ.R];
