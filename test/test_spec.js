@@ -442,9 +442,6 @@ describe('MathQuill', () => {
             mathField.setContent(expr);
             mathField.moveToStart();
             mathField.pressKey(Keys.RIGHT);
-            mathField.pressKey(Keys.RIGHT);
-            mathField.pressKey(Keys.RIGHT);
-            mathField.pressKey(Keys.RIGHT);
             mathField.pressKey(Keys.BACKSPACE);
             assert(mathField.isSelected());
             assert.equal(mathField.getContent(), expr);
@@ -504,10 +501,13 @@ describe('MathQuill', () => {
         it('should delete empty log when at index', () => {
             mathField.setContent('\\log_{ }\\left(\\right)');
             mathField.moveToStart();
+
+            // Move right once to get into the parens, and then left twice to
+            // get to the empty index.
             mathField.pressKey(Keys.RIGHT);
-            mathField.pressKey(Keys.RIGHT);
-            mathField.pressKey(Keys.RIGHT);
-            mathField.pressKey(Keys.RIGHT);
+            mathField.pressKey(Keys.LEFT);
+            mathField.pressKey(Keys.LEFT);
+
             mathField.pressKey(Keys.BACKSPACE);
             assert.equal(mathField.getContent(), '');
         });
@@ -515,11 +515,13 @@ describe('MathQuill', () => {
         it('should delete log index normally', () => {
             mathField.setContent('\\log_5\\left(\\right)');
             mathField.moveToStart();
+
+            // Move right once to get into the parens, and then left twice to
+            // get to the index.
             mathField.pressKey(Keys.RIGHT);
-            mathField.pressKey(Keys.RIGHT);
-            mathField.pressKey(Keys.RIGHT);
-            mathField.pressKey(Keys.RIGHT);
-            mathField.pressKey(Keys.RIGHT);
+            mathField.pressKey(Keys.LEFT);
+            mathField.pressKey(Keys.LEFT);
+
             mathField.pressKey(Keys.BACKSPACE);
             assert.equal(mathField.getContent(), '\\log_{ }\\left(\\right)');
         });
@@ -539,10 +541,13 @@ describe('MathQuill', () => {
             const expr = '\\log_{ }\\left(x\\right)';
             mathField.setContent(expr);
             mathField.moveToStart();
+
+            // Move right once to get into the parens, and then left twice to
+            // get to the empty index.
             mathField.pressKey(Keys.RIGHT);
-            mathField.pressKey(Keys.RIGHT);
-            mathField.pressKey(Keys.RIGHT);
-            mathField.pressKey(Keys.RIGHT);
+            mathField.pressKey(Keys.LEFT);
+            mathField.pressKey(Keys.LEFT);
+
             mathField.pressKey(Keys.BACKSPACE);
 
             assert(mathField.isSelected());
@@ -553,12 +558,15 @@ describe('MathQuill', () => {
             const expr = '1+\\log_{ }\\left(x\\right)';
             mathField.setContent(expr);
             mathField.moveToStart();
+
+            // Move right once to get into the parens, and then left twice to
+            // get to the empty index.
             mathField.pressKey(Keys.RIGHT);
             mathField.pressKey(Keys.RIGHT);
             mathField.pressKey(Keys.RIGHT);
-            mathField.pressKey(Keys.RIGHT);
-            mathField.pressKey(Keys.RIGHT);
-            mathField.pressKey(Keys.RIGHT);
+            mathField.pressKey(Keys.LEFT);
+            mathField.pressKey(Keys.LEFT);
+
             mathField.pressKey(Keys.BACKSPACE);
 
             const selection = mathField.getSelection();
@@ -574,12 +582,15 @@ describe('MathQuill', () => {
             const expr = '1+\\log_{ }\\left(x\\right)-1';
             mathField.setContent(expr);
             mathField.moveToStart();
+
+            // Move right three times to get into the parens, and then left
+            // twice to get to the start of the empty index.
             mathField.pressKey(Keys.RIGHT);
             mathField.pressKey(Keys.RIGHT);
             mathField.pressKey(Keys.RIGHT);
-            mathField.pressKey(Keys.RIGHT);
-            mathField.pressKey(Keys.RIGHT);
-            mathField.pressKey(Keys.RIGHT);
+            mathField.pressKey(Keys.LEFT);
+            mathField.pressKey(Keys.LEFT);
+
             mathField.pressKey(Keys.BACKSPACE);
 
             const selection = mathField.getSelection();
@@ -595,10 +606,13 @@ describe('MathQuill', () => {
             const expr = '\\log_{ }\\left(x\\right)-1';
             mathField.setContent(expr);
             mathField.moveToStart();
+
+            // Move right once to get into the parens, and then left twice to
+            // get to the start of the empty index.
             mathField.pressKey(Keys.RIGHT);
-            mathField.pressKey(Keys.RIGHT);
-            mathField.pressKey(Keys.RIGHT);
-            mathField.pressKey(Keys.RIGHT);
+            mathField.pressKey(Keys.LEFT);
+            mathField.pressKey(Keys.LEFT);
+
             mathField.pressKey(Keys.BACKSPACE);
 
             const selection = mathField.getSelection();
@@ -608,6 +622,60 @@ describe('MathQuill', () => {
             assert.equal(left, END_OF_EXPR);
             assert.equal(right.ctrlSeq, '-');
             assert.equal(mathField.getContent(), expr);
+        });
+    });
+
+    describe('Left arrow', () => {
+        it('skips function names', () => {
+            mathField.pressKey(Keys.COS);
+            const cursor = mathField.getCursor();
+
+            // Verify that we're inside the function.
+            assert.equal(cursor[MQ.L], END_OF_EXPR);
+            assert.equal(cursor[MQ.R], END_OF_EXPR);
+
+            // Navigate left.
+            mathField.pressKey(Keys.LEFT);
+
+            // Verify that we moved beyond the body of the function.
+            assert.equal(cursor[MQ.L], END_OF_EXPR);
+            assert.equal(cursor[MQ.R].ctrlSeq, '\\c');
+        });
+
+        it('does not skip out of a function with valid content present', () => {
+            mathField.pressKey(Keys.COS);
+            mathField.pressKey(Keys.PLUS);
+            const cursor = mathField.getCursor();
+
+            // Verify that we're inside the function.
+            assert.equal(cursor[MQ.L].ctrlSeq, '+');
+            assert.equal(cursor[MQ.R], END_OF_EXPR);
+
+            // Navigate left.
+            mathField.pressKey(Keys.LEFT);
+
+            // Verify that we didn't move out of the function.
+            assert.equal(cursor[MQ.L], END_OF_EXPR);
+            assert.equal(cursor[MQ.R].ctrlSeq, '+');
+        });
+    });
+
+    describe('Right arrow', () => {
+        it('skips function names', () => {
+            mathField.setContent('\\cos\\left(5\\right)');
+            mathField.moveToStart();
+            const cursor = mathField.getCursor();
+
+            // Verify that we're outside the function.
+            assert.equal(cursor[MQ.L], END_OF_EXPR);
+            assert.equal(cursor[MQ.R].ctrlSeq, '\\c');
+
+            // Navigate right.
+            mathField.pressKey(Keys.RIGHT);
+
+            // Verify that we moved into the body of the function.
+            assert.equal(cursor[MQ.L], END_OF_EXPR);
+            assert.equal(cursor[MQ.R].ctrlSeq, '5');
         });
     });
 
@@ -710,11 +778,6 @@ describe('MathQuill', () => {
             assert.equal(left.ctrlSeq, '5');
             assert.equal(right, END_OF_EXPR);
         });
-    });
-
-    // TODO(kevinb) requires JUMP_NEXT key
-    describe.skip('Jump Next', () => {
-
     });
 
     describe.skip('Equals =, !=, <, <=, >, >=', () => {
