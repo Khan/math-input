@@ -314,7 +314,7 @@ class MathWrapper {
         // a command being prefixed with a backslash leads to undesired
         // behavior. For example, Greek symbols, left parentheses, and square
         // roots all get treated as commands.
-        const validCommands = ['\\log', '\\cos', '\\sin', '\\tan'];
+        const validCommands = ['\\log', '\\ln', '\\cos', '\\sin', '\\tan'];
 
         let name = '';
         let startNode;
