@@ -57,9 +57,10 @@ const NormalCommands = {
 
 class MathWrapper {
 
-    constructor(element, options, callbacks = {}) {
+    constructor(element, options = {}, callbacks = {}) {
         const { fractionBehavior } = options;
-        this.fractionBehavior = fractionBehavior;
+        this.fractionBehavior = fractionBehavior ||
+            FractionBehaviorTypes.INCLUSIVE;
 
         this.MQ = MathQuill.getInterface(2);
         this.mathField = this.MQ.MathField(element, {

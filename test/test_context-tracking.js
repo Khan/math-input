@@ -13,6 +13,16 @@ const createMathField = (document, MathWrapper) => {
     return new MathWrapper(span);
 };
 
+// TODO(charlie): Add proper tests to distinguish between left-end, right-end,
+// empty, and top-level contexts. (Note that the first three contexts all imply
+// top-level.)
+const isAtTopLevel = (context) => {
+    return context === CursorContexts.TOP_LEVEL ||
+        context === CursorContexts.EMPTY ||
+        context === CursorContexts.LEFT_END ||
+        context === CursorContexts.RIGHT_END;
+};
+
 describe('Cursor context', () => {
     let document;
     let MathWrapper;
@@ -51,14 +61,14 @@ describe('Cursor context', () => {
         mathField.pressKey('NUM_1');
         mathField.pressKey('NUM_2');
         const cursor = mathField.pressKey('NUM_3');
-        assert.equal(cursor.context, CursorContexts.TOP_LEVEL);
+        assert.ok(isAtTopLevel(cursor.context));
     });
 
     it('should treat numbers and ternary operators as top-level', () => {
         mathField.pressKey('NUM_1');
         mathField.pressKey(Keys.CDOT);
         const cursor = mathField.pressKey('NUM_2');
-        assert.equal(cursor.context, CursorContexts.TOP_LEVEL);
+        assert.ok(isAtTopLevel(cursor.context));
     });
 
     it('should treat fractions as nested', () => {
@@ -85,13 +95,13 @@ describe('Cursor context', () => {
     it('should treat the right of a nested expression as top-level', () => {
         mathField.pressKey(Keys.PARENS);
         const cursor = mathField.pressKey(Keys.RIGHT);
-        assert.equal(cursor.context, CursorContexts.TOP_LEVEL);
+        assert.ok(isAtTopLevel(cursor.context));
     });
 
     it('should treat the left of a nested expression as top-level', () => {
         mathField.pressKey(Keys.PARENS);
         const cursor = mathField.pressKey(Keys.LEFT);
-        assert.equal(cursor.context, CursorContexts.TOP_LEVEL);
+        assert.ok(isAtTopLevel(cursor.context));
     });
 
     it('a top-level expression in a nested expression is nested', () => {
