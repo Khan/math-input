@@ -350,8 +350,13 @@ const MathInput = React.createClass({
                 // included, neither mq-numerator nor mq-denominator nodes are
                 // and neither are subscripts or superscripts.
                 .filter(element => element && this._root.contains(element) &&
-                        !element.classList.contains('mq-root-block') &&
-                        !element.classList.contains('mq-non-leaf'));
+                        ((
+                          !element.classList.contains('mq-root-block') &&
+                          !element.classList.contains('mq-non-leaf')
+                         ) ||
+                         element.classList.contains('mq-empty') ||
+                         element.classList.contains('mq-hasCursor')
+                        ));
 
             let hitNode = null;
 
