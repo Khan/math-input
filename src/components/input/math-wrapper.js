@@ -30,9 +30,6 @@ const KeyActions = {
     [Keys.NEQ]: { str: '\\neq', fn: WRITE },
     [Keys.CDOT]: { str: '\\cdot', fn: WRITE },
     [Keys.PERCENT]: { str: '%', fn: WRITE },
-    [Keys.EXP]: { str: '^', fn: CMD },
-    [Keys.EXP_2]: { str: '^2', fn: WRITE },
-    [Keys.EXP_3]: { str: '^3', fn: WRITE },
     [Keys.SQRT]: { str: 'sqrt', fn: CMD },
     [Keys.PI]: { str: 'pi', fn: CMD },
     [Keys.THETA]: { str: 'theta', fn: CMD },
@@ -50,6 +47,9 @@ const NormalCommands = {
     [Keys.COS]: 'cos',
     [Keys.TAN]: 'tan',
 };
+
+const ArithmeticOperators = ['+', '-', '\\cdot', '\\times', '\\div'];
+const EqualityOperators = ['=', '\\neq', '<', '\\leq', '>', '\\geq'];
 
 class MathWrapper {
 
@@ -127,6 +127,9 @@ class MathWrapper {
         } else if (key === Keys.CUBE_ROOT) {
             this.mathField.write('\\sqrt[3]{}');
             this.mathField.keystroke('Left'); // under the root
+        } else if (key === Keys.EXP || key === Keys.EXP_2 ||
+                key === Keys.EXP_3) {
+            this._handleExponent(cursor, key);
         } else if (key === Keys.TOGGLE_SIGN) {
             this._handleToggleSign(cursor);
         } else if (key === Keys.BACKSPACE) {
@@ -326,6 +329,46 @@ class MathWrapper {
         } else {
             // Otherwise, we default to the standard MathQull right behavior.
             this.mathField.keystroke('Right');
+        }
+    }
+
+    _handleExponent(cursor, key) {
+        // If there's an invalid operator preceding the cursor (anything that
+        // knowingly cannot be raised to a power), add an empty set of
+        // parentheses and apply the exponent to that.
+        const invalidPrefixes = [...ArithmeticOperators, ...EqualityOperators];
+
+        const precedingNode = cursor[this.MQ.L];
+        const shouldPrefixWithParens = precedingNode === MQ_END ||
+                invalidPrefixes.includes(precedingNode.ctrlSeq.trim());
+        if (shouldPrefixWithParens) {
+            this.mathField.write('\\left(\\right)');
+        }
+
+        // Insert the appropriate exponent operator.
+        switch (key) {
+            case Keys.EXP:
+                this.mathField.cmd('^');
+                break;
+
+            case Keys.EXP_2:
+            case Keys.EXP_3:
+                this.mathField.write(`^${key === Keys.EXP_2 ? 2 : 3}`);
+
+                // If we enter a square or a cube, we should leave the cursor
+                // within the newly inserted parens, if they exist. This takes
+                // exactly four left strokes, since the cursor by default would
+                // end up to the right of the exponent.
+                if (shouldPrefixWithParens) {
+                    this.mathField.keystroke('Left');
+                    this.mathField.keystroke('Left');
+                    this.mathField.keystroke('Left');
+                    this.mathField.keystroke('Left');
+                }
+                break;
+
+            default:
+                throw new Error(`Invalid exponent key: ${key}`);
         }
     }
 

@@ -15,6 +15,11 @@ const createMathField = (document, MathWrapper) => {
     return new MathWrapper(span);
 };
 
+const isInsideEmptyParens = (cursor) => {
+    return cursor[MQ.L] === END_OF_EXPR && cursor[MQ.R] === END_OF_EXPR &&
+        cursor.parent.parent.ctrlSeq === '\\left(';
+};
+
 describe('MathQuill', () => {
     let document;
     let MathWrapper;
@@ -108,25 +113,80 @@ describe('MathQuill', () => {
         });
     });
 
-    describe.skip('Squared', () => {
+    describe('Squared', () => {
+        it('should prefix with empty parens after no content', () => {
+            mathField.pressKey(Keys.EXP_2);
+            assert.equal(mathField.getContent(), '\\left(\\right)^2');
+
+            // Verify that the cursor is in parens.
+            assert(isInsideEmptyParens(mathField.getCursor()));
+        });
+
+        it('should prefix with empty parens after an operator', () => {
+            mathField.pressKey(Keys.DIVIDE);
+            mathField.pressKey(Keys.EXP_2);
+            assert.equal(mathField.getContent(), '\\div\\left(\\right)^2');
+        });
+
         it('should work after an expression', () => {
             mathField.setContent('35x');
             mathField.pressKey(Keys.EXP_2);
             assert.equal(mathField.getContent(), '35x^2');
         });
 
-        it('should work on a selected expression', () => {
+        it.skip('should work on a selected expression', () => {
             mathField.setContent('35x+5');
             mathField.selectAll();
             mathField.pressKey(Keys.EXP_2);
-            assert.equal(mathField.getContent(), '(35x+5)^2');
+            assert.equal(mathField.getContent(), '\\left(35x+5\\right)^2');
+        });
+    });
+
+    describe('Cubed', () => {
+        it('should prefix with empty parens after no content', () => {
+            mathField.pressKey(Keys.EXP_3);
+            assert.equal(mathField.getContent(), '\\left(\\right)^3');
+
+            // Verify that the cursor is in parens.
+            assert(isInsideEmptyParens(mathField.getCursor()));
+        });
+
+        it('should prefix with empty parens after an operator', () => {
+            mathField.pressKey(Keys.EQUAL);
+            mathField.pressKey(Keys.EXP_3);
+            assert.equal(mathField.getContent(), '=\\left(\\right)^3');
+        });
+
+        it('should work after an expression', () => {
+            mathField.setContent('35x');
+            mathField.pressKey(Keys.EXP_3);
+            assert.equal(mathField.getContent(), '35x^3');
+        });
+
+        it.skip('should work on a selected expression', () => {
+            mathField.setContent('35x+5');
+            mathField.selectAll();
+            mathField.pressKey(Keys.EXP_3);
+            assert.equal(mathField.getContent(), '\\left(35x+5\\right)^3');
         });
     });
 
     describe('Exponent', () => {
-        it('should work with no content', () => {
+        it('should prefix with empty parens after no content', () => {
             mathField.pressKey(Keys.EXP);
-            assert.equal(mathField.getContent(), '^{ }');
+            assert.equal(mathField.getContent(), '\\left(\\right)^{ }');
+
+            // Verify that the cursor is in the exponent, not within the parens,
+            // writing a unique character to verify cursor position.
+            assert(!isInsideEmptyParens(mathField.getCursor()));
+            mathField.pressKey(Keys.PLUS);
+            assert.equal(mathField.getContent(), '\\left(\\right)^+');
+        });
+
+        it('should prefix with empty parens after an operator', () => {
+            mathField.pressKey(Keys.PLUS);
+            mathField.pressKey(Keys.EXP);
+            assert.equal(mathField.getContent(), '+\\left(\\right)^{ }');
         });
 
         it('should work after an expression', () => {
@@ -140,7 +200,7 @@ describe('MathQuill', () => {
             mathField.setContent('35x+5');
             mathField.selectAll();
             mathField.pressKey(Keys.EXP);
-            assert.equal(mathField.getContent(), '(35x+5)^{ }');
+            assert.equal(mathField.getContent(), '\\left(35x+5\\right)^{ }');
         });
     });
 
