@@ -42,12 +42,24 @@
   content: 'c';
 }
 
-.keypad-input .mq-math-mode .mq-selection,
-.keypad-input .mq-editable-field .mq-selection,
 .keypad-input .mq-math-mode .mq-selection .mq-non-leaf,
-.keypad-input .mq-editable-field .mq-selection .mq-non-leaf,
+.keypad-input .mq-editable-field .mq-selection .mq-non-leaf
+{
+    background: #78c008 !important;
+    color: white !important;
+    border-color: white !important;
+}
+
 .keypad-input .mq-math-mode .mq-selection .mq-scaled,
-.keypad-input .mq-editable-field .mq-selection .mq-scaled {
+.keypad-input .mq-editable-field .mq-selection .mq-scaled
+{
+    background: transparent !important;
+    color: white !important;
+    border-color: transparent !important;
+}
+
+.keypad-input .mq-selection {
+    display: inline-block !important;
     background: #78c008 !important;
     color: white !important;
     border-color: white !important;

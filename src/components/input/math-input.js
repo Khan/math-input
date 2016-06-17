@@ -6,7 +6,6 @@ const { StyleSheet } = require("aphrodite");
 
 const { View } = require('../../fake-react-native-web');
 const CursorHandle = require('./cursor-handle');
-const SelectionRect = require('./selection-rect');
 const MathWrapper = require('./math-wrapper');
 const scrollIntoView = require('./scroll-into-view');
 const {
@@ -17,29 +16,6 @@ const {
 const { fractionBehavior } = require('../../settings');
 const { FractionBehaviorTypes } = require('../../consts');
 const { keypadElementPropType } = require('../prop-types');
-
-const defaultSelectionRect = {
-    visible: false,
-    x: 0,
-    y: 0,
-    width: 0,
-    height: 0,
-};
-
-const unionRects = (rects) =>
-    rects.reduce((previous, current) => {
-        return {
-            top: Math.min(previous.top, current.top),
-            right: Math.max(previous.right, current.right),
-            bottom: Math.max(previous.bottom, current.bottom),
-            left: Math.min(previous.left, current.left),
-        };
-    }, {
-        top: Infinity,
-        right: -Infinity,
-        bottom: -Infinity,
-        left: Infinity,
-    });
 
 const constrainingFrictionFactor = 0.8;
 
@@ -86,7 +62,6 @@ const MathInput = React.createClass({
                 x: 0,
                 y: 0,
             },
-            selectionRect: defaultSelectionRect,
         };
     },
 
@@ -191,35 +166,6 @@ const MathInput = React.createClass({
         window.removeEventListener('touchcancel', this.blurOnTouchEndOutside);
     },
 
-    rectForSelection(selection) {
-        if (!selection) {
-            return defaultSelectionRect;
-        }
-
-        const selectionRoot = this._container.querySelector('.mq-selection');
-        const bounds = unionRects(
-            // Grab all the DOMNodes within the selection and calculate the
-            // union of all of their bounding boxes.
-            [...selectionRoot.querySelectorAll('*')].map(
-                elem => elem.getBoundingClientRect()
-            )
-        );
-
-        const mathContainerBounds =
-            this._mathContainer.getBoundingClientRect();
-
-        const borderWidth = borderWidthPx;
-        const padding = paddingWidthPx;
-
-        return {
-            visible: true,
-            x: bounds.left - mathContainerBounds.left - borderWidth - padding,
-            y: bounds.top - mathContainerBounds.top - borderWidth - padding,
-            width: bounds.right - bounds.left + 2 * padding,
-            height: bounds.bottom - bounds.top + 2 * padding,
-        };
-    },
-
     _updateCursorHandle(animateIntoPosition) {
         const containerBounds = this._container.getBoundingClientRect();
         const cursor = this._container.querySelector('.mq-cursor');
@@ -237,7 +183,6 @@ const MathInput = React.createClass({
                 x: cursorBounds.left + cursorWidth / 2 - containerBounds.left,
                 y: cursorBounds.bottom + gapBelowCursor - containerBounds.top,
             },
-            selectionRect: defaultSelectionRect,
         });
     },
 
@@ -264,23 +209,21 @@ const MathInput = React.createClass({
             const cursor = this.mathField.pressKey(key);
 
             // Trigger an `onChange` if the value in the input changed, and hide
-            // the cursor handle and update the selection rect whenever the user
-            // types a key. If the value changed as a result of a keypress, we
-            // need to be careful not to call `setState` until after `onChange`
-            // has resolved.
-            const hideCursorAndUpdateSelectionRect = () => {
+            // the cursor handle whenever the user types a key. If the value
+            // changed as a result of a keypress, we need to be careful not to
+            // call `setState` until after `onChange` has resolved.
+            const hideCursor = () => {
                 this.setState({
                     handle: {
                         visible: false,
                     },
-                    selectionRect: this.rectForSelection(cursor.selection),
                 });
             };
             const value = this.mathField.getContent();
             if (this.props.value !== value) {
-                this.props.onChange(value, hideCursorAndUpdateSelectionRect);
+                this.props.onChange(value, hideCursor);
             } else {
-                hideCursorAndUpdateSelectionRect();
+                hideCursor();
             }
 
             return cursor;
@@ -636,7 +579,7 @@ const MathInput = React.createClass({
     },
 
     render() {
-        const { focused, handle, selectionRect } = this.state;
+        const { focused, handle } = this.state;
         const { style } = this.props;
 
         const innerStyle = {
@@ -664,8 +607,6 @@ const MathInput = React.createClass({
                     }}
                     style={innerStyle}
                 >
-                    {focused && selectionRect.visible &&
-                        <SelectionRect {...selectionRect}/>}
                 </div>
             </div>
             {focused && handle.visible && <CursorHandle
