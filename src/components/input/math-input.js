@@ -664,6 +664,7 @@ const inlineStyles = {
         display: 'flex',
         minWidth: minSizePx,
         minHeight: minSizePx,
+        boxSizing: 'border-box',
         position: 'relative',
         overflow: 'hidden',
         borderStyle: 'solid',
