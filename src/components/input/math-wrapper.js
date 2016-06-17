@@ -220,6 +220,11 @@ class MathWrapper {
         this.mathField.latex(latex);
     }
 
+    isEmpty() {
+        const cursor = this.getCursor();
+        return cursor.parent.id === 1 && cursor[1] === 0 && cursor[-1] === 0;
+    }
+
     // Notes about MathQuill
     //
     // MathQuill's stores its layout as nested linked lists.  Each node in the

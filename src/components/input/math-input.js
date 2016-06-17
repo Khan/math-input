@@ -16,6 +16,7 @@ const {
 const { fractionBehavior } = require('../../settings');
 const { FractionBehaviorTypes } = require('../../consts');
 const { keypadElementPropType } = require('../prop-types');
+const { brightGreen } = require('../common-style');
 
 const constrainingFrictionFactor = 0.8;
 
@@ -158,12 +159,22 @@ const MathInput = React.createClass({
         if (this.mathField.getContent() !== this.props.value) {
             this.mathField.setContent(this.props.value);
         }
+
+        if (this.state.focused && this.mathField.isEmpty()) {
+            this.mathField.getCursor().hide();
+        }
     },
 
     componentWillUnmount() {
         window.removeEventListener('touchstart', this.recordTouchStartOutside);
         window.removeEventListener('touchend', this.blurOnTouchEndOutside);
         window.removeEventListener('touchcancel', this.blurOnTouchEndOutside);
+    },
+
+    _borderWidthPx() {
+        const empty = this.mathField && this.mathField.isEmpty();
+
+        return this.state.focused && empty ? 2 : 1;
     },
 
     _updateCursorHandle(animateIntoPosition) {
@@ -582,9 +593,15 @@ const MathInput = React.createClass({
         const { focused, handle } = this.state;
         const { style } = this.props;
 
+        const empty = this.mathField && this.mathField.isEmpty();
+
         const innerStyle = {
             ...inlineStyles.innerContainer,
             ...style,
+            borderWidth: this._borderWidthPx(),
+            ...(focused && empty ? {
+                borderColor: brightGreen,
+            } : {}),
         };
 
         return <View
@@ -623,7 +640,6 @@ const MathInput = React.createClass({
 const fontSizePt = 18;
 const minSizePx = 34;
 const paddingWidthPx = 2;   // around _mathContainer and the selection rect
-const borderWidthPx = 1;    // black border around _mathContainer
 
 const styles = StyleSheet.create({
     input: {
@@ -650,7 +666,6 @@ const inlineStyles = {
         minHeight: minSizePx,
         position: 'relative',
         overflow: 'hidden',
-        borderWidth: borderWidthPx,
         borderStyle: 'solid',
         borderColor: mediumGrey,
         borderRadius: 4,
