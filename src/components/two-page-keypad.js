@@ -12,7 +12,7 @@ const PagerIndicator = require('./pager-indicator');
 const { View } = require('../fake-react-native-web');
 const { column, row } = require('./styles');
 const {
-    buttonBorderColor, buttonBorderStyle, buttonBorderWidthPx, lightGrey,
+    buttonBorderColor, buttonBorderStyle, buttonBorderWidthPx, gray85,
 } = require('./common-style');
 const { SwitchTypes } = require('../consts');
 const { keypadSwitch } = require('../settings');
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     keypad: {
         // Set the background to light grey, so that when the user drags the
         // keypad pages past the edges, there's a grey backdrop.
-        backgroundColor: lightGrey,
+        backgroundColor: gray85,
     },
 
     mainContent: {

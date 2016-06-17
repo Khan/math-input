@@ -7,7 +7,7 @@ const React = require('react');
 const { StyleSheet } = require('aphrodite');
 
 const { View } = require('../fake-react-native-web');
-const { darkGrey, lightGrey } = require('./common-style');
+const { gray68, gray85 } = require('./common-style');
 
 const PagerIcon = React.createClass({
     propTypes: {
@@ -25,7 +25,7 @@ const PagerIcon = React.createClass({
     render() {
         const { active, radiusPx } = this.props;
 
-        const fillColor = active ? darkGrey : lightGrey;
+        const fillColor = active ? gray68 : gray85;
 
         return <svg width={2 * radiusPx} height={2 * radiusPx}>
             <circle

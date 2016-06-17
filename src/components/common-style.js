@@ -6,10 +6,11 @@ const defaultButtonHeightPx = 60;
 
 module.exports = {
     brightGreen: '#78C008',
-    darkGrey: '#888D93',
-    lightGrey: '#D6D8DA',
-    iconGrey: '#3B3E40',
-    mediumGrey: '#BABEC2',
+    gray17: '#21242C',
+    gray25: '#3B3E40',
+    gray68: '#888D93',
+    gray76: '#BABEC2',
+    gray85: '#D6D8DA',
     secondaryIconOpacity: 0.3,
     buttonBorderColor: '#ECECEC',
     buttonBorderStyle: 'solid',

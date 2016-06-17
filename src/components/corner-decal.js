@@ -6,7 +6,7 @@ const React = require('react');
 const { StyleSheet } = require('aphrodite');
 
 const { View } = require('../fake-react-native-web');
-const { mediumGrey } = require('./common-style');
+const { gray76 } = require('./common-style');
 
 const CornerDecal = () => {
     const points = `0,0 ${triangleSizePx},0 ` +
@@ -24,7 +24,7 @@ const CornerDecal = () => {
 };
 
 const triangleSizePx = 8;
-const triangleColor = mediumGrey;
+const triangleColor = gray76;
 
 const styles = StyleSheet.create({
     triangle: {

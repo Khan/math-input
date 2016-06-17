@@ -11,7 +11,7 @@ const UnicodeIcon = require('./unicode-icon');
 const UnicodeSymbol = require('./unicode-symbol');
 const { row, column, centered, fullWidth } = require('./styles');
 const {
-    iconGrey, secondaryIconOpacity, iconSizeHeightPx, iconSizeWidthPx,
+    gray25, secondaryIconOpacity, iconSizeHeightPx, iconSizeWidthPx,
 } = require('./common-style');
 const { unicodeSymbolPropType } = require('./prop-types');
 
@@ -141,10 +141,10 @@ const styles = StyleSheet.create({
     // TODO(charlie): Make the SVG icons import these defaults from
     // common-style.
     primaryIcon: {
-        color: iconGrey,
+        color: gray25,
     },
     secondaryIcon: {
-        color: iconGrey,
+        color: gray25,
         opacity: secondaryIconOpacity,
     },
 

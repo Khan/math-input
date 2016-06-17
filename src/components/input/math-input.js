@@ -11,12 +11,12 @@ const scrollIntoView = require('./scroll-into-view');
 const {
     cursorHandleRadiusPx,
     cursorHandleDistanceMultiplier,
-    mediumGrey,
+    gray76,
  } = require('../common-style');
 const { fractionBehavior } = require('../../settings');
 const { FractionBehaviorTypes } = require('../../consts');
 const { keypadElementPropType } = require('../prop-types');
-const { brightGreen } = require('../common-style');
+const { brightGreen, gray17 } = require('../common-style');
 
 const constrainingFrictionFactor = 0.8;
 
@@ -668,8 +668,9 @@ const inlineStyles = {
         position: 'relative',
         overflow: 'hidden',
         borderStyle: 'solid',
-        borderColor: mediumGrey,
+        borderColor: gray76,
         borderRadius: 4,
+        color: gray17,
     },
 };
 

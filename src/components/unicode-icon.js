@@ -9,7 +9,7 @@ const { View } = require('../fake-react-native-web');
 const UnicodeSymbol = require('./unicode-symbol');
 const { row, centered } = require('./styles');
 const {
-    iconGrey, iconSizeHeightPx, iconSizeWidthPx,
+    gray25, iconSizeHeightPx, iconSizeWidthPx,
 } = require('./common-style');
 
 const UnicodeIcon = React.createClass({
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
         fontStyle: 'italic',
     },
     iconColor: {
-        color: iconGrey,
+        color: gray25,
     },
     focused: {
         color: '#FFF',

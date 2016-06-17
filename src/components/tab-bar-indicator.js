@@ -7,7 +7,7 @@ const React = require('react');
 const { StyleSheet } = require('aphrodite');
 
 const { Text, View } = require('../fake-react-native-web');
-const { brightGreen, darkGrey } = require('./common-style');
+const { brightGreen, gray68 } = require('./common-style');
 
 const Tab = React.createClass({
     propTypes: {
@@ -104,7 +104,7 @@ const TabBarIndicator = React.createClass({
 const tabUnderlineExtraWidthPx = 10;
 
 const activeColor = brightGreen;
-const inactiveColor = darkGrey;
+const inactiveColor = gray68;
 const activeFocusedColor = '#518005';
 const inactiveFocusedColor = '#71B307';
 
