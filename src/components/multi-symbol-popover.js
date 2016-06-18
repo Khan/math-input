@@ -8,6 +8,7 @@ const { StyleSheet } = require('aphrodite');
 const { View } = require('../fake-react-native-web');
 const { keyConfigPropType } = require('./prop-types');
 const { KeyTypes, BorderStyles } = require('../consts');
+const zIndexes = require('./z-indexes');
 
 const MultiSymbolPopover = React.createClass({
     propTypes: {
@@ -48,7 +49,7 @@ const styles = StyleSheet.create({
         width: '100%',
         borderRadius: 2,
         boxShadow: '0 2px 6px rgba(0, 0, 0, 0.3)',
-        zIndex: 1,
+        zIndex: zIndexes.popover,
     },
 
     popoverButton: {

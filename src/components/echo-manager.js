@@ -10,6 +10,7 @@ const { KeyTypes, EchoAnimationTypes } = require('../consts');
 const {
     echoPropType, bordersPropType, boundingBoxPropType, keyIdPropType,
 } = require('./prop-types');
+const zIndexes = require('./z-indexes');
 const Settings = require('../settings');
 
 const Echo = React.createClass({
@@ -36,6 +37,7 @@ const Echo = React.createClass({
         const { unicodeSymbol } = KeyConfigs[id];
 
         const containerStyle = {
+            zIndex: zIndexes.echo,
             position: 'absolute',
             pointerEvents: 'none',
             ...initialBounds,
