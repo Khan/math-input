@@ -2,7 +2,8 @@
  * The state machine that backs our gesture system. In particular, this state
  * machine manages the interplay between focuses, touch ups, and swiping.
  * It is entirely ignorant of the existence of popovers and the positions of
- * DOM nodes, operating solely on IDs.
+ * DOM nodes, operating solely on IDs. The state machine does accommodate for
+ * multi-touch interactions, tracking gesture state on a per-touch basis.
  */
 
 const { holdIntervalMs } = require('../settings');
@@ -23,24 +24,39 @@ class GestureStateMachine {
         this.swipeDisabledNodeIds = swipeDisabledNodeIds || [];
         this.multiPressableKeys = multiPressableKeys || [];
 
-        this.swiping = false;
-        this.startX = null;
-        this._swipeDisabledForGesture = false;
+        // TODO(charlie): Flow-type this file. It's not great that we're now
+        // passing around these opaque state objects.
+        this.touchState = {};
+        this.swipeState = null;
     }
 
-    _maybeCancelLongPress() {
-        if (this._longPressTimeoutId) {
-            clearTimeout(this._longPressTimeoutId);
-            this._longPressTimeoutId = null;
+    _maybeCancelLongPressForTouch(touchId) {
+        const { longPressTimeoutId } = this.touchState[touchId];
+        if (longPressTimeoutId) {
+            clearTimeout(longPressTimeoutId);
+            this.touchState[touchId] = {
+                ...this.touchState[touchId],
+                longPressTimeoutId: null,
+            };
         }
     }
 
-    _maybeCancelPressAndHold() {
-        if (this._pressAndHoldIntervalId) {
+    _maybeCancelPressAndHoldForTouch(touchId) {
+        const { pressAndHoldIntervalId } = this.touchState[touchId];
+        if (pressAndHoldIntervalId) {
             // If there was an interval set to detect holds, clear it out.
-            clearInterval(this._pressAndHoldIntervalId);
-            this._pressAndHoldIntervalId = null;
+            clearInterval(pressAndHoldIntervalId);
+            this.touchState[touchId] = {
+                ...this.touchState[touchId],
+                pressAndHoldIntervalId: null,
+            };
         }
+    }
+
+    _cleanupTouchEvent(touchId) {
+        this._maybeCancelLongPressForTouch(touchId);
+        this._maybeCancelPressAndHoldForTouch(touchId);
+        delete this.touchState[touchId];
     }
 
     /**
@@ -50,13 +66,14 @@ class GestureStateMachine {
      *
      * @param {string|null} id - the identifier of the newly focused node, or
      *                           `null` if no node is focused
+     * @param {number} touchId - a unique identifier associated with the touch
      */
-    _onFocus(id) {
+    _onFocus(id, touchId) {
         // If we're in the middle of a long-press, cancel it.
-        this._maybeCancelLongPress();
+        this._maybeCancelLongPressForTouch(touchId);
 
         // Reset any existing hold-detecting interval.
-        this._maybeCancelPressAndHold();
+        this._maybeCancelPressAndHoldForTouch(touchId);
 
         // Set the focused node ID and handle the focus event.
         // Note: we can call `onFocus` with `null` IDs. The semantics of an
@@ -64,8 +81,11 @@ class GestureStateMachine {
         // indicates that a gesture that can focus future nodes is still in
         // progress, but that no node is currently focused. The latter
         // indicates that the gesture has ended and nothing will be focused.
-        this._focusedNodeId = id;
-        this.handlers.onFocus(this._focusedNodeId);
+        this.touchState[touchId] = {
+            ...this.touchState[touchId],
+            activeNodeId: id,
+        };
+        this.handlers.onFocus(id);
 
         if (id) {
             // Handle logic for repeating button presses.
@@ -74,32 +94,38 @@ class GestureStateMachine {
                 this.handlers.onTrigger(id);
 
                 // Set up a new hold detector for the current button.
-                this._pressAndHoldIntervalId = setInterval(() => {
-                    // On every cycle, trigger the click handler.
-                    this.handlers.onTrigger(id);
-                }, this.options.holdIntervalMs);
+                this.touchState[touchId] = {
+                    ...this.touchState[touchId],
+                    pressAndHoldIntervalId: setInterval(() => {
+                        // On every cycle, trigger the click handler.
+                        this.handlers.onTrigger(id);
+                    }, this.options.holdIntervalMs),
+                };
             } else {
-                const self = this;
-                this._longPressTimeoutId = setTimeout(() => {
-                    self.handlers.onLongPress(id);
-                    self._longPressTimeoutId = null;
-                }, this.options.longPressWaitTimeMs);
+                // Set up a new hold detector for the current button.
+                this.touchState[touchId] = {
+                    ...this.touchState[touchId],
+                    longPressTimeoutId: setTimeout(() => {
+                        this.handlers.onLongPress(id);
+                        this.touchState[touchId] = {
+                            ...this.touchState[touchId],
+                            longPressTimeoutId: null,
+                        };
+                    }, this.options.longPressWaitTimeMs),
+                };
             }
         }
     }
 
     /**
-     * Handle a blur event, indicating the end of a gesture's focusable
-     * lifetime. After a blur, nothing will be focused until a new gesture
-     * begins, although the system may continue to generate swipe events.
+     * Clear out all active gesture information.
      */
-    _onBlur() {
-        // If we're in the middle of a long-press, cancel it.
-        this._maybeCancelLongPress();
-
-        this._maybeCancelPressAndHold();
-
-        this._focusedNodeId = null;
+    _onSwipeStart() {
+        for (const activeTouchId of Object.keys(this.touchState)) {
+            this._maybeCancelLongPressForTouch(activeTouchId);
+            this._maybeCancelPressAndHoldForTouch(activeTouchId);
+        }
+        this.touchState = {};
         this.handlers.onBlur();
     }
 
@@ -121,15 +147,21 @@ class GestureStateMachine {
      *
      * @param {idComputation} getId - a function that returns identifier of the
      *                                node over which the start event occurred
+     * @param {number} touchId - a unique identifier associated with the touch
      */
-    onTouchStart(getId, pageX) {
-        this.startX = pageX;
-        const startingNode = getId();
+    onTouchStart(getId, touchId, pageX) {
+        // Ignore any touch events that start mid-swipe.
+        if (this.swipeState) {
+            return;
+        }
 
-        this._swipeDisabledForGesture =
-            this.swipeDisabledNodeIds.includes(startingNode);
+        const startingNodeId = getId();
+        this.touchState[touchId] = {
+            swipeLocked: this.swipeDisabledNodeIds.includes(startingNodeId),
+            startX: pageX,
+        };
 
-        this._onFocus(startingNode);
+        this._onFocus(startingNodeId, touchId);
     }
 
     /**
@@ -137,28 +169,41 @@ class GestureStateMachine {
      *
      * @param {idComputation} getId - a function that returns identifier of the
      *                                node over which the move event occurred
+     * @param {number} touchId - a unique identifier associated with the touch
      * @param {number} pageX - the x coordinate of the touch
      * @param {boolean} swipeEnabled - whether the system should allow for
      *                                 transitions into a swiping state
      */
-    onTouchMove(getId, pageX, swipeEnabled) {
-        const dx = pageX - this.startX;
-        const shouldBeginSwiping = !this.swiping && swipeEnabled &&
-            Math.abs(dx) > this.options.swipeThresholdPx &&
-            !this._swipeDisabledForGesture;
-
-        if (this.swiping) {
-            this.handlers.onSwipeChange(dx);
-        } else if (shouldBeginSwiping) {
-            this._onBlur();
-
-            // Trigger the swipe.
-            this.swiping = true;
-            this.handlers.onSwipeChange(dx);
+    onTouchMove(getId, touchId, pageX, swipeEnabled) {
+        if (this.swipeState) {
+            // Only respect the finger that started a swipe. Any other lingering
+            // gestures are ignored.
+            if (this.swipeState.touchId === touchId) {
+                this.handlers.onSwipeChange(pageX - this.swipeState.startX);
+            }
         } else {
-            const id = getId();
-            if (id !== this._focusedNodeId) {
-                this._onFocus(id);
+            const {
+                activeNodeId, startX, swipeLocked,
+            } = this.touchState[touchId];
+
+            const dx = pageX - startX;
+            const shouldBeginSwiping = swipeEnabled && !swipeLocked &&
+                Math.abs(dx) > this.options.swipeThresholdPx;
+
+            if (shouldBeginSwiping) {
+                this._onSwipeStart();
+
+                // Trigger the swipe.
+                this.swipeState = {
+                    touchId,
+                    startX,
+                };
+                this.handlers.onSwipeChange(pageX - this.swipeState.startX);
+            } else {
+                const id = getId();
+                if (id !== activeNodeId) {
+                    this._onFocus(id, touchId);
+                }
             }
         }
     }
@@ -168,59 +213,57 @@ class GestureStateMachine {
      *
      * @param {idComputation} getId - a function that returns identifier of the
      *                                node over which the end event occurred
+     * @param {number} touchId - a unique identifier associated with the touch
      * @param {number} pageX - the x coordinate of the touch
      */
-    onTouchEnd(getId, pageX) {
-        if (this.swiping) {
-            this.handlers.onSwipeEnd(pageX - this.startX);
-        } else if (this._pressAndHoldIntervalId) {
-            // We don't trigger a touch end if there was a press and hold,
-            // because the key has been triggered at least once and calling the
-            // onTouchEnd handler would add an extra trigger.
-            this._onBlur();
+    onTouchEnd(getId, touchId, pageX) {
+        if (this.swipeState) {
+            // Only respect the finger that started a swipe. Any other lingering
+            // gestures are ignored.
+            if (this.swipeState.touchId === touchId) {
+                this.handlers.onSwipeEnd(pageX - this.swipeState.startX);
+                this.swipeState = null;
+            }
         } else {
-            // Trigger a touch-end. There's no need to notify clients of a blur
-            // as clients are responsible for handling any cleanup in their
-            // touch-end handlers.
-            // TODO(charlie): Use `this._focusedNodeId` here instead of calling
-            // `getId()`, when possible. This is made difficult right now by the
-            // possibility of multi-touch interactions, which allow for
-            // interactions like:
-            //  - User touches down on '4'. '4' is now `this._focusedNodeId`.
-            //  - User touches down (with a different finger) on '5'. '5' is now
-            //    `this._focusedNodeId`.
-            //  - User lifts the first finger, over '4', so relying on
-            //    `this._focusedNodeId` would mistakenly trigger '5'.
-            this.handlers.onTouchEnd(getId());
+            const {
+                activeNodeId, pressAndHoldIntervalId,
+            } = this.touchState[touchId];
 
-            // Clean-up any lingering long-press events.
-            this._maybeCancelLongPress();
-            this._focusedNodeId = null;
+            this._cleanupTouchEvent(touchId);
+
+            const didPressAndHold = !!pressAndHoldIntervalId;
+            if (didPressAndHold) {
+                // We don't trigger a touch end if there was a press and hold,
+                // because the key has been triggered at least once and calling
+                // the onTouchEnd handler would add an extra trigger.
+                this.handlers.onBlur();
+            } else {
+                // Trigger a touch-end. There's no need to notify clients of a
+                // blur as clients are responsible for handling any cleanup in
+                // their touch-end handlers.
+                this.handlers.onTouchEnd(activeNodeId);
+            }
         }
-
-        this.swiping = false;
-        this.startX = null;
-        this._swipeDisabledForGesture = false;
     }
 
     /**
      * Handle a touch-cancel event.
      */
-    onTouchCancel() {
+    onTouchCancel(touchId) {
         // If a touch is cancelled and we're swiping, end the swipe with no
         // displacement.
-        if (this.swiping) {
-            this.handlers.onSwipeEnd(0);
+        if (this.swipeState) {
+            if (this.swipeState.touchId === touchId) {
+                this.handlers.onSwipeEnd(0);
+                this.swipeState = null;
+            }
         } else {
             // Otherwise, trigger a full blur. We don't want to trigger a
             // touch-up, since the cancellation means that the user probably
             // didn't release over a key intentionally.
-            this._onBlur();
+            this._cleanupTouchEvent(touchId);
+            this.handlers.onBlur();
         }
-
-        this.swiping = false;
-        this.startX = null;
-        this._swipeDisabledForGesture = false;
     }
 }
 

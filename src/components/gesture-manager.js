@@ -90,10 +90,18 @@ class GestureManager {
         }
 
         const [x] = coordsForEvent(evt);
-        this.gestureStateMachine.onTouchStart(
-            () => id,
-            x
-        );
+
+        // TODO(charlie): It doesn't seem to be guaranteed that every touch
+        // event on `changedTouches` originates from the node through which this
+        // touch event was sent. In that case, we'd be inappropriately reporting
+        // the starting node ID.
+        for (let i = 0; i < evt.changedTouches.length; i++) {
+            this.gestureStateMachine.onTouchStart(
+                () => id,
+                evt.changedTouches[i].identifier,
+                x
+            );
+        }
 
         // If an event started in a view that we're managing, we'll handle it
         // all the way through.
@@ -114,11 +122,14 @@ class GestureManager {
         const swipeLocked = this.popoverStateMachine.isPopoverVisible();
         const swipeEnabled = this.swipeEnabled && !swipeLocked;
         const [x, y] = coordsForEvent(evt);
-        this.gestureStateMachine.onTouchMove(
-            () => this.nodeManager.idForCoords(x, y),
-            x,
-            swipeEnabled
-        );
+        for (let i = 0; i < evt.changedTouches.length; i++) {
+            this.gestureStateMachine.onTouchMove(
+                () => this.nodeManager.idForCoords(x, y),
+                evt.changedTouches[i].identifier,
+                x,
+                swipeEnabled
+            );
+        }
     }
 
     /**
@@ -133,10 +144,13 @@ class GestureManager {
         }
 
         const [x, y] = coordsForEvent(evt);
-        this.gestureStateMachine.onTouchEnd(
-            () => this.nodeManager.idForCoords(x, y),
-            x
-        );
+        for (let i = 0; i < evt.changedTouches.length; i++) {
+            this.gestureStateMachine.onTouchEnd(
+                () => this.nodeManager.idForCoords(x, y),
+                evt.changedTouches[i].identifier,
+                x
+            );
+        }
     }
 
     /**
@@ -150,7 +164,11 @@ class GestureManager {
             return;
         }
 
-        this.gestureStateMachine.onTouchCancel();
+        for (let i = 0; i < evt.changedTouches.length; i++) {
+            this.gestureStateMachine.onTouchCancel(
+                evt.changedTouches[i].identifier
+            );
+        }
     }
 
     /**

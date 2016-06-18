@@ -130,9 +130,19 @@ class PopoverStateMachine {
     onTouchEnd(id) {
         if (this.activePopover) {
             // If we have a popover that is currently active, we trigger a
-            // click on this node if and only if it's in the popover.
+            // click on this node if and only if it's in the popover, with the
+            // exception that, if the node passed back _is_ the active popover,
+            // then we trigger its default node. This latter case should only
+            // be triggered if the user were to tap down on a popover-enabled
+            // node, hold for long enough for the popover to appear, and then
+            // release without ever moving their finger, in which case, the
+            // underlying gesture system would have no idea that the popover's
+            // first child node was now focused.
             if (this._isNodeInsidePopover(this.activePopover, id)) {
                 this.handlers.onClick(id, id);
+            } else if (this.activePopover === id) {
+                const keyId = this._defaultNodeForPopover(id);
+                this.handlers.onClick(keyId, keyId);
             }
         } else if (this.popovers[id]) {
             // Otherwise, if the node is itself a popover revealer, trigger the
