@@ -174,18 +174,16 @@ class GestureStateMachine {
             // Trigger a touch-end. There's no need to notify clients of a blur
             // as clients are responsible for handling any cleanup in their
             // touch-end handlers.
-            // NOTE(charlie): To avoid unnecessary lookups, we can just use the
-            // focused node ID that we've been tracking internally, unless the
-            // node received a long press, in which case, it may not be the
-            // focused node even though we never moved off of it.
-            let id;
-            if (this._longPressTimeoutId) {
-                id = this._focusedNodeId;
-            } else {
-                id = getId();
-            }
-
-            this.handlers.onTouchEnd(id);
+            // TODO(charlie): Use `this._focusedNodeId` here instead of calling
+            // `getId()`, when possible. This is made difficult right now by the
+            // possibility of multi-touch interactions, which allow for
+            // interactions like:
+            //  - User touches down on '4'. '4' is now `this._focusedNodeId`.
+            //  - User touches down (with a different finger) on '5'. '5' is now
+            //    `this._focusedNodeId`.
+            //  - User lifts the first finger, over '4', so relying on
+            //    `this._focusedNodeId` would mistakenly trigger '5'.
+            this.handlers.onTouchEnd(getId());
 
             // Clean-up any lingering long-press events.
             this._maybeCancelLongPress();
