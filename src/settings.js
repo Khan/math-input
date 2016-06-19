@@ -37,7 +37,7 @@ const defaults = {
     debugSwitcher: containsConfigurationOptions ?
                    DebugSwitcherTypes.DISABLED :
                    DebugSwitcherTypes.ENABLED,
-    holdInterval: 250,
+    holdIntervalMs: 250,
 };
 
 const settings = {
@@ -48,7 +48,8 @@ const settings = {
     echoAnimation: parsed.echo_animation || defaults.echoAnimation,
     iconStyle: parsed.icon_style || defaults.iconStyle,
     debugSwitcher: parsed.debug_switcher || defaults.debugSwitcher,
-    holdInterval: parseInt(parsed.hold_interval) || defaults.holdInterval,
+    holdIntervalMs:
+        parseInt(parsed.hold_interval_ms) || defaults.holdIntervalMs,
 };
 
 // Map any values to caps.

@@ -5,16 +5,23 @@
  * DOM nodes, operating solely on IDs.
  */
 
-// TODO(charlie): Substitute in proper constants. These are just for testing.
-const longPressWaitTimeMs = 100;
-const swipeThresholdPx = 20;
-const { holdInterval } = require('../settings');
+const { holdIntervalMs } = require('../settings');
+
+const defaults = {
+    longPressWaitTimeMs: 100,
+    swipeThresholdPx: 20,
+    holdIntervalMs,
+};
 
 class GestureStateMachine {
-    constructor(handlers, swipeDisabledNodeIds, multiPressableKeys) {
+    constructor(handlers, options, swipeDisabledNodeIds, multiPressableKeys) {
         this.handlers = handlers;
-        this.swipeDisabledNodeIds = swipeDisabledNodeIds;
-        this.multiPressableKeys = multiPressableKeys;
+        this.options = {
+            ...defaults,
+            ...options,
+        };
+        this.swipeDisabledNodeIds = swipeDisabledNodeIds || [];
+        this.multiPressableKeys = multiPressableKeys || [];
 
         this.swiping = false;
         this.startX = null;
@@ -70,13 +77,13 @@ class GestureStateMachine {
                 this._pressAndHoldIntervalId = setInterval(() => {
                     // On every cycle, trigger the click handler.
                     this.handlers.onTrigger(id);
-                }, holdInterval);
+                }, this.options.holdIntervalMs);
             } else {
                 const self = this;
                 this._longPressTimeoutId = setTimeout(() => {
                     self.handlers.onLongPress(id);
                     self._longPressTimeoutId = null;
-                }, longPressWaitTimeMs);
+                }, this.options.longPressWaitTimeMs);
             }
         }
     }
@@ -137,7 +144,8 @@ class GestureStateMachine {
     onTouchMove(getId, pageX, swipeEnabled) {
         const dx = pageX - this.startX;
         const shouldBeginSwiping = !this.swiping && swipeEnabled &&
-            Math.abs(dx) > swipeThresholdPx && !this._swipeDisabledForGesture;
+            Math.abs(dx) > this.options.swipeThresholdPx &&
+            !this._swipeDisabledForGesture;
 
         if (this.swiping) {
             this.handlers.onSwipeChange(dx);
