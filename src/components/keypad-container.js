@@ -9,7 +9,7 @@ const FractionKeypad = require('./fraction-keypad');
 const BasicExpressionKeypad = require('./basic-expression-keypad');
 const AdvancedExpressionKeypad = require('./advanced-expression-keypad');
 const zIndexes = require('./z-indexes');
-const { getButtonHeightPx } = require('./common-style');
+const { getButtonHeightPx, maxKeypadWidth } = require('./common-style');
 const { setButtonHeightPx } = require('../actions');
 const { keyIdPropType } = require('./prop-types');
 const { KeypadTypes } = require('../consts');
@@ -26,12 +26,21 @@ const KeypadContainer = React.createClass({
         onElementMounted: React.PropTypes.func,
     },
 
+    getInitialState() {
+        // Use (partially unsupported) viewport units until componentDidMount.
+        // It's okay to use the viewport units since they'll be overridden as
+        // soon as the JavaScript kicks in.
+        return {
+            viewportWidth: "100vw",
+        };
+    },
+
     componentDidMount() {
-        // Relay the initial button height.
-        this.props.onButtonHeightPxChange(getButtonHeightPx());
+        // Relay the initial size metrics.
+        this._onResize();
 
         // And update it on resize.
-        window.addEventListener("resize", this._onResize);
+        window.addEventListener("resize", this._throttleResizeHandler);
     },
 
     componentDidUpdate(prevProps) {
@@ -41,25 +50,32 @@ const KeypadContainer = React.createClass({
     },
 
     componentWillUnmount() {
-        window.removeEventListener("resize", this._onResize);
+        window.removeEventListener("resize", this._throttleResizeHandler);
     },
 
-    _onResize() {
-        // Whenever the page resizes, we need to force an update, as the button
-        // heights are computed as a portion of the page width.
-        // TODO(charlie): If we decide that we don't need to support Android
-        // 4.3, we can achieve this effect trivially using Viewport units.
-
-        // Throttle resize events -- taken from:
-        //    https://developer.mozilla.org/en-US/docs/Web/Events/resize
+    _throttleResizeHandler() {
+        // Throttle the resize callbacks.
+        // https://developer.mozilla.org/en-US/docs/Web/Events/resize
         if (this._resizeTimeout == null) {
             this._resizeTimeout = setTimeout(() => {
                 this._resizeTimeout = null;
 
-                // Notify that the button height has changed.
-                this.props.onButtonHeightPxChange(getButtonHeightPx());
+                this._onResize();
             }, 66);
         }
+    },
+
+    _onResize() {
+        // Whenever the page resizes, we need to force an update, as the button
+        // heights and keypad width are computed based on horizontal space.
+        this.setState({
+            viewportWidth: Math.min(maxKeypadWidth, window.innerWidth),
+        });
+
+        // TODO(charlie): If we decide that we don't need to support Android
+        // 4.3, we can achieve this effect trivially using Viewport units.
+        // Notify that the button height has changed.
+        this.props.onButtonHeightPxChange(getButtonHeightPx());
     },
 
     renderKeypad() {
@@ -104,21 +120,46 @@ const KeypadContainer = React.createClass({
         //   See: https://github.com/Khan/aphrodite/issues/68.
         const dynamicStyle = this.props.active ? inlineStyles.active
                                                : inlineStyles.hidden;
+        const contentWidth = this.state.viewportWidth;
         return <View style={styles.keypadContainer} dynamicStyle={dynamicStyle}>
-            {this.renderKeypad()}
+            <View style={styles.spacer} />
+            <View style={styles.content} dynamicStyle={{width: contentWidth}}>
+                {this.renderKeypad()}
+            </View>
+            <View style={styles.spacer} />
         </View>;
     },
 });
 
 const keypadAnimationDurationMs = 300;
+const contentZIndex = 1;
 
 const styles = StyleSheet.create({
     keypadContainer: {
+        background: 'white',
+        borderTop: '1px solid rgba(0, 0, 0, 0.2)',
         bottom: 0,
         position: 'fixed',
         transition: `${keypadAnimationDurationMs}ms ease-out`,
         transitionProperty: 'transform',
+        width: '100%',
         zIndex: zIndexes.keypad,
+        flexDirection: 'row',
+    },
+    content: {
+        borderColor: 'rgba(0, 0, 0, 0.1)',
+        borderStyle: 'solid',
+        borderWidth: '0 1px',
+        zIndex: contentZIndex,
+    },
+    spacer: {
+        flex: 1,
+        // Make this one higher than the main `content` element so that in
+        // very wide viewports, we essentially center the content and use
+        // these spacer elements to "cover" the extra pages of the keypad
+        // that are outside of the main container.
+        zIndex: contentZIndex + 1,
+        background: 'white',
     },
 });
 

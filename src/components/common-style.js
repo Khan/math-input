@@ -3,6 +3,7 @@
  */
 
 const defaultButtonHeightPx = 60;
+const maxKeypadWidth = 512;
 
 module.exports = {
     brightGreen: '#78C008',
@@ -15,6 +16,7 @@ module.exports = {
     buttonBorderColor: '#ECECEC',
     buttonBorderStyle: 'solid',
     buttonBorderWidthPx: 1,
+    maxKeypadWidth,
     defaultButtonHeightPx,
     // Compute the button height on request, as it's dependent on window size.
     getButtonHeightPx: () => {
@@ -28,11 +30,12 @@ module.exports = {
                 clientWidth, clientHeight,
             } = window.document.documentElement;
 
-            // Compute the button height as 1/5 of the screen width. If that
-            // would cause the keyboard to cover the screen, then default to
-            // 44px. This should mostly be for testing on desktop, though it
+            // Compute the button height based on screen width and number of
+            // columns, but be mindful of things taking up too much room.
+            // This should mostly be for testing on desktop, though it
             // will also be the case in landscape.
-            let buttonHeightPx = clientWidth / numColumns;
+            let buttonHeightPx = Math.min(maxKeypadWidth, clientWidth) /
+                numColumns;
             if (clientHeight < buttonHeightPx * numRows) {
                 buttonHeightPx = defaultButtonHeightPx;
             }

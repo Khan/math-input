@@ -15,8 +15,6 @@ const PopoverManager = require('./popover-manager');
 const { numeralGrey } = require('./common-style');
 const { echoPropType, popoverPropType } = require('./prop-types');
 
-const keypadBorderWidthPx = 1;
-
 const Keypad = React.createClass({
     propTypes: {
         // Whether the keypad is active, i.e., whether it should be rendered as
@@ -32,18 +30,8 @@ const Keypad = React.createClass({
         style: React.PropTypes.any,
     },
 
-    getInitialState() {
-        // Use (partially unsupported) viewport units until componentDidMount.
-        // It's okay to use the viewport units since they'll be overridden as
-        // soon as the JavaScript kicks in.
-        return {
-            viewportWidth: "100vw",
-        };
-    },
-
     componentDidMount() {
         window.addEventListener("resize", this._onResize);
-
         this._updateSizeAndPosition();
     },
 
@@ -63,19 +51,14 @@ const Keypad = React.createClass({
     },
 
     _updateSizeAndPosition() {
-        // We don't use viewport units because of compatibility reasons.
-        this.setState({
-            viewportWidth: window.innerWidth,
-        }, () => {
-            // Mark the container for recalculation next time the keypad is
-            // opened.
-            // TODO(charlie): Since we're not recalculating the container
-            // immediately, if you were to resize the page while a popover were
-            // active, you'd likely get unexpected behavior. This seems very
-            // difficult to do and, as such, incredibly unlikely, but we may
-            // want to reconsider the caching here.
-            this._container = null;
-        });
+        // Mark the container for recalculation next time the keypad is
+        // opened.
+        // TODO(charlie): Since we're not recalculating the container
+        // immediately, if you were to resize the page while a popover were
+        // active, you'd likely get unexpected behavior. This seems very
+        // difficult to do and, as such, incredibly unlikely, but we may
+        // want to reconsider the caching here.
+        this._container = null;
     },
 
     _onResize() {
@@ -104,10 +87,6 @@ const Keypad = React.createClass({
             style,
         } = this.props;
 
-        const {
-            viewportWidth,
-        } = this.state;
-
         // Translate the echo boxes, as they'll be positioned absolutely to
         // this relative container.
         const relativeEchoes = echoes.map((echo) => {
@@ -115,11 +94,9 @@ const Keypad = React.createClass({
             return {
                 ...rest,
                 initialBounds: {
-                    top: initialBounds.top - this._container.top -
-                        keypadBorderWidthPx,
+                    top: initialBounds.top - this._container.top,
                     right: initialBounds.right - this._container.left,
-                    bottom: initialBounds.bottom - this._container.top -
-                        keypadBorderWidthPx,
+                    bottom: initialBounds.bottom - this._container.top,
                     left: initialBounds.left - this._container.left,
                     width: initialBounds.width,
                     height: initialBounds.height,
@@ -134,7 +111,7 @@ const Keypad = React.createClass({
             ...popover,
             bounds: {
                 bottom: this._container.height - (popover.bounds.bottom -
-                    this._container.top) - keypadBorderWidthPx,
+                    this._container.top),
                 left: popover.bounds.left - this._container.left,
                 width: popover.bounds.width,
             },
@@ -145,15 +122,7 @@ const Keypad = React.createClass({
             ...(Array.isArray(style) ? style : [style]),
         ];
 
-        const dynamicStyle = {
-            width: viewportWidth,
-            // TODO(charlie): This is being overridden by the `View` elements
-            // own `maxWidth: 100%`, which is injected with Aphrodite and so has
-            // an `!important` annotation.
-            maxWidth: viewportWidth,
-        };
-
-        return <View style={keypadStyle} dynamicStyle={dynamicStyle}>
+        return <View style={keypadStyle}>
             {children}
             <EchoManager
                 echoes={relativeEchoes}
@@ -174,7 +143,6 @@ const styles = StyleSheet.create({
         // animations. In addition, `overflowX: 'hidden'` was making the second
         // page of keys appear above the sidebar on focus in mobile Safari.
         // overflowX: 'hidden',
-        borderTop: `${keypadBorderWidthPx}px solid rgba(0, 0, 0, 0.2)`,
         backgroundColor: numeralGrey,
     },
 });
