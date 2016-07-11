@@ -2,9 +2,9 @@
 
 const React = require('react');
 const ReactDOM = require('react-dom');
-const { StyleSheet } = require("aphrodite");
+const {StyleSheet} = require("aphrodite");
 
-const { View } = require('../../fake-react-native-web');
+const {View} = require('../../fake-react-native-web');
 const CursorHandle = require('./cursor-handle');
 const MathWrapper = require('./math-wrapper');
 const scrollIntoView = require('./scroll-into-view');
@@ -13,10 +13,10 @@ const {
     cursorHandleDistanceMultiplier,
     gray76,
  } = require('../common-style');
-const { fractionBehavior } = require('../../settings');
-const { FractionBehaviorTypes } = require('../../consts');
-const { keypadElementPropType } = require('../prop-types');
-const { brightGreen, gray17 } = require('../common-style');
+const {fractionBehavior} = require('../../settings');
+const {FractionBehaviorTypes} = require('../../consts');
+const {keypadElementPropType} = require('../prop-types');
+const {brightGreen, gray17} = require('../common-style');
 
 const constrainingFrictionFactor = 0.8;
 
@@ -210,7 +210,7 @@ const MathInput = React.createClass({
     blur() {
         this.mathField.blur();
         this.props.onBlur && this.props.onBlur();
-        this.setState({ focused: false, handle: { visible: false } });
+        this.setState({focused: false, handle: {visible: false}});
     },
 
     focus() {
@@ -242,7 +242,7 @@ const MathInput = React.createClass({
 
         this.mathField.focus();
         this.props.onFocus && this.props.onFocus();
-        this.setState({ focused: true }, () => {
+        this.setState({focused: true}, () => {
             // NOTE(charlie): We use `setTimeout` to allow for a layout pass to
             // occur. Otherwise, the keypad is measured incorrectly. Ideally,
             // we'd use requestAnimationFrame here, but it's unsupported on
@@ -590,8 +590,8 @@ const MathInput = React.createClass({
     },
 
     render() {
-        const { focused, handle } = this.state;
-        const { style } = this.props;
+        const {focused, handle} = this.state;
+        const {style} = this.props;
 
         const empty = this.mathField && this.mathField.isEmpty();
 

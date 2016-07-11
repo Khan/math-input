@@ -10,7 +10,7 @@ const MathQuill = window.MathQuill;
 
 const Keys = require('../../data/keys');
 const CursorContexts = require('./cursor-contexts');
-const { FractionBehaviorTypes } = require('../../consts');
+const {FractionBehaviorTypes} = require('../../consts');
 
 const WRITE = 'write';
 const CMD = 'cmd';
@@ -21,23 +21,23 @@ const MQ_END = 0;
 // that do not provide explicit actions (like the numeral keys) will merely
 // write their contents to MathQuill.
 const KeyActions = {
-    [Keys.PLUS]: { str: '+', fn: WRITE },
-    [Keys.MINUS]: { str: '-', fn: WRITE },
-    [Keys.TIMES]: { str: '\\times', fn: WRITE },
-    [Keys.DIVIDE]: { str: '\\div', fn: WRITE },
-    [Keys.DECIMAL]: { str: '.', fn: WRITE },
-    [Keys.EQUAL]: { str: '=', fn: WRITE },
-    [Keys.NEQ]: { str: '\\neq', fn: WRITE },
-    [Keys.CDOT]: { str: '\\cdot', fn: WRITE },
-    [Keys.PERCENT]: { str: '%', fn: WRITE },
-    [Keys.SQRT]: { str: 'sqrt', fn: CMD },
-    [Keys.PI]: { str: 'pi', fn: CMD },
-    [Keys.THETA]: { str: 'theta', fn: CMD },
-    [Keys.RADICAL]: { str: 'nthroot', fn: CMD },
-    [Keys.LT]: { str: '<', fn: WRITE },
-    [Keys.LEQ]: { str: '\\leq', fn: WRITE },
-    [Keys.GT]: { str: '>', fn: WRITE },
-    [Keys.GEQ]: { str: '\\geq', fn: WRITE },
+    [Keys.PLUS]: {str: '+', fn: WRITE},
+    [Keys.MINUS]: {str: '-', fn: WRITE},
+    [Keys.TIMES]: {str: '\\times', fn: WRITE},
+    [Keys.DIVIDE]: {str: '\\div', fn: WRITE},
+    [Keys.DECIMAL]: {str: '.', fn: WRITE},
+    [Keys.EQUAL]: {str: '=', fn: WRITE},
+    [Keys.NEQ]: {str: '\\neq', fn: WRITE},
+    [Keys.CDOT]: {str: '\\cdot', fn: WRITE},
+    [Keys.PERCENT]: {str: '%', fn: WRITE},
+    [Keys.SQRT]: {str: 'sqrt', fn: CMD},
+    [Keys.PI]: {str: 'pi', fn: CMD},
+    [Keys.THETA]: {str: 'theta', fn: CMD},
+    [Keys.RADICAL]: {str: 'nthroot', fn: CMD},
+    [Keys.LT]: {str: '<', fn: WRITE},
+    [Keys.LEQ]: {str: '\\leq', fn: WRITE},
+    [Keys.GT]: {str: '>', fn: WRITE},
+    [Keys.GEQ]: {str: '\\geq', fn: WRITE},
 };
 
 const NormalCommands = {
@@ -54,7 +54,7 @@ const EqualityOperators = ['=', '\\neq', '<', '\\leq', '>', '\\geq'];
 class MathWrapper {
 
     constructor(element, options = {}, callbacks = {}) {
-        const { fractionBehavior } = options;
+        const {fractionBehavior} = options;
         this.fractionBehavior = fractionBehavior ||
             FractionBehaviorTypes.INCLUSIVE;
 
@@ -450,7 +450,7 @@ class MathWrapper {
                 node = node[this.MQ.R];
             }
             if (validCommands.includes(name)) {
-                return { name, startNode, endNode };
+                return {name, startNode, endNode};
             } else {
                 return null;
             }

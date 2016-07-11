@@ -41,7 +41,7 @@ const CursorHandle = React.createClass({
     },
 
     render() {
-        const { x, y, animateIntoPosition } = this.props;
+        const {x, y, animateIntoPosition} = this.props;
 
         const animationStyle = animateIntoPosition ? {
             msTransitionDuration: '100ms',
