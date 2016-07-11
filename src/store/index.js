@@ -1,7 +1,7 @@
 const Redux = require('redux');
 
-const { defaultButtonHeightPx } = require('../components/common-style');
-const { KeyTypes } = require('../consts');
+const {defaultButtonHeightPx} = require('../components/common-style');
+const {KeyTypes} = require('../consts');
 const Keys = require('../data/keys');
 const KeyConfigs = require('../data/key-configs');
 const Keypads = require('../data/keypads');
@@ -93,7 +93,7 @@ const createStore = () => {
                 // dismissal here rather than dispatching a dismiss action in
                 // the first place.
                 if (keyConfig.id === Keys.DISMISS) {
-                    return keypadReducer(state, { type: 'DismissKeypad' });
+                    return keypadReducer(state, {type: 'DismissKeypad'});
                 }
                 return state;
 
@@ -116,8 +116,8 @@ const createStore = () => {
     const pagerReducer = function(state = initialPagerState, action) {
         switch (action.type) {
             case 'ConfigureKeypad':
-                const { keypadType } = action.configuration;
-                const { numPages } = Keypads[keypadType];
+                const {keypadType} = action.configuration;
+                const {numPages} = Keypads[keypadType];
                 return {
                     ...state,
                     numPages,
@@ -138,12 +138,12 @@ const createStore = () => {
                 // Reset the keypad page if the user performs a math operation.
                 if (keyConfig.type === KeyTypes.MATH ||
                         keyConfig.type === KeyTypes.NUMERAL) {
-                    return pagerReducer(state, { type: 'ResetKeypadPage' });
+                    return pagerReducer(state, {type: 'ResetKeypadPage'});
                 } else if (keyConfig.type === KeyTypes.KEYPAD_NAVIGATION) {
                     if (keyConfig.id === Keys.NUMBERS) {
-                        return pagerReducer(state, { type: 'ResetKeypadPage' });
+                        return pagerReducer(state, {type: 'ResetKeypadPage'});
                     } else if (keyConfig.id === Keys.MORE) {
-                        return pagerReducer(state, { type: 'PageKeypadRight' });
+                        return pagerReducer(state, {type: 'PageKeypadRight'});
                     }
                 }
                 return state;
@@ -198,8 +198,8 @@ const createStore = () => {
                 };
 
             case 'OnSwipeEnd':
-                const { pageWidthPx, velocityTracker } = state;
-                const { dx } = action;
+                const {pageWidthPx, velocityTracker} = state;
+                const {dx} = action;
                 const velocity = velocityTracker.getVelocity();
 
                 // NOTE(charlie): These will need refinement. The velocity comes
@@ -214,9 +214,9 @@ const createStore = () => {
                     (velocity > minFlingVelocity && dx > minFlingDistance);
 
                 if (shouldPageRight) {
-                    return pagerReducer(state, { type: 'PageKeypadRight' });
+                    return pagerReducer(state, {type: 'PageKeypadRight'});
                 } else if (shouldPageLeft) {
-                    return pagerReducer(state, { type: 'PageKeypadLeft' });
+                    return pagerReducer(state, {type: 'PageKeypadLeft'});
                 }
 
                 return {
@@ -308,8 +308,8 @@ const createStore = () => {
                 };
 
             case 'ConfigureKeypad':
-                const { keypadType } = action.configuration;
-                const { numPages } = Keypads[keypadType];
+                const {keypadType} = action.configuration;
+                const {numPages} = Keypads[keypadType];
                 const swipeEnabled = numPages > 1;
                 return {
                     popover: null,

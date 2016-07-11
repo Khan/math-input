@@ -28,7 +28,7 @@ const PopoverContainer = React.createClass({
     },
 
     render() {
-        const { bounds, childKeys } = this.props;
+        const {bounds, childKeys} = this.props;
 
         const containerStyle = {
             position: 'absolute',
@@ -47,7 +47,7 @@ const PopoverManager = React.createClass({
     },
 
     render() {
-        const { popover } = this.props;
+        const {popover} = this.props;
 
         return <ReactCSSTransitionGroup
             transitionName={animationTransitionName}

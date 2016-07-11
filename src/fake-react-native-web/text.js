@@ -1,5 +1,5 @@
 const React = require('react');
-const { StyleSheet, css } = require('aphrodite');
+const {StyleSheet, css} = require('aphrodite');
 
 const Text = React.createClass({
     propTypes: {
@@ -12,7 +12,7 @@ const Text = React.createClass({
     },
 
     render() {
-        const { numberOfLines, style } = this.props;
+        const {numberOfLines, style} = this.props;
 
         const className = css(
             styles.initial,

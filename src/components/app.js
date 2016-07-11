@@ -1,9 +1,9 @@
 const React = require('react');
 
-const { View } = require('../fake-react-native-web');
-const { components } = require('../index');
+const {View} = require('../fake-react-native-web');
+const {components} = require('../index');
 
-const { Keypad, KeypadInput } = components;
+const {Keypad, KeypadInput} = components;
 
 const App = React.createClass({
     getInitialState() {
@@ -26,7 +26,7 @@ const App = React.createClass({
                 <KeypadInput
                     value={this.state.value}
                     keypadElement={this.state.keypadElement}
-                    onChange={(value, cb) => this.setState({ value }, cb)}
+                    onChange={(value, cb) => this.setState({value}, cb)}
                     onFocus={() => this.state.keypadElement.activate()}
                     onBlur={() => this.state.keypadElement.dismiss()}
                 />
@@ -34,7 +34,7 @@ const App = React.createClass({
             <Keypad
                 onElementMounted={node => {
                     if (node && !this.state.keypadElement) {
-                        this.setState({ keypadElement: node });
+                        this.setState({keypadElement: node});
                     }
                 }}
             />

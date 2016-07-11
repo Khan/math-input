@@ -10,8 +10,8 @@ const TouchableKeypadButton = require('./touchable-keypad-button');
 
 const Keys = require('../data/keys');
 const KeyConfigs = require('../data/key-configs');
-const { KeyTypes } = require('../consts');
-const { keyIdPropType } = require('./prop-types');
+const {KeyTypes} = require('../consts');
+const {keyIdPropType} = require('./prop-types');
 
 const ManyKeypadButton = React.createClass({
     propTypes: {
@@ -19,7 +19,7 @@ const ManyKeypadButton = React.createClass({
     },
 
     render() {
-        const { keys, ...rest } = this.props;
+        const {keys, ...rest} = this.props;
 
         // If we have no extra symbols, render an empty button. If we have just
         // one, render a standard button. Otherwise, capture them all in a

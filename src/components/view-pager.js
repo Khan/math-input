@@ -7,13 +7,13 @@
 
 const React = require('react');
 const ReactDOM = require('react-dom');
-const { connect } = require('react-redux');
-const { StyleSheet } = require('aphrodite');
+const {connect} = require('react-redux');
+const {StyleSheet} = require('aphrodite');
 
-const { View } = require('../fake-react-native-web');
-const { row } = require('./styles');
-const { setPageWidthPx } = require('../actions');
-const { childrenPropType } = require('./prop-types');
+const {View} = require('../fake-react-native-web');
+const {row} = require('./styles');
+const {setPageWidthPx} = require('../actions');
+const {childrenPropType} = require('./prop-types');
 
 const ViewPager = React.createClass({
     propTypes: {
@@ -97,8 +97,8 @@ const ViewPager = React.createClass({
     },
 
     render() {
-        const { translateX, children } = this.props;
-        const { animationDurationMs } = this.state;
+        const {translateX, children} = this.props;
+        const {animationDurationMs} = this.state;
 
         const pagerStyle = [row, styles.twoPagePager];
 
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-    const { animateToPosition, currentPage, dx, pageWidthPx } = state.pager;
+    const {animateToPosition, currentPage, dx, pageWidthPx} = state.pager;
     return {
         animateToPosition,
         translateX: -currentPage * pageWidthPx + dx,

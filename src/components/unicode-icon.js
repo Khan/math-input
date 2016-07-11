@@ -3,11 +3,11 @@
  */
 
 const React = require('react');
-const { StyleSheet } = require('aphrodite');
+const {StyleSheet} = require('aphrodite');
 
-const { View } = require('../fake-react-native-web');
+const {View} = require('../fake-react-native-web');
 const UnicodeSymbol = require('./unicode-symbol');
-const { row, centered } = require('./styles');
+const {row, centered} = require('./styles');
 const {
     gray25, iconSizeHeightPx, iconSizeWidthPx,
 } = require('./common-style');
@@ -22,7 +22,7 @@ const UnicodeIcon = React.createClass({
     },
 
     render() {
-        const { focused, unicodeSymbol } = this.props;
+        const {focused, unicodeSymbol} = this.props;
 
         const containerStyle = [row, centered, styles.iconSize];
         const iconStyle = [

@@ -4,10 +4,10 @@
  */
 
 const React = require('react');
-const { StyleSheet } = require('aphrodite');
+const {StyleSheet} = require('aphrodite');
 
-const { View } = require('../fake-react-native-web');
-const { gray68, gray85 } = require('./common-style');
+const {View} = require('../fake-react-native-web');
+const {gray68, gray85} = require('./common-style');
 
 const PagerIcon = React.createClass({
     propTypes: {
@@ -23,7 +23,7 @@ const PagerIcon = React.createClass({
     },
 
     render() {
-        const { active, radiusPx } = this.props;
+        const {active, radiusPx} = this.props;
 
         const fillColor = active ? gray68 : gray85;
 
@@ -45,7 +45,7 @@ const PagerIndicator = React.createClass({
     },
 
     render() {
-        const { currentPage, numPages } = this.props;
+        const {currentPage, numPages} = this.props;
 
         const pagerIconRadiusPx = 4;
 

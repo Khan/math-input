@@ -1,18 +1,18 @@
 const React = require('react');
-const { connect } = require('react-redux');
-const { StyleSheet } = require('aphrodite');
+const {connect} = require('react-redux');
+const {StyleSheet} = require('aphrodite');
 
-const { View } = require('../fake-react-native-web');
+const {View} = require('../fake-react-native-web');
 const DefaultKeypad = require('./default-keypad');
 const NumberKeypad = require('./number-keypad');
 const FractionKeypad = require('./fraction-keypad');
 const BasicExpressionKeypad = require('./basic-expression-keypad');
 const AdvancedExpressionKeypad = require('./advanced-expression-keypad');
 const zIndexes = require('./z-indexes');
-const { getButtonHeightPx, maxKeypadWidth } = require('./common-style');
-const { setButtonHeightPx } = require('../actions');
-const { keyIdPropType } = require('./prop-types');
-const { KeypadTypes } = require('../consts');
+const {getButtonHeightPx, maxKeypadWidth} = require('./common-style');
+const {setButtonHeightPx} = require('../actions');
+const {keyIdPropType} = require('./prop-types');
+const {KeypadTypes} = require('../consts');
 
 const KeypadContainer = React.createClass({
     propTypes: {
@@ -80,7 +80,7 @@ const KeypadContainer = React.createClass({
 
     renderKeypad() {
         // Extract props that some keypads will need.
-        const { extraKeys, keypadType, onElementMounted } = this.props;
+        const {extraKeys, keypadType, onElementMounted} = this.props;
 
         // Select the appropriate keyboard given the type.
         // TODO(charlie): In the future, we might want to move towards a

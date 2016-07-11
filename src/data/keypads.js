@@ -3,7 +3,7 @@
  */
 
 const Keys = require('./keys');
-const { KeypadTypes } = require('../consts');
+const {KeypadTypes} = require('../consts');
 
 const Keypads = {
     [KeypadTypes.NUMBER]: {

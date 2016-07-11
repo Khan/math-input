@@ -14,7 +14,7 @@ const coordsForEvent = (evt) => {
 
 class GestureManager {
     constructor(options, handlers, disabledSwipeKeys, multiPressableKeys) {
-        const { swipeEnabled } = options;
+        const {swipeEnabled} = options;
 
         this.swipeEnabled = swipeEnabled;
 
@@ -24,7 +24,7 @@ class GestureManager {
         this.nodeManager = new NodeManager();
         this.popoverStateMachine = new PopoverStateMachine({
             onActiveNodesChanged: (activeNodes) => {
-                const { popover, ...rest } = activeNodes;
+                const {popover, ...rest} = activeNodes;
                 handlers.onActiveNodesChanged({
                     popover: popover && {
                         parentId: popover.parentId,

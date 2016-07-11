@@ -1,5 +1,5 @@
 const React = require('react');
-const { Provider } = require('react-redux');
+const {Provider} = require('react-redux');
 
 const KeypadContainer = require('./keypad-container');
 const {
@@ -50,7 +50,7 @@ const ProvidedKeypad = React.createClass({
     },
 
     render() {
-        const { onElementMounted, ...rest } = this.props;
+        const {onElementMounted, ...rest} = this.props;
 
         return <Provider store={this.store}>
             <KeypadContainer

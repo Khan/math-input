@@ -2,7 +2,7 @@
  * Common styles shared across components.
  */
 
-const { StyleSheet } = require('aphrodite');
+const {StyleSheet} = require('aphrodite');
 
 module.exports = StyleSheet.create({
     row: {

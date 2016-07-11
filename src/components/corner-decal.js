@@ -3,10 +3,10 @@
  */
 
 const React = require('react');
-const { StyleSheet } = require('aphrodite');
+const {StyleSheet} = require('aphrodite');
 
-const { View } = require('../fake-react-native-web');
-const { gray76 } = require('./common-style');
+const {View} = require('../fake-react-native-web');
+const {gray76} = require('./common-style');
 
 const CornerDecal = () => {
     const points = `0,0 ${triangleSizePx},0 ` +

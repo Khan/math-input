@@ -5,7 +5,7 @@ const assert = require('assert');
 
 const Keys = require('../src/data/keys');
 
-const MQ = { L: '-1', R: '1' };
+const MQ = {L: '-1', R: '1'};
 const END_OF_EXPR = 0;
 
 const createMathField = (document, MathWrapper) => {

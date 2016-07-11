@@ -7,7 +7,7 @@ const ReactDOM = require('react-dom');
 
 const Iconography = require('./iconography');
 const UnicodeIcon = require('./unicode-icon');
-const { unicodeSymbolPropType } = require('./prop-types');
+const {unicodeSymbolPropType} = require('./prop-types');
 
 const Icon = React.createClass({
     propTypes: {
@@ -26,7 +26,7 @@ const Icon = React.createClass({
     },
 
     render() {
-        const { focused, name, unicodeSymbol } = this.props;
+        const {focused, name, unicodeSymbol} = this.props;
 
         // Select the appropriate icon, if it's available. Otherwise, render a
         // text-based icon using the fallback unicode symbol.
@@ -35,7 +35,7 @@ const Icon = React.createClass({
             // information. We should spend some time optimizing them to
             // decrease payload size.
             const Component = Iconography[name];
-            const componentProps = focused ? { primaryColor: '#FFF' } : {};
+            const componentProps = focused ? {primaryColor: '#FFF'} : {};
             return <Component {...componentProps} />;
         } else if (unicodeSymbol) {
             return <UnicodeIcon

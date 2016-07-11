@@ -4,16 +4,16 @@
  */
 
 const React = require('react');
-const { StyleSheet } = require('aphrodite');
+const {StyleSheet} = require('aphrodite');
 
-const { View } = require('../fake-react-native-web');
+const {View} = require('../fake-react-native-web');
 const UnicodeIcon = require('./unicode-icon');
 const UnicodeSymbol = require('./unicode-symbol');
-const { row, column, centered, fullWidth } = require('./styles');
+const {row, column, centered, fullWidth} = require('./styles');
 const {
     gray25, secondaryIconOpacity, iconSizeHeightPx, iconSizeWidthPx,
 } = require('./common-style');
-const { unicodeSymbolPropType } = require('./prop-types');
+const {unicodeSymbolPropType} = require('./prop-types');
 
 const MultiSymbolGrid = React.createClass({
     propTypes: {
@@ -24,7 +24,7 @@ const MultiSymbolGrid = React.createClass({
     },
 
     render() {
-        const { focused, unicodeSymbols } = this.props;
+        const {focused, unicodeSymbols} = this.props;
 
         if (unicodeSymbols.length === 1) {
             return <UnicodeIcon unicodeSymbol={unicodeSymbols[0]} />;

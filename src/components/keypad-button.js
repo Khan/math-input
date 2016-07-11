@@ -3,14 +3,14 @@
  */
 
 const React = require('react');
-const { connect } = require('react-redux');
+const {connect} = require('react-redux');
 
-const { StyleSheet, css } = require('aphrodite');
-const { View } = require('../fake-react-native-web');
+const {StyleSheet, css} = require('aphrodite');
+const {View} = require('../fake-react-native-web');
 const Icon = require('./icon');
 const MultiSymbolGrid = require('./multi-symbol-grid');
 const CornerDecal = require('./corner-decal');
-const { KeyTypes, BorderDirections, BorderStyles } = require('../consts');
+const {KeyTypes, BorderDirections, BorderStyles} = require('../consts');
 const {
     brightGreen,
     buttonBorderColor,

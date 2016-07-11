@@ -6,7 +6,7 @@ const React = require('react');
 
 const KeyConfigs = require('../data/key-configs');
 const CursorContexts = require('./input/cursor-contexts');
-const { BorderDirections, KeyTypes, KeypadTypes } = require('../consts');
+const {BorderDirections, KeyTypes, KeypadTypes} = require('../consts');
 
 const unicodeSymbolPropType = React.PropTypes.shape({
     character: React.PropTypes.string.isRequired,

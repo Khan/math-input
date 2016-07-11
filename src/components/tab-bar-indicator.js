@@ -4,10 +4,10 @@
  */
 
 const React = require('react');
-const { StyleSheet } = require('aphrodite');
+const {StyleSheet} = require('aphrodite');
 
-const { Text, View } = require('../fake-react-native-web');
-const { brightGreen, gray68 } = require('./common-style');
+const {Text, View} = require('../fake-react-native-web');
+const {brightGreen, gray68} = require('./common-style');
 
 const Tab = React.createClass({
     propTypes: {
@@ -23,16 +23,16 @@ const Tab = React.createClass({
     },
 
     _onTouchStart() {
-        this.setState({ focused: true });
+        this.setState({focused: true});
     },
 
     _onTouchEnd() {
-        this.setState({ focused: false });
+        this.setState({focused: false});
     },
 
     render() {
-        const { active, onClick, title } = this.props;
-        const { focused } = this.state;
+        const {active, onClick, title} = this.props;
+        const {focused} = this.state;
 
         let underlineColorStyle;
         let textColorStyle;
@@ -82,7 +82,7 @@ const TabBarIndicator = React.createClass({
     },
 
     render() {
-        const { currentPage, onSelectTab, pageTitles } = this.props;
+        const {currentPage, onSelectTab, pageTitles} = this.props;
 
         const tabTitles = pageTitles.map((title, i) => {
             return <Tab

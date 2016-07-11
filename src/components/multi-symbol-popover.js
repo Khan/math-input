@@ -3,11 +3,11 @@
  */
 
 const React = require('react');
-const { StyleSheet } = require('aphrodite');
+const {StyleSheet} = require('aphrodite');
 
-const { View } = require('../fake-react-native-web');
-const { keyConfigPropType } = require('./prop-types');
-const { KeyTypes, BorderStyles } = require('../consts');
+const {View} = require('../fake-react-native-web');
+const {keyConfigPropType} = require('./prop-types');
+const {KeyTypes, BorderStyles} = require('../consts');
 const zIndexes = require('./z-indexes');
 
 const MultiSymbolPopover = React.createClass({
@@ -16,7 +16,7 @@ const MultiSymbolPopover = React.createClass({
     },
 
     render() {
-        const { keys } = this.props;
+        const {keys} = this.props;
 
         // TODO(charlie): We have to require this lazily because of a cyclic
         // dependence in our components.

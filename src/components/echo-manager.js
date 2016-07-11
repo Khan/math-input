@@ -6,7 +6,7 @@ const React = require('react');
 const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 const KeypadButton = require('./keypad-button');
 const KeyConfigs = require('../data/key-configs');
-const { KeyTypes, EchoAnimationTypes } = require('../consts');
+const {KeyTypes, EchoAnimationTypes} = require('../consts');
 const {
     echoPropType, bordersPropType, boundingBoxPropType, keyIdPropType,
 } = require('./prop-types');
@@ -28,13 +28,13 @@ const Echo = React.createClass({
         // ignorant. However, there doesn't seem to be a cleaner way to make
         // this happen, and at least here, all the animation context is
         // colocated in this file.
-        const { animationDurationMs, onAnimationFinish } = this.props;
+        const {animationDurationMs, onAnimationFinish} = this.props;
         setTimeout(() => onAnimationFinish(), animationDurationMs);
     },
 
     render() {
-        const { borders, id, initialBounds } = this.props;
-        const { unicodeSymbol } = KeyConfigs[id];
+        const {borders, id, initialBounds} = this.props;
+        const {unicodeSymbol} = KeyConfigs[id];
 
         const containerStyle = {
             zIndex: zIndexes.echo,
@@ -101,7 +101,7 @@ const EchoManager = React.createClass({
     },
 
     render() {
-        const { animationType, echoes, onAnimationFinish } = this.props;
+        const {animationType, echoes, onAnimationFinish} = this.props;
         const {
             animationDurationMs, animationTransitionName,
         } = this._animationConfigForType(animationType);
@@ -117,7 +117,7 @@ const EchoManager = React.createClass({
             transitionEnterTimeout={animationDurationMs}
         >
             {echoes.map(echo => {
-                const { animationId } = echo;
+                const {animationId} = echo;
                 return <Echo
                     key={animationId}
                     animationDurationMs={animationDurationMs}

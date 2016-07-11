@@ -7,7 +7,7 @@
  */
 
 const React = require('react');
-const { StyleSheet, css } = require('aphrodite');
+const {StyleSheet, css} = require('aphrodite');
 const View = require('./view');
 
 const STATUS_ERRORED = 'ERRORED';
@@ -103,11 +103,11 @@ const Image = React.createClass({
     },
 
     _onError(e) {
-        const { onError } = this.props;
-        const event = { nativeEvent: e };
+        const {onError} = this.props;
+        const event = {nativeEvent: e};
 
         this._destroyImageLoader();
-        this.setState({ status: STATUS_ERRORED });
+        this.setState({status: STATUS_ERRORED});
         this._onLoadEnd();
         if (onError) {
             onError(event);
@@ -115,11 +115,11 @@ const Image = React.createClass({
     },
 
     _onLoad(e) {
-        const { onLoad } = this.props;
-        const event = { nativeEvent: e };
+        const {onLoad} = this.props;
+        const event = {nativeEvent: e};
 
         this._destroyImageLoader();
-        this.setState({ status: STATUS_LOADED });
+        this.setState({status: STATUS_LOADED});
         if (onLoad) {
             onLoad(event);
         }
@@ -127,15 +127,15 @@ const Image = React.createClass({
     },
 
     _onLoadEnd() {
-        const { onLoadEnd } = this.props;
+        const {onLoadEnd} = this.props;
         if (onLoadEnd) {
             onLoadEnd();
         }
     },
 
     _onLoadStart() {
-        const { onLoadStart } = this.props;
-        this.setState({ status: STATUS_LOADING });
+        const {onLoadStart} = this.props;
+        this.setState({status: STATUS_LOADING});
         if (onLoadStart) {
             onLoadStart();
         }

@@ -3,19 +3,19 @@
  */
 
 const React = require('react');
-const { StyleSheet } = require('aphrodite');
+const {StyleSheet} = require('aphrodite');
 
 const Keypad = require('./keypad');
 const ViewPager = require('./view-pager');
 const TabBarIndicator = require('./tab-bar-indicator');
 const PagerIndicator = require('./pager-indicator');
-const { View } = require('../fake-react-native-web');
-const { column, row } = require('./styles');
+const {View} = require('../fake-react-native-web');
+const {column, row} = require('./styles');
 const {
     buttonBorderColor, buttonBorderStyle, buttonBorderWidthPx, gray85,
 } = require('./common-style');
-const { SwitchTypes } = require('../consts');
-const { keypadSwitch } = require('../settings');
+const {SwitchTypes} = require('../consts');
+const {keypadSwitch} = require('../settings');
 
 const TwoPageKeypad = React.createClass({
     propTypes: {

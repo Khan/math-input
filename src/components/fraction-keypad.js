@@ -5,11 +5,11 @@
 
 const React = require('react');
 
-const { View } = require('../fake-react-native-web');
+const {View} = require('../fake-react-native-web');
 const Keypad = require('./keypad');
 const TouchableKeypadButton = require('./touchable-keypad-button');
-const { row } = require('./styles');
-const { BorderStyles } = require('../consts');
+const {row} = require('./styles');
+const {BorderStyles} = require('../consts');
 
 const KeyConfigs = require('../data/key-configs');
 

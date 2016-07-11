@@ -5,15 +5,15 @@
 
 const React = require('react');
 const ReactDOM = require('react-dom');
-const { connect } = require('react-redux');
-const { StyleSheet } = require('aphrodite');
+const {connect} = require('react-redux');
+const {StyleSheet} = require('aphrodite');
 
-const { removeEcho } = require('../actions');
-const { View } = require('../fake-react-native-web');
+const {removeEcho} = require('../actions');
+const {View} = require('../fake-react-native-web');
 const EchoManager = require('./echo-manager');
 const PopoverManager = require('./popover-manager');
-const { numeralGrey } = require('./common-style');
-const { echoPropType, popoverPropType } = require('./prop-types');
+const {numeralGrey} = require('./common-style');
+const {echoPropType, popoverPropType} = require('./prop-types');
 
 const Keypad = React.createClass({
     propTypes: {
@@ -90,7 +90,7 @@ const Keypad = React.createClass({
         // Translate the echo boxes, as they'll be positioned absolutely to
         // this relative container.
         const relativeEchoes = echoes.map((echo) => {
-            const { initialBounds, ...rest } = echo;
+            const {initialBounds, ...rest} = echo;
             return {
                 ...rest,
                 initialBounds: {

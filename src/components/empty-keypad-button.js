@@ -3,7 +3,7 @@
  */
 
 const React = require('react');
-const { connect } = require('react-redux');
+const {connect} = require('react-redux');
 
 const GestureManager = require('./gesture-manager');
 const KeyConfigs = require('../data/key-configs');
@@ -15,7 +15,7 @@ const EmptyKeypadButton = React.createClass({
     },
 
     render() {
-        const { gestureManager, ...rest } = this.props;
+        const {gestureManager, ...rest} = this.props;
 
         // Register touch events on the button, but don't register its DOM node
         // or compute focus state or anything like that. We want the gesture
@@ -34,7 +34,7 @@ const EmptyKeypadButton = React.createClass({
 });
 
 const mapStateToProps = (state) => {
-    const { gestures } = state;
+    const {gestures} = state;
     return {
         gestureManager: gestures.gestureManager,
     };

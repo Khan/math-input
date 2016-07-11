@@ -4,11 +4,11 @@
  */
 
 const React = require('react');
-const { StyleSheet } = require('aphrodite');
+const {StyleSheet} = require('aphrodite');
 
-const { Text } = require('../fake-react-native-web');
-const { fullWidth, centeredText } = require('./styles');
-const { unicodeSymbolPropType } = require('./prop-types');
+const {Text} = require('../fake-react-native-web');
+const {fullWidth, centeredText} = require('./styles');
+const {unicodeSymbolPropType} = require('./prop-types');
 
 const UnicodeSymbol = React.createClass({
     propTypes: {
@@ -17,8 +17,8 @@ const UnicodeSymbol = React.createClass({
     },
 
     render() {
-        const { style, unicodeSymbol } = this.props;
-        const { character, italicized } = unicodeSymbol;
+        const {style, unicodeSymbol} = this.props;
+        const {character, italicized} = unicodeSymbol;
 
         const symbolStyle = [
             italicized && styles.italicized,

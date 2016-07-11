@@ -5,7 +5,7 @@
 /* globals i18n */
 
 const Keys = require('../data/keys');
-const { KeyTypes } = require('../consts');
+const {KeyTypes} = require('../consts');
 
 const KeyConfigs = {
     // Basic math keys.

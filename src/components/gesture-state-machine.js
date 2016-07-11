@@ -6,7 +6,7 @@
  * multi-touch interactions, tracking gesture state on a per-touch basis.
  */
 
-const { holdIntervalMs } = require('../settings');
+const {holdIntervalMs} = require('../settings');
 
 const defaults = {
     longPressWaitTimeMs: 100,
@@ -31,7 +31,7 @@ class GestureStateMachine {
     }
 
     _maybeCancelLongPressForTouch(touchId) {
-        const { longPressTimeoutId } = this.touchState[touchId];
+        const {longPressTimeoutId} = this.touchState[touchId];
         if (longPressTimeoutId) {
             clearTimeout(longPressTimeoutId);
             this.touchState[touchId] = {
@@ -42,7 +42,7 @@ class GestureStateMachine {
     }
 
     _maybeCancelPressAndHoldForTouch(touchId) {
-        const { pressAndHoldIntervalId } = this.touchState[touchId];
+        const {pressAndHoldIntervalId} = this.touchState[touchId];
         if (pressAndHoldIntervalId) {
             // If there was an interval set to detect holds, clear it out.
             clearInterval(pressAndHoldIntervalId);

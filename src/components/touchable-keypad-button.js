@@ -6,13 +6,13 @@
 
 const React = require('react');
 const ReactDOM = require('react-dom');
-const { connect } = require('react-redux');
+const {connect} = require('react-redux');
 
 const KeypadButton = require('./keypad-button');
 const KeyConfigs = require('../data/key-configs');
 const GestureManager = require('./gesture-manager');
-const { bordersPropType, keyIdPropType } = require('./prop-types');
-const { KeyTypes } = require('../consts');
+const {bordersPropType, keyIdPropType} = require('./prop-types');
+const {KeyTypes} = require('../consts');
 
 const TouchableKeypadButton = React.createClass({
     propTypes: {
@@ -39,7 +39,7 @@ const TouchableKeypadButton = React.createClass({
     },
 
     componentWillUnmount() {
-        const { gestureManager, id } = this.props;
+        const {gestureManager, id} = this.props;
         gestureManager.unregisterDOMNode(id);
     },
 
@@ -63,10 +63,10 @@ const TouchableKeypadButton = React.createClass({
 });
 
 const mapStateToProps = (state, ownProps) => {
-    const { gestures } = state;
+    const {gestures} = state;
 
-    const { keyConfig, ...rest } = ownProps;
-    const { ariaLabel, id, childKeyIds, type, unicodeSymbol } = keyConfig;
+    const {keyConfig, ...rest} = ownProps;
+    const {ariaLabel, id, childKeyIds, type, unicodeSymbol} = keyConfig;
 
     return {
         ...rest,

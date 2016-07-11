@@ -1,5 +1,5 @@
 const React = require('react');
-const { StyleSheet, css } = require('aphrodite');
+const {StyleSheet, css} = require('aphrodite');
 
 const View = React.createClass({
     propTypes: {
