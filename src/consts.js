@@ -29,6 +29,11 @@ module.exports = {
         ECHO: 'ECHO',
     },
 
+    DeviceTypes: {
+        PHONE: 'PHONE',
+        TABLET: 'TABLET',
+    },
+
     BorderDirections: {
         LEFT: 'LEFT',
         BOTTOM: 'BOTTOM',

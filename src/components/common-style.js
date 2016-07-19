@@ -2,9 +2,6 @@
  * Common parameters used to style components.
  */
 
-const defaultButtonHeightPx = 60;
-const maxKeypadWidth = 512;
-
 module.exports = {
     brightGreen: '#78C008',
     gray17: '#21242C',
@@ -16,33 +13,6 @@ module.exports = {
     buttonBorderColor: '#ECECEC',
     buttonBorderStyle: 'solid',
     buttonBorderWidthPx: 1,
-    maxKeypadWidth,
-    defaultButtonHeightPx,
-    // Compute the button height on request, as it's dependent on window size.
-    getButtonHeightPx: () => {
-        const numColumns = 5;
-        const numRows = 4;
-
-        if (typeof window === 'undefined') {
-            return defaultButtonHeightPx;
-        } else {
-            const {
-                clientWidth, clientHeight,
-            } = window.document.documentElement;
-
-            // Compute the button height based on screen width and number of
-            // columns, but be mindful of things taking up too much room.
-            // This should mostly be for testing on desktop, though it
-            // will also be the case in landscape.
-            let buttonHeightPx = Math.min(maxKeypadWidth, clientWidth) /
-                numColumns;
-            if (clientHeight < buttonHeightPx * numRows) {
-                buttonHeightPx = defaultButtonHeightPx;
-            }
-
-            return buttonHeightPx;
-        }
-    },
     iconSizeHeightPx: 48,
     iconSizeWidthPx: 48,
     cursorHandleRadiusPx: 11,
@@ -58,4 +28,8 @@ module.exports = {
     operatorGrey : '#FAFAFA',
     controlGrey : '#F6F7F7',
     emptyGrey : '#F0F1F2',
+
+    // The width at which a device is classified as a "tablet" for the purposes
+    // of the keypad layout.
+    tabletCutoffPx: 600,
 };

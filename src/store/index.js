@@ -1,7 +1,8 @@
 const Redux = require('redux');
 
-const {defaultButtonHeightPx} = require('../components/common-style');
-const {KeyTypes} = require('../consts');
+const {tabletCutoffPx} = require('../components/common-style');
+const computeButtonDimensions = require('../components/compute-button-dimensions');
+const {DeviceTypes, KeyTypes} = require('../consts');
 const Keys = require('../data/keys');
 const KeyConfigs = require('../data/key-configs');
 const Keypads = require('../data/keypads');
@@ -343,16 +344,30 @@ const createStore = () => {
         }
     };
 
-    const initialButtonsState = {
-        buttonHeightPx: defaultButtonHeightPx,
+    const initialLayoutState = {
+        deviceType: DeviceTypes.PHONE,
+        buttonDimensions: {
+            widthPx: 48,
+            heightPx: 48,
+        },
     };
 
-    const buttonsReducer = function(state = initialButtonsState, action) {
+    const layoutReducer = function(state = initialLayoutState, action) {
         switch (action.type) {
-            case 'SetButtonHeightPx':
+            case 'SetScreenSizePx':
+                const deviceType = Math.min(
+                    action.screenWidthPx,
+                    action.screenHeightPx
+                ) > tabletCutoffPx ? DeviceTypes.TABLET : DeviceTypes.PHONE;
+                const buttonDimensions = computeButtonDimensions(
+                    action.screenWidthPx,
+                    action.screenHeightPx,
+                    deviceType
+                );
                 return {
                     ...state,
-                    buttonHeightPx: action.buttonHeightPx,
+                    deviceType,
+                    buttonDimensions,
                 };
 
             default:
@@ -366,7 +381,7 @@ const createStore = () => {
         pager: pagerReducer,
         gestures: gestureReducer,
         echoes: echoReducer,
-        buttons: buttonsReducer,
+        layout: layoutReducer,
     });
 
     // TODO(charlie): This non-inlined return is necessary so as to allow the

@@ -33,7 +33,6 @@ const KeypadButton = React.createClass({
         // The borders to display on the button. Typically, this should be set
         // using one of the preset `BorderStyles` options.
         borders: bordersPropType,
-        buttonHeightPx: React.PropTypes.number.isRequired,
         // Any additional keys that can be accessed by long-pressing on the
         // button.
         childKeys: React.PropTypes.arrayOf(keyConfigPropType),
@@ -41,6 +40,7 @@ const KeypadButton = React.createClass({
         // without any touch feedback.
         disabled: React.PropTypes.bool,
         focused: React.PropTypes.bool,
+        heightPx: React.PropTypes.number.isRequired,
         // The name of the button, used to select the appropriate SVG
         // background image.
         name: React.PropTypes.string,
@@ -54,6 +54,10 @@ const KeypadButton = React.createClass({
         // The unicode symbol that can be used to depict the icon for the
         // button, as a fall-back in case there is no SVG icon available.
         unicodeSymbol: unicodeSymbolPropType,
+        // NOTE(charlie): We may want to make this optional for phone layouts
+        // (and rely on Flexbox instead), since it might not be pixel perfect
+        // with borders and such.
+        widthPx: React.PropTypes.number.isRequired,
     },
 
     getDefaultProps() {
@@ -67,7 +71,10 @@ const KeypadButton = React.createClass({
     },
 
     componentWillMount() {
-        this.heightStyles = stylesForButtonHeightPx(this.props.buttonHeightPx);
+        this.buttonSizeStyle = styleForButtonDimensions(
+            this.props.heightPx,
+            this.props.widthPx
+        );
     },
 
     componentDidMount() {
@@ -79,9 +86,10 @@ const KeypadButton = React.createClass({
         // changed. Though it is safe to recompute the StyleSheet (since
         // they're content-addressable), it saves us a bunch of hashing and
         // other work to cache it here.
-        if (newProps.buttonHeightPx !== this.props.buttonHeightPx) {
-            this.heightStyles = stylesForButtonHeightPx(
-                newProps.buttonHeightPx
+        if (newProps.heightPx !== this.props.heightPx ||
+                newProps.widthPx !== this.props.widthPx) {
+            this.buttonSizeStyle = styleForButtonDimensions(
+                newProps.heightPx, newProps.widthPx
             );
 
             this._preInjectStyles();
@@ -96,7 +104,7 @@ const KeypadButton = React.createClass({
         // applied to `View` components and Aphrodite will consolidate the style
         // object. This method must be called whenever a property that
         // influences the possible outcomes of `this._getFocusStyle` and
-        // `this._getButtonStyle` changes (such as `this.heightStyles`).
+        // `this._getButtonStyle` changes (such as `this.buttonSizeStyle`).
         for (const type of Object.keys(KeyTypes)) {
             css(
                 View.styles.initial,
@@ -164,7 +172,7 @@ const KeypadButton = React.createClass({
             backgroundStyle,
             ...borderStyle,
             type === KeyTypes.ECHO && styles.echo,
-            this.heightStyles.fullHeight,
+            this.buttonSizeStyle,
             // React Native allows you to set the 'style' props on user defined
             // components.
             //   See: https://facebook.github.io/react-native/docs/style.html
@@ -319,16 +327,17 @@ const styles = StyleSheet.create({
     },
 });
 
-const stylesForButtonHeightPx = (buttonHeightPx) => {
+const styleForButtonDimensions = (heightPx, widthPx) => {
     return StyleSheet.create({
-        fullHeight: {
-            height: buttonHeightPx,
+        buttonSize: {
+            height: heightPx,
+            width: widthPx,
         },
-    });
+    }).buttonSize;
 };
 
 const mapStateToProps = (state) => {
-    return state.buttons;
+    return state.layout.buttonDimensions;
 };
 
 module.exports = connect(mapStateToProps)(KeypadButton);

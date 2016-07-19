@@ -26,10 +26,11 @@ module.exports = {
         };
     },
 
-    setButtonHeightPx(buttonHeightPx) {
+    setScreenSize(screenWidthPx, screenHeightPx) {
         return {
-            type: 'SetButtonHeightPx',
-            buttonHeightPx,
+            type: 'SetScreenSizePx',
+            screenWidthPx,
+            screenHeightPx,
         };
     },
 
