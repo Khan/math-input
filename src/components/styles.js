@@ -17,6 +17,9 @@ module.exports = StyleSheet.create({
     fullWidth: {
         width: '100%',
     },
+    fullFlex: {
+        flexBasis: '100%',
+    },
     centered: {
         justifyContent: 'center',
         alignItems: 'center',

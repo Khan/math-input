@@ -11,7 +11,7 @@ const TwoPageKeypad = require('./two-page-keypad');
 const EmptyKeypadButton = require('./empty-keypad-button');
 const ManyKeypadButton = require('./many-keypad-button');
 const TouchableKeypadButton = require('./touchable-keypad-button');
-const {row, column, oneColumn} = require('./styles');
+const {row, column, oneColumn, fullFlex} = require('./styles');
 const {BorderStyles, JumpOutTypes} = require('../consts');
 const {numeralGrey, commandGrey} = require('./common-style');
 const {cursorContextPropType, keyIdPropType} = require('./prop-types');
@@ -41,7 +41,41 @@ const ExpressionKeypad = React.createClass({
             extraKeys,
         } = this.props;
 
-        const firstPageStyle = [row, styles.fullPage, styles.firstPage];
+        let dismissOrJumpOutKey;
+        if (dynamicJumpOut && cursorContext === CursorContexts.NESTED) {
+            dismissOrJumpOutKey = KeyConfigs.JUMP_OUT;
+        } else {
+            dismissOrJumpOutKey = KeyConfigs.DISMISS;
+        }
+
+        const sidebar = <View style={[column, oneColumn, styles.sidebar]}>
+            <TouchableKeypadButton
+                keyConfig={KeyConfigs.LEFT}
+                borders={BorderStyles.LEFT}
+                disabled={
+                    cursorContext === CursorContexts.LEFT_END ||
+                    cursorContext === CursorContexts.EMPTY
+                }
+            />
+            <TouchableKeypadButton
+                keyConfig={KeyConfigs.RIGHT}
+                borders={BorderStyles.LEFT}
+                disabled={
+                    cursorContext === CursorContexts.RIGHT_END ||
+                    cursorContext === CursorContexts.EMPTY
+                }
+            />
+            <TouchableKeypadButton
+                keyConfig={KeyConfigs.BACKSPACE}
+                borders={BorderStyles.LEFT}
+            />
+            <TouchableKeypadButton
+                keyConfig={dismissOrJumpOutKey}
+                borders={BorderStyles.LEFT}
+            />
+        </View>;
+
+        const firstPageStyle = [row, fullFlex, styles.firstPage];
         const firstPage = <View style={firstPageStyle}>
             <View style={[column, oneColumn]}>
                 <TouchableKeypadButton
@@ -106,9 +140,10 @@ const ExpressionKeypad = React.createClass({
                     borders={BorderStyles.LEFT}
                 />
             </View>
+            {sidebar}
         </View>;
 
-        const secondPage = <View style={[row, styles.fullPage]}>
+        const secondPage = <View style={[row, fullFlex]}>
             <View style={[column, oneColumn]}>
                 <TouchableKeypadButton keyConfig={KeyConfigs.EQUAL_MULTI} />
                 <TouchableKeypadButton keyConfig={KeyConfigs.LESS_MULTI} />
@@ -127,56 +162,18 @@ const ExpressionKeypad = React.createClass({
                 <TouchableKeypadButton keyConfig={KeyConfigs.TAN} />
                 <EmptyKeypadButton borders={BorderStyles.LEFT} />
             </View>
-        </View>;
-
-        let dismissOrJumpOutKey;
-        if (dynamicJumpOut && cursorContext === CursorContexts.NESTED) {
-            dismissOrJumpOutKey = KeyConfigs.JUMP_OUT;
-        } else {
-            dismissOrJumpOutKey = KeyConfigs.DISMISS;
-        }
-
-        const sidebar = <View style={[column, oneColumn, styles.sidebar]}>
-            <TouchableKeypadButton
-                keyConfig={KeyConfigs.LEFT}
-                borders={BorderStyles.LEFT}
-                disabled={
-                    cursorContext === CursorContexts.LEFT_END ||
-                    cursorContext === CursorContexts.EMPTY
-                }
-            />
-            <TouchableKeypadButton
-                keyConfig={KeyConfigs.RIGHT}
-                borders={BorderStyles.LEFT}
-                disabled={
-                    cursorContext === CursorContexts.RIGHT_END ||
-                    cursorContext === CursorContexts.EMPTY
-                }
-            />
-            <TouchableKeypadButton
-                keyConfig={KeyConfigs.BACKSPACE}
-                borders={BorderStyles.LEFT}
-            />
-            <TouchableKeypadButton
-                keyConfig={dismissOrJumpOutKey}
-                borders={BorderStyles.LEFT}
-            />
+            {sidebar}
         </View>;
 
         return <TwoPageKeypad
             currentPage={currentPage}
             firstPage={firstPage}
             secondPage={secondPage}
-            sidebar={sidebar}
         />;
     },
 });
 
 const styles = StyleSheet.create({
-    fullPage: {
-        flexBasis: '100%',
-    },
-
     firstPage: {
         backgroundColor: numeralGrey,
     },

@@ -242,13 +242,7 @@ const createStore = () => {
                     ...layoutProps,
                 });
             },
-        }, [
-            Keys.LEFT,
-            Keys.RIGHT,
-            Keys.BACKSPACE,
-            Keys.DISMISS,
-            Keys.JUMP_OUT,
-        ], [
+        }, [], [
             Keys.BACKSPACE,
             Keys.LEFT,
             Keys.RIGHT,
