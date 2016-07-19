@@ -12,7 +12,7 @@ const {removeEcho} = require('../actions');
 const {View} = require('../fake-react-native-web');
 const EchoManager = require('./echo-manager');
 const PopoverManager = require('./popover-manager');
-const {numeralGrey} = require('./common-style');
+const {valueGrey} = require('./common-style');
 const {echoPropType, popoverPropType} = require('./prop-types');
 
 const Keypad = React.createClass({
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
         // animations. In addition, `overflowX: 'hidden'` was making the second
         // page of keys appear above the sidebar on focus in mobile Safari.
         // overflowX: 'hidden',
-        backgroundColor: numeralGrey,
+        backgroundColor: valueGrey,
     },
 });
 

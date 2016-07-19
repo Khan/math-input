@@ -136,8 +136,8 @@ const createStore = () => {
                 const keyConfig = KeyConfigs[action.key];
 
                 // Reset the keypad page if the user performs a math operation.
-                if (keyConfig.type === KeyTypes.MATH ||
-                        keyConfig.type === KeyTypes.NUMERAL) {
+                if (keyConfig.type === KeyTypes.VALUE ||
+                        keyConfig.type === KeyTypes.OPERATOR) {
                     return pagerReducer(state, {type: 'ResetKeypadPage'});
                 }
                 return state;
@@ -310,10 +310,10 @@ const createStore = () => {
             case 'PressKey':
                 const keyConfig = KeyConfigs[action.key];
 
-                // Reset the keypad if the user performs a math operation.
-                if (keyConfig.type === KeyTypes.MATH ||
-                        keyConfig.type === KeyTypes.NUMERAL) {
-                    // Add in the echo animation.
+                // Add in the echo animation if the user performs a math
+                // operation.
+                if (keyConfig.type === KeyTypes.VALUE ||
+                        keyConfig.type === KeyTypes.OPERATOR) {
                     return {
                         ...state,
                         echoes: [

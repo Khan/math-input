@@ -12,7 +12,7 @@ const ManyKeypadButton = require('./many-keypad-button');
 const TouchableKeypadButton = require('./touchable-keypad-button');
 const {row, column, oneColumn, fullFlex} = require('./styles');
 const {BorderStyles, JumpOutTypes} = require('../consts');
-const {numeralGrey, controlGrey} = require('./common-style');
+const {valueGrey, controlGrey} = require('./common-style');
 const {cursorContextPropType, keyIdPropType} = require('./prop-types');
 const KeyConfigs = require('../data/key-configs');
 const CursorContexts = require('./input/cursor-contexts');
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
     // dismiss).
     // TODO(charlie): Apply the proper background between the 'command' keys.
     firstPage: {
-        backgroundColor: numeralGrey,
+        backgroundColor: valueGrey,
     },
 
     secondPage: {

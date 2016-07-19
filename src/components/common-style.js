@@ -54,8 +54,8 @@ module.exports = {
     cursorHandleDistanceMultiplier: 1.41,
 
     // Keypad button colors
-    numeralGrey: '#FFF',
-    commandGrey : '#FAFAFA',
+    valueGrey: '#FFF',
+    operatorGrey : '#FAFAFA',
     controlGrey : '#F6F7F7',
     emptyGrey : '#F0F1F2',
 };

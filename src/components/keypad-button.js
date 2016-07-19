@@ -16,8 +16,8 @@ const {
     buttonBorderColor,
     buttonBorderStyle,
     buttonBorderWidthPx,
-    numeralGrey,
-    commandGrey,
+    valueGrey,
+    operatorGrey,
     controlGrey,
     emptyGrey,
 } = require('./common-style');
@@ -132,13 +132,13 @@ const KeypadButton = React.createClass({
                 backgroundStyle = styles.empty;
                 break;
 
-            case KeyTypes.NUMERAL:
-                backgroundStyle = styles.numeral;
+            case KeyTypes.MANY:
+            case KeyTypes.VALUE:
+                backgroundStyle = styles.value;
                 break;
 
-            case KeyTypes.MANY:
-            case KeyTypes.MATH:
-                backgroundStyle = styles.command;
+            case KeyTypes.OPERATOR:
+                backgroundStyle = styles.operator;
                 break;
 
             case KeyTypes.INPUT_NAVIGATION:
@@ -277,11 +277,11 @@ const styles = StyleSheet.create({
     },
 
     // Background colors and other base styles that may vary between key types.
-    numeral: {
-        backgroundColor: numeralGrey,
+    value: {
+        backgroundColor: valueGrey,
     },
-    command: {
-        backgroundColor: commandGrey,
+    operator: {
+        backgroundColor: operatorGrey,
     },
     control: {
         backgroundColor: controlGrey,
