@@ -28,7 +28,8 @@ const Keys = {
     SQRT: 'SQRT',
     CUBE_ROOT: 'CUBE_ROOT',
     RADICAL: 'RADICAL',
-    PARENS: 'PARENS',
+    LEFT_PAREN: 'LEFT_PAREN',
+    RIGHT_PAREN: 'RIGHT_PAREN',
     LN: 'LN',
     LOG: 'LOG',
     LOG_N: 'LOG_N',
@@ -39,15 +40,6 @@ const Keys = {
     // TODO(charlie): Add in additional Greek letters.
     PI: 'PI',
     THETA: 'THETA',
-
-    FRAC_MULTI: 'FRAC_MULTI',
-    PARENS_MULTI: 'PARENS_MULTI',
-    EQUAL_MULTI: 'EQUAL_MULTI',
-    LESS_MULTI: 'LESS_MULTI',
-    GREATER_MULTI: 'GREATER_MULTI',
-    EXP_MULTI: 'EXP_MULTI',
-    RADICAL_MULTI: 'RADICAL_MULTI',
-    LOG_MULTI: 'LOG_MULTI',
 
     LEFT: 'LEFT',
     RIGHT: 'RIGHT',

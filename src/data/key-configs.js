@@ -40,6 +40,7 @@ const KeyConfigs = {
         ariaLabel: i18n._('Divide'),
     },
     [Keys.DECIMAL]: {
+        // TODO(charlie): Use the numeral color for the 'Decimal' key.
         type: KeyTypes.MATH,
         // I18N: A label for a percent symbol.
         ariaLabel: i18n._('Decimal'),
@@ -115,9 +116,13 @@ const KeyConfigs = {
         type: KeyTypes.MATH,
         ariaLabel: i18n._('Radical with custom root'),
     },
-    [Keys.PARENS]: {
+    [Keys.LEFT_PAREN]: {
         type: KeyTypes.MATH,
-        ariaLabel: i18n._('Parentheses'),
+        ariaLabel: i18n._('Left parenthesis'),
+    },
+    [Keys.RIGHT_PAREN]: {
+        type: KeyTypes.MATH,
+        ariaLabel: i18n._('Right parenthesis'),
     },
     [Keys.LN]: {
         type: KeyTypes.MATH,
@@ -190,57 +195,7 @@ const KeyConfigs = {
     },
 };
 
-// Add in the multi-function buttons, which inherit some fields from the simple
-// buttons.
-// TODO(charlie): Make the multi-function button's long-press interaction
-// accessible. Right now, it isn't possible to trigger any of the hidden buttons
-// with a VoiceOver cursor--all you can do is trigger the default action.
-KeyConfigs[Keys.FRAC_MULTI] = {
-    type: KeyTypes.MATH,
-    childKeyIds: [Keys.FRAC, Keys.DIVIDE],
-    ariaLabel: KeyConfigs[Keys.FRAC].ariaLabel,
-};
-KeyConfigs[Keys.PARENS_MULTI] = {
-    type: KeyTypes.MATH,
-    childKeyIds: [Keys.PARENS, Keys.CDOT, Keys.TIMES],
-    ariaLabel: KeyConfigs[Keys.PARENS].ariaLabel,
-};
-
-// NOTE(charlie): The multi-functional keys below use the icons of their
-// 'default' keys by pointing to them in iconography/index.js. If the defaults
-// change for any of these keys, the reference in iconography/index.js should
-// change as well.
-KeyConfigs[Keys.EQUAL_MULTI] = {
-    type: KeyTypes.MATH,
-    childKeyIds: [Keys.EQUAL, Keys.NEQ],
-    ariaLabel: KeyConfigs[Keys.EQUAL].ariaLabel,
-};
-KeyConfigs[Keys.GREATER_MULTI] = {
-    type: KeyTypes.MATH,
-    childKeyIds: [Keys.GT, Keys.GEQ],
-    ariaLabel: KeyConfigs[Keys.GT].ariaLabel,
-};
-KeyConfigs[Keys.LESS_MULTI] = {
-    type: KeyTypes.MATH,
-    childKeyIds: [Keys.LT, Keys.LEQ],
-    ariaLabel: KeyConfigs[Keys.LT].ariaLabel,
-};
-KeyConfigs[Keys.EXP_MULTI] = {
-    type: KeyTypes.MATH,
-    childKeyIds: [Keys.EXP_2, Keys.EXP_3, Keys.EXP],
-    ariaLabel: KeyConfigs[Keys.EXP_2].ariaLabel,
-};
-KeyConfigs[Keys.RADICAL_MULTI] = {
-    type: KeyTypes.MATH,
-    childKeyIds: [Keys.SQRT, Keys.CUBE_ROOT, Keys.RADICAL],
-    ariaLabel: KeyConfigs[Keys.SQRT].ariaLabel,
-};
-KeyConfigs[Keys.LOG_MULTI] = {
-    type: KeyTypes.MATH,
-    childKeyIds: [Keys.LOG, Keys.LN, Keys.LOG_N],
-    ariaLabel: KeyConfigs[Keys.LOG].ariaLabel,
-};
-
+// TODO(charlie): Use the numeral color for the 'Many' key.
 KeyConfigs[Keys.MANY] = {
     type: KeyTypes.MANY,
     // childKeyIds will be configured by the client.

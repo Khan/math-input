@@ -114,9 +114,8 @@ class MathWrapper {
             } else {
                 this.mathField.cmd('\\frac');
             }
-        } else if (key === Keys.PARENS) {
-            this.mathField.write('\\left(\\right)');
-            this.mathField.keystroke('Left');
+        } else if (key === Keys.LEFT_PAREN || key === Keys.RIGHT_PAREN) {
+            throw new Error("TODO(charlie): Implement single parentheses");
         } else if (Object.keys(NormalCommands).includes(key)) {
             this._writeNormalFunction(NormalCommands[key]);
         } else if (key === Keys.LOG_N) {

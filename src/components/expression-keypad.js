@@ -8,12 +8,11 @@ const {StyleSheet} = require('aphrodite');
 
 const {View} = require('../fake-react-native-web');
 const TwoPageKeypad = require('./two-page-keypad');
-const EmptyKeypadButton = require('./empty-keypad-button');
 const ManyKeypadButton = require('./many-keypad-button');
 const TouchableKeypadButton = require('./touchable-keypad-button');
 const {row, column, oneColumn, fullFlex} = require('./styles');
 const {BorderStyles, JumpOutTypes} = require('../consts');
-const {numeralGrey, commandGrey} = require('./common-style');
+const {numeralGrey, controlGrey} = require('./common-style');
 const {cursorContextPropType, keyIdPropType} = require('./prop-types');
 const KeyConfigs = require('../data/key-configs');
 const CursorContexts = require('./input/cursor-contexts');
@@ -47,33 +46,6 @@ const ExpressionKeypad = React.createClass({
         } else {
             dismissOrJumpOutKey = KeyConfigs.DISMISS;
         }
-
-        const sidebar = <View style={[column, oneColumn, styles.sidebar]}>
-            <TouchableKeypadButton
-                keyConfig={KeyConfigs.LEFT}
-                borders={BorderStyles.LEFT}
-                disabled={
-                    cursorContext === CursorContexts.LEFT_END ||
-                    cursorContext === CursorContexts.EMPTY
-                }
-            />
-            <TouchableKeypadButton
-                keyConfig={KeyConfigs.RIGHT}
-                borders={BorderStyles.LEFT}
-                disabled={
-                    cursorContext === CursorContexts.RIGHT_END ||
-                    cursorContext === CursorContexts.EMPTY
-                }
-            />
-            <TouchableKeypadButton
-                keyConfig={KeyConfigs.BACKSPACE}
-                borders={BorderStyles.LEFT}
-            />
-            <TouchableKeypadButton
-                keyConfig={dismissOrJumpOutKey}
-                borders={BorderStyles.LEFT}
-            />
-        </View>;
 
         const firstPageStyle = [row, fullFlex, styles.firstPage];
         const firstPage = <View style={firstPageStyle}>
@@ -132,37 +104,126 @@ const ExpressionKeypad = React.createClass({
                 />
             </View>
             <View style={[column, oneColumn]}>
-                <TouchableKeypadButton keyConfig={KeyConfigs.FRAC_MULTI} />
-                <TouchableKeypadButton keyConfig={KeyConfigs.PARENS_MULTI} />
-                <TouchableKeypadButton keyConfig={KeyConfigs.MINUS} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.DIVIDE} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.TIMES} />
+                <TouchableKeypadButton
+                    keyConfig={KeyConfigs.MINUS}
+                    borders={BorderStyles.LEFT}
+                />
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.PLUS}
                     borders={BorderStyles.LEFT}
                 />
             </View>
-            {sidebar}
+            <View style={[column, oneColumn]}>
+                <TouchableKeypadButton
+                    keyConfig={KeyConfigs.FRAC}
+                    borders={BorderStyles.BOTTOM}
+                />
+                <TouchableKeypadButton
+                    keyConfig={KeyConfigs.CDOT}
+                    borders={BorderStyles.BOTTOM}
+                />
+                <TouchableKeypadButton
+                    keyConfig={KeyConfigs.BACKSPACE}
+                    borders={BorderStyles.LEFT}
+                />
+                <TouchableKeypadButton
+                    keyConfig={dismissOrJumpOutKey}
+                    borders={BorderStyles.LEFT}
+                />
+            </View>
         </View>;
 
-        const secondPage = <View style={[row, fullFlex]}>
+        const secondPageStyle = [row, fullFlex, styles.secondPage];
+        const secondPage = <View style={secondPageStyle}>
             <View style={[column, oneColumn]}>
-                <TouchableKeypadButton keyConfig={KeyConfigs.EQUAL_MULTI} />
-                <TouchableKeypadButton keyConfig={KeyConfigs.LESS_MULTI} />
-                <TouchableKeypadButton keyConfig={KeyConfigs.GREATER_MULTI} />
-                <EmptyKeypadButton borders={BorderStyles.LEFT} />
+                <TouchableKeypadButton
+                    keyConfig={KeyConfigs.EXP_2}
+                    borders={BorderStyles.NONE}
+                />
+                <TouchableKeypadButton
+                    keyConfig={KeyConfigs.SQRT}
+                    borders={BorderStyles.NONE}
+                />
+                <TouchableKeypadButton
+                    keyConfig={KeyConfigs.LOG}
+                    borders={BorderStyles.BOTTOM}
+                />
+                <TouchableKeypadButton
+                    keyConfig={KeyConfigs.SIN}
+                    borders={BorderStyles.NONE}
+                />
             </View>
             <View style={[column, oneColumn]}>
-                <TouchableKeypadButton keyConfig={KeyConfigs.EXP_MULTI} />
-                <TouchableKeypadButton keyConfig={KeyConfigs.RADICAL_MULTI} />
-                <TouchableKeypadButton keyConfig={KeyConfigs.LOG_MULTI} />
-                <EmptyKeypadButton borders={BorderStyles.LEFT} />
+                <TouchableKeypadButton
+                    keyConfig={KeyConfigs.EXP_3}
+                    borders={BorderStyles.NONE}
+                />
+                <TouchableKeypadButton
+                    keyConfig={KeyConfigs.CUBE_ROOT}
+                    borders={BorderStyles.NONE}
+                />
+                <TouchableKeypadButton
+                    keyConfig={KeyConfigs.LN}
+                    borders={BorderStyles.BOTTOM}
+                />
+                <TouchableKeypadButton
+                    keyConfig={KeyConfigs.COS}
+                    borders={BorderStyles.NONE}
+                />
             </View>
             <View style={[column, oneColumn]}>
-                <TouchableKeypadButton keyConfig={KeyConfigs.SIN} />
-                <TouchableKeypadButton keyConfig={KeyConfigs.COS} />
-                <TouchableKeypadButton keyConfig={KeyConfigs.TAN} />
-                <EmptyKeypadButton borders={BorderStyles.LEFT} />
+                <TouchableKeypadButton
+                    keyConfig={KeyConfigs.EXP}
+                    borders={BorderStyles.NONE}
+                />
+                <TouchableKeypadButton
+                    keyConfig={KeyConfigs.RADICAL}
+                    borders={BorderStyles.NONE}
+                />
+                <TouchableKeypadButton
+                    keyConfig={KeyConfigs.LOG_N}
+                    borders={BorderStyles.BOTTOM}
+                />
+                <TouchableKeypadButton
+                    keyConfig={KeyConfigs.TAN}
+                    borders={BorderStyles.NONE}
+                />
             </View>
-            {sidebar}
+            <View style={[column, oneColumn]}>
+                <TouchableKeypadButton
+                    keyConfig={KeyConfigs.GEQ}
+                    borders={BorderStyles.LEFT}
+                />
+                <TouchableKeypadButton
+                    keyConfig={KeyConfigs.EQUAL}
+                    borders={BorderStyles.LEFT}
+                />
+                <TouchableKeypadButton keyConfig={KeyConfigs.LEQ} />
+                <TouchableKeypadButton
+                    keyConfig={KeyConfigs.LEFT_PAREN}
+                    borders={BorderStyles.LEFT}
+                />
+            </View>
+            <View style={[column, oneColumn]}>
+                <TouchableKeypadButton
+                    keyConfig={KeyConfigs.GT}
+                    borders={BorderStyles.NONE}
+                />
+                <TouchableKeypadButton
+                    keyConfig={KeyConfigs.NEQ}
+                    borders={BorderStyles.NONE}
+                />
+                <TouchableKeypadButton
+                    keyConfig={KeyConfigs.LT}
+                    borders={BorderStyles.BOTTOM}
+                />
+                <TouchableKeypadButton
+                    keyConfig={KeyConfigs.RIGHT_PAREN}
+                    borders={BorderStyles.NONE}
+                />
+            </View>
         </View>;
 
         return <TwoPageKeypad
@@ -174,12 +235,17 @@ const ExpressionKeypad = React.createClass({
 });
 
 const styles = StyleSheet.create({
+    // NOTE(charlie): These backgrounds are applied to as to fill in some
+    // unfortunate 'cracks' in the layout. However, not all keys in the first
+    // page use this background color (namely, the 'command' keys, backspace and
+    // dismiss).
+    // TODO(charlie): Apply the proper background between the 'command' keys.
     firstPage: {
         backgroundColor: numeralGrey,
     },
 
-    sidebar: {
-        backgroundColor: commandGrey,
+    secondPage: {
+        backgroundColor: controlGrey,
     },
 });
 
