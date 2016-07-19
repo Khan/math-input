@@ -30,6 +30,8 @@ const KeyActions = {
     [Keys.NEQ]: {str: '\\neq', fn: WRITE},
     [Keys.CDOT]: {str: '\\cdot', fn: WRITE},
     [Keys.PERCENT]: {str: '%', fn: WRITE},
+    [Keys.LEFT_PAREN]: {str: '(', fn: CMD},
+    [Keys.RIGHT_PAREN]: {str: ')', fn: CMD},
     [Keys.SQRT]: {str: 'sqrt', fn: CMD},
     [Keys.PI]: {str: 'pi', fn: CMD},
     [Keys.THETA]: {str: 'theta', fn: CMD},
@@ -114,8 +116,6 @@ class MathWrapper {
             } else {
                 this.mathField.cmd('\\frac');
             }
-        } else if (key === Keys.LEFT_PAREN || key === Keys.RIGHT_PAREN) {
-            throw new Error("TODO(charlie): Implement single parentheses");
         } else if (Object.keys(NormalCommands).includes(key)) {
             this._writeNormalFunction(NormalCommands[key]);
         } else if (key === Keys.LOG_N) {
