@@ -14,10 +14,6 @@ const Keypads = {
         numPages: 1,
         extraKeys: [],
     },
-    [KeypadTypes.DEFAULT]: {
-        numPages: 1,
-        extraKeys: [],
-    },
     [KeypadTypes.EXPRESSION]: {
         numPages: 2,
         extraKeys: ['x', 'y', Keys.PI, Keys.THETA],

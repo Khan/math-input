@@ -3,7 +3,6 @@ const {connect} = require('react-redux');
 const {StyleSheet} = require('aphrodite');
 
 const {View} = require('../fake-react-native-web');
-const DefaultKeypad = require('./default-keypad');
 const NumberKeypad = require('./number-keypad');
 const FractionKeypad = require('./fraction-keypad');
 const ExpressionKeypad = require('./expression-keypad');
@@ -101,9 +100,8 @@ const KeypadContainer = React.createClass({
                     ref={onElementMounted}
                 />;
 
-            case KeypadTypes.DEFAULT:
             default:
-                return <DefaultKeypad ref={onElementMounted} />;
+                throw new Error("Invalid keypad type: " + keypadType);
         }
     },
 
