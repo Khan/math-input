@@ -6,8 +6,7 @@ const {View} = require('../fake-react-native-web');
 const DefaultKeypad = require('./default-keypad');
 const NumberKeypad = require('./number-keypad');
 const FractionKeypad = require('./fraction-keypad');
-const BasicExpressionKeypad = require('./basic-expression-keypad');
-const AdvancedExpressionKeypad = require('./advanced-expression-keypad');
+const ExpressionKeypad = require('./expression-keypad');
 const zIndexes = require('./z-indexes');
 const {getButtonHeightPx, maxKeypadWidth} = require('./common-style');
 const {setButtonHeightPx} = require('../actions');
@@ -96,14 +95,8 @@ const KeypadContainer = React.createClass({
             case KeypadTypes.FRACTION:
                 return <FractionKeypad ref={onElementMounted} />;
 
-            case KeypadTypes.ADVANCED_EXPRESSION:
-                return <AdvancedExpressionKeypad
-                    extraKeys={extraKeys}
-                    ref={onElementMounted}
-                />;
-
-            case KeypadTypes.BASIC_EXPRESSION:
-                return <BasicExpressionKeypad
+            case KeypadTypes.EXPRESSION:
+                return <ExpressionKeypad
                     extraKeys={extraKeys}
                     ref={onElementMounted}
                 />;

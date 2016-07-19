@@ -1,5 +1,5 @@
 /**
- * A keypad that includes a subset of the expression symbols.
+ * A keypad that includes all of the expression symbols.
  */
 
 const React = require('react');
@@ -20,7 +20,7 @@ const KeyConfigs = require('../data/key-configs');
 const CursorContexts = require('./input/cursor-contexts');
 const {keypadSwitch, jumpOutType} = require('../settings');
 
-const BasicExpressionKeypad = React.createClass({
+const ExpressionKeypad = React.createClass({
     propTypes: {
         currentPage: React.PropTypes.number.isRequired,
         cursorContext: cursorContextPropType.isRequired,
@@ -124,7 +124,13 @@ const BasicExpressionKeypad = React.createClass({
             <View style={[column, oneColumn]}>
                 <TouchableKeypadButton keyConfig={KeyConfigs.EXP_MULTI} />
                 <TouchableKeypadButton keyConfig={KeyConfigs.RADICAL_MULTI} />
-                <EmptyKeypadButton />
+                <TouchableKeypadButton keyConfig={KeyConfigs.LOG_MULTI} />
+                <EmptyKeypadButton borders={BorderStyles.LEFT} />
+            </View>
+            <View style={[column, oneColumn]}>
+                <TouchableKeypadButton keyConfig={KeyConfigs.SIN} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.COS} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.TAN} />
                 <EmptyKeypadButton borders={BorderStyles.LEFT} />
             </View>
         </View>;
@@ -216,6 +222,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-module.exports = connect(
-    mapStateToProps, mapDispatchToProps
-)(BasicExpressionKeypad);
+module.exports = connect(mapStateToProps, mapDispatchToProps)(ExpressionKeypad);

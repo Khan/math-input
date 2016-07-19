@@ -8,20 +8,6 @@ const {
     DebugSwitcherTypes,
 } = require('./consts');
 
-// test 1
-// keypad_switch: [toggle], page_control, tab_bar
-
-// tests 2 & 3 & 4
-// keypad_type: number, fraction, simple_expression, [advanced_expression]
-// TODO(kevinb) map these to existing keypad constants
-
-// echo_state: [yes], no
-
-// icon_style: simple, [fancy]
-
-// test 5
-// jump_out: static, dynamic
-
 const search = typeof location === 'undefined' ? '' : location.search;
 const parsed = queryString.parse(search);
 
@@ -29,7 +15,7 @@ const containsConfigurationOptions = Object.keys(parsed).length > 0;
 
 const defaults = {
     keypadSwitch: SwitchTypes.PAGE_CONTROL,
-    keypadType: KeypadTypes.ADVANCED_EXPRESSION,
+    keypadType: KeypadTypes.EXPRESSION,
     fractionBehavior: FractionBehaviorTypes.INCLUSIVE,
     jumpOutType: JumpOutTypes.STATIC,
     echoAnimation: EchoAnimationTypes.SLIDE_AND_FADE,

@@ -7,8 +7,7 @@ module.exports = {
         NUMBER: 'NUMBER',
         FRACTION: 'FRACTION',
         DEFAULT: 'DEFAULT',
-        ADVANCED_EXPRESSION: 'ADVANCED_EXPRESSION',
-        BASIC_EXPRESSION: 'BASIC_EXPRESSION',
+        EXPRESSION: 'EXPRESSION',
     },
 
     KeyTypes: {
