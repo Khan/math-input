@@ -17,7 +17,6 @@ module.exports = {
     SIN: require('./sin'),
     LT: require('./lt'),
     FRAC_MULTI: require('./frac-multi'),
-    NUMBERS: require('./numbers'),
     CUBE_ROOT: require('./cube-root'),
     PLUS: require('./plus'),
     TAN: require('./tan'),
@@ -39,7 +38,6 @@ module.exports = {
     LEQ: require('./leq'),
     MINUS: require('./minus'),
     RADICAL: require('./radical'),
-    MORE: require('./more'),
 
     // These multi-functional keys use the symbols of their 'default' keys.
     EQUAL_MULTI: require('./equal'),

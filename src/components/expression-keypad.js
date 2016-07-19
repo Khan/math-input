@@ -6,19 +6,18 @@ const React = require('react');
 const {connect} = require('react-redux');
 const {StyleSheet} = require('aphrodite');
 
-const {setKeypadCurrentPage} = require('../actions');
 const {View} = require('../fake-react-native-web');
 const TwoPageKeypad = require('./two-page-keypad');
 const EmptyKeypadButton = require('./empty-keypad-button');
 const ManyKeypadButton = require('./many-keypad-button');
 const TouchableKeypadButton = require('./touchable-keypad-button');
 const {row, column, oneColumn} = require('./styles');
-const {BorderStyles, SwitchTypes, JumpOutTypes} = require('../consts');
+const {BorderStyles, JumpOutTypes} = require('../consts');
 const {numeralGrey, commandGrey} = require('./common-style');
 const {cursorContextPropType, keyIdPropType} = require('./prop-types');
 const KeyConfigs = require('../data/key-configs');
 const CursorContexts = require('./input/cursor-contexts');
-const {keypadSwitch, jumpOutType} = require('../settings');
+const {jumpOutType} = require('../settings');
 
 const ExpressionKeypad = React.createClass({
     propTypes: {
@@ -26,14 +25,11 @@ const ExpressionKeypad = React.createClass({
         cursorContext: cursorContextPropType.isRequired,
         dynamicJumpOut: React.PropTypes.bool,
         extraKeys: React.PropTypes.arrayOf(keyIdPropType),
-        onSelectTab: React.PropTypes.func,
-        showToggle: React.PropTypes.bool,
     },
 
     getDefaultProps() {
         return {
             dynamicJumpOut: jumpOutType === JumpOutTypes.DYNAMIC,
-            showToggle: keypadSwitch === SwitchTypes.TOGGLE,
         };
     },
 
@@ -43,8 +39,6 @@ const ExpressionKeypad = React.createClass({
             cursorContext,
             dynamicJumpOut,
             extraKeys,
-            onSelectTab,
-            showToggle,
         } = this.props;
 
         const firstPageStyle = [row, styles.fullPage, styles.firstPage];
@@ -135,18 +129,6 @@ const ExpressionKeypad = React.createClass({
             </View>
         </View>;
 
-        // TODO(charlie): Simplify after user-testing.
-        let topNavigationKey;
-        let goRightNavigationKey;
-        if (showToggle) {
-            topNavigationKey = currentPage === 0 ? KeyConfigs.MORE
-                                                 : KeyConfigs.NUMBERS;
-            goRightNavigationKey = KeyConfigs.JUMP_OUT;
-        } else {
-            topNavigationKey = KeyConfigs.LEFT;
-            goRightNavigationKey = KeyConfigs.RIGHT;
-        }
-
         let dismissOrJumpOutKey;
         if (dynamicJumpOut && cursorContext === CursorContexts.NESTED) {
             dismissOrJumpOutKey = KeyConfigs.JUMP_OUT;
@@ -156,23 +138,21 @@ const ExpressionKeypad = React.createClass({
 
         const sidebar = <View style={[column, oneColumn, styles.sidebar]}>
             <TouchableKeypadButton
-                keyConfig={topNavigationKey}
+                keyConfig={KeyConfigs.LEFT}
                 borders={BorderStyles.LEFT}
                 disabled={
                     cursorContext === CursorContexts.LEFT_END ||
                     cursorContext === CursorContexts.EMPTY
                 }
             />
-            {dynamicJumpOut ? <EmptyKeypadButton
-                borders={BorderStyles.LEFT}
-            /> : <TouchableKeypadButton
-                keyConfig={goRightNavigationKey}
+            <TouchableKeypadButton
+                keyConfig={KeyConfigs.RIGHT}
                 borders={BorderStyles.LEFT}
                 disabled={
                     cursorContext === CursorContexts.RIGHT_END ||
                     cursorContext === CursorContexts.EMPTY
                 }
-            />}
+            />
             <TouchableKeypadButton
                 keyConfig={KeyConfigs.BACKSPACE}
                 borders={BorderStyles.LEFT}
@@ -188,7 +168,6 @@ const ExpressionKeypad = React.createClass({
             firstPage={firstPage}
             secondPage={secondPage}
             sidebar={sidebar}
-            onSelectTab={onSelectTab}
         />;
     },
 });
@@ -214,12 +193,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        onSelectTab: (tabIndex) => {
-            dispatch(setKeypadCurrentPage(tabIndex));
-        },
-    };
-};
-
-module.exports = connect(mapStateToProps, mapDispatchToProps)(ExpressionKeypad);
+module.exports = connect(mapStateToProps)(ExpressionKeypad);

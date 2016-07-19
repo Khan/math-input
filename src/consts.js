@@ -40,11 +40,6 @@ module.exports = {
     },
 
     // Configurable settings.
-    SwitchTypes: {
-        TOGGLE: 'TOGGLE',
-        TAB_BAR: 'TAB_BAR',
-        PAGE_CONTROL: 'PAGE_CONTROL',
-    },
     FractionBehaviorTypes: {
         INCLUSIVE: 'INCLUSIVE',
         EXCLUSIVE: 'EXCLUSIVE',

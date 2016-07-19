@@ -53,7 +53,4 @@ filename_to_symbol = {
     'radical-multi': 'RADICAL_MULTI',
     'radical-2': 'SQRT',
     'radical-3': 'CUBE_ROOT',
-    # TODO(charlie): Rename
-    'on-page-numbers': 'MORE',
-    'on-page-symbols': 'NUMBERS',
 }

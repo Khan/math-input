@@ -54,8 +54,6 @@ const Keys = {
     JUMP_OUT: 'JUMP_OUT',
     BACKSPACE: 'BACKSPACE',
     DISMISS: 'DISMISS',
-    MORE: 'MORE',
-    NUMBERS: 'NUMBERS',
 
     NOOP: 'NOOP',
 

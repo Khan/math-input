@@ -1,7 +1,6 @@
 const queryString = require('query-string');
 const {
     KeypadTypes,
-    SwitchTypes,
     FractionBehaviorTypes,
     EchoAnimationTypes,
     JumpOutTypes,
@@ -14,7 +13,6 @@ const parsed = queryString.parse(search);
 const containsConfigurationOptions = Object.keys(parsed).length > 0;
 
 const defaults = {
-    keypadSwitch: SwitchTypes.PAGE_CONTROL,
     keypadType: KeypadTypes.EXPRESSION,
     fractionBehavior: FractionBehaviorTypes.INCLUSIVE,
     jumpOutType: JumpOutTypes.STATIC,
@@ -27,7 +25,6 @@ const defaults = {
 };
 
 const settings = {
-    keypadSwitch: parsed.keypad_switch || defaults.keypadSwitch,
     keypadType: parsed.keypad_type || defaults.keypadType,
     jumpOutType: parsed.jump_out_type || defaults.jumpOutType,
     fractionBehavior: parsed.fraction_behavior || defaults.fractionBehavior,

@@ -7,61 +7,36 @@ const {StyleSheet} = require('aphrodite');
 
 const Keypad = require('./keypad');
 const ViewPager = require('./view-pager');
-const TabBarIndicator = require('./tab-bar-indicator');
 const PagerIndicator = require('./pager-indicator');
 const {View} = require('../fake-react-native-web');
 const {column, row} = require('./styles');
 const {
     buttonBorderColor, buttonBorderStyle, buttonBorderWidthPx, gray85,
 } = require('./common-style');
-const {SwitchTypes} = require('../consts');
-const {keypadSwitch} = require('../settings');
 
 const TwoPageKeypad = React.createClass({
     propTypes: {
         currentPage: React.PropTypes.oneOf([0, 1]).isRequired,
         firstPage: React.PropTypes.node.isRequired,
-        onSelectTab: React.PropTypes.func,
         secondPage: React.PropTypes.node.isRequired,
-        showPagerIndicator: React.PropTypes.bool,
-        showTabBarIndicator: React.PropTypes.bool,
         sidebar: React.PropTypes.node.isRequired,
-    },
-
-    getDefaultProps() {
-        return {
-            showPagerIndicator: keypadSwitch === SwitchTypes.PAGE_CONTROL,
-            showTabBarIndicator: keypadSwitch === SwitchTypes.TAB_BAR,
-        };
     },
 
     render() {
         const {
             currentPage,
             firstPage,
-            onSelectTab,
             secondPage,
-            showPagerIndicator,
-            showTabBarIndicator,
             sidebar,
         } = this.props;
 
         const keypadContentsStyle = [
             row,
-            (showPagerIndicator || showTabBarIndicator) && styles.borderTop,
+            styles.borderTop,
         ];
 
         return <Keypad style={[column, styles.keypad]}>
-            {showTabBarIndicator &&
-                <TabBarIndicator
-                    currentPage={currentPage}
-                    onSelectTab={onSelectTab}
-                    pageTitles={['Basic', 'Advanced']}
-                />
-            }
-            {showPagerIndicator &&
-                <PagerIndicator numPages={2} currentPage={currentPage} />
-            }
+            <PagerIndicator numPages={2} currentPage={currentPage} />
             <View style={keypadContentsStyle}>
                 <View style={styles.mainContent}>
                     <ViewPager>

@@ -40,13 +40,6 @@ module.exports = {
         };
     },
 
-    setKeypadCurrentPage(page) {
-        return {
-            type: 'SetKeypadCurrentPage',
-            page,
-        };
-    },
-
     removeEcho(animationId) {
         return {
             type: 'RemoveEcho',

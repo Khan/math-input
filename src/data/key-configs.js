@@ -188,14 +188,6 @@ const KeyConfigs = {
         // I18N: A label for a button that will dismiss/hide a keypad.
         ariaLabel: i18n._('Dismiss'),
     },
-    [Keys.MORE]: {
-        type: KeyTypes.KEYPAD_NAVIGATION,
-        ariaLabel: i18n._('Go to advanced button set'),
-    },
-    [Keys.NUMBERS]: {
-        type: KeyTypes.KEYPAD_NAVIGATION,
-        ariaLabel: i18n._('Go to basic button set'),
-    },
 };
 
 // Add in the multi-function buttons, which inherit some fields from the simple

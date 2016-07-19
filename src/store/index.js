@@ -139,12 +139,6 @@ const createStore = () => {
                 if (keyConfig.type === KeyTypes.MATH ||
                         keyConfig.type === KeyTypes.NUMERAL) {
                     return pagerReducer(state, {type: 'ResetKeypadPage'});
-                } else if (keyConfig.type === KeyTypes.KEYPAD_NAVIGATION) {
-                    if (keyConfig.id === Keys.NUMBERS) {
-                        return pagerReducer(state, {type: 'ResetKeypadPage'});
-                    } else if (keyConfig.id === Keys.MORE) {
-                        return pagerReducer(state, {type: 'PageKeypadRight'});
-                    }
                 }
                 return state;
 
@@ -174,17 +168,6 @@ const createStore = () => {
                     ...state,
                     animateToPosition: true,
                     currentPage: prevPage,
-                    dx: 0,
-                };
-
-            case 'SetKeypadCurrentPage':
-                const boundedPage = Math.min(
-                    Math.max(action.page, 0),
-                    state.numPages - 1
-                );
-                return {
-                    ...state,
-                    currentPage: boundedPage,
                     dx: 0,
                 };
 
@@ -265,8 +248,6 @@ const createStore = () => {
             Keys.BACKSPACE,
             Keys.DISMISS,
             Keys.JUMP_OUT,
-            Keys.MORE,
-            Keys.NUMBERS,
         ], [
             Keys.BACKSPACE,
             Keys.LEFT,
