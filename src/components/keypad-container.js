@@ -7,7 +7,7 @@ const FractionKeypad = require('./fraction-keypad');
 const ExpressionKeypad = require('./expression-keypad');
 const NavigationPad = require('./navigation-pad');
 const zIndexes = require('./z-indexes');
-const {setScreenSize} = require('../actions');
+const {setPageSize} = require('../actions');
 const {keyIdPropType} = require('./prop-types');
 const {DeviceTypes, KeypadTypes} = require('../consts');
 
@@ -21,7 +21,7 @@ const KeypadContainer = React.createClass({
         // A callback that should be triggered with the root React element on
         // mount.
         onElementMounted: React.PropTypes.func,
-        onScreenSizeChange: React.PropTypes.func.isRequired,
+        onPageSizeChange: React.PropTypes.func.isRequired,
         style: React.PropTypes.any,
     },
 
@@ -77,7 +77,7 @@ const KeypadContainer = React.createClass({
             viewportWidth: window.innerWidth,
         });
 
-        this.props.onScreenSizeChange(window.innerWidth, window.innerHeight);
+        this.props.onPageSizeChange(window.innerWidth, window.innerHeight);
     },
 
     renderKeypad() {
@@ -193,8 +193,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onScreenSizeChange: (pageWidthPx, pageHeightPx) => {
-            dispatch(setScreenSize(pageWidthPx, pageHeightPx));
+        onPageSizeChange: (pageWidthPx, pageHeightPx) => {
+            dispatch(setPageSize(pageWidthPx, pageHeightPx));
         },
     };
 };

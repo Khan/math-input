@@ -28,6 +28,11 @@ module.exports = {
         ECHO: 'ECHO',
     },
 
+    DeviceOrientations: {
+        LANDSCAPE: 'LANDSCAPE',
+        PORTRAIT: 'PORTRAIT',
+    },
+
     DeviceTypes: {
         PHONE: 'PHONE',
         TABLET: 'TABLET',

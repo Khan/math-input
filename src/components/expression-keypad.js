@@ -31,6 +31,12 @@ const ExpressionKeypad = React.createClass({
         extraKeys: React.PropTypes.arrayOf(keyIdPropType),
     },
 
+    statics: {
+        rows: 4,
+        columns: 5,
+        numPages: 2,
+    },
+
     getDefaultProps() {
         return {
             dynamicJumpOut: jumpOutType === JumpOutTypes.DYNAMIC,

@@ -21,6 +21,12 @@ const FractionKeypad = React.createClass({
         cursorContext: cursorContextPropType.isRequired,
     },
 
+    statics: {
+        rows: 4,
+        columns: 4,
+        numPages: 1,
+    },
+
     render() {
         const {cursorContext} = this.props;
 

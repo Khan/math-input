@@ -26,11 +26,11 @@ module.exports = {
         };
     },
 
-    setScreenSize(screenWidthPx, screenHeightPx) {
+    setPageSize(pageWidthPx, pageHeightPx) {
         return {
-            type: 'SetScreenSizePx',
-            screenWidthPx,
-            screenHeightPx,
+            type: 'SetPageSize',
+            pageWidthPx,
+            pageHeightPx,
         };
     },
 

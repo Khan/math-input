@@ -11,7 +11,7 @@ const ViewPager = require('./view-pager');
 const PagerIndicator = require('./pager-indicator');
 const {View} = require('../fake-react-native-web');
 const {column, row, fullWidth} = require('./styles');
-const {DeviceTypes} = require('../consts');
+const {DeviceOrientations, DeviceTypes} = require('../consts');
 const {
     buttonBorderColor, buttonBorderStyle, buttonBorderWidthPx, gray85,
 } = require('./common-style');
@@ -19,6 +19,9 @@ const {
 const TwoPageKeypad = React.createClass({
     propTypes: {
         currentPage: React.PropTypes.oneOf([0, 1]).isRequired,
+        deviceOrientation: React.PropTypes.oneOf(
+            Object.keys(DeviceOrientations)
+        ),
         deviceType: React.PropTypes.oneOf(Object.keys(DeviceTypes)),
         leftPage: React.PropTypes.node.isRequired,
         rightPage: React.PropTypes.node.isRequired,
@@ -27,12 +30,14 @@ const TwoPageKeypad = React.createClass({
     render() {
         const {
             currentPage,
+            deviceOrientation,
             deviceType,
             leftPage,
             rightPage,
         } = this.props;
 
-        if (deviceType === DeviceTypes.TABLET) {
+        if (deviceOrientation === DeviceOrientations.LANDSCAPE ||
+                deviceType === DeviceTypes.TABLET) {
             return <Keypad style={styles.keypad}>
                 <View style={row}>
                     <View style={fullWidth}>
@@ -44,7 +49,6 @@ const TwoPageKeypad = React.createClass({
                 </View>
             </Keypad>;
         } else {
-            // TODO(charlie): Implement phone, landscape layout.
             return <Keypad style={[column, styles.keypad]}>
                 <PagerIndicator numPages={2} currentPage={currentPage} />
                 <View style={styles.borderTop}>
@@ -73,6 +77,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
+        deviceOrientation: state.layout.deviceOrientation,
         deviceType: state.layout.deviceType,
     };
 };

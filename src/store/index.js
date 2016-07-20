@@ -2,15 +2,27 @@ const Redux = require('redux');
 
 const {tabletCutoffPx} = require('../components/common-style');
 const computeButtonDimensions = require('../components/compute-button-dimensions');
-const {DeviceTypes, KeyTypes} = require('../consts');
+const {
+    DeviceOrientations,
+    DeviceTypes,
+    KeyTypes,
+    KeypadTypes,
+} = require('../consts');
 const Keys = require('../data/keys');
 const KeyConfigs = require('../data/key-configs');
-const Keypads = require('../data/keypads');
 const CursorContexts = require('../components/input/cursor-contexts');
 const GestureManager = require('../components/gesture-manager');
 const VelocityTracker = require('../components/velocity-tracker');
 
+const FractionKeypad = require('../components/fraction-keypad');
+const ExpressionKeypad = require('../components/expression-keypad');
+
 const Settings = require('../settings');
+
+const keypadForType = {
+    [KeypadTypes.FRACTION]: FractionKeypad,
+    [KeypadTypes.EXPRESSION]: ExpressionKeypad,
+};
 
 const createStore = () => {
     const initialInputState = {
@@ -57,7 +69,7 @@ const createStore = () => {
     const defaultKeypadType = Settings.keypadType;
 
     const initialKeypadState = {
-        extraKeys: Keypads[defaultKeypadType].extraKeys,
+        extraKeys: ['x', 'y', Keys.THETA, Keys.PI],
         keypadType: defaultKeypadType,
         active: false,
     };
@@ -110,11 +122,11 @@ const createStore = () => {
 
     const initialPagerState = {
         animateToPosition: false,
-        currentPage: getDefaultPage(Keypads[defaultKeypadType].numPages),
+        currentPage: getDefaultPage(keypadForType[defaultKeypadType].numPages),
         // The cumulative differential in the horizontal direction for the
         // current swipe.
         dx: 0,
-        numPages: Keypads[defaultKeypadType].numPages,
+        numPages: keypadForType[defaultKeypadType].numPages,
         pageWidthPx: 0,
         velocityTracker: new VelocityTracker(),
     };
@@ -123,7 +135,7 @@ const createStore = () => {
         switch (action.type) {
             case 'ConfigureKeypad':
                 const {keypadType} = action.configuration;
-                const {numPages} = Keypads[keypadType];
+                const {numPages} = keypadForType[keypadType];
                 return {
                     ...state,
                     numPages,
@@ -132,13 +144,11 @@ const createStore = () => {
                     dx: 0,
                 };
 
-            case 'SetScreenSizePx':
-                const {screenWidthPx} = action;
+            case 'SetPageSize':
                 return {
                     ...state,
-                    pageWidthPx: screenWidthPx,
+                    pageWidthPx: action.pageWidthPx,
                 };
-
 
             case 'PressKey':
                 const keyConfig = KeyConfigs[action.key];
@@ -264,7 +274,7 @@ const createStore = () => {
         popover: null,
         focus: null,
         gestureManager: createGestureManager(
-            Keypads[defaultKeypadType].numPages > 1
+            keypadForType[defaultKeypadType].numPages > 1
         ),
     };
 
@@ -295,7 +305,7 @@ const createStore = () => {
 
             case 'ConfigureKeypad':
                 const {keypadType} = action.configuration;
-                const {numPages} = Keypads[keypadType];
+                const {numPages} = keypadForType[keypadType];
                 const swipeEnabled = numPages > 1;
                 return {
                     popover: null,
@@ -355,27 +365,52 @@ const createStore = () => {
     };
 
     const initialLayoutState = {
-        deviceType: DeviceTypes.PHONE,
         buttonDimensions: {
             widthPx: 48,
             heightPx: 48,
+        },
+        deviceOrientation: DeviceOrientations.PORTRAIT,
+        deviceType: DeviceTypes.PHONE,
+        gridDimensions: {
+            rows: keypadForType[defaultKeypadType].rows,
+            columns: keypadForType[defaultKeypadType].columns,
+            numPages: keypadForType[defaultKeypadType].numPages,
         },
     };
 
     const layoutReducer = function(state = initialLayoutState, action) {
         switch (action.type) {
-            case 'SetScreenSizePx':
-                const deviceType = Math.min(
-                    action.screenWidthPx,
-                    action.screenHeightPx
-                ) > tabletCutoffPx ? DeviceTypes.TABLET : DeviceTypes.PHONE;
+            case 'ConfigureKeypad':
+                const {keypadType} = action.configuration;
+                return {
+                    ...state,
+                    gridDimensions: {
+                        rows: keypadForType[keypadType].rows,
+                        columns: keypadForType[keypadType].columns,
+                        numPages: keypadForType[keypadType].numPages,
+                    },
+                };
+
+            case 'SetPageSize':
+                const {pageWidthPx, pageHeightPx} = action;
+                const deviceOrientation = pageWidthPx > pageHeightPx
+                        ? DeviceOrientations.LANDSCAPE
+                        : DeviceOrientations.PORTRAIT;
+                const deviceType =
+                    Math.min(pageWidthPx, pageHeightPx) > tabletCutoffPx ?
+                        DeviceTypes.TABLET : DeviceTypes.PHONE;
                 const buttonDimensions = computeButtonDimensions(
-                    action.screenWidthPx,
-                    action.screenHeightPx,
+                    state.gridDimensions.rows,
+                    state.gridDimensions.columns,
+                    state.gridDimensions.numPages,
+                    pageWidthPx,
+                    pageHeightPx,
+                    deviceOrientation,
                     deviceType
                 );
                 return {
                     ...state,
+                    deviceOrientation,
                     deviceType,
                     buttonDimensions,
                 };
