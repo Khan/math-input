@@ -12,7 +12,12 @@ const ManyKeypadButton = require('./many-keypad-button');
 const TouchableKeypadButton = require('./touchable-keypad-button');
 const {row, column, oneColumn, fullWidth} = require('./styles');
 const {BorderStyles, JumpOutTypes} = require('../consts');
-const {valueGrey, controlGrey} = require('./common-style');
+const {
+    buttonBorderColor,
+    buttonBorderWidthPx,
+    valueGrey,
+    controlGrey,
+} = require('./common-style');
 const {cursorContextPropType, keyIdPropType} = require('./prop-types');
 const KeyConfigs = require('../data/key-configs');
 const CursorContexts = require('./input/cursor-contexts');
@@ -47,8 +52,8 @@ const ExpressionKeypad = React.createClass({
             dismissOrJumpOutKey = KeyConfigs.DISMISS;
         }
 
-        const firstPageStyle = [row, fullWidth, styles.firstPage];
-        const firstPage = <View style={firstPageStyle}>
+        const rightPageStyle = [row, fullWidth, styles.rightPage];
+        const rightPage = <View style={rightPageStyle}>
             <View style={[column, oneColumn]}>
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.NUM_7}
@@ -135,21 +140,24 @@ const ExpressionKeypad = React.createClass({
             </View>
         </View>;
 
-        const secondPageStyle = [row, fullWidth, styles.secondPage];
-        const secondPage = <View style={secondPageStyle}>
+        const leftPageStyle = [row, fullWidth, styles.leftPage];
+        const leftPage = <View style={leftPageStyle}>
             <View style={[column, oneColumn]}>
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.EXP_2}
-                    borders={BorderStyles.LEFT}
+                    borders={BorderStyles.NONE}
                 />
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.SQRT}
-                    borders={BorderStyles.LEFT}
+                    borders={BorderStyles.NONE}
                 />
-                <TouchableKeypadButton keyConfig={KeyConfigs.LOG} />
+                <TouchableKeypadButton
+                    keyConfig={KeyConfigs.LOG}
+                    borders={BorderStyles.BOTTOM}
+                />
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.SIN}
-                    borders={BorderStyles.LEFT}
+                    borders={BorderStyles.NONE}
                 />
             </View>
             <View style={[column, oneColumn]}>
@@ -203,7 +211,7 @@ const ExpressionKeypad = React.createClass({
                     borders={BorderStyles.LEFT}
                 />
             </View>
-            <View style={[column, oneColumn]}>
+            <View style={[column, oneColumn, styles.rightBorder]}>
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.GT}
                     borders={BorderStyles.NONE}
@@ -225,8 +233,8 @@ const ExpressionKeypad = React.createClass({
 
         return <TwoPageKeypad
             currentPage={currentPage}
-            firstPage={firstPage}
-            secondPage={secondPage}
+            rightPage={rightPage}
+            leftPage={leftPage}
         />;
     },
 });
@@ -237,12 +245,17 @@ const styles = StyleSheet.create({
     // page use this background color (namely, the 'command' keys, backspace and
     // dismiss).
     // TODO(charlie): Apply the proper background between the 'command' keys.
-    firstPage: {
+    rightPage: {
         backgroundColor: valueGrey,
     },
 
-    secondPage: {
+    leftPage: {
         backgroundColor: controlGrey,
+    },
+
+    rightBorder: {
+        borderRightWidth: buttonBorderWidthPx,
+        borderColor: buttonBorderColor,
     },
 });
 

@@ -20,26 +20,26 @@ const TwoPageKeypad = React.createClass({
     propTypes: {
         currentPage: React.PropTypes.oneOf([0, 1]).isRequired,
         deviceType: React.PropTypes.oneOf(Object.keys(DeviceTypes)),
-        firstPage: React.PropTypes.node.isRequired,
-        secondPage: React.PropTypes.node.isRequired,
+        leftPage: React.PropTypes.node.isRequired,
+        rightPage: React.PropTypes.node.isRequired,
     },
 
     render() {
         const {
             currentPage,
             deviceType,
-            firstPage,
-            secondPage,
+            leftPage,
+            rightPage,
         } = this.props;
 
         if (deviceType === DeviceTypes.TABLET) {
             return <Keypad style={styles.keypad}>
                 <View style={row}>
                     <View style={fullWidth}>
-                        {firstPage}
+                        {leftPage}
                     </View>
                     <View style={fullWidth}>
-                        {secondPage}
+                        {rightPage}
                     </View>
                 </View>
             </Keypad>;
@@ -49,8 +49,8 @@ const TwoPageKeypad = React.createClass({
                 <PagerIndicator numPages={2} currentPage={currentPage} />
                 <View style={styles.borderTop}>
                     <ViewPager>
-                        {firstPage}
-                        {secondPage}
+                        {leftPage}
+                        {rightPage}
                     </ViewPager>
                 </View>
             </Keypad>;

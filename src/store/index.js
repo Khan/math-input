@@ -103,9 +103,14 @@ const createStore = () => {
         }
     };
 
+    // We default to the right-most page. This is done so-as to enforce a
+    // consistent orientation between the view pager layout and the flattened
+    // layout, where our default page appears on the far right.
+    const getDefaultPage = (numPages) => numPages - 1;
+
     const initialPagerState = {
         animateToPosition: false,
-        currentPage: 0,
+        currentPage: getDefaultPage(Keypads[defaultKeypadType].numPages),
         // The cumulative differential in the horizontal direction for the
         // current swipe.
         dx: 0,
@@ -123,15 +128,17 @@ const createStore = () => {
                     ...state,
                     numPages,
                     animateToPosition: false,
-                    currentPage: 0,
+                    currentPage: getDefaultPage(numPages),
                     dx: 0,
                 };
 
-            case 'SetPageWidthPx':
+            case 'SetScreenSizePx':
+                const {screenWidthPx} = action;
                 return {
                     ...state,
-                    pageWidthPx: action.pageWidthPx,
+                    pageWidthPx: screenWidthPx,
                 };
+
 
             case 'PressKey':
                 const keyConfig = KeyConfigs[action.key];
@@ -147,7 +154,8 @@ const createStore = () => {
                 return {
                     ...state,
                     animateToPosition: true,
-                    currentPage: 0,
+                    // We start at the right-most page.
+                    currentPage: getDefaultPage(state.numPages),
                     dx: 0,
                 };
 

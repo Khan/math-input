@@ -65,16 +65,12 @@ const PagerIndicator = React.createClass({
         // spacing, and let Flexbox take care of the details.
         const totalIconWidthPx = 2 * pagerIconRadiusPx * numPages;
         const totalSpacingWidthPx = 2 * pagerIconRadiusPx * (numPages - 1);
-        const dynamicStyles = StyleSheet.create({
-            iconStrip: {
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                width: totalIconWidthPx + totalSpacingWidthPx,
-            },
-        });
+        const iconStripSize = {
+            width: totalIconWidthPx + totalSpacingWidthPx,
+        };
 
         return <View style={styles.indicatorStrip}>
-            <View style={dynamicStyles.iconStrip}>
+            <View style={styles.iconStrip} dynamicStyle={iconStripSize}>
                 {indicators}
             </View>
         </View>;
@@ -88,6 +84,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         height: 16,
+    },
+    iconStrip: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
     },
 });
 

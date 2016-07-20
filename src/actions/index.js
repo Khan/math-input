@@ -34,13 +34,6 @@ module.exports = {
         };
     },
 
-    setPageWidthPx(pageWidthPx) {
-        return {
-            type: 'SetPageWidthPx',
-            pageWidthPx,
-        };
-    },
-
     removeEcho(animationId) {
         return {
             type: 'RemoveEcho',
