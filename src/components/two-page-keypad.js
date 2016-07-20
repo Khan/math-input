@@ -53,10 +53,6 @@ const styles = StyleSheet.create({
         backgroundColor: gray85,
     },
 
-    borderBottom: {
-        borderBottom: `${buttonBorderWidthPx}px ${buttonBorderStyle} `
-            + `${buttonBorderColor}`,
-    },
     borderTop: {
         borderTop: `${buttonBorderWidthPx}px ${buttonBorderStyle} `
             + `${buttonBorderColor}`,
