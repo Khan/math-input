@@ -73,7 +73,7 @@ class GestureManager {
             onTrigger: (id) => {
                 this.popoverStateMachine.onTrigger(id);
             },
-        }, disabledSwipeKeys, multiPressableKeys);
+        }, {}, disabledSwipeKeys, multiPressableKeys);
     }
 
     /**
