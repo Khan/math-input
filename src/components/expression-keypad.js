@@ -140,19 +140,16 @@ const ExpressionKeypad = React.createClass({
             <View style={[column, oneColumn]}>
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.EXP_2}
-                    borders={BorderStyles.NONE}
+                    borders={BorderStyles.LEFT}
                 />
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.SQRT}
-                    borders={BorderStyles.NONE}
+                    borders={BorderStyles.LEFT}
                 />
-                <TouchableKeypadButton
-                    keyConfig={KeyConfigs.LOG}
-                    borders={BorderStyles.BOTTOM}
-                />
+                <TouchableKeypadButton keyConfig={KeyConfigs.LOG} />
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.SIN}
-                    borders={BorderStyles.NONE}
+                    borders={BorderStyles.LEFT}
                 />
             </View>
             <View style={[column, oneColumn]}>
