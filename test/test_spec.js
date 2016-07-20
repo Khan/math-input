@@ -88,27 +88,27 @@ describe('MathQuill', () => {
     describe('Parentheses', () => {
         it('should work with no content', () => {
             mathField.setContent('');
-            mathField.pressKey(Keys.PARENS);
+            mathField.pressKey(Keys.LEFT_PAREN);
             assert.equal(mathField.getContent(), '\\left(\\right)');
         });
 
         it('should work after an expression', () => {
             mathField.setContent('35x^2');
-            mathField.pressKey(Keys.PARENS);
-            assert.equal(mathField.getContent(), '35x^2\\left(\\right)');
+            mathField.pressKey(Keys.RIGHT_PAREN);
+            assert.equal(mathField.getContent(), '\\left(35x^2\\right)');
         });
 
         it('should work before an expression', () => {
             mathField.setContent('35x^2');
             mathField.moveToStart();
-            mathField.pressKey(Keys.PARENS);
-            assert.equal(mathField.getContent(), '\\left(\\right)35x^2');
+            mathField.pressKey(Keys.LEFT_PAREN);
+            assert.equal(mathField.getContent(), '\\left(35x^2\\right)');
         });
 
         it.skip('should work on a selected expression', () => {
             mathField.setContent('35x + 5');
             mathField.selectAll();
-            mathField.pressKey(Keys.PARENS);
+            mathField.pressKey(Keys.LEFT_PAREN);
             assert.equal(mathField.getContent(), '\\left(35x^2\\right)');
         });
     });

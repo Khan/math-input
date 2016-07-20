@@ -77,7 +77,7 @@ describe('Cursor context', () => {
     });
 
     it('should treat parentheses as nested', () => {
-        const cursor = mathField.pressKey(Keys.PARENS);
+        const cursor = mathField.pressKey(Keys.LEFT_PAREN);
         assert.equal(cursor.context, CursorContexts.NESTED);
     });
 
@@ -87,25 +87,25 @@ describe('Cursor context', () => {
     });
 
     it('should treat multiply nested expressions as nested', () => {
-        mathField.pressKey(Keys.PARENS);
+        mathField.pressKey(Keys.LEFT_PAREN);
         const cursor = mathField.pressKey(Keys.SQRT);
         assert.equal(cursor.context, CursorContexts.NESTED);
     });
 
     it('should treat the right of a nested expression as top-level', () => {
-        mathField.pressKey(Keys.PARENS);
+        mathField.pressKey(Keys.LEFT_PAREN);
         const cursor = mathField.pressKey(Keys.RIGHT);
         assert.ok(isAtTopLevel(cursor.context));
     });
 
     it('should treat the left of a nested expression as top-level', () => {
-        mathField.pressKey(Keys.PARENS);
+        mathField.pressKey(Keys.LEFT_PAREN);
         const cursor = mathField.pressKey(Keys.LEFT);
         assert.ok(isAtTopLevel(cursor.context));
     });
 
     it('a top-level expression in a nested expression is nested', () => {
-        mathField.pressKey(Keys.PARENS);
+        mathField.pressKey(Keys.LEFT_PAREN);
         mathField.pressKey('NUM_1');
         mathField.pressKey(Keys.CDOT);
         mathField.pressKey('NUM_2');
