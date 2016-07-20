@@ -1,14 +1,14 @@
 /**
- * A component that renders the RIGHT iconograpy in SVG.
+ * A component that renders the DOWN iconograpy in SVG.
  */
 const React = require('react');
 
 const Arrow = require('./arrow');
 
-const Right = () => {
+const Down = () => {
     return <svg width="48" height="48" viewBox="0 0 48 48">
-        <Arrow transform="rotate(180 24 24)" />
+        <Arrow transform="rotate(270 24 24)" />
     </svg>;
 };
 
-module.exports = Right;
+module.exports = Down;

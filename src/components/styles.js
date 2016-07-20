@@ -17,6 +17,9 @@ module.exports = StyleSheet.create({
     fullWidth: {
         width: '100%',
     },
+    stretch: {
+        alignItems: 'stretch',
+    },
     centered: {
         justifyContent: 'center',
         alignItems: 'center',

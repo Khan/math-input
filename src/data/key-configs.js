@@ -173,13 +173,21 @@ const KeyConfigs = {
     },
 
     // Input navigation keys.
-    [Keys.LEFT]: {
+    [Keys.UP]: {
         type: KeyTypes.INPUT_NAVIGATION,
-        ariaLabel: i18n._('Left arrow'),
+        ariaLabel: i18n._('Up arrow'),
     },
     [Keys.RIGHT]: {
         type: KeyTypes.INPUT_NAVIGATION,
         ariaLabel: i18n._('Right arrow'),
+    },
+    [Keys.DOWN]: {
+        type: KeyTypes.INPUT_NAVIGATION,
+        ariaLabel: i18n._('Down arrow'),
+    },
+    [Keys.LEFT]: {
+        type: KeyTypes.INPUT_NAVIGATION,
+        ariaLabel: i18n._('Left arrow'),
     },
     [Keys.JUMP_OUT]: {
         type: KeyTypes.INPUT_NAVIGATION,

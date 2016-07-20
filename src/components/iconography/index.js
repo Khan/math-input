@@ -20,6 +20,8 @@ module.exports = {
     PLUS: require('./plus'),
     TAN: require('./tan'),
     LEFT: require('./left'),
+    UP: require('./up'),
+    DOWN: require('./down'),
     // TODO(charlie): Add icons for left and right parentheses.
     LEFT_PAREN: require('./parens'),
     RIGHT_PAREN: require('./parens'),

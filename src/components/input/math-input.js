@@ -122,6 +122,11 @@ const MathInput = React.createClass({
             if (this.state.focused) {
                 // Only blur if the touch is both outside of the input, and
                 // outside of the keypad (if it has been provided).
+                // TODO(charlie): Inject this logic. Soon, we'll also need to
+                // avoid blurring when the user taps on the bottom bar. We can
+                // hack around it by changing the logic here to avoid blurring
+                // for taps below the keypad, but we should do something more
+                // robust.
                 if (!this._container.contains(evt.target)) {
                     const maybeKeypadNode = this.props.keypadElement &&
                         ReactDOM.findDOMNode(this.props.keypadElement);

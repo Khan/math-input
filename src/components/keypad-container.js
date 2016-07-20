@@ -6,14 +6,16 @@ const {View} = require('../fake-react-native-web');
 const NumberKeypad = require('./number-keypad');
 const FractionKeypad = require('./fraction-keypad');
 const ExpressionKeypad = require('./expression-keypad');
+const NavigationPad = require('./navigation-pad');
 const zIndexes = require('./z-indexes');
 const {setScreenSize} = require('../actions');
 const {keyIdPropType} = require('./prop-types');
-const {KeypadTypes} = require('../consts');
+const {DeviceTypes, KeypadTypes} = require('../consts');
 
 const KeypadContainer = React.createClass({
     propTypes: {
         active: React.PropTypes.bool,
+        deviceType: React.PropTypes.oneOf(Object.keys(DeviceTypes)),
         extraKeys: React.PropTypes.arrayOf(keyIdPropType),
         keypadType: React.PropTypes.oneOf(Object.keys(KeypadTypes)).isRequired,
         onDismiss: React.PropTypes.func,
@@ -80,7 +82,7 @@ const KeypadContainer = React.createClass({
 
     renderKeypad() {
         // Extract props that some keypads will need.
-        const {extraKeys, keypadType, onElementMounted} = this.props;
+        const {extraKeys, keypadType} = this.props;
 
         // Select the appropriate keyboard given the type.
         // TODO(charlie): In the future, we might want to move towards a
@@ -91,16 +93,13 @@ const KeypadContainer = React.createClass({
         // very many of them. So to keep us moving, we'll just hardcode.
         switch (keypadType) {
             case KeypadTypes.NUMBER:
-                return <NumberKeypad ref={onElementMounted} />;
+                return <NumberKeypad />;
 
             case KeypadTypes.FRACTION:
-                return <FractionKeypad ref={onElementMounted} />;
+                return <FractionKeypad />;
 
             case KeypadTypes.EXPRESSION:
-                return <ExpressionKeypad
-                    extraKeys={extraKeys}
-                    ref={onElementMounted}
-                />;
+                return <ExpressionKeypad extraKeys={extraKeys} />;
 
             default:
                 throw new Error("Invalid keypad type: " + keypadType);
@@ -108,19 +107,27 @@ const KeypadContainer = React.createClass({
     },
 
     render() {
+        const {active, deviceType, onElementMounted} = this.props;
+
         // NOTE(charlie): We render the transforms as pure inline styles to
         // avoid an Aphrodite bug in mobile Safari.
         //   See: https://github.com/Khan/aphrodite/issues/68.
-        const dynamicStyle = this.props.active ? inlineStyles.active
-                                               : inlineStyles.hidden;
+        const dynamicStyle = active ? inlineStyles.active : inlineStyles.hidden;
 
         // TODO(charlie): When the keypad is shorter than the width of the
         // screen, add a border on its left and right edges, and round out the
         // corners.
-        return <View style={styles.keypadContainer} dynamicStyle={dynamicStyle}>
+        return <View
+            style={styles.keypadContainer}
+            dynamicStyle={dynamicStyle}
+            ref={onElementMounted}
+        >
             <View style={styles.spacer} />
             <View style={styles.content}>
-                {this.renderKeypad()}
+                {deviceType === DeviceTypes.TABLET && <NavigationPad />}
+                <View style={styles.keypad}>
+                    {this.renderKeypad()}
+                </View>
             </View>
             <View style={styles.spacer} />
         </View>;
@@ -144,6 +151,16 @@ const styles = StyleSheet.create({
         borderColor: 'rgba(0, 0, 0, 0.1)',
         borderStyle: 'solid',
         borderWidth: '0 1px',
+        flexDirection: 'row',
+    },
+    // Defer to the navigation pad, such that the navigation pad is always
+    // rendered at full-width, and the keypad takes up just the remaining space.
+    // TODO(charlie): Avoid shrinking the keys and, instead, make the keypad
+    // scrollable.
+    keypad: {
+        flexGrow: 1,
+        // Avoid unitless flex-basis, per: https://philipwalton.com/articles/normalizing-cross-browser-flexbox-bugs/
+        flexBasis: '0%',
     },
     spacer: {
         flex: 1,
@@ -166,7 +183,10 @@ const inlineStyles = {
 };
 
 const mapStateToProps = (state) => {
-    return state.keypad;
+    return {
+        ...state.keypad,
+        deviceType: state.layout.deviceType,
+    };
 };
 
 const mapDispatchToProps = (dispatch) => {

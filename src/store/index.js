@@ -245,8 +245,10 @@ const createStore = () => {
             },
         }, [], [
             Keys.BACKSPACE,
-            Keys.LEFT,
+            Keys.UP,
             Keys.RIGHT,
+            Keys.DOWN,
+            Keys.LEFT,
         ]);
     };
 

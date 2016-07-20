@@ -42,8 +42,10 @@ const Keys = {
     PI: 'PI',
     THETA: 'THETA',
 
-    LEFT: 'LEFT',
+    UP: 'UP',
     RIGHT: 'RIGHT',
+    DOWN: 'DOWN',
+    LEFT: 'LEFT',
     JUMP_OUT: 'JUMP_OUT',
     BACKSPACE: 'BACKSPACE',
     DISMISS: 'DISMISS',

@@ -14,6 +14,7 @@ const {FractionBehaviorTypes} = require('../../consts');
 
 const WRITE = 'write';
 const CMD = 'cmd';
+const KEYSTROKE = 'keystroke';
 const MQ_END = 0;
 
 // A mapping from keys that can be pressed on a keypad to the way in which
@@ -41,6 +42,8 @@ const KeyActions = {
     [Keys.LEQ]: {str: '\\leq', fn: WRITE},
     [Keys.GT]: {str: '>', fn: WRITE},
     [Keys.GEQ]: {str: '\\geq', fn: WRITE},
+    [Keys.UP]: {str: 'Up', fn: KEYSTROKE},
+    [Keys.DOWN]: {str: 'Down', fn: KEYSTROKE},
 };
 
 const NormalCommands = {
