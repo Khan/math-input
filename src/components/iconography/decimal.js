@@ -7,28 +7,11 @@ const React = require('react');
 
 const Decimal = React.createClass({
     propTypes: {
-        primaryColor: React.PropTypes.string,
-        secondaryColor: React.PropTypes.string,
-    },
-
-    getDefaultProps() {
-        return {
-            primaryColor: '#3B3E40',
-            secondaryColor: '#BABEC2',
-        };
+        color: React.PropTypes.string.isRequired,
     },
 
     render() {
-        return <svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1">
-            <g id="Math-Input" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                <g id="[Assets]-Math-Input" transform="translate(-1680.000000, -298.000000)">
-                    <g id="math_keypad_icon_radix_character" transform="translate(1680.000000, 298.000000)">
-                        <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="48" height="48"></rect>
-                        <circle id="dot" fill={this.props.primaryColor} cx="24" cy="30" r="2"></circle>
-                    </g>
-                </g>
-            </g>
-        </svg>;
+        return <svg width="48" height="48" viewBox="0 0 48 48"><g fill="none" fillRule="evenodd"><path fill="none" d="M0 0h48v48H0z"/><circle fill={this.props.color} cx="24" cy="30" r="2"/></g></svg>;
     },
 });
 

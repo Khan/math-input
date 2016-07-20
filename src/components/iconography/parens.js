@@ -7,32 +7,11 @@ const React = require('react');
 
 const Parens = React.createClass({
     propTypes: {
-        primaryColor: React.PropTypes.string,
-        secondaryColor: React.PropTypes.string,
-    },
-
-    getDefaultProps() {
-        return {
-            primaryColor: '#3B3E40',
-            secondaryColor: '#BABEC2',
-        };
+        color: React.PropTypes.string.isRequired,
     },
 
     render() {
-        return <svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1">
-            <g id="Math-Input" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                <g id="[Assets]-Math-Input" transform="translate(-1136.000000, -532.000000)">
-                    <g id="math_keypad_icon_parentheses" transform="translate(1136.000000, 532.000000)">
-                        <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="48" height="48"></rect>
-                        <g id="parentheses" strokeWidth="1" transform="translate(12.000000, 12.000000)">
-                            <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="24" height="24"></rect>
-                            <path d="M7,2 C2.99999998,8 3.00000002,16 7,22" id="arc" stroke={this.props.primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
-                            <path d="M20,2 C16,8 16,16 20,22" id="arc" stroke={this.props.primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" transform="translate(18.500000, 12.000000) scale(-1, 1) translate(-18.500000, -12.000000) "></path>
-                        </g>
-                    </g>
-                </g>
-            </g>
-        </svg>;
+        return <svg width="48" height="48" viewBox="0 0 48 48"><g fill="none" fillRule="evenodd"><path fill="none" d="M0 0h48v48H0z"/><path fill="none" d="M12 12h24v24H12z"/><path d="M19 14c-4 6-4 14 0 20M29 14c4 6 4 14 0 20" stroke={this.props.color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></g></svg>;
     },
 });
 

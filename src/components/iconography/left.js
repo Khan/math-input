@@ -6,20 +6,7 @@
 const React = require('react');
 
 const Left = () => {
-    return <svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1">
-        <g id="Math-Input" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-            <g id="[Assets]-Math-Input" transform="translate(-1272.000000, -200.000000)">
-                <g id="math_keypad_icon_move_backward" transform="translate(1272.000000, 200.000000)">
-                    <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="48" height="48"></rect>
-                    <g id="arrow" strokeWidth="1" transform="translate(12.000000, 12.000000)">
-                        <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="24" height="24"></rect>
-                        <polyline id="head" stroke="#888D93" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" points="10 6 4 12 10 18"></polyline>
-                        <path d="M4,12 L20,12" id="tail" stroke="#888D93" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
-                    </g>
-                </g>
-            </g>
-        </g>
-    </svg>;
+    return <svg width="48" height="48" viewBox="0 0 48 48"><g fill="none" fillRule="evenodd"><path fill="none" d="M0 0h48v48H0z"/><path fill="none" d="M12 12h24v24H12z"/><path stroke="#888D93" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M22 18l-6 6 6 6M16 24h16"/></g></svg>;
 };
 
 module.exports = Left;

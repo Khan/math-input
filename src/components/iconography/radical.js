@@ -7,31 +7,11 @@ const React = require('react');
 
 const Radical = React.createClass({
     propTypes: {
-        primaryColor: React.PropTypes.string,
-        secondaryColor: React.PropTypes.string,
-    },
-
-    getDefaultProps() {
-        return {
-            primaryColor: '#3B3E40',
-            secondaryColor: '#BABEC2',
-        };
+        color: React.PropTypes.string.isRequired,
     },
 
     render() {
-        return <svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1">
-            <g id="Math-Input" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                <g id="[Assets]-Math-Input" transform="translate(-1272.000000, -698.000000)">
-                    <g id="math_keypad_icon_radical" transform="translate(1272.000000, 698.000000)">
-                        <g id="icon">
-                            <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="48" height="48"></rect>
-                            <path d="M13,16.9970301 C13,16.4463856 13.4530363,16 13.9970301,16 L20.0029699,16 C20.5536144,16 21,16.4530363 21,16.9970301 L21,23.0029699 C21,23.5536144 20.5469637,24 20.0029699,24 L13.9970301,24 C13.4463856,24 13,23.5469637 13,23.0029699 L13,16.9970301 Z M15,18 L19,18 L19,22 L15,22 L15,18 Z" id="block" fill={this.props.primaryColor}></path>
-                            <polyline id="root" stroke={this.props.primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" points="14 29 18 35 27 21 34 21"></polyline>
-                        </g>
-                    </g>
-                </g>
-            </g>
-        </svg>;
+        return <svg width="48" height="48" viewBox="0 0 48 48"><g fill="none" fillRule="evenodd"><path fill="none" d="M0 0h48v48H0z"/><path d="M13 16.997c0-.55.453-.997.997-.997h6.006c.55 0 .997.453.997.997v6.006c0 .55-.453.997-.997.997h-6.006c-.55 0-.997-.453-.997-.997v-6.006zM15 18h4v4h-4v-4z" fill={this.props.color}/><path stroke={this.props.color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M14 29l4 6 9-14h7"/></g></svg>;
     },
 });
 

@@ -7,31 +7,11 @@ const React = require('react');
 
 const Exp = React.createClass({
     propTypes: {
-        primaryColor: React.PropTypes.string,
-        secondaryColor: React.PropTypes.string,
-    },
-
-    getDefaultProps() {
-        return {
-            primaryColor: '#3B3E40',
-            secondaryColor: '#BABEC2',
-        };
+        color: React.PropTypes.string.isRequired,
     },
 
     render() {
-        return <svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1">
-            <g id="Math-Input" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                <g id="[Assets]-Math-Input" transform="translate(-1204.000000, -698.000000)">
-                    <g id="math_keypad_icon_exponent" transform="translate(1204.000000, 698.000000)">
-                        <g id="icon">
-                            <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="48" height="48"></rect>
-                            <path d="M28,16.9970301 C28,16.4463856 28.4530363,16 28.9970301,16 L35.0029699,16 C35.5536144,16 36,16.4530363 36,16.9970301 L36,23.0029699 C36,23.5536144 35.5469637,24 35.0029699,24 L28.9970301,24 C28.4463856,24 28,23.5469637 28,23.0029699 L28,16.9970301 Z M30,18 L34,18 L34,22 L30,22 L30,18 Z" id="block" fill={this.props.primaryColor}></path>
-                            <path d="M14,21.0008717 C14,20.4481055 14.455761,20 15.0024733,20 L24.9975267,20 C25.5511774,20 26,20.4446309 26,21.0008717 L26,34.9991283 C26,35.5518945 25.544239,36 24.9975267,36 L15.0024733,36 C14.4488226,36 14,35.5553691 14,34.9991283 L14,21.0008717 Z M16,22 L24,22 L24,34 L16,34 L16,22 Z" id="block" fill={this.props.primaryColor}></path>
-                        </g>
-                    </g>
-                </g>
-            </g>
-        </svg>;
+        return <svg width="48" height="48" viewBox="0 0 48 48"><g fill="none" fillRule="evenodd"><path fill="none" d="M0 0h48v48H0z"/><path d="M28 16.997c0-.55.453-.997.997-.997h6.006c.55 0 .997.453.997.997v6.006c0 .55-.453.997-.997.997h-6.006c-.55 0-.997-.453-.997-.997v-6.006zM30 18h4v4h-4v-4zM14 21c0-.552.456-1 1.002-1h9.996A1 1 0 0 1 26 21v14c0 .552-.456 1-1.002 1h-9.996A1 1 0 0 1 14 35V21zm2 1h8v12h-8V22z" fill={this.props.color}/></g></svg>;
     },
 });
 

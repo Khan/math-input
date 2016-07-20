@@ -7,37 +7,11 @@ const React = require('react');
 
 const Neq = React.createClass({
     propTypes: {
-        primaryColor: React.PropTypes.string,
-        secondaryColor: React.PropTypes.string,
-    },
-
-    getDefaultProps() {
-        return {
-            primaryColor: '#3B3E40',
-            secondaryColor: '#BABEC2',
-        };
+        color: React.PropTypes.string.isRequired,
     },
 
     render() {
-        return <svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1">
-            <g id="Math-Input" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                <g id="[Assets]-Math-Input" transform="translate(-1000.000000, -766.000000)">
-                    <g id="math_keypad_icon_equals_not" transform="translate(1000.000000, 766.000000)">
-                        <g id="icon">
-                            <g id="math_keypad_icon_equals">
-                                <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="48" height="48"></rect>
-                                <g id="icon" transform="translate(12.000000, 12.000000)">
-                                    <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="24" height="24"></rect>
-                                    <path d="M7,21 L17,3" id="line" stroke={this.props.primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
-                                    <path d="M4,9 L21,9" id="line" stroke={this.props.primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
-                                    <path d="M4,15 L21,15" id="line" stroke={this.props.primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
-                                </g>
-                            </g>
-                        </g>
-                    </g>
-                </g>
-            </g>
-        </svg>;
+        return <svg width="48" height="48" viewBox="0 0 48 48"><g fill="none" fillRule="evenodd"><path fill="none" d="M0 0h48v48H0z"/><path fill="none" d="M12 12h24v24H12z"/><path d="M19 33l10-18M16 21h17M16 27h17" stroke={this.props.color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></g></svg>;
     },
 });
 

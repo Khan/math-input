@@ -6,18 +6,7 @@
 const React = require('react');
 
 const Backspace = () => {
-    return <svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1">
-        <g id="Math-Input" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-            <g id="[Assets]-Math-Input" transform="translate(-1136.000000, -200.000000)">
-                <g id="math_keypad_icon_delete" transform="translate(1136.000000, 200.000000)">
-                    <rect id="bounds" fillOpacity="0" fill="#FF0088" fillRule="evenodd" x="0" y="0" width="48" height="48"></rect>
-                    <path d="M13,24 L13,24 L19,30 L33,30 L33,18 L19,18 L13,24 Z M11.5857864,22.5857864 L11.5857864,22.5857864 L17.5857864,16.5857864 C17.9608592,16.2107137 18.469567,16 19,16 L33,16 C34.1045695,16 35,16.8954305 35,18 L35,30 C35,31.1045695 34.1045695,32 33,32 L19,32 C18.469567,32 17.9608592,31.7892863 17.5857864,31.4142136 L11.5857864,25.4142136 C10.8047379,24.633165 10.8047379,23.366835 11.5857864,22.5857864 L11.5857864,22.5857864 Z" id="outline" fill="#888D93" fillRule="evenodd"></path>
-                    <path d="M23,21 L29,27" id="slash" stroke="#888D93" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
-                    <path d="M23,21 L29,27" id="slash" stroke="#888D93" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" transform="translate(26.000000, 24.000000) scale(-1, 1) translate(-26.000000, -24.000000) "></path>
-                </g>
-            </g>
-        </g>
-    </svg>;
+    return <svg width="48" height="48" viewBox="0 0 48 48"><g fill="none" fillRule="evenodd"><path fill="none" d="M0 0h48v48H0z"/><path d="M13 24l6 6h14V18H19l-6 6zm-1.414-1.414l6-6A2 2 0 0 1 19 16h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H19a2 2 0 0 1-1.414-.586l-6-6a2 2 0 0 1 0-2.828z" fill="#888D93"/><path d="M23 21l6 6M29 21l-6 6" stroke="#888D93" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></g></svg>;
 };
 
 module.exports = Backspace;

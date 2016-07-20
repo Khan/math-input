@@ -7,30 +7,11 @@ const React = require('react');
 
 const Divide = React.createClass({
     propTypes: {
-        primaryColor: React.PropTypes.string,
-        secondaryColor: React.PropTypes.string,
-    },
-
-    getDefaultProps() {
-        return {
-            primaryColor: '#3B3E40',
-            secondaryColor: '#BABEC2',
-        };
+        color: React.PropTypes.string.isRequired,
     },
 
     render() {
-        return <svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1">
-            <g id="Math-Input" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                <g id="[Assets]-Math-Input" transform="translate(-1204.000000, -464.000000)">
-                    <g id="math_keypad_icon_division" transform="translate(1204.000000, 464.000000)">
-                        <rect id="bounds" fillOpacity="0" fill="#FF0088" fillRule="evenodd" x="0" y="0" width="48" height="48"></rect>
-                        <path d="M19,24 L29,24" id="line" stroke={this.props.primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
-                        <circle id="dot" fill={this.props.primaryColor} fillRule="evenodd" cx="24" cy="19.5" r="1.5"></circle>
-                        <circle id="dot" fill={this.props.primaryColor} fillRule="evenodd" cx="24" cy="28.5" r="1.5"></circle>
-                    </g>
-                </g>
-            </g>
-        </svg>;
+        return <svg width="48" height="48" viewBox="0 0 48 48"><g fill="none" fillRule="evenodd"><path fill="none" d="M0 0h48v48H0z"/><path d="M19 24h10" stroke={this.props.color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><circle fill={this.props.color} cx="24" cy="19.5" r="1.5"/><circle fill={this.props.color} cx="24" cy="28.5" r="1.5"/></g></svg>;
     },
 });
 

@@ -7,31 +7,11 @@ const React = require('react');
 
 const Cdot = React.createClass({
     propTypes: {
-        primaryColor: React.PropTypes.string,
-        secondaryColor: React.PropTypes.string,
-    },
-
-    getDefaultProps() {
-        return {
-            primaryColor: '#3B3E40',
-            secondaryColor: '#BABEC2',
-        };
+        color: React.PropTypes.string.isRequired,
     },
 
     render() {
-        return <svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1">
-            <g id="Math-Input" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                <g id="[Assets]-Math-Input" transform="translate(-1136.000000, -464.000000)">
-                    <g id="math_keypad_icon_multiplication_dot" transform="translate(1136.000000, 464.000000)">
-                        <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="48" height="48"></rect>
-                        <g id="cross" strokeWidth="1" transform="translate(12.000000, 12.000000)">
-                            <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="24" height="24"></rect>
-                            <circle id="dot" fill={this.props.primaryColor} cx="12" cy="12" r="3"></circle>
-                        </g>
-                    </g>
-                </g>
-            </g>
-        </svg>;
+        return <svg width="48" height="48" viewBox="0 0 48 48"><g fill="none" fillRule="evenodd"><path fill="none" d="M0 0h48v48H0z"/><g transform="translate(12 12)"><path fill="none" d="M0 0h24v24H0z"/><circle fill={this.props.color} cx="12" cy="12" r="3"/></g></g></svg>;
     },
 });
 

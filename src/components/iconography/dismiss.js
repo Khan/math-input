@@ -6,19 +6,7 @@
 const React = require('react');
 
 const Dismiss = () => {
-    return <svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1">
-        <g id="Math-Input" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-            <g id="[Assets]-Math-Input" transform="translate(-1204.000000, -200.000000)">
-                <g id="math_keypad_icon_dismiss" transform="translate(1204.000000, 200.000000)">
-                    <rect id="bounds" fillOpacity="0" fill="#FF0088" fillRule="evenodd" x="0" y="0" width="48" height="48"></rect>
-                    <polyline id="chevron" stroke="#78C008" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" points="20 32 24 36 28 32"></polyline>
-                    <g id="keyboard" strokeWidth="1" fillRule="evenodd" transform="translate(14.000000, 12.000000)" fill="#78C008">
-                        <path d="M0,1.00684547 C0,0.450780073 0.455305576,0 0.99180311,0 L19.0081969,0 C19.5559546,0 20,0.449948758 20,1.00684547 L20,12.9931545 C20,13.5492199 19.5446944,14 19.0081969,14 L0.99180311,14 C0.444045377,14 0,13.5500512 0,12.9931545 L0,1.00684547 Z M6,0 L7,0 L7,14 L6,14 L6,0 Z M13,0 L14,0 L14,14 L13,14 L13,0 Z M0,9 L6,9 L6,10 L0,10 L0,9 Z M0,4 L6,4 L6,5 L0,5 L0,4 Z M7,9 L13,9 L13,10 L7,10 L7,9 Z M7,4 L13,4 L13,5 L7,5 L7,4 Z M14,9 L20,9 L20,10 L14,10 L14,9 Z M14,4 L20,4 L20,5 L14,5 L14,4 Z" id="keypad"></path>
-                    </g>
-                </g>
-            </g>
-        </g>
-    </svg>;
+    return <svg width="48" height="48" viewBox="0 0 48 48"><g fill="none" fillRule="evenodd"><path fill="none" d="M0 0h48v48H0z"/><path stroke="#78C008" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M20 32l4 4 4-4"/><path d="M14 13.007c0-.556.455-1.007.992-1.007h18.016c.548 0 .992.45.992 1.007v11.986c0 .556-.455 1.007-.992 1.007H14.992A.999.999 0 0 1 14 24.993V13.007zM20 12h1v14h-1V12zm7 0h1v14h-1V12zm-13 9h6v1h-6v-1zm0-5h6v1h-6v-1zm7 5h6v1h-6v-1zm0-5h6v1h-6v-1zm7 5h6v1h-6v-1zm0-5h6v1h-6v-1z" fill="#78C008"/></g></svg>;
 };
 
 module.exports = Dismiss;

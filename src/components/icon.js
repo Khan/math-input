@@ -8,6 +8,7 @@ const ReactDOM = require('react-dom');
 const Iconography = require('./iconography');
 const UnicodeIcon = require('./unicode-icon');
 const {unicodeSymbolPropType} = require('./prop-types');
+const {gray25} = require('./common-style');
 
 const Icon = React.createClass({
     propTypes: {
@@ -31,11 +32,8 @@ const Icon = React.createClass({
         // Select the appropriate icon, if it's available. Otherwise, render a
         // text-based icon using the fallback unicode symbol.
         if (Iconography[name]) {
-            // TODO(charlie): Some of the generated SVGs contain redundant
-            // information. We should spend some time optimizing them to
-            // decrease payload size.
             const Component = Iconography[name];
-            const componentProps = focused ? {primaryColor: '#FFF'} : {};
+            const componentProps = {color: focused ? '#FFF' : gray25};
             return <Component {...componentProps} />;
         } else if (unicodeSymbol) {
             return <UnicodeIcon

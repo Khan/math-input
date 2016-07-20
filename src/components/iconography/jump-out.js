@@ -6,23 +6,7 @@
 const React = require('react');
 
 const JumpOut = () => {
-    return <svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1">
-        <g id="Math-Input" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-            <g id="[Assets]-Math-Input" transform="translate(-1408.000000, -200.000000)">
-                <g id="math_keypad_icon_jump_out" transform="translate(1408.000000, 200.000000)">
-                    <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="48" height="48"></rect>
-                    <g id="icon" strokeWidth="1" transform="translate(12.000000, 12.000000)">
-                        <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="24" height="24"></rect>
-                        <path d="M2,4.99508929 L2,4.99508929 L2,19.0049107 C2,19.0007808 1.99921607,19 2.00276013,19 L10.9972399,19 C11.0020427,19 11,19.002037 11,19.0049107 L11,4.99508929 C11,4.99921924 11.0007839,5 10.9972399,5 L2.00276013,5 C1.99795733,5 2,4.99796296 2,4.99508929 L2,4.99508929 Z M0,4.99508929 C0,3.8932319 0.893542647,3 2.00276013,3 L10.9972399,3 C12.1033337,3 13,3.8926228 13,4.99508929 L13,19.0049107 C13,20.1067681 12.1064574,21 10.9972399,21 L2.00276013,21 C0.896666251,21 0,20.1073772 0,19.0049107 L0,4.99508929 L0,4.99508929 Z" id="box" fill="#888D93"></path>
-                        <path d="M18,12 L9,12" id="tail" stroke="#78C008" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
-                        <polyline id="head" stroke="#78C008" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" points="16 9 19 12 16 15"></polyline>
-                        <path d="M23,4 L23,20" id="caret" stroke="#78C008" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
-                        <path d="M5,8 L5,16" id="caret" stroke="#78C008" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
-                    </g>
-                </g>
-            </g>
-        </g>
-    </svg>;
+    return <svg width="48" height="48" viewBox="0 0 48 48"><g fill="none" fillRule="evenodd"><path fill="none" d="M0 0h48v48H0z"/><path fill="none" d="M12 12h24v24H12z"/><path d="M14 16.995v14.01C14 31 14 31 14.003 31h8.994c.005 0 .003.002.003.005v-14.01C23 17 23 17 22.997 17h-8.994c-.005 0-.003-.002-.003-.005zm-2 0c0-1.102.894-1.995 2.003-1.995h8.994c1.106 0 2.003.893 2.003 1.995v14.01A1.997 1.997 0 0 1 22.997 33h-8.994A1.999 1.999 0 0 1 12 31.005v-14.01z" fill="#888D93"/><path d="M30 24h-9M28 21l3 3-3 3M35 16v16M17 20v8" stroke="#78C008" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></g></svg>;
 };
 
 module.exports = JumpOut;

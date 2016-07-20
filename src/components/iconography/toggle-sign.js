@@ -7,38 +7,11 @@ const React = require('react');
 
 const ToggleSign = React.createClass({
     propTypes: {
-        primaryColor: React.PropTypes.string,
-        secondaryColor: React.PropTypes.string,
-    },
-
-    getDefaultProps() {
-        return {
-            primaryColor: '#3B3E40',
-            secondaryColor: '#BABEC2',
-        };
+        color: React.PropTypes.string.isRequired,
     },
 
     render() {
-        return <svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1">
-            <g id="Math-Input" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                <g id="[Assets]-Math-Input" transform="translate(-1748.000000, -298.000000)">
-                    <g id="math_keypad_icon_negate" transform="translate(1748.000000, 298.000000)">
-                        <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="48" height="48"></rect>
-                        <g id="icon" strokeWidth="1" transform="translate(12.000000, 12.000000)">
-                            <rect id="bounds" fillOpacity="0" fill="#FF0088" x="0" y="0" width="24" height="24"></rect>
-                            <g id="subtract" transform="translate(15.000000, 15.000000)" stroke={this.props.primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M0,1 L8,1" id="line"></path>
-                            </g>
-                            <path d="M16,4 L8,20" id="line" stroke={this.props.primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
-                            <g id="add" transform="translate(1.000000, 4.000000)" stroke={this.props.primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M0,4 L8,4" id="line"></path>
-                                <path d="M4,0 L4,8" id="line"></path>
-                            </g>
-                        </g>
-                    </g>
-                </g>
-            </g>
-        </svg>;
+        return <svg width="48" height="48" viewBox="0 0 48 48"><g fill="none" fillRule="evenodd"><path fill="none" d="M0 0h48v48H0z"/><path fill="none" d="M12 12h24v24H12z"/><path d="M27 28h8M28 16l-8 16" stroke={this.props.color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><g stroke={this.props.color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 20h8M17 16v8"/></g></g></svg>;
     },
 });
 
