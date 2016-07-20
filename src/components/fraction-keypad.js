@@ -4,17 +4,26 @@
  */
 
 const React = require('react');
+const {connect} = require('react-redux');
 
 const {View} = require('../fake-react-native-web');
 const Keypad = require('./keypad');
 const TouchableKeypadButton = require('./touchable-keypad-button');
 const {row} = require('./styles');
 const {BorderStyles} = require('../consts');
+const CursorContexts = require('./input/cursor-contexts');
+const {cursorContextPropType} = require('./prop-types');
 
 const KeyConfigs = require('../data/key-configs');
 
 const FractionKeypad = React.createClass({
+    propTypes: {
+        cursorContext: cursorContextPropType.isRequired,
+    },
+
     render() {
+        const {cursorContext} = this.props;
+
         return <Keypad>
             <View style={row}>
                 <TouchableKeypadButton
@@ -29,7 +38,18 @@ const FractionKeypad = React.createClass({
                     keyConfig={KeyConfigs.NUM_9}
                     borders={BorderStyles.NONE}
                 />
-                <TouchableKeypadButton keyConfig={KeyConfigs.FRAC} />
+                <TouchableKeypadButton
+                    keyConfig={KeyConfigs.FRAC_MULTI}
+                    disabled={
+                        // We can use `NESTED` rather than a more specific
+                        // context (e.g., `IN_FRACTION`) because we know that
+                        // the only way to create a nested expression in this
+                        // keypad is by creating a fraction. If, for example, we
+                        // added parentheses to this keypad, we'd need to create
+                        // a more specific context.
+                        cursorContext === CursorContexts.NESTED
+                    }
+                />
             </View>
             <View style={row}>
                 <TouchableKeypadButton
@@ -86,4 +106,10 @@ const FractionKeypad = React.createClass({
     },
 });
 
-module.exports = FractionKeypad;
+const mapStateToProps = (state) => {
+    return {
+        cursorContext: state.input.cursor.context,
+    };
+};
+
+module.exports = connect(mapStateToProps)(FractionKeypad);

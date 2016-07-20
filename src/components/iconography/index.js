@@ -25,7 +25,6 @@ module.exports = {
     LEFT_PAREN: require('./left-paren'),
     RIGHT_PAREN: require('./right-paren'),
     GT: require('./gt'),
-    FRAC: require('./frac'),
     DIVIDE: require('./divide'),
     DECIMAL: require('./decimal'),
     PERCENT: require('./percent'),
@@ -40,4 +39,6 @@ module.exports = {
     MINUS: require('./minus'),
     NEGATIVE: require('./minus'),
     RADICAL: require('./radical'),
+    FRAC_INCLUSIVE: require('./frac-inclusive'),
+    FRAC_EXCLUSIVE: require('./frac-exclusive'),
 };

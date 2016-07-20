@@ -22,7 +22,8 @@ const Keys = {
     LT: 'LT',
     GEQ: 'GEQ',
     LEQ: 'LEQ',
-    FRAC: 'FRAC',
+    FRAC_INCLUSIVE: 'FRAC_INCLUSIVE',
+    FRAC_EXCLUSIVE: 'FRAC_EXCLUSIVE',
     EXP: 'EXP',
     EXP_2: 'EXP_2',
     EXP_3: 'EXP_3',
@@ -51,6 +52,9 @@ const Keys = {
     DISMISS: 'DISMISS',
 
     NOOP: 'NOOP',
+
+    // Multi-functional keys.
+    FRAC_MULTI: 'FRAC_MULTI',
 
     // A custom key that captures an arbitrary number of symbols but has no
     // 'default' symbol or action.

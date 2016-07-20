@@ -72,7 +72,13 @@ describe('Cursor context', () => {
     });
 
     it('should treat fractions as nested', () => {
-        const cursor = mathField.pressKey(Keys.FRAC);
+        const cursor = mathField.pressKey(Keys.FRAC_INCLUSIVE);
+        assert.equal(cursor.context, CursorContexts.NESTED);
+    });
+
+    it('should treat mixed-number fractions as nested', () => {
+        mathField.pressKey('NUM_1');
+        const cursor = mathField.pressKey(Keys.FRAC_EXCLUSIVE);
         assert.equal(cursor.context, CursorContexts.NESTED);
     });
 

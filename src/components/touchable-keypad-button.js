@@ -45,28 +45,53 @@ const TouchableKeypadButton = React.createClass({
 
     render() {
         const {
-            borders, childKeyIds, gestureManager, id, ...rest,
+            borders, childKeyIds, disabled, gestureManager, id, ...rest,
         } = this.props;
+
+        // Only bind the relevant event handlers if the key is enabled.
+        const eventHandlers = disabled ? {
+            onTouchStart: (evt) => evt.preventDefault(),
+        } : {
+            onTouchStart: (evt) => gestureManager.onTouchStart(evt, id),
+            onTouchEnd: (evt) => gestureManager.onTouchEnd(evt),
+            onTouchMove: (evt) => gestureManager.onTouchMove(evt),
+            onTouchCancel: (evt) => gestureManager.onTouchCancel(evt),
+        };
 
         return <KeypadButton
             ref={(node) => gestureManager.registerDOMNode(
                 id, ReactDOM.findDOMNode(node), childKeyIds, borders
             )}
-            onTouchStart={(evt) => gestureManager.onTouchStart(evt, id)}
-            onTouchEnd={(evt) => gestureManager.onTouchEnd(evt)}
-            onTouchMove={(evt) => gestureManager.onTouchMove(evt)}
-            onTouchCancel={(evt) => gestureManager.onTouchCancel(evt)}
             borders={borders}
+            disabled={disabled}
+            {...eventHandlers}
             {...rest}
         />;
     },
 });
 
+const extractProps = (keyConfig) => {
+    const {ariaLabel, id, type, unicodeSymbol} = keyConfig;
+    return {
+        ariaLabel,
+        name: id,
+        type,
+        unicodeSymbol,
+    };
+};
+
 const mapStateToProps = (state, ownProps) => {
     const {gestures} = state;
 
     const {keyConfig, ...rest} = ownProps;
-    const {ariaLabel, id, childKeyIds, type, unicodeSymbol} = keyConfig;
+    const {id, childKeyIds, type} = keyConfig;
+
+    const childKeys = childKeyIds && childKeyIds.map(id => KeyConfigs[id]);
+
+    // Override with the default child props, if the key is a multi-symbol key
+    // (but not a many-symbol key, which operates under different rules).
+    const useFirstChildProps = type !== KeyTypes.MANY &&
+        childKeys && childKeys.length > 0;
 
     return {
         ...rest,
@@ -74,14 +99,13 @@ const mapStateToProps = (state, ownProps) => {
         gestureManager: gestures.gestureManager,
         id: id,
 
-        // Sanitze various props for the KeypadButton.
-        ariaLabel: ariaLabel,
-        childKeys: childKeyIds && childKeyIds.map(id => KeyConfigs[id]),
+        // Add in some gesture state.
         focused: gestures.focus === id,
         popoverEnabled: gestures.popover && gestures.popover.parentId === id,
-        name: id,
-        type: type,
-        unicodeSymbol: unicodeSymbol,
+
+        // Pass down the child keys and any extracted props.
+        childKeys,
+        ...extractProps(useFirstChildProps ? childKeys[0] : keyConfig),
     };
 };
 

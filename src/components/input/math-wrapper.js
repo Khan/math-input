@@ -10,7 +10,6 @@ const MathQuill = window.MathQuill;
 
 const Keys = require('../../data/keys');
 const CursorContexts = require('./cursor-contexts');
-const {FractionBehaviorTypes} = require('../../consts');
 
 const WRITE = 'write';
 const CMD = 'cmd';
@@ -44,6 +43,9 @@ const KeyActions = {
     [Keys.GEQ]: {str: '\\geq', fn: WRITE},
     [Keys.UP]: {str: 'Up', fn: KEYSTROKE},
     [Keys.DOWN]: {str: 'Down', fn: KEYSTROKE},
+    // The `FRAC_EXCLUSIVE` variant is handled manually, since we may need to do
+    // some additional navigation depending on the cursor position.
+    [Keys.FRAC_INCLUSIVE]: {str: '/', fn: CMD},
 };
 
 const NormalCommands = {
@@ -60,10 +62,6 @@ const EqualityOperators = ['=', '\\neq', '<', '\\leq', '>', '\\geq'];
 class MathWrapper {
 
     constructor(element, options = {}, callbacks = {}) {
-        const {fractionBehavior} = options;
-        this.fractionBehavior = fractionBehavior ||
-            FractionBehaviorTypes.INCLUSIVE;
-
         this.MQ = MathQuill.getInterface(2);
         this.mathField = this.MQ.MathField(element, {
             // use a span instead of a textarea so that we don't bring up the
@@ -114,14 +112,16 @@ class MathWrapper {
             if (str && fn) {
                 this.mathField[fn](str);
             }
-        } else if (key === Keys.FRAC) {
-            if (this.fractionBehavior === FractionBehaviorTypes.INCLUSIVE) {
-                this.mathField.cmd('/');
-            } else {
-                this.mathField.cmd('\\frac');
-            }
         } else if (Object.keys(NormalCommands).includes(key)) {
             this._writeNormalFunction(NormalCommands[key]);
+        } else if (key === Keys.FRAC_EXCLUSIVE) {
+            // If there's nothing to the left of the cursor, then we want to
+            // leave the cursor to the left of the fraction after creating it.
+            const shouldNavigateLeft = cursor[this.MQ.L] === MQ_END;
+            this.mathField.cmd('\\frac');
+            if (shouldNavigateLeft) {
+                this.mathField.keystroke('Left');
+            }
         } else if (key === Keys.LOG_N) {
             this.mathField.write('log_{ }\\left(\\right)');
             this.mathField.keystroke('Left'); // into parentheses

@@ -7,8 +7,8 @@ const components = {
     KeypadInput: require('./components/input/math-input'),
 };
 
-const {FractionBehaviorTypes, KeypadTypes} = require('./consts');
-const consts = {FractionBehaviorTypes, KeypadTypes};
+const {KeypadTypes} = require('./consts');
+const consts = {KeypadTypes};
 
 const {
     keypadConfigurationPropType,

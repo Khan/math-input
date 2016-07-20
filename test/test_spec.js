@@ -58,29 +58,31 @@ describe('MathQuill', () => {
         done();
     });
 
+    // TODO(charlie): Add tests for Keys.FRAC_EXCLUSIVE (the mixed-number
+    // fraction key).
     describe('Fraction Bar', () => {
         it('should work with no content', () => {
-            mathField.pressKey(Keys.FRAC);
+            mathField.pressKey(Keys.FRAC_INCLUSIVE);
             assert.equal(mathField.getContent(), '\\frac{ }{ }');
         });
 
         it('should work after an expression', () => {
             mathField.setContent('35x^2');
-            mathField.pressKey(Keys.FRAC);
+            mathField.pressKey(Keys.FRAC_INCLUSIVE);
             assert.equal(mathField.getContent(), '\\frac{35x^2}{ }');
         });
 
         it('should work before an expression', () => {
             mathField.setContent('35x^2');
             mathField.moveToStart();
-            mathField.pressKey(Keys.FRAC);
+            mathField.pressKey(Keys.FRAC_INCLUSIVE);
             assert.equal(mathField.getContent(), '\\frac{ }{ }35x^2');
         });
 
         it('should work with a selected expression', () => {
             mathField.setContent('35x^2');
             mathField.selectAll();
-            mathField.pressKey(Keys.FRAC);
+            mathField.pressKey(Keys.FRAC_INCLUSIVE);
             assert.equal(mathField.getContent(), '\\frac{35x^2}{ }');
         });
     });

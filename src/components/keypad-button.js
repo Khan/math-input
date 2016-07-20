@@ -214,7 +214,7 @@ const KeypadButton = React.createClass({
         };
 
         const maybeFocusBox = renderFocused && <View style={focusStyle} />;
-        const maybeCornerDecal = !renderFocused && childKeys &&
+        const maybeCornerDecal = !renderFocused && !disabled && childKeys &&
             childKeys.length > 0 && <CornerDecal style={styles.decalInset} />;
 
         if (type === KeyTypes.EMPTY) {

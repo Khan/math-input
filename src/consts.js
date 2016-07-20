@@ -45,10 +45,6 @@ module.exports = {
     },
 
     // Configurable settings.
-    FractionBehaviorTypes: {
-        INCLUSIVE: 'INCLUSIVE',
-        EXCLUSIVE: 'EXCLUSIVE',
-    },
     JumpOutTypes: {
         STATIC: 'STATIC',
         DYNAMIC: 'DYNAMIC',

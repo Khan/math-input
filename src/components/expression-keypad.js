@@ -127,7 +127,7 @@ const ExpressionKeypad = React.createClass({
                 />
             </View>
             <View style={[column, oneColumn]}>
-                <TouchableKeypadButton keyConfig={KeyConfigs.FRAC} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.FRAC_INCLUSIVE} />
                 <TouchableKeypadButton keyConfig={KeyConfigs.CDOT} />
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.BACKSPACE}
