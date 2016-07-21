@@ -7,7 +7,7 @@ const React = require('react');
 const {StyleSheet} = require('aphrodite');
 
 const {View} = require('../fake-react-native-web');
-const {gray68, gray85} = require('./common-style');
+const {pageIndicatorHeightPx, gray68, gray85} = require('./common-style');
 
 const PagerIcon = React.createClass({
     propTypes: {
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        height: 16,
+        height: pageIndicatorHeightPx,
     },
     iconStrip: {
         flexDirection: 'row',

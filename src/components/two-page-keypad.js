@@ -11,7 +11,6 @@ const ViewPager = require('./view-pager');
 const PagerIndicator = require('./pager-indicator');
 const {View} = require('../fake-react-native-web');
 const {column, row, fullWidth} = require('./styles');
-const {DeviceOrientations, DeviceTypes} = require('../consts');
 const {
     buttonBorderColor, buttonBorderStyle, buttonBorderWidthPx, gray85,
 } = require('./common-style');
@@ -19,25 +18,30 @@ const {
 const TwoPageKeypad = React.createClass({
     propTypes: {
         currentPage: React.PropTypes.oneOf([0, 1]).isRequired,
-        deviceOrientation: React.PropTypes.oneOf(
-            Object.keys(DeviceOrientations)
-        ),
-        deviceType: React.PropTypes.oneOf(Object.keys(DeviceTypes)),
         leftPage: React.PropTypes.node.isRequired,
+        paginationEnabled: React.PropTypes.bool.isRequired,
         rightPage: React.PropTypes.node.isRequired,
     },
 
     render() {
         const {
             currentPage,
-            deviceOrientation,
-            deviceType,
             leftPage,
+            paginationEnabled,
             rightPage,
         } = this.props;
 
-        if (deviceOrientation === DeviceOrientations.LANDSCAPE ||
-                deviceType === DeviceTypes.TABLET) {
+        if (paginationEnabled) {
+            return <Keypad style={[column, styles.keypad]}>
+                <PagerIndicator numPages={2} currentPage={currentPage} />
+                <View style={styles.borderTop}>
+                    <ViewPager>
+                        {leftPage}
+                        {rightPage}
+                    </ViewPager>
+                </View>
+            </Keypad>;
+        } else {
             return <Keypad style={styles.keypad}>
                 <View style={row}>
                     <View style={fullWidth}>
@@ -46,16 +50,6 @@ const TwoPageKeypad = React.createClass({
                     <View style={fullWidth}>
                         {rightPage}
                     </View>
-                </View>
-            </Keypad>;
-        } else {
-            return <Keypad style={[column, styles.keypad]}>
-                <PagerIndicator numPages={2} currentPage={currentPage} />
-                <View style={styles.borderTop}>
-                    <ViewPager>
-                        {leftPage}
-                        {rightPage}
-                    </ViewPager>
                 </View>
             </Keypad>;
         }
@@ -77,8 +71,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        deviceOrientation: state.layout.deviceOrientation,
-        deviceType: state.layout.deviceType,
+        paginationEnabled: state.layout.paginationEnabled,
     };
 };
 

@@ -8,7 +8,12 @@ const {StyleSheet} = require('aphrodite');
 const {View} = require('../fake-react-native-web');
 const TouchableKeypadButton = require('./touchable-keypad-button');
 const {row, column, centered, stretch} = require('./styles');
-const {controlGrey, valueGrey, gray85} = require('./common-style');
+const {
+    navigationPadWidthPx,
+    controlGrey,
+    valueGrey,
+    gray85,
+} = require('./common-style');
 const {BorderStyles} = require('../consts');
 const KeyConfigs = require('../data/key-configs');
 
@@ -48,7 +53,6 @@ const NavigationPad = React.createClass({
     },
 });
 
-const horizontalInsetPx = 24;
 const buttonSizePx = 48;
 const borderRadiusPx = 4;
 const borderWidthPx = 1;
@@ -56,8 +60,7 @@ const borderWidthPx = 1;
 const styles = StyleSheet.create({
     background: {
         backgroundColor: controlGrey,
-        paddingLeft: horizontalInsetPx,
-        paddingRight: horizontalInsetPx,
+        width: navigationPadWidthPx,
     },
 
     navigationKey: {

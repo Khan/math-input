@@ -7,10 +7,10 @@
  * forth.
  *
  * The computations herein make some strong assumptions about the sizes of
- * various other elements and the situations under which they will be visible.
- * That makes the computation brittle. However, this is just a heuristic--it's
- * not crucial that our buttons are sized in a pixel-perfect manner, but rather,
- * that we make a balanced use of space.
+ * various other elements and the situations under which they will be visible
+ * (e.g., browser chrome). However, this is just a heuristic--it's not crucial
+ * that our buttons are sized in a pixel-perfect manner, but rather, that we
+ * make a balanced use of space.
  *
  * Note that one goal of the algorithm is to avoid resizing the keypad in the
  * face of dynamic browser chrome. In order to avoid that awkwardness, we tend
@@ -19,6 +19,7 @@
  */
 
 const {DeviceTypes, DeviceOrientations} = require('../consts');
+const {pageIndicatorHeightPx, toolbarHeightPx} = require('./common-style');
 
 const minButtonHeight = 48;
 const maxButtonSize = 64;
@@ -47,84 +48,75 @@ const maxPortraitBrowserChrome = safariToolbar +
 // difference when reserving space above the keypad.)
 const worstCaseAspectRatio = 320 / (480 - safariNavBarWhenShrunk);
 
-const computeButtonDimensions = function(numRows, numColumns, numPages,
-                                         pageWidthPx, pageHeightPx,
-                                         deviceOrientation, deviceType) {
-    switch (deviceType) {
-        case DeviceTypes.TABLET:
-            return {
-                widthPx: maxButtonSize,
-                heightPx: maxButtonSize,
-            };
+const computeButtonDimensions = function({numRows, numColumns, numPages},
+                                         {pageWidthPx, pageHeightPx},
+                                         {deviceOrientation, deviceType},
+                                         {navigationPadEnabled,
+                                          paginationEnabled,
+                                          toolbarEnabled}) {
+    if (deviceType === DeviceTypes.PHONE) {
+        const isLandscape = deviceOrientation === DeviceOrientations.LANDSCAPE;
 
-        case DeviceTypes.PHONE:
-            const isLandscape =
-                deviceOrientation === DeviceOrientations.LANDSCAPE;
+        // In many cases, the browser chrome will already have been factored
+        // into `pageHeightPx`. But we have no way of knowing if that's
+        // the case or not. As such, we take a conservative approach and
+        // assume that the chrome is _never_ included in `pageHeightPx`.
+        const browserChromeHeight = isLandscape ? maxLandscapeBrowserChrome
+                                                : maxPortraitBrowserChrome;
 
-            // HACK(charlie): This is not great. We're encoding a bunch of
-            // assumptions here about when certain pieces of chrome will be
-            // included in the UI, and how tall they will be. Luckily, this is
-            // just a heuristic, so we have some margin for error.
-            const toolbarHeight = isLandscape ? 0 : 60;
-            const pageIndicatorHeight = isLandscape || numPages === 1 ? 0 : 16;
+        // Count up all the space that we need to reserve on the page.
+        // Namely, we need to account for:
+        //  1. Space between the keypad and the top of the page.
+        //  2. The presence of the exercise toolbar.
+        //  3. The presence of the view pager indicator.
+        //  4. Any browser chrome that may appear later.
+        //  5. The possibility of a popover rendering from the top row (in which
+        //     case, we reserve space for an extra button above the keypad).
+        const reservedSpace = minSpaceAbovePopover + maxButtonSize +
+            browserChromeHeight + (toolbarEnabled ? toolbarHeightPx : 0) +
+            (paginationEnabled ? pageIndicatorHeightPx : 0);
 
-            // In many cases, the browser chrome will already have been factored
-            // into `pageHeightPx`. But we have no way of knowing if that's
-            // the case or not. As such, we take a conservative approach and
-            // assume that the chrome is _never_ included in `pageHeightPx`.
-            const browserChromeHeight = isLandscape ? maxLandscapeBrowserChrome
-                                                    : maxPortraitBrowserChrome;
+        // Next, compute the effective width and height. We can use the page
+        // width as the effective width. For the height, though, we take
+        // another conservative measure when in portrait by assuming that
+        // the device has the worst possible aspect ratio. In other words,
+        // we ignore the device height in portrait and assume the worst.
+        // This prevents the keypad from changing size when browser chrome
+        // appears and disappears.
+        const effectiveWidth = pageWidthPx;
+        const effectiveHeight =
+            isLandscape ? pageHeightPx
+                        : pageWidthPx / worstCaseAspectRatio;
+        const maxKeypadHeight = effectiveHeight - reservedSpace;
 
-            // Count up all the space that we need to reserve on the page.
-            // Namely, we need to account for:
-            //  1. Space between the keypad and the top of the page.
-            //  2. The presence of the exercise toolbar.
-            //  3. The presence of the view pager indicator.
-            //  4. Any browser chrome that may appear later.
-            //  5. The possibility of a popover rendering from the top row (in
-            //     which case, we reserve space for an extra button above the
-            //     keypad).
-            const reservedSpace = minSpaceAbovePopover + maxButtonSize +
-                toolbarHeight + pageIndicatorHeight + browserChromeHeight;
+        // Finally, compute the button height and width.
+        const buttonHeightPx = Math.max(
+            Math.min(
+                maxKeypadHeight / numRows,
+                maxButtonSize
+            ),
+            minButtonHeight
+        );
 
-            // Next, compute the effective width and height. We can use the page
-            // width as the effective width. For the height, though, we take
-            // another conservative measure when in portrait by assuming that
-            // the device has the worst possible aspect ratio. In other words,
-            // we ignore the device height in portrait and assume the worst.
-            // This prevents the keypad from changing size when browser chrome
-            // appears and disappears.
-            const effectiveWidth = pageWidthPx;
-            const effectiveHeight =
-                isLandscape ? pageHeightPx
-                            : pageWidthPx / worstCaseAspectRatio;
-            const maxKeypadHeight = effectiveHeight - reservedSpace;
+        let buttonWidthPx;
+        if (numPages > 1) {
+            const effectiveNumColumns =
+                paginationEnabled ? numColumns : numColumns * numPages;
+            buttonWidthPx = effectiveWidth / effectiveNumColumns;
+        } else {
+            buttonWidthPx = isLandscape ? maxButtonSize
+                                        : effectiveWidth / numColumns;
+        }
 
-            // Finally, compute the button height and width.
-            const buttonHeightPx = Math.max(
-                Math.min(
-                    maxKeypadHeight / numRows,
-                    maxButtonSize
-                ),
-                minButtonHeight
-            );
-
-            let buttonWidthPx;
-            if (numPages > 1) {
-                // Assumption: if we're in landscape, we render all pages at
-                // once.
-                const effectiveNumColumns = isLandscape ? numColumns * numPages
-                                                        : numColumns;
-                buttonWidthPx = effectiveWidth / effectiveNumColumns;
-            } else {
-                buttonWidthPx = isLandscape ? maxButtonSize
-                                            : effectiveWidth / numColumns;
-            }
-
-            return {
-                widthPx: buttonWidthPx,
-                heightPx: buttonHeightPx,
-            };
+        return {
+            widthPx: buttonWidthPx,
+            heightPx: buttonHeightPx,
+        };
+    } else if (deviceType === DeviceTypes.TABLET) {
+        return {
+            widthPx: maxButtonSize,
+            heightPx: maxButtonSize,
+        };
     }
 
     throw new Error("Invalid device type: " + deviceType);

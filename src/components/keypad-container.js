@@ -9,14 +9,14 @@ const NavigationPad = require('./navigation-pad');
 const zIndexes = require('./z-indexes');
 const {setPageSize} = require('../actions');
 const {keyIdPropType} = require('./prop-types');
-const {DeviceTypes, KeypadTypes} = require('../consts');
+const {KeypadTypes} = require('../consts');
 
 const KeypadContainer = React.createClass({
     propTypes: {
         active: React.PropTypes.bool,
-        deviceType: React.PropTypes.oneOf(Object.keys(DeviceTypes)),
         extraKeys: React.PropTypes.arrayOf(keyIdPropType),
         keypadType: React.PropTypes.oneOf(Object.keys(KeypadTypes)).isRequired,
+        navigationPadEnabled: React.PropTypes.bool.isRequired,
         onDismiss: React.PropTypes.func,
         // A callback that should be triggered with the root React element on
         // mount.
@@ -104,7 +104,12 @@ const KeypadContainer = React.createClass({
     },
 
     render() {
-        const {active, deviceType, onElementMounted, style} = this.props;
+        const {
+            active,
+            navigationPadEnabled,
+            onElementMounted,
+            style,
+        } = this.props;
 
         // NOTE(charlie): We render the transforms as pure inline styles to
         // avoid an Aphrodite bug in mobile Safari.
@@ -126,7 +131,7 @@ const KeypadContainer = React.createClass({
         >
             <View style={styles.spacer} />
             <View style={styles.content}>
-                {deviceType === DeviceTypes.TABLET && <NavigationPad />}
+                {navigationPadEnabled && <NavigationPad />}
                 <View style={styles.keypad}>
                     {this.renderKeypad()}
                 </View>
@@ -187,7 +192,7 @@ const inlineStyles = {
 const mapStateToProps = (state) => {
     return {
         ...state.keypad,
-        deviceType: state.layout.deviceType,
+        navigationPadEnabled: state.layout.navigationPadEnabled,
     };
 };
 
