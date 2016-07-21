@@ -19,6 +19,11 @@ const KeyConfigs = {
         // I18N: A label for a minus sign.
         ariaLabel: i18n._('Minus'),
     },
+    [Keys.NEGATIVE]: {
+        type: KeyTypes.VALUE,
+        // I18N: A label for a minus sign.
+        ariaLabel: i18n._('Negative'),
+    },
     [Keys.TOGGLE_SIGN]: {
         type: KeyTypes.OPERATOR,
         // TODO(charlie): Change this to 'Toggle negative' and add an

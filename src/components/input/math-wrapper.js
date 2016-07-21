@@ -23,6 +23,7 @@ const MQ_END = 0;
 const KeyActions = {
     [Keys.PLUS]: {str: '+', fn: WRITE},
     [Keys.MINUS]: {str: '-', fn: WRITE},
+    [Keys.NEGATIVE]: {str: '-', fn: WRITE},
     [Keys.TIMES]: {str: '\\times', fn: WRITE},
     [Keys.DIVIDE]: {str: '\\div', fn: WRITE},
     [Keys.DECIMAL]: {str: '.', fn: WRITE},

@@ -66,7 +66,7 @@ const FractionKeypad = React.createClass({
             </View>
             <View style={row}>
                 <TouchableKeypadButton
-                    keyConfig={KeyConfigs.MINUS}
+                    keyConfig={KeyConfigs.NEGATIVE}
                     borders={BorderStyles.NONE}
                 />
                 <TouchableKeypadButton

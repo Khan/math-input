@@ -37,5 +37,6 @@ module.exports = {
     LOG_N: require('./log-n'),
     LEQ: require('./leq'),
     MINUS: require('./minus'),
+    NEGATIVE: require('./minus'),
     RADICAL: require('./radical'),
 };
