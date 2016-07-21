@@ -10,7 +10,7 @@ const Keypad = require('./keypad');
 const ViewPager = require('./view-pager');
 const PagerIndicator = require('./pager-indicator');
 const {View} = require('../fake-react-native-web');
-const {column, row, fullFlex} = require('./styles');
+const {column, row, fullWidth} = require('./styles');
 const {DeviceTypes} = require('../consts');
 const {
     buttonBorderColor, buttonBorderStyle, buttonBorderWidthPx, gray85,
@@ -35,10 +35,10 @@ const TwoPageKeypad = React.createClass({
         if (deviceType === DeviceTypes.TABLET) {
             return <Keypad style={styles.keypad}>
                 <View style={row}>
-                    <View style={fullFlex}>
+                    <View style={fullWidth}>
                         {firstPage}
                     </View>
-                    <View style={fullFlex}>
+                    <View style={fullWidth}>
                         {secondPage}
                     </View>
                 </View>
