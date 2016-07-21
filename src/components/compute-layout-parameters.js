@@ -1,5 +1,6 @@
 /**
- * An algorithm for computing the appropriate size of the buttons in the keypad,
+ * An algorithm for computing the appropriate layout parameters for the keypad,
+ * including the size of the buttons and whether or not to render fullscreen,
  * taking into account a number of factors including the size of the screen, the
  * orientation of the screen, the presence of browser chrome, the presence of
  * other exercise-related chrome, the size of the input box, the parameters that
@@ -18,8 +19,12 @@
  * might need to be.
  */
 
-const {DeviceTypes, DeviceOrientations} = require('../consts');
-const {pageIndicatorHeightPx, toolbarHeightPx} = require('./common-style');
+const {DeviceTypes, DeviceOrientations, LayoutModes} = require('../consts');
+const {
+    pageIndicatorHeightPx,
+    toolbarHeightPx,
+    navigationPadWidthPx,
+} = require('./common-style');
 
 const minButtonHeight = 48;
 const maxButtonSize = 64;
@@ -48,12 +53,18 @@ const maxPortraitBrowserChrome = safariToolbar +
 // difference when reserving space above the keypad.)
 const worstCaseAspectRatio = 320 / (480 - safariNavBarWhenShrunk);
 
-const computeButtonDimensions = function({numRows, numColumns, numPages},
+const computeLayoutParameters = function({numRows, numColumns, numPages},
                                          {pageWidthPx, pageHeightPx},
                                          {deviceOrientation, deviceType},
                                          {navigationPadEnabled,
                                           paginationEnabled,
                                           toolbarEnabled}) {
+    // First, compute some values that will be used in multiple computations.
+    const effectiveNumColumns =
+        paginationEnabled ? numColumns : numColumns * numPages;
+
+    // Then, compute the button dimensions based on the provided parameters.
+    let buttonDimensions;
     if (deviceType === DeviceTypes.PHONE) {
         const isLandscape = deviceOrientation === DeviceOrientations.LANDSCAPE;
 
@@ -108,18 +119,28 @@ const computeButtonDimensions = function({numRows, numColumns, numPages},
                                         : effectiveWidth / numColumns;
         }
 
-        return {
+        buttonDimensions = {
             widthPx: buttonWidthPx,
             heightPx: buttonHeightPx,
         };
     } else if (deviceType === DeviceTypes.TABLET) {
-        return {
+        buttonDimensions = {
             widthPx: maxButtonSize,
             heightPx: maxButtonSize,
         };
+    } else {
+        throw new Error("Invalid device type: " + deviceType);
     }
 
-    throw new Error("Invalid device type: " + deviceType);
+    // Finally, determine whether the keypad should be rendered in the
+    // fullscreen layout by determining its resultant width.
+    const keypadWidth = (effectiveNumColumns * buttonDimensions.widthPx) +
+        (navigationPadEnabled ? navigationPadWidthPx : 0);
+    return {
+        buttonDimensions,
+        layoutMode: keypadWidth >= pageWidthPx ? LayoutModes.FULLSCREEN
+                                               : LayoutModes.COMPACT,
+    };
 };
 
-module.exports = computeButtonDimensions;
+module.exports = computeLayoutParameters;

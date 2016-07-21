@@ -38,6 +38,11 @@ module.exports = {
         TABLET: 'TABLET',
     },
 
+    LayoutModes: {
+        FULLSCREEN: 'FULLSCREEN',
+        COMPACT: 'COMPACT',
+    },
+
     BorderDirections: {
         LEFT: 'LEFT',
         BOTTOM: 'BOTTOM',

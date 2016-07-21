@@ -6,13 +6,11 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 const {connect} = require('react-redux');
-const {StyleSheet} = require('aphrodite');
 
 const {removeEcho} = require('../actions');
 const {View} = require('../fake-react-native-web');
 const EchoManager = require('./echo-manager');
 const PopoverManager = require('./popover-manager');
-const {valueGrey} = require('./common-style');
 const {echoPropType, popoverPropType} = require('./prop-types');
 
 const Keypad = React.createClass({
@@ -117,12 +115,7 @@ const Keypad = React.createClass({
             },
         };
 
-        const keypadStyle = [
-            styles.keypad,
-            ...(Array.isArray(style) ? style : [style]),
-        ];
-
-        return <View style={keypadStyle}>
+        return <View style={style}>
             {children}
             <EchoManager
                 echoes={relativeEchoes}
@@ -130,20 +123,6 @@ const Keypad = React.createClass({
             />
             <PopoverManager popover={relativePopover} />
         </View>;
-    },
-});
-
-const styles = StyleSheet.create({
-    keypad: {
-        // TODO(charlie): We'd like to use `overflowX: 'hidden'` to avoid making
-        // the second page of keys visible during page resizes. However, adding
-        // `overflowX: 'hidden'` makes the keypad cutoff its content vertically,
-        // even after adding `overflowY: 'visible'`. So, for example, the
-        // popover menus get cutoff at the top of the keypad, as do the echo
-        // animations. In addition, `overflowX: 'hidden'` was making the second
-        // page of keys appear above the sidebar on focus in mobile Safari.
-        // overflowX: 'hidden',
-        backgroundColor: valueGrey,
     },
 });
 

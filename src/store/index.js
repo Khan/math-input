@@ -1,12 +1,13 @@
 const Redux = require('redux');
 
 const {tabletCutoffPx} = require('../components/common-style');
-const computeButtonDimensions = require('../components/compute-button-dimensions');
+const computeLayoutParameters = require('../components/compute-layout-parameters');
 const {
     DeviceOrientations,
     DeviceTypes,
     KeyTypes,
     KeypadTypes,
+    LayoutModes,
 } = require('../consts');
 const Keys = require('../data/keys');
 const KeyConfigs = require('../data/key-configs');
@@ -374,6 +375,7 @@ const createStore = () => {
             widthPx: 48,
             heightPx: 48,
         },
+        layoutMode: LayoutModes.FULLSCREEN,
         paginationEnabled: false,
         navigationPadEnabled: false,
     };
@@ -424,7 +426,7 @@ const createStore = () => {
                     toolbarEnabled: probablyToolbarEnabled,
                 };
 
-                const buttonDimensions = computeButtonDimensions(
+                const layoutParameters = computeLayoutParameters(
                     state.gridDimensions,
                     pageDimensions,
                     deviceInfo,
@@ -432,7 +434,7 @@ const createStore = () => {
                 );
                 return {
                     ...state,
-                    buttonDimensions,
+                    ...layoutParameters,
                     // Pass along some of the layout information, so that other
                     // components in the heirarchy can adapt appropriately.
                     paginationEnabled,

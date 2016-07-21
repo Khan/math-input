@@ -9,13 +9,16 @@ const NavigationPad = require('./navigation-pad');
 const zIndexes = require('./z-indexes');
 const {setPageSize} = require('../actions');
 const {keyIdPropType} = require('./prop-types');
-const {KeypadTypes} = require('../consts');
+const {KeypadTypes, LayoutModes} = require('../consts');
+const {row, centered, fullWidth} = require('./styles');
+const {compactKeypadBorderRadiusPx} = require('./common-style');
 
 const KeypadContainer = React.createClass({
     propTypes: {
         active: React.PropTypes.bool,
         extraKeys: React.PropTypes.arrayOf(keyIdPropType),
         keypadType: React.PropTypes.oneOf(Object.keys(KeypadTypes)).isRequired,
+        layoutMode: React.PropTypes.oneOf(Object.keys(LayoutModes)).isRequired,
         navigationPadEnabled: React.PropTypes.bool.isRequired,
         onDismiss: React.PropTypes.func,
         // A callback that should be triggered with the root React element on
@@ -81,8 +84,23 @@ const KeypadContainer = React.createClass({
     },
 
     renderKeypad() {
-        // Extract props that some keypads will need.
-        const {extraKeys, keypadType} = this.props;
+        const {
+            extraKeys,
+            keypadType,
+            layoutMode,
+            navigationPadEnabled,
+        } = this.props;
+
+        const keypadProps = {
+            extraKeys,
+            // HACK(charlie): In order to properly round the corners of the
+            // compact keypad, we need to instruct some of our child views to
+            // crop themselves. At least we're colocating all the layout
+            // information in this component, though.
+            roundTopLeft: layoutMode === LayoutModes.COMPACT &&
+                !navigationPadEnabled,
+            roundTopRight: layoutMode === LayoutModes.COMPACT,
+        };
 
         // Select the appropriate keyboard given the type.
         // TODO(charlie): In the future, we might want to move towards a
@@ -93,10 +111,10 @@ const KeypadContainer = React.createClass({
         // very many of them. So to keep us moving, we'll just hardcode.
         switch (keypadType) {
             case KeypadTypes.FRACTION:
-                return <FractionKeypad />;
+                return <FractionKeypad {...keypadProps} />;
 
             case KeypadTypes.EXPRESSION:
-                return <ExpressionKeypad extraKeys={extraKeys} />;
+                return <ExpressionKeypad {...keypadProps} />;
 
             default:
                 throw new Error("Invalid keypad type: " + keypadType);
@@ -106,6 +124,7 @@ const KeypadContainer = React.createClass({
     render() {
         const {
             active,
+            layoutMode,
             navigationPadEnabled,
             onElementMounted,
             style,
@@ -116,61 +135,83 @@ const KeypadContainer = React.createClass({
         //   See: https://github.com/Khan/aphrodite/issues/68.
         const dynamicStyle = active ? inlineStyles.active : inlineStyles.hidden;
 
-        const containerStyle = [
+        const keypadContainerStyle = [
+            row,
+            centered,
+            fullWidth,
             styles.keypadContainer,
             ...(Array.isArray(style) ? style : [style]),
+        ];
+
+        const keypadStyle = [
+            row,
+            styles.keypadBorder,
+            layoutMode === LayoutModes.FULLSCREEN ? styles.fullscreen
+                                                  : styles.compact,
         ];
 
         // TODO(charlie): When the keypad is shorter than the width of the
         // screen, add a border on its left and right edges, and round out the
         // corners.
         return <View
-            style={containerStyle}
+            style={keypadContainerStyle}
             dynamicStyle={dynamicStyle}
             ref={onElementMounted}
         >
-            <View style={styles.spacer} />
-            <View style={styles.content}>
-                {navigationPadEnabled && <NavigationPad />}
-                <View style={styles.keypad}>
+            <View style={keypadStyle}>
+                {navigationPadEnabled &&
+                    <NavigationPad
+                        roundTopLeft={layoutMode === LayoutModes.COMPACT}
+                    />
+                }
+                <View style={styles.keypadLayout}>
                     {this.renderKeypad()}
                 </View>
             </View>
-            <View style={styles.spacer} />
         </View>;
     },
 });
 
 const keypadAnimationDurationMs = 300;
+const borderWidthPx = 0.5;
 
 const styles = StyleSheet.create({
     keypadContainer: {
-        borderTop: '1px solid rgba(0, 0, 0, 0.2)',
         bottom: 0,
         position: 'fixed',
+        width: '100%',
         transition: `${keypadAnimationDurationMs}ms ease-out`,
         transitionProperty: 'transform',
-        width: '100%',
         zIndex: zIndexes.keypad,
-        flexDirection: 'row',
     },
-    content: {
-        borderColor: 'rgba(0, 0, 0, 0.1)',
+
+    keypadBorder: {
+        boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.1)',
+        borderColor: 'rgba(0, 0, 0, 0.2)',
         borderStyle: 'solid',
-        borderWidth: '0 1px',
-        flexDirection: 'row',
     },
+
+    fullscreen: {
+        borderTopWidth: borderWidthPx,
+    },
+
+    compact: {
+        borderTopRightRadius: compactKeypadBorderRadiusPx,
+        borderTopLeftRadius: compactKeypadBorderRadiusPx,
+
+        borderTopWidth: borderWidthPx,
+        borderRightWidth: borderWidthPx,
+        borderLeftWidth: borderWidthPx,
+    },
+
     // Defer to the navigation pad, such that the navigation pad is always
     // rendered at full-width, and the keypad takes up just the remaining space.
     // TODO(charlie): Avoid shrinking the keys and, instead, make the keypad
     // scrollable.
-    keypad: {
+    keypadLayout: {
         flexGrow: 1,
         // Avoid unitless flex-basis, per: https://philipwalton.com/articles/normalizing-cross-browser-flexbox-bugs/
         flexBasis: '0%',
-    },
-    spacer: {
-        flex: 1,
     },
 });
 
@@ -192,6 +233,7 @@ const inlineStyles = {
 const mapStateToProps = (state) => {
     return {
         ...state.keypad,
+        layoutMode: state.layout.layoutMode,
         navigationPadEnabled: state.layout.navigationPadEnabled,
     };
 };

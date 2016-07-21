@@ -15,6 +15,7 @@ module.exports = {
     buttonBorderWidthPx: 1,
     iconSizeHeightPx: 48,
     iconSizeWidthPx: 48,
+    compactKeypadBorderRadiusPx: 4,
     cursorHandleRadiusPx: 11,
 
     // The amount to multiply the radius by to get the distance from the

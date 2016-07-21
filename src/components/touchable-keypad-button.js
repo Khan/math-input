@@ -23,19 +23,21 @@ const TouchableKeypadButton = React.createClass({
         gestureManager: React.PropTypes.instanceOf(GestureManager),
         id: keyIdPropType.isRequired,
         popoverEnabled: React.PropTypes.bool,
+        style: React.PropTypes.any,
         type: React.PropTypes.oneOf(Object.keys(KeyTypes)).isRequired,
     },
 
     shouldComponentUpdate(newProps) {
         // We take advantage of a few different properties of our key
         // configuration system. Namely, we know that the other props flow
-        // directly from the ID, and thus don't need to be checked.
+        // directly from the ID, and thus don't need to be checked. If a key has
+        // a custom style, we bail out (this should be rare).
         return newProps.id !== this.props.id ||
             newProps.gestureManager !== this.props.gestureManager ||
             newProps.focused !== this.props.focused ||
             newProps.disabled !== this.props.disabled ||
             newProps.popoverEnabled !== this.props.popoverEnabled ||
-            newProps.type !== this.props.type;
+            newProps.type !== this.props.type || !!newProps.style;
     },
 
     componentWillUnmount() {

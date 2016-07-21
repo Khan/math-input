@@ -9,16 +9,17 @@ const {connect} = require('react-redux');
 const {View} = require('../fake-react-native-web');
 const Keypad = require('./keypad');
 const TouchableKeypadButton = require('./touchable-keypad-button');
-const {row} = require('./styles');
+const {row, roundedTopLeft, roundedTopRight} = require('./styles');
 const {BorderStyles} = require('../consts');
 const CursorContexts = require('./input/cursor-contexts');
 const {cursorContextPropType} = require('./prop-types');
-
 const KeyConfigs = require('../data/key-configs');
 
 const FractionKeypad = React.createClass({
     propTypes: {
         cursorContext: cursorContextPropType.isRequired,
+        roundTopLeft: React.PropTypes.bool,
+        roundTopRight: React.PropTypes.bool,
     },
 
     statics: {
@@ -28,13 +29,14 @@ const FractionKeypad = React.createClass({
     },
 
     render() {
-        const {cursorContext} = this.props;
+        const {cursorContext, roundTopLeft, roundTopRight} = this.props;
 
         return <Keypad>
             <View style={row}>
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.NUM_7}
                     borders={BorderStyles.NONE}
+                    style={roundTopLeft && roundedTopLeft}
                 />
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.NUM_8}
@@ -55,6 +57,7 @@ const FractionKeypad = React.createClass({
                         // a more specific context.
                         cursorContext === CursorContexts.NESTED
                     }
+                    style={roundTopRight && roundedTopRight}
                 />
             </View>
             <View style={row}>

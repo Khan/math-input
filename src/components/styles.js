@@ -4,6 +4,8 @@
 
 const {StyleSheet} = require('aphrodite');
 
+const {compactKeypadBorderRadiusPx} = require('./common-style');
+
 module.exports = StyleSheet.create({
     row: {
         flexDirection: 'row',
@@ -26,5 +28,11 @@ module.exports = StyleSheet.create({
     },
     centeredText: {
         textAlign: 'center',
+    },
+    roundedTopLeft: {
+        borderTopLeftRadius: compactKeypadBorderRadiusPx,
+    },
+    roundedTopRight: {
+        borderTopRightRadius: compactKeypadBorderRadiusPx,
     },
 });

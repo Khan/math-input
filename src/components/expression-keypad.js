@@ -10,7 +10,14 @@ const {View} = require('../fake-react-native-web');
 const TwoPageKeypad = require('./two-page-keypad');
 const ManyKeypadButton = require('./many-keypad-button');
 const TouchableKeypadButton = require('./touchable-keypad-button');
-const {row, column, oneColumn, fullWidth} = require('./styles');
+const {
+    row,
+    column,
+    oneColumn,
+    fullWidth,
+    roundedTopLeft,
+    roundedTopRight,
+} = require('./styles');
 const {BorderStyles, JumpOutTypes} = require('../consts');
 const {
     buttonBorderColor,
@@ -29,6 +36,8 @@ const ExpressionKeypad = React.createClass({
         cursorContext: cursorContextPropType.isRequired,
         dynamicJumpOut: React.PropTypes.bool,
         extraKeys: React.PropTypes.arrayOf(keyIdPropType),
+        roundTopLeft: React.PropTypes.bool,
+        roundTopRight: React.PropTypes.bool,
     },
 
     statics: {
@@ -49,6 +58,8 @@ const ExpressionKeypad = React.createClass({
             cursorContext,
             dynamicJumpOut,
             extraKeys,
+            roundTopLeft,
+            roundTopRight,
         } = this.props;
 
         let dismissOrJumpOutKey;
@@ -58,7 +69,12 @@ const ExpressionKeypad = React.createClass({
             dismissOrJumpOutKey = KeyConfigs.DISMISS;
         }
 
-        const rightPageStyle = [row, fullWidth, styles.rightPage];
+        const rightPageStyle = [
+            row,
+            fullWidth,
+            styles.rightPage,
+            roundTopRight && roundedTopRight,
+        ];
         const rightPage = <View style={rightPageStyle}>
             <View style={[column, oneColumn]}>
                 <TouchableKeypadButton
@@ -133,7 +149,10 @@ const ExpressionKeypad = React.createClass({
                 />
             </View>
             <View style={[column, oneColumn]}>
-                <TouchableKeypadButton keyConfig={KeyConfigs.FRAC_INCLUSIVE} />
+                <TouchableKeypadButton
+                    keyConfig={KeyConfigs.FRAC_INCLUSIVE}
+                    style={roundTopRight && roundedTopRight}
+                />
                 <TouchableKeypadButton keyConfig={KeyConfigs.CDOT} />
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.BACKSPACE}
@@ -146,12 +165,18 @@ const ExpressionKeypad = React.createClass({
             </View>
         </View>;
 
-        const leftPageStyle = [row, fullWidth, styles.leftPage];
+        const leftPageStyle = [
+            row,
+            fullWidth,
+            styles.leftPage,
+            roundTopLeft && roundedTopLeft,
+        ];
         const leftPage = <View style={leftPageStyle}>
             <View style={[column, oneColumn]}>
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.EXP_2}
                     borders={BorderStyles.NONE}
+                    style={roundTopLeft && roundedTopLeft}
                 />
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.SQRT}

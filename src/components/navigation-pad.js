@@ -7,7 +7,7 @@ const React = require('react');
 const {StyleSheet} = require('aphrodite');
 const {View} = require('../fake-react-native-web');
 const TouchableKeypadButton = require('./touchable-keypad-button');
-const {row, column, centered, stretch} = require('./styles');
+const {row, column, centered, stretch, roundedTopLeft} = require('./styles');
 const {
     navigationPadWidthPx,
     controlGrey,
@@ -18,10 +18,23 @@ const {BorderStyles} = require('../consts');
 const KeyConfigs = require('../data/key-configs');
 
 const NavigationPad = React.createClass({
+    propTypes: {
+        roundTopLeft: React.PropTypes.bool,
+    },
+
     render() {
         // TODO(charlie): Disable the navigational arrows depending on the
         // cursor context.
-        return <View style={[column, centered, styles.background]}>
+        const {roundTopLeft} = this.props;
+
+        const containerStyle = [
+            column,
+            centered,
+            styles.container,
+            roundTopLeft && roundedTopLeft,
+        ];
+
+        return <View style={containerStyle}>
             <View style={[row, centered]}>
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.UP}
@@ -58,7 +71,7 @@ const borderRadiusPx = 4;
 const borderWidthPx = 1;
 
 const styles = StyleSheet.create({
-    background: {
+    container: {
         backgroundColor: controlGrey,
         width: navigationPadWidthPx,
     },
