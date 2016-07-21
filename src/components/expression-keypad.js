@@ -10,7 +10,7 @@ const {View} = require('../fake-react-native-web');
 const TwoPageKeypad = require('./two-page-keypad');
 const ManyKeypadButton = require('./many-keypad-button');
 const TouchableKeypadButton = require('./touchable-keypad-button');
-const {row, column, oneColumn, fullFlex} = require('./styles');
+const {row, column, oneColumn, fullWidth} = require('./styles');
 const {BorderStyles, JumpOutTypes} = require('../consts');
 const {valueGrey, controlGrey} = require('./common-style');
 const {cursorContextPropType, keyIdPropType} = require('./prop-types');
@@ -47,7 +47,7 @@ const ExpressionKeypad = React.createClass({
             dismissOrJumpOutKey = KeyConfigs.DISMISS;
         }
 
-        const firstPageStyle = [row, fullFlex, styles.firstPage];
+        const firstPageStyle = [row, fullWidth, styles.firstPage];
         const firstPage = <View style={firstPageStyle}>
             <View style={[column, oneColumn]}>
                 <TouchableKeypadButton
@@ -135,7 +135,7 @@ const ExpressionKeypad = React.createClass({
             </View>
         </View>;
 
-        const secondPageStyle = [row, fullFlex, styles.secondPage];
+        const secondPageStyle = [row, fullWidth, styles.secondPage];
         const secondPage = <View style={secondPageStyle}>
             <View style={[column, oneColumn]}>
                 <TouchableKeypadButton
