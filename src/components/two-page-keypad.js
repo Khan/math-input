@@ -9,7 +9,7 @@ const Keypad = require('./keypad');
 const ViewPager = require('./view-pager');
 const PagerIndicator = require('./pager-indicator');
 const {View} = require('../fake-react-native-web');
-const {column, row, fullFlex} = require('./styles');
+const {column} = require('./styles');
 const {
     buttonBorderColor, buttonBorderStyle, buttonBorderWidthPx, gray85,
 } = require('./common-style');
@@ -28,15 +28,9 @@ const TwoPageKeypad = React.createClass({
             secondPage,
         } = this.props;
 
-        const keypadContentsStyle = [
-            row,
-            fullFlex,
-            styles.borderTop,
-        ];
-
         return <Keypad style={[column, styles.keypad]}>
             <PagerIndicator numPages={2} currentPage={currentPage} />
-            <View style={keypadContentsStyle}>
+            <View style={styles.borderTop}>
                 <ViewPager>
                     {firstPage}
                     {secondPage}
