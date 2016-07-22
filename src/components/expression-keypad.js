@@ -104,8 +104,14 @@ const ExpressionKeypad = React.createClass({
                 />
             </View>
             <View style={[column, oneColumn]}>
-                <TouchableKeypadButton keyConfig={KeyConfigs.DIVIDE} />
-                <TouchableKeypadButton keyConfig={KeyConfigs.TIMES} />
+                <TouchableKeypadButton
+                    keyConfig={KeyConfigs.DIVIDE}
+                    borders={BorderStyles.LEFT}
+                />
+                <TouchableKeypadButton
+                    keyConfig={KeyConfigs.TIMES}
+                    borders={BorderStyles.LEFT}
+                />
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.MINUS}
                     borders={BorderStyles.LEFT}
@@ -116,14 +122,8 @@ const ExpressionKeypad = React.createClass({
                 />
             </View>
             <View style={[column, oneColumn]}>
-                <TouchableKeypadButton
-                    keyConfig={KeyConfigs.FRAC}
-                    borders={BorderStyles.BOTTOM}
-                />
-                <TouchableKeypadButton
-                    keyConfig={KeyConfigs.CDOT}
-                    borders={BorderStyles.BOTTOM}
-                />
+                <TouchableKeypadButton keyConfig={KeyConfigs.FRAC} />
+                <TouchableKeypadButton keyConfig={KeyConfigs.CDOT} />
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.BACKSPACE}
                     borders={BorderStyles.LEFT}
