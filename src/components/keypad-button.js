@@ -212,7 +212,7 @@ const KeypadButton = React.createClass({
         };
 
         const maybeCornerDecal = !renderFocused && childKeys &&
-            childKeys.length > 0 && <CornerDecal />;
+            childKeys.length > 0 && <CornerDecal style={styles.decalInset} />;
 
         if (type === KeyTypes.EMPTY) {
             return <View style={buttonStyle} {...eventHandlers} />;
@@ -276,6 +276,11 @@ const styles = StyleSheet.create({
         borderStyle: buttonBorderStyle,
         // The focus state is inset slightly from the edge of the button.
         padding: focusInsetPx,
+    },
+
+    decalInset: {
+        top: focusInsetPx,
+        right: focusInsetPx,
     },
 
     // Overrides for the echo state, where we want to render the borders for

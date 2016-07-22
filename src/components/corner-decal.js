@@ -6,28 +6,41 @@ const React = require('react');
 const {StyleSheet} = require('aphrodite');
 
 const {View} = require('../fake-react-native-web');
-const {gray76} = require('./common-style');
+const {gray25} = require('./common-style');
 
-const CornerDecal = () => {
-    const points = `0,0 ${triangleSizePx},0 ` +
-        `${triangleSizePx},${triangleSizePx} 0,0`;
-    const fill = triangleColor;
+const CornerDecal = React.createClass({
+    propTypes: {
+        style: React.PropTypes.any,
+    },
 
-    // TODO(charlie): Separate out the contents of the corner decal from its
-    // positioning. Not necessary now, but it will be if external users need
-    // more fine-grained control over the styling of the keypad.
-    return <View style={styles.triangle}>
-        <svg>
-            <polygon points={points} fill={fill} />
-        </svg>
-    </View>;
-};
+    render() {
+        const {style} = this.props;
 
-const triangleSizePx = 8;
-const triangleColor = gray76;
+        const containerStyle = [
+            styles.container,
+            ...(Array.isArray(style) ? style : [style]),
+        ];
+
+        return <View style={containerStyle}>
+            <svg
+                width={triangleSizePx}
+                height={triangleSizePx}
+                viewBox="4 4 8 8"
+            >
+                <path
+                    fill={gray25}
+                    opacity="0.3"
+                    d="M5.29289322,5.70710678 L10.2928932,10.7071068 C10.9228581,11.3370716 12,10.8909049 12,10 L12,5 C12,4.44771525 11.5522847,4 11,4 L6,4 C5.10909515,4 4.66292836,5.07714192 5.29289322,5.70710678 Z" // @Nolint
+                />
+            </svg>
+        </View>;
+    },
+});
+
+const triangleSizePx = 7;
 
 const styles = StyleSheet.create({
-    triangle: {
+    container: {
         position: "absolute",
         top: 0,
         right: 0,
