@@ -2,17 +2,16 @@
  * Common parameters used to style components.
  */
 
+const gray85 = '#D6D8DA';
+
 module.exports = {
     brightGreen: '#78C008',
     gray17: '#21242C',
     gray25: '#3B3E40',
     gray68: '#888D93',
     gray76: '#BABEC2',
-    gray85: '#D6D8DA',
+    gray85,
     secondaryIconOpacity: 0.3,
-    buttonBorderColor: '#ECECEC',
-    buttonBorderStyle: 'solid',
-    buttonBorderWidthPx: 1,
     iconSizeHeightPx: 48,
     iconSizeWidthPx: 48,
     compactKeypadBorderRadiusPx: 4,
@@ -29,6 +28,11 @@ module.exports = {
     operatorGrey : '#FAFAFA',
     controlGrey : '#F6F7F7',
     emptyGrey : '#F0F1F2',
+
+    // Constants defining any borders between elements in the keypad.
+    innerBorderColor: gray85,
+    innerBorderStyle: 'solid',
+    innerBorderWidthPx: 1,
 
     // The width at which a device is classified as a "tablet" for the purposes
     // of the keypad layout.

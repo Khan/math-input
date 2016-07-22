@@ -20,18 +20,20 @@ const KeyConfigs = require('../data/key-configs');
 const NavigationPad = React.createClass({
     propTypes: {
         roundTopLeft: React.PropTypes.bool,
+        style: React.PropTypes.any,
     },
 
     render() {
         // TODO(charlie): Disable the navigational arrows depending on the
         // cursor context.
-        const {roundTopLeft} = this.props;
+        const {roundTopLeft, style} = this.props;
 
         const containerStyle = [
             column,
             centered,
             styles.container,
             roundTopLeft && roundedTopLeft,
+            ...(Array.isArray(style) ? style : [style]),
         ];
 
         return <View style={containerStyle}>

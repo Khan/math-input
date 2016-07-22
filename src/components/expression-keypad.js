@@ -19,12 +19,7 @@ const {
     roundedTopRight,
 } = require('./styles');
 const {BorderStyles, JumpOutTypes} = require('../consts');
-const {
-    buttonBorderColor,
-    buttonBorderWidthPx,
-    valueGrey,
-    controlGrey,
-} = require('./common-style');
+const {valueGrey, controlGrey} = require('./common-style');
 const {cursorContextPropType, keyIdPropType} = require('./prop-types');
 const KeyConfigs = require('../data/key-configs');
 const CursorContexts = require('./input/cursor-contexts');
@@ -242,7 +237,7 @@ const ExpressionKeypad = React.createClass({
                     borders={BorderStyles.LEFT}
                 />
             </View>
-            <View style={[column, oneColumn, styles.rightBorder]}>
+            <View style={[column, oneColumn]}>
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.GT}
                     borders={BorderStyles.NONE}
@@ -282,11 +277,6 @@ const styles = StyleSheet.create({
 
     leftPage: {
         backgroundColor: controlGrey,
-    },
-
-    rightBorder: {
-        borderRightWidth: buttonBorderWidthPx,
-        borderColor: buttonBorderColor,
     },
 });
 

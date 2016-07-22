@@ -12,7 +12,7 @@ const PagerIndicator = require('./pager-indicator');
 const {View} = require('../fake-react-native-web');
 const {column, row, fullWidth} = require('./styles');
 const {
-    buttonBorderColor, buttonBorderStyle, buttonBorderWidthPx, gray85,
+    innerBorderColor, innerBorderStyle, innerBorderWidthPx, gray85,
 } = require('./common-style');
 
 const TwoPageKeypad = React.createClass({
@@ -47,7 +47,7 @@ const TwoPageKeypad = React.createClass({
                     <View style={fullWidth}>
                         {leftPage}
                     </View>
-                    <View style={fullWidth}>
+                    <View style={[styles.borderLeft, fullWidth]}>
                         {rightPage}
                     </View>
                 </View>
@@ -64,8 +64,13 @@ const styles = StyleSheet.create({
     },
 
     borderTop: {
-        borderTop: `${buttonBorderWidthPx}px ${buttonBorderStyle} `
-            + `${buttonBorderColor}`,
+        borderTop: `${innerBorderWidthPx}px ${innerBorderStyle} `
+            + `${innerBorderColor}`,
+    },
+    borderLeft: {
+        borderLeft: `${innerBorderWidthPx}px ${innerBorderStyle} `
+            + `${innerBorderColor}`,
+        boxSizing: 'content-box',
     },
 });
 

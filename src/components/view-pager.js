@@ -12,12 +12,18 @@ const {StyleSheet} = require('aphrodite');
 const {View} = require('../fake-react-native-web');
 const {row} = require('./styles');
 const {childrenPropType} = require('./prop-types');
+const {
+    innerBorderColor,
+    innerBorderStyle,
+    innerBorderWidthPx,
+} = require('./common-style');
 
 const ViewPager = React.createClass({
     propTypes: {
         // Whether the page should animate to its next specified position.
         animateToPosition: React.PropTypes.bool,
         children: childrenPropType,
+        pageWidthPx: React.PropTypes.number.isRequired,
         translateX: React.PropTypes.number.isRequired,
     },
 
@@ -47,7 +53,7 @@ const ViewPager = React.createClass({
     },
 
     render() {
-        const {translateX, children} = this.props;
+        const {children, pageWidthPx, translateX} = this.props;
         const {animationDurationMs} = this.state;
 
         const pagerStyle = [row, styles.twoPagePager];
@@ -68,14 +74,21 @@ const ViewPager = React.createClass({
             WebkitTransitionTimingFunction: 'ease-out',
             transitionTimingFunction: 'ease-out',
         } : {};
-        const dynamicStyle = {
+        const dynamicPagerStyle = {
             ...transform,
             ...animate,
         };
 
-        return <View>
-            <View style={pagerStyle} dynamicStyle={dynamicStyle}>
-                {children}
+        const dynamicPageStyle = {
+            width: pageWidthPx,
+        };
+
+        return <View style={pagerStyle} dynamicStyle={dynamicPagerStyle}>
+            <View dynamicStyle={dynamicPageStyle}>
+                {children[0]}
+            </View>
+            <View style={styles.rightPage} dynamicStyle={dynamicPageStyle}>
+                {children[1]}
             </View>
         </View>;
     },
@@ -83,11 +96,19 @@ const ViewPager = React.createClass({
 
 const styles = StyleSheet.create({
     twoPagePager: {
-        width: '200%',
+        alignSelf: 'flex-start',
         // Note: By default, <View> sets a `maxWidth` of 100% to fix some
-        // Flexbox bugs. We have to override to acheive our desired width of
-        // 200%.
-        maxWidth: '200%',
+        // Flexbox bugs. We have to override it to accommodate for our two
+        // pages. The exact value here isn't super important, as long as it's
+        // large enough to accommodate for two pages (so, 200%) and some
+        // separators.
+        maxWidth: '250%',
+    },
+
+    rightPage: {
+        borderLeft: `${innerBorderWidthPx}px ${innerBorderStyle} `
+            + `${innerBorderColor}`,
+        boxSizing: 'content-box',
     },
 });
 
@@ -95,7 +116,8 @@ const mapStateToProps = (state) => {
     const {animateToPosition, currentPage, dx, pageWidthPx} = state.pager;
     return {
         animateToPosition,
-        translateX: -currentPage * pageWidthPx + dx,
+        pageWidthPx,
+        translateX: -currentPage * (pageWidthPx + innerBorderWidthPx) + dx,
     };
 };
 

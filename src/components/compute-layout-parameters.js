@@ -24,6 +24,7 @@ const {
     pageIndicatorHeightPx,
     toolbarHeightPx,
     navigationPadWidthPx,
+    innerBorderWidthPx,
 } = require('./common-style');
 
 const minButtonHeight = 48;
@@ -134,8 +135,11 @@ const computeLayoutParameters = function({numRows, numColumns, numPages},
 
     // Finally, determine whether the keypad should be rendered in the
     // fullscreen layout by determining its resultant width.
+    const numSeparators = (navigationPadEnabled ? 1 : 0) +
+        (!paginationEnabled ? numPages - 1 : 0);
     const keypadWidth = (effectiveNumColumns * buttonDimensions.widthPx) +
-        (navigationPadEnabled ? navigationPadWidthPx : 0);
+        (navigationPadEnabled ? navigationPadWidthPx : 0) +
+        numSeparators * innerBorderWidthPx;
     return {
         buttonDimensions,
         layoutMode: keypadWidth >= pageWidthPx ? LayoutModes.FULLSCREEN

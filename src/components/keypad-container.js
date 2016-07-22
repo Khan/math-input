@@ -11,7 +11,12 @@ const {setPageSize} = require('../actions');
 const {keyIdPropType} = require('./prop-types');
 const {KeypadTypes, LayoutModes} = require('../consts');
 const {row, centered, fullWidth} = require('./styles');
-const {compactKeypadBorderRadiusPx} = require('./common-style');
+const {
+    innerBorderColor,
+    innerBorderStyle,
+    innerBorderWidthPx,
+    compactKeypadBorderRadiusPx,
+} = require('./common-style');
 
 const KeypadContainer = React.createClass({
     propTypes: {
@@ -162,6 +167,7 @@ const KeypadContainer = React.createClass({
                 {navigationPadEnabled &&
                     <NavigationPad
                         roundTopLeft={layoutMode === LayoutModes.COMPACT}
+                        style={styles.navigationPadContainer}
                     />
                 }
                 <View style={styles.keypadLayout}>
@@ -173,7 +179,7 @@ const KeypadContainer = React.createClass({
 });
 
 const keypadAnimationDurationMs = 300;
-const borderWidthPx = 0.5;
+const borderWidthPx = 1;
 
 const styles = StyleSheet.create({
     keypadContainer: {
@@ -202,6 +208,13 @@ const styles = StyleSheet.create({
         borderTopWidth: borderWidthPx,
         borderRightWidth: borderWidthPx,
         borderLeftWidth: borderWidthPx,
+    },
+
+    navigationPadContainer: {
+        // Add a separator between the navigation pad and the keypad.
+        borderRight: `${innerBorderWidthPx}px ${innerBorderStyle} `
+            + `${innerBorderColor}`,
+        boxSizing: 'content-box',
     },
 
     // Defer to the navigation pad, such that the navigation pad is always

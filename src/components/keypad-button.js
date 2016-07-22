@@ -13,9 +13,9 @@ const CornerDecal = require('./corner-decal');
 const {KeyTypes, BorderDirections, BorderStyles} = require('../consts');
 const {
     brightGreen,
-    buttonBorderColor,
-    buttonBorderStyle,
-    buttonBorderWidthPx,
+    innerBorderColor,
+    innerBorderStyle,
+    innerBorderWidthPx,
     valueGrey,
     operatorGrey,
     controlGrey,
@@ -278,8 +278,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         // Borders are made selectively visible.
-        borderColor: buttonBorderColor,
-        borderStyle: buttonBorderStyle,
+        borderColor: innerBorderColor,
+        borderStyle: innerBorderStyle,
+        boxSizing: 'border-box',
     },
 
     decalInset: {
@@ -336,10 +337,10 @@ const styles = StyleSheet.create({
     // Styles used to render the appropriate borders. Buttons are only allowed
     // to render left and bottom borders, to simplify layout.
     leftBorder: {
-        borderLeftWidth: buttonBorderWidthPx,
+        borderLeftWidth: innerBorderWidthPx,
     },
     bottomBorder: {
-        borderBottomWidth: buttonBorderWidthPx,
+        borderBottomWidth: innerBorderWidthPx,
     },
 });
 
@@ -348,6 +349,7 @@ const styleForButtonDimensions = (heightPx, widthPx) => {
         buttonSize: {
             height: heightPx,
             width: widthPx,
+            maxWidth: widthPx,
         },
     }).buttonSize;
 };
