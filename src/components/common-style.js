@@ -11,7 +11,6 @@ module.exports = {
     gray68: '#888D93',
     gray76: '#BABEC2',
     gray85,
-    secondaryIconOpacity: 0.3,
     iconSizeHeightPx: 48,
     iconSizeWidthPx: 48,
     compactKeypadBorderRadiusPx: 4,

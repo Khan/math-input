@@ -22,9 +22,9 @@ const {
     emptyGrey,
 } = require('./common-style');
 const {
-    keyConfigPropType,
     bordersPropType,
-    unicodeSymbolPropType,
+    iconPropType,
+    keyConfigPropType,
 } = require('./prop-types');
 
 const KeypadButton = React.createClass({
@@ -41,9 +41,7 @@ const KeypadButton = React.createClass({
         disabled: React.PropTypes.bool,
         focused: React.PropTypes.bool,
         heightPx: React.PropTypes.number.isRequired,
-        // The name of the button, used to select the appropriate SVG
-        // background image.
-        name: React.PropTypes.string,
+        icon: iconPropType,
         onTouchCancel: React.PropTypes.func,
         onTouchEnd: React.PropTypes.func,
         onTouchMove: React.PropTypes.func,
@@ -51,9 +49,6 @@ const KeypadButton = React.createClass({
         popoverEnabled: React.PropTypes.bool,
         style: React.PropTypes.any,
         type: React.PropTypes.oneOf(Object.keys(KeyTypes)).isRequired,
-        // The unicode symbol that can be used to depict the icon for the
-        // button, as a fall-back in case there is no SVG icon available.
-        unicodeSymbol: unicodeSymbolPropType,
         // NOTE(charlie): We may want to make this optional for phone layouts
         // (and rely on Flexbox instead), since it might not be pixel perfect
         // with borders and such.
@@ -187,7 +182,7 @@ const KeypadButton = React.createClass({
             childKeys,
             disabled,
             focused,
-            name,
+            icon,
             onTouchCancel,
             onTouchEnd,
             onTouchMove,
@@ -195,7 +190,6 @@ const KeypadButton = React.createClass({
             popoverEnabled,
             style,
             type,
-            unicodeSymbol,
         } = this.props;
 
         // We render in the focus state if the key is focused, or if it's an
@@ -226,8 +220,8 @@ const KeypadButton = React.createClass({
                 role: 'button',
                 ariaLabel: childKeys[0].ariaLabel,
             };
-            const unicodeSymbols = childKeys.map(keyConfig => {
-                return keyConfig.unicodeSymbol;
+            const icons = childKeys.map(keyConfig => {
+                return keyConfig.icon;
             });
             return <View
                 style={buttonStyle}
@@ -236,10 +230,7 @@ const KeypadButton = React.createClass({
             >
                 {maybeFocusBox}
                 <View style={iconWrapperStyle}>
-                    <MultiSymbolGrid
-                        unicodeSymbols={unicodeSymbols}
-                        focused={renderFocused}
-                    />
+                    <MultiSymbolGrid icons={icons} focused={renderFocused} />
                 </View>
                 {maybeCornerDecal}
             </View>;
@@ -252,11 +243,7 @@ const KeypadButton = React.createClass({
             return <View style={buttonStyle} {...eventHandlers} {...a11yMarkup}>
                 {maybeFocusBox}
                 <View style={iconWrapperStyle}>
-                    <Icon
-                        name={name}
-                        unicodeSymbol={unicodeSymbol}
-                        focused={renderFocused}
-                    />
+                    <Icon icon={icon} focused={renderFocused} />
                 </View>
                 {maybeCornerDecal}
             </View>;

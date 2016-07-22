@@ -5,7 +5,7 @@
 /* globals i18n */
 
 const Keys = require('../data/keys');
-const {KeyTypes} = require('../consts');
+const {IconTypes, KeyTypes} = require('../consts');
 
 const KeyConfigs = {
     // Basic math keys.
@@ -162,17 +162,17 @@ const KeyConfigs = {
     [Keys.PI]: {
         type: KeyTypes.VALUE,
         ariaLabel: i18n._('Pi'),
-        unicodeSymbol: {
-            character: '\u03C0',
-            italicized: true,
+        icon: {
+            type: IconTypes.MATH,
+            data: '\\pi',
         },
     },
     [Keys.THETA]: {
         type: KeyTypes.VALUE,
         ariaLabel: i18n._('Theta'),
-        unicodeSymbol: {
-            character: '\u03B8',
-            italicized: true,
+        icon: {
+            type: IconTypes.MATH,
+            data: '\\theta',
         },
     },
     [Keys.NOOP]: {
@@ -239,9 +239,9 @@ for (const num of NUMBERS) {
     KeyConfigs[`NUM_${num}`] = {
         type: KeyTypes.VALUE,
         ariaLabel: textRepresentation,
-        unicodeSymbol: {
-            character: textRepresentation,
-            italicized: false,
+        icon: {
+            type: IconTypes.TEXT,
+            data: textRepresentation,
         },
     };
 }
@@ -259,9 +259,9 @@ for (const letter of LETTERS) {
         KeyConfigs[textRepresentation] = {
             type: KeyTypes.VALUE,
             ariaLabel: textRepresentation,
-            unicodeSymbol: {
-                character: textRepresentation,
-                italicized: true,
+            icon: {
+                type: IconTypes.MATH,
+                data: textRepresentation,
             },
         };
     }
@@ -269,8 +269,13 @@ for (const letter of LETTERS) {
 
 for (const key of Object.keys(KeyConfigs)) {
     KeyConfigs[key] = {
-        ...KeyConfigs[key],
         id: key,
+        // Default to an SVG icon indexed by the key name.
+        icon: {
+            type: IconTypes.SVG,
+            data: key,
+        },
+        ...KeyConfigs[key],
     };
 }
 

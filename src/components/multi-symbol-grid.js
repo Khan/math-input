@@ -7,87 +7,96 @@ const React = require('react');
 const {StyleSheet} = require('aphrodite');
 
 const {View} = require('../fake-react-native-web');
-const UnicodeIcon = require('./unicode-icon');
-const UnicodeSymbol = require('./unicode-symbol');
+const Icon = require('./icon');
+const {IconTypes} = require('../consts');
+const {iconPropType} = require('./prop-types');
 const {row, column, centered, fullWidth} = require('./styles');
-const {
-    gray25, secondaryIconOpacity, iconSizeHeightPx, iconSizeWidthPx,
-} = require('./common-style');
-const {unicodeSymbolPropType} = require('./prop-types');
+const {iconSizeHeightPx, iconSizeWidthPx} = require('./common-style');
 
 const MultiSymbolGrid = React.createClass({
     propTypes: {
         focused: React.PropTypes.bool,
-        unicodeSymbols: React.PropTypes.arrayOf(
-            unicodeSymbolPropType
-        ).isRequired,
+        icons: React.PropTypes.arrayOf(iconPropType).isRequired,
     },
 
     render() {
-        const {focused, unicodeSymbols} = this.props;
+        const {focused, icons} = this.props;
 
-        if (unicodeSymbols.length === 1) {
-            return <UnicodeIcon unicodeSymbol={unicodeSymbols[0]} />;
+        // Validate that we only received math-based icons. Right now, this
+        // component only supports math icons (and it should only be passed
+        // variables and Greek letters, which are always rendered as math).
+        // Supporting other types of icons is possible but would require
+        // some styles coercion and doesn't seem worthwhile right now.
+        icons.forEach(icon => {
+            if (icon.type !== IconTypes.MATH) {
+                throw new Error(`Received invalid icon: type=${icon.type}, ` +
+                    `data=${icon.data}`);
+            }
+        });
+
+        if (icons.length === 1) {
+            return <Icon icon={icons[0]} focused={focused} />;
         } else {
-            const primaryIconStyle = [
-                styles.iconFont,
-                styles.primaryIcon,
-                focused && styles.focused,
-            ];
+            const primaryIconStyle = styles.base;
             const secondaryIconStyle = [
-                styles.iconFont,
-                styles.secondaryIcon,
-                focused && styles.focused,
+                styles.base,
+                styles.secondary,
             ];
 
-            if (unicodeSymbols.length === 2) {
-                return <View style={[row, styles.iconSize]}>
+            if (icons.length === 2) {
+                return <View style={[row, styles.size]}>
                     <View style={[
                         column, centered, fullWidth, styles.middleLeft,
                     ]}
                     >
-                        <UnicodeSymbol
+                        <Icon
                             style={primaryIconStyle}
-                            unicodeSymbol={unicodeSymbols[0]}
+                            icon={icons[0]}
+                            focused={focused}
                         />
                     </View>
                     <View style={[
                         column, centered, fullWidth, styles.middleRight,
                     ]}
                     >
-                        <UnicodeSymbol
+                        <Icon
                             style={secondaryIconStyle}
-                            unicodeSymbol={unicodeSymbols[1]}
+                            icon={icons[1]}
+                            focused={focused}
                         />
                     </View>
                 </View>;
-            } else if (unicodeSymbols.length >= 3) {
-                return <View style={[column, styles.iconSize]}>
+            } else if (icons.length >= 3) {
+                return <View style={[column, styles.size]}>
                     <View style={row}>
                         <View style={[centered, fullWidth, styles.topLeft]}>
-                            <UnicodeSymbol
+                            <Icon
                                 style={primaryIconStyle}
-                                unicodeSymbol={unicodeSymbols[0]}
+                                icon={icons[0]}
+                                focused={focused}
                             />
                         </View>
                         <View style={[centered, fullWidth, styles.topRight]}>
-                            <UnicodeSymbol
+                            <Icon
                                 style={secondaryIconStyle}
-                                unicodeSymbol={unicodeSymbols[1]}
+                                icon={icons[1]}
+                                focused={focused}
                             />
                         </View>
                     </View>
                     <View style={row}>
                         <View style={[centered, fullWidth, styles.bottomLeft]}>
-                            <UnicodeSymbol
+                            <Icon
                                 style={secondaryIconStyle}
-                                unicodeSymbol={unicodeSymbols[2]}
+                                icon={icons[2]}
+                                focused={focused}
                             />
                         </View>
                         <View style={[centered, fullWidth, styles.bottomRight]}>
-                            {unicodeSymbols[3] && <UnicodeSymbol
+                            {icons[3] && <Icon
                                 style={secondaryIconStyle}
-                                unicodeSymbol={unicodeSymbols[3]}
+                                icon={icons[3]}
+                                focused={focused}
                             />}
                         </View>
                     </View>
@@ -95,7 +104,7 @@ const MultiSymbolGrid = React.createClass({
             }
         }
 
-        throw new Error("Invalid number of symbols:", unicodeSymbols.length);
+        throw new Error("Invalid number of icons:", icons.length);
     },
 });
 
@@ -103,7 +112,7 @@ const verticalInsetPx = 2;
 const horizontalInsetPx = 4;
 
 const styles = StyleSheet.create({
-    iconSize: {
+    size: {
         height: iconSizeHeightPx,
         width: iconSizeWidthPx,
     },
@@ -134,22 +143,12 @@ const styles = StyleSheet.create({
         marginRight: horizontalInsetPx,
     },
 
-    iconFont: {
-        fontFamily: 'Proxima Nova Semibold',
+    base: {
         fontSize: 18,
     },
-    // TODO(charlie): Make the SVG icons import these defaults from
-    // common-style.
-    primaryIcon: {
-        color: gray25,
-    },
-    secondaryIcon: {
-        color: gray25,
-        opacity: secondaryIconOpacity,
-    },
 
-    focused: {
-        color: '#FFF',
+    secondary: {
+        opacity: 0.3,
     },
 });
 

@@ -73,13 +73,8 @@ const TouchableKeypadButton = React.createClass({
 });
 
 const extractProps = (keyConfig) => {
-    const {ariaLabel, id, type, unicodeSymbol} = keyConfig;
-    return {
-        ariaLabel,
-        name: id,
-        type,
-        unicodeSymbol,
-    };
+    const {ariaLabel, icon, type} = keyConfig;
+    return {ariaLabel, icon, type};
 };
 
 const mapStateToProps = (state, ownProps) => {

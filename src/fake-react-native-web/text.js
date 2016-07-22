@@ -7,6 +7,11 @@ const Text = React.createClass({
             React.PropTypes.arrayOf(React.PropTypes.node),
             React.PropTypes.node,
         ]),
+        // The `dynamicStyle` prop is provided for animating dynamic
+        // properties, as creating Aphrodite StyleSheets in animation loops is
+        // expensive. `dynamicStyle` should be a raw style object, rather than
+        // a StyleSheet.
+        dynamicStyle: React.PropTypes.any,
         numberOfLines: React.PropTypes.number,
         style: React.PropTypes.any,
     },
@@ -20,7 +25,7 @@ const Text = React.createClass({
             numberOfLines === 1 && styles.singleLineStyle
         );
 
-        return <span className={className}>
+        return <span className={className} style={this.props.dynamicStyle}>
             {this.props.children}
         </span>;
     },

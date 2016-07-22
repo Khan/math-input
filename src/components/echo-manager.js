@@ -33,7 +33,7 @@ const Echo = React.createClass({
 
     render() {
         const {borders, id, initialBounds} = this.props;
-        const {unicodeSymbol} = KeyConfigs[id];
+        const {icon} = KeyConfigs[id];
 
         const containerStyle = {
             zIndex: zIndexes.echo,
@@ -50,7 +50,7 @@ const Echo = React.createClass({
         return <div style={containerStyle}>
             <KeypadButton
                 name={id}
-                unicodeSymbol={unicodeSymbol}
+                icon={icon}
                 type={KeyTypes.ECHO}
                 borders={borders}
             />

@@ -54,6 +54,12 @@ module.exports = {
         NONE: [],
     },
 
+    IconTypes: {
+        MATH: 'MATH',
+        SVG: 'SVG',
+        TEXT: 'TEXT',
+    },
+
     // Configurable settings.
     JumpOutTypes: {
         STATIC: 'STATIC',
