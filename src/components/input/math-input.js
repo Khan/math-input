@@ -121,19 +121,29 @@ const MathInput = React.createClass({
         this.recordTouchStartOutside = (evt) => {
             if (this.state.focused) {
                 // Only blur if the touch is both outside of the input, and
-                // outside of the keypad (if it has been provided).
-                // TODO(charlie): Inject this logic. Soon, we'll also need to
-                // avoid blurring when the user taps on the bottom bar. We can
-                // hack around it by changing the logic here to avoid blurring
-                // for taps below the keypad, but we should do something more
-                // robust.
+                // above or to the left or right of the keypad (if it has been
+                // provided). The reasoning for not blurring when touches occur
+                // below the keypad is that the keypad may be anchored above the
+                // 'Check answer' bottom bar, in which case, we don't want to
+                // dismiss the keypad on check.
+                // TODO(charlie): Inject this logic.
                 if (!this._container.contains(evt.target)) {
-                    const maybeKeypadNode = this.props.keypadElement &&
-                        ReactDOM.findDOMNode(this.props.keypadElement);
-                    const touchStartInKeypad = maybeKeypadNode &&
-                        maybeKeypadNode.contains(evt.target);
+                    let touchDidStartInOrBelowKeypad;
+                    if (this.props.keypadElement) {
+                        const node = ReactDOM.findDOMNode(
+                            this.props.keypadElement);
+                        const bounds = node.getBoundingClientRect();
+                        for (let i = 0; i < evt.changedTouches.length; i++) {
+                            const [x, y] = [
+                                evt.changedTouches[i].clientX,
+                                evt.changedTouches[i].clientY,
+                            ];
+                            touchDidStartInOrBelowKeypad |= (bounds.left <= x &&
+                                bounds.right >= x && bounds.top <= y);
+                        }
+                    }
 
-                    if (!touchStartInKeypad) {
+                    if (!touchDidStartInOrBelowKeypad) {
                         this.didTouchOutside = true;
                         this.scrollListener = () => {
                             this.didScroll = true;
