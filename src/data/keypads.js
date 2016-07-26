@@ -6,10 +6,6 @@ const Keys = require('./keys');
 const {KeypadTypes} = require('../consts');
 
 const Keypads = {
-    [KeypadTypes.NUMBER]: {
-        numPages: 1,
-        extraKeys: [],
-    },
     [KeypadTypes.FRACTION]: {
         numPages: 1,
         extraKeys: [],

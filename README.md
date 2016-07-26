@@ -10,7 +10,7 @@ Built with [React](https://github.com/facebook/react), [Redux](https://github.co
 
 ## Supported Features
 
-- Multiple keypad configurations, so as to accommodate for a range of possible input types (i.e., integers, fractions/mixed numbers, and algebraic expressions).
+- Multiple keypad configurations, so as to accommodate for a range of possible input types (i.e., fractions/mixed numbers and algebraic expressions).
 - Multi-page keypads, with swipeable page navigation.
 - Touch-and-drag interactions (as supported by the stock iOS and Android keypads).
 - A draggable cursor with a detached handle, for fine-grained control on touch devices.

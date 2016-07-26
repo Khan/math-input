@@ -3,7 +3,6 @@ const {connect} = require('react-redux');
 const {StyleSheet} = require('aphrodite');
 
 const {View} = require('../fake-react-native-web');
-const NumberKeypad = require('./number-keypad');
 const FractionKeypad = require('./fraction-keypad');
 const ExpressionKeypad = require('./expression-keypad');
 const NavigationPad = require('./navigation-pad');
@@ -92,9 +91,6 @@ const KeypadContainer = React.createClass({
         // clear what that format would look like exactly. Plus, there aren't
         // very many of them. So to keep us moving, we'll just hardcode.
         switch (keypadType) {
-            case KeypadTypes.NUMBER:
-                return <NumberKeypad />;
-
             case KeypadTypes.FRACTION:
                 return <FractionKeypad />;
 
