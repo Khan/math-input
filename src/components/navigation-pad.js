@@ -66,9 +66,6 @@ const styles = StyleSheet.create({
         width: buttonSizePx,
         height: buttonSizePx,
 
-        // Remove the focus state inset.
-        padding: 0,
-
         // Override the default box-sizing so that our buttons are
         // `buttonSizePx` exclusive of their borders.
         boxSizing: 'content-box',
