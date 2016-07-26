@@ -22,6 +22,7 @@ const KeypadContainer = React.createClass({
         // mount.
         onElementMounted: React.PropTypes.func,
         onScreenSizeChange: React.PropTypes.func.isRequired,
+        style: React.PropTypes.any,
     },
 
     getInitialState() {
@@ -103,18 +104,23 @@ const KeypadContainer = React.createClass({
     },
 
     render() {
-        const {active, deviceType, onElementMounted} = this.props;
+        const {active, deviceType, onElementMounted, style} = this.props;
 
         // NOTE(charlie): We render the transforms as pure inline styles to
         // avoid an Aphrodite bug in mobile Safari.
         //   See: https://github.com/Khan/aphrodite/issues/68.
         const dynamicStyle = active ? inlineStyles.active : inlineStyles.hidden;
 
+        const containerStyle = [
+            styles.keypadContainer,
+            ...(Array.isArray(style) ? style : [style]),
+        ];
+
         // TODO(charlie): When the keypad is shorter than the width of the
         // screen, add a border on its left and right edges, and round out the
         // corners.
         return <View
-            style={styles.keypadContainer}
+            style={containerStyle}
             dynamicStyle={dynamicStyle}
             ref={onElementMounted}
         >
