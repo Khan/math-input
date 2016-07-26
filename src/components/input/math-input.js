@@ -176,12 +176,6 @@ const MathInput = React.createClass({
         window.removeEventListener('touchcancel', this.blurOnTouchEndOutside);
     },
 
-    _borderWidthPx() {
-        const empty = this.mathField && this.mathField.isEmpty();
-
-        return this.state.focused && empty ? 2 : 1;
-    },
-
     _updateCursorHandle(animateIntoPosition) {
         const containerBounds = this._container.getBoundingClientRect();
         const cursor = this._container.querySelector('.mq-cursor');
@@ -598,15 +592,26 @@ const MathInput = React.createClass({
         const {focused, handle} = this.state;
         const {style} = this.props;
 
-        const empty = this.mathField && this.mathField.isEmpty();
+        const normalBorderWidthPx = 1;
+        const focusedBorderWidthPx = 2;
+        const maxBorderWidthPx = Math.max(
+            normalBorderWidthPx,
+            focusedBorderWidthPx
+        );
+
+        // Calculate the appropriate border, and build-in some padding so that
+        // there's no discrepancy between the content inset when focused and
+        // unfocused.
+        const borderWidthPx = this.state.focused ? focusedBorderWidthPx
+                                                 : normalBorderWidthPx;
+        const paddingInset = maxBorderWidthPx - borderWidthPx;
 
         const innerStyle = {
             ...inlineStyles.innerContainer,
+            padding: paddingInset,
+            borderWidth: borderWidthPx,
+            ...(focused ? {borderColor: brightGreen} : {}),
             ...style,
-            borderWidth: this._borderWidthPx(),
-            ...(focused && empty ? {
-                borderColor: brightGreen,
-            } : {}),
         };
 
         return <View
