@@ -204,13 +204,16 @@ const KeypadButton = React.createClass({
             type === KeyTypes.ECHO;
         const buttonStyle = this._getButtonStyle(type, borders, style);
         const focusStyle = this._getFocusStyle(type);
-        const iconWrapperStyle = (renderFocused && focusStyle) ||
-            (disabled && styles.disabled);
+        const iconWrapperStyle = [
+            styles.iconWrapper,
+            disabled && styles.disabled,
+        ];
 
         const eventHandlers = {
             onTouchCancel, onTouchEnd, onTouchMove, onTouchStart,
         };
 
+        const maybeFocusBox = renderFocused && <View style={focusStyle} />;
         const maybeCornerDecal = !renderFocused && childKeys &&
             childKeys.length > 0 && <CornerDecal style={styles.decalInset} />;
 
@@ -231,6 +234,7 @@ const KeypadButton = React.createClass({
                 {...eventHandlers}
                 {...manyButtonA11yMarkup}
             >
+                {maybeFocusBox}
                 <View style={iconWrapperStyle}>
                     <MultiSymbolGrid
                         unicodeSymbols={unicodeSymbols}
@@ -246,6 +250,7 @@ const KeypadButton = React.createClass({
             };
 
             return <View style={buttonStyle} {...eventHandlers} {...a11yMarkup}>
+                {maybeFocusBox}
                 <View style={iconWrapperStyle}>
                     <Icon
                         name={name}
@@ -260,6 +265,7 @@ const KeypadButton = React.createClass({
 });
 
 const focusInsetPx = 4;
+const focusBoxZIndex = 0;
 
 const styles = StyleSheet.create({
     buttonBase: {
@@ -274,8 +280,6 @@ const styles = StyleSheet.create({
         // Borders are made selectively visible.
         borderColor: buttonBorderColor,
         borderStyle: buttonBorderStyle,
-        // The focus state is inset slightly from the edge of the button.
-        padding: focusInsetPx,
     },
 
     decalInset: {
@@ -304,18 +308,25 @@ const styles = StyleSheet.create({
         cursor: 'default',
     },
 
-    focusBox: {
-        width: '100%',
-        height: '100%',
-        borderRadius: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
     bright: {
         backgroundColor: brightGreen,
     },
     light: {
         backgroundColor: 'rgba(33, 36, 44, 0.1)',
+    },
+
+    iconWrapper: {
+        zIndex: focusBoxZIndex + 1,
+    },
+
+    focusBox: {
+        position: 'absolute',
+        zIndex: focusBoxZIndex,
+        left: focusInsetPx,
+        right: focusInsetPx,
+        bottom: focusInsetPx,
+        top: focusInsetPx,
+        borderRadius: 1,
     },
 
     disabled: {
