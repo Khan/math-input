@@ -5,6 +5,7 @@ const computeLayoutParameters = require('../components/compute-layout-parameters
 const {
     DeviceOrientations,
     DeviceTypes,
+    EchoAnimationTypes,
     KeyTypes,
     KeypadTypes,
     LayoutModes,
@@ -255,11 +256,12 @@ const createStore = () => {
                     activeNodes,
                 });
             },
-            onClick: (key, layoutProps) => {
+            onClick: (key, layoutProps, inPopover) => {
                 store.dispatch({
                     type: 'PressKey',
                     key,
                     ...layoutProps,
+                    inPopover,
                 });
             },
         }, [], [
@@ -342,6 +344,9 @@ const createStore = () => {
                             ...state.echoes,
                             {
                                 animationId: "" + _lastAnimationId++,
+                                animationType: action.inPopover
+                                    ? EchoAnimationTypes.LONG_FADE_ONLY
+                                    : EchoAnimationTypes.FADE_ONLY,
                                 borders: action.borders,
                                 id: keyConfig.id,
                                 initialBounds: action.initialBounds,

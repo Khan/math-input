@@ -56,3 +56,17 @@
     -moz-transition: opacity 300ms cubic-bezier(0.25, 0, 0.75, 1) !important;
     -ms-transition: opacity 300ms cubic-bezier(0.25, 0, 0.75, 1) !important;
 }
+
+/* Variant C: Fade for a longer duration, but again, don't slide. */
+
+.echo-long-fade-only-enter {
+    opacity: 1 !important;
+}
+
+.echo-long-fade-only-enter.echo-long-fade-only-enter-active {
+    opacity: 0 !important;
+    transition: opacity 400ms cubic-bezier(0.75, 0, 0.75, 1) !important;
+    -webkit-transition: opacity 400ms cubic-bezier(0.75, 0, 0.75, 1) !important;
+    -moz-transition: opacity 400ms cubic-bezier(0.75, 0, 0.75, 1) !important;
+    -ms-transition: opacity 400ms cubic-bezier(0.75, 0, 0.75, 1) !important;
+}

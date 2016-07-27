@@ -11,7 +11,6 @@ const {
     echoPropType, bordersPropType, boundingBoxPropType, keyIdPropType,
 } = require('./prop-types');
 const zIndexes = require('./z-indexes');
-const Settings = require('../settings');
 
 const Echo = React.createClass({
     propTypes: {
@@ -61,15 +60,8 @@ const Echo = React.createClass({
 
 const EchoManager = React.createClass({
     propTypes: {
-        animationType: React.PropTypes.oneOf(Object.keys(EchoAnimationTypes)),
         echoes: React.PropTypes.arrayOf(echoPropType),
         onAnimationFinish: React.PropTypes.func.isRequired,
-    },
-
-    getDefaultProps() {
-        return {
-            animationType: Settings.echoAnimation,
-        };
     },
 
     _animationConfigForType(animationType) {
@@ -89,6 +81,11 @@ const EchoManager = React.createClass({
                 animationTransitionName = 'echo-fade-only';
                 break;
 
+            case EchoAnimationTypes.LONG_FADE_ONLY:
+                animationDurationMs = 400;
+                animationTransitionName = 'echo-long-fade-only';
+                break;
+
             default:
                 throw new Error(
                     "Invalid echo animation type:", animationType);
@@ -101,31 +98,45 @@ const EchoManager = React.createClass({
     },
 
     render() {
-        const {animationType, echoes, onAnimationFinish} = this.props;
-        const {
-            animationDurationMs, animationTransitionName,
-        } = this._animationConfigForType(animationType);
+        const {echoes, onAnimationFinish} = this.props;
 
-        // TODO(charlie): Manage this animation with Aphrodite styles. Right
-        // now, there's a bug in the autoprefixer that breaks CSS transitions on
-        // mobile Safari. See: https://github.com/Khan/aphrodite/issues/68. As
-        // such, we have to do this with a stylesheet.
-        return <ReactCSSTransitionGroup
-            transitionName={animationTransitionName}
-            transitionEnter={true}
-            transitionLeave={false}
-            transitionEnterTimeout={animationDurationMs}
-        >
-            {echoes.map(echo => {
-                const {animationId} = echo;
-                return <Echo
-                    key={animationId}
-                    animationDurationMs={animationDurationMs}
-                    onAnimationFinish={() => onAnimationFinish(animationId)}
-                    {...echo}
-                />;
+        return <span>
+            {Object.keys(EchoAnimationTypes).map(animationType => {
+                // Collect the relevant parameters for the animation type, and
+                // filter for the appropriate echoes.
+                const {
+                    animationDurationMs, animationTransitionName,
+                } = this._animationConfigForType(animationType);
+                const echoesForType = echoes.filter(echo => {
+                    return echo.animationType === animationType;
+                });
+
+                // TODO(charlie): Manage this animation with Aphrodite styles.
+                // Right now, there's a bug in the autoprefixer that breaks CSS
+                // transitions on mobile Safari.
+                // See: https://github.com/Khan/aphrodite/issues/68.
+                // As such, we have to do this with a stylesheet.
+                return <ReactCSSTransitionGroup
+                    transitionName={animationTransitionName}
+                    transitionEnter={true}
+                    transitionLeave={false}
+                    transitionEnterTimeout={animationDurationMs}
+                    key={animationType}
+                >
+                    {echoesForType.map(echo => {
+                        const {animationId} = echo;
+                        return <Echo
+                            key={animationId}
+                            animationDurationMs={animationDurationMs}
+                            onAnimationFinish={
+                                () => onAnimationFinish(animationId)
+                            }
+                            {...echo}
+                        />;
+                    })}
+                </ReactCSSTransitionGroup>;
             })}
-        </ReactCSSTransitionGroup>;
+        </span>;
     },
 });
 

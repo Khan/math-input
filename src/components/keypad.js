@@ -87,7 +87,7 @@ const Keypad = React.createClass({
 
         // Translate the echo boxes, as they'll be positioned absolutely to
         // this relative container.
-        const relativeEchoes = echoes.map((echo) => {
+        const relativeEchoes = echoes.map(echo => {
             const {initialBounds, ...rest} = echo;
             return {
                 ...rest,

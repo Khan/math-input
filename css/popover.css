@@ -21,15 +21,3 @@
     -moz-transition: opacity 200ms ease-out !important;
     -ms-transition: opacity 200ms ease-out !important;
 }
-
-.popover-leave {
-    opacity: 1 !important;
-}
-
-.popover-leave.popover-leave-active {
-    opacity: 0 !important;
-    transition: opacity 200ms ease-out !important;
-    -webkit-transition: opacity 200ms ease-out !important;
-    -moz-transition: opacity 200ms ease-out !important;
-    -ms-transition: opacity 200ms ease-out !important;
-}

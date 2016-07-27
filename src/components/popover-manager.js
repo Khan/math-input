@@ -52,9 +52,8 @@ const PopoverManager = React.createClass({
         return <ReactCSSTransitionGroup
             transitionName={animationTransitionName}
             transitionEnter={true}
-            transitionLeave={true}
+            transitionLeave={false}
             transitionEnterTimeout={animationDurationMs}
-            transitionLeaveTimeout={animationDurationMs}
         >
             {popover && <PopoverContainer
                 key={popover.childKeyIds[0]}

@@ -6,7 +6,12 @@ const React = require('react');
 
 const KeyConfigs = require('../data/key-configs');
 const CursorContexts = require('./input/cursor-contexts');
-const {BorderDirections, KeyTypes, KeypadTypes} = require('../consts');
+const {
+    BorderDirections,
+    EchoAnimationTypes,
+    KeyTypes,
+    KeypadTypes,
+} = require('../consts');
 
 const unicodeSymbolPropType = React.PropTypes.shape({
     character: React.PropTypes.string.isRequired,
@@ -52,6 +57,9 @@ const boundingBoxPropType = React.PropTypes.shape({
 
 const echoPropType = React.PropTypes.shape({
     animationId: React.PropTypes.string.isRequired,
+    animationType: React.PropTypes.oneOf(
+        Object.keys(EchoAnimationTypes)
+    ).isRequired,
     borders: bordersPropType,
     id: keyIdPropType.isRequired,
     initialBounds: boundingBoxPropType.isRequired,

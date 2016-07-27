@@ -118,7 +118,7 @@ class PopoverStateMachine {
      * @param {string} id - the identifier of the node that was triggered
     */
     onTrigger(id) {
-        this.handlers.onClick(id, id);
+        this.handlers.onClick(id, id, false);
     }
 
     /**
@@ -128,7 +128,8 @@ class PopoverStateMachine {
      *                      ended
      */
     onTouchEnd(id) {
-        if (this.activePopover) {
+        const inPopover = !!this.activePopover;
+        if (inPopover) {
             // If we have a popover that is currently active, we trigger a
             // click on this node if and only if it's in the popover, with the
             // exception that, if the node passed back _is_ the active popover,
@@ -139,10 +140,10 @@ class PopoverStateMachine {
             // underlying gesture system would have no idea that the popover's
             // first child node was now focused.
             if (this._isNodeInsidePopover(this.activePopover, id)) {
-                this.handlers.onClick(id, id);
+                this.handlers.onClick(id, id, inPopover);
             } else if (this.activePopover === id) {
                 const keyId = this._defaultNodeForPopover(id);
-                this.handlers.onClick(keyId, keyId);
+                this.handlers.onClick(keyId, keyId, inPopover);
             }
         } else if (this.popovers[id]) {
             // Otherwise, if the node is itself a popover revealer, trigger the
@@ -150,7 +151,7 @@ class PopoverStateMachine {
             // for layout purposes.
             const keyId = this._defaultNodeForPopover(id);
             const domNodeId = id;
-            this.handlers.onClick(keyId, domNodeId);
+            this.handlers.onClick(keyId, domNodeId, inPopover);
         } else if (id != null) {
             // Finally, if we have no active popover, and we touched up over a
             // valid key, trigger a click.

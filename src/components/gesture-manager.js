@@ -43,15 +43,19 @@ class GestureManager {
              * @param {string} domNodeId - the identifier of the DOM node on
              *                             which the click should be considered
              *                             to have occurred
+             * @param {bool} inPopover - whether the key was contained within a
+             *                           popover
              *
              * These two parameters will often be equivalent. They will differ,
              * though, when a popover button is itself clicked, in which case
              * we need to mimic the effects of clicking on its 'primary' child
              * key, but animate the click on the popover button.
              */
-            onClick: (keyId, domNodeId) => {
+            onClick: (keyId, domNodeId, inPopover) => {
                 handlers.onClick(
-                    keyId, this.nodeManager.layoutPropsForId(domNodeId)
+                    keyId,
+                    this.nodeManager.layoutPropsForId(domNodeId),
+                    inPopover
                 );
             },
         });

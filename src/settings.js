@@ -14,7 +14,7 @@ const containsConfigurationOptions = Object.keys(parsed).length > 0;
 const defaults = {
     keypadType: KeypadTypes.EXPRESSION,
     jumpOutType: JumpOutTypes.STATIC,
-    echoAnimation: EchoAnimationTypes.SLIDE_AND_FADE,
+    echoAnimation: EchoAnimationTypes.FADE_ONLY,
     iconStyle: 'fancy',
     debugSwitcher: containsConfigurationOptions ?
                    DebugSwitcherTypes.DISABLED :

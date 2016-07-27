@@ -9,7 +9,7 @@
 const {holdIntervalMs} = require('../settings');
 
 const defaults = {
-    longPressWaitTimeMs: 100,
+    longPressWaitTimeMs: 50,
     swipeThresholdPx: 20,
     holdIntervalMs,
 };
