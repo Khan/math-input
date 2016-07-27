@@ -1,3 +1,11 @@
+.keypad-input .mq-editable-field .mq-cursor:not(:only-child) {
+    /* HACK(charlie): Magic numbers to properly size and position the vertical
+       cursor. */
+    height: 20px !important;
+    vertical-align: middle !important;
+    margin-top: -5px !important;
+}
+
 .keypad-input .mq-editable-field .mq-cursor {
     border-color: #78c008;
 

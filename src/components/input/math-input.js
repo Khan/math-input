@@ -100,7 +100,6 @@ const MathInput = React.createClass({
         this._container = ReactDOM.findDOMNode(this);
 
         this._root = this._container.querySelector('.mq-root-block');
-        this._root.style.border = `solid ${paddingWidthPx}px transparent`;
         this._root.style.fontSize = `${fontSizePt}pt`;
 
         // Record the initial scroll displacement on touch start. This allows
@@ -592,24 +591,37 @@ const MathInput = React.createClass({
         const {focused, handle} = this.state;
         const {style} = this.props;
 
+        // Calculate the appropriate padding based on the border width (which is
+        // considered 'padding', since we're using 'border-box') and the fact
+        // that MathQuill automatically applies 2px of padding to the inner
+        // input.
         const normalBorderWidthPx = 1;
         const focusedBorderWidthPx = 2;
-        const maxBorderWidthPx = Math.max(
-            normalBorderWidthPx,
-            focusedBorderWidthPx
-        );
-
-        // Calculate the appropriate border, and build-in some padding so that
-        // there's no discrepancy between the content inset when focused and
-        // unfocused.
         const borderWidthPx = this.state.focused ? focusedBorderWidthPx
                                                  : normalBorderWidthPx;
-        const paddingInset = maxBorderWidthPx - borderWidthPx;
+        const builtInMathQuillPadding = 2;
+        const paddingInset = totalDesiredPadding - borderWidthPx -
+            builtInMathQuillPadding;
+
+        // Now, translate that to the appropriate padding for each direction.
+        // The complication here is that we want numerals to be centered within
+        // the input. However, Symbola (MathQuill's font of choice) renders
+        // numerals with approximately 3px of padding below and 1px of padding
+        // above (to make room for ascenders and descenders). So we ignore those
+        // padding values for the vertical directions.
+        const symbolaPaddingBottom = 3;
+        const symbolaPaddingTop = 1;
+        const padding = {
+            paddingTop: paddingInset - symbolaPaddingTop,
+            paddingRight: paddingInset,
+            paddingBottom: paddingInset - symbolaPaddingBottom,
+            paddingLeft: paddingInset,
+        };
 
         const innerStyle = {
             ...inlineStyles.innerContainer,
-            padding: paddingInset,
             borderWidth: borderWidthPx,
+            ...padding,
             ...(focused ? {borderColor: brightGreen} : {}),
             ...style,
         };
@@ -648,8 +660,16 @@ const MathInput = React.createClass({
 });
 
 const fontSizePt = 18;
-const minSizePx = 34;
-const paddingWidthPx = 2;   // around _mathContainer and the selection rect
+
+// The height of numerals in Symbola (rendered at 18pt) is about 20px (though
+// they render at 24px due to padding for ascenders and descenders). We want our
+// box to be laid out such that there's 8px of padding between a numeral and the
+// edge of the input, so we use this 20px number as our 'base height' and
+// account for the ascender and descender padding when computing the additional
+// padding in our `render` method.
+const numeralHeightPx = 20;
+const totalDesiredPadding = 8;
+const minSizePx = numeralHeightPx + totalDesiredPadding * 2;
 
 const styles = StyleSheet.create({
     input: {
