@@ -55,7 +55,9 @@ const CursorHandle = React.createClass({
 
         const outerStyle = {
             position: 'absolute',
-            zIndex: 1,
+            // This is essentially webapp's interactiveComponent + 1.
+            // TODO(charlie): Pull in those styles somehow to avoid breakages.
+            zIndex: 4,
             left: -touchTargetWidthPx / 2,
             top: 0,
             msTransform: transformString,
