@@ -1,4 +1,6 @@
 .keypad-input .mq-editable-field .mq-cursor {
+    border-color: #78c008;
+
     border-left: 2px solid #78c008 !important;
     border-radius: 1px;
 
