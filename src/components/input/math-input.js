@@ -669,7 +669,8 @@ const fontSizePt = 18;
 // padding in our `render` method.
 const numeralHeightPx = 20;
 const totalDesiredPadding = 8;
-const minSizePx = numeralHeightPx + totalDesiredPadding * 2;
+const minHeightPx = numeralHeightPx + totalDesiredPadding * 2;
+const minWidthPx = 64;
 
 const styles = StyleSheet.create({
     input: {
@@ -692,8 +693,8 @@ const inlineStyles = {
     innerContainer: {
         backgroundColor: 'white',
         display: 'flex',
-        minWidth: minSizePx,
-        minHeight: minSizePx,
+        minHeight: minHeightPx,
+        minWidth: minWidthPx,
         boxSizing: 'border-box',
         position: 'relative',
         overflow: 'hidden',
