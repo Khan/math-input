@@ -38,6 +38,10 @@ const ExpressionKeypad = React.createClass({
     statics: {
         rows: 4,
         columns: 5,
+        // Though we include an infinite-key popover in the bottom-left, it's
+        // assumed that we don't need to accommodate cases in which that key
+        // contains more than four children.
+        maxVisibleRows: 4,
         numPages: 2,
     },
 

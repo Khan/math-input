@@ -25,6 +25,10 @@ const FractionKeypad = React.createClass({
     statics: {
         rows: 4,
         columns: 4,
+        // Since we include a two-key popover in the top-right, when the popover
+        // is visible, the keypad will expand to fill the equivalent of five
+        // rows vertically.
+        maxVisibleRows: 5,
         numPages: 1,
     },
 

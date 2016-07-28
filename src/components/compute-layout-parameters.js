@@ -29,7 +29,7 @@ const {
 
 const minButtonHeight = 48;
 const maxButtonSize = 64;
-const minSpaceAbovePopover = 32;
+const minSpaceAboveKeypad = 32;
 
 // These values are taken from an iPhone 5, but should be consistent with the
 // iPhone 4 as well. Regardless, these are meant to be representative of the
@@ -54,7 +54,9 @@ const maxPortraitBrowserChrome = safariToolbar +
 // difference when reserving space above the keypad.)
 const worstCaseAspectRatio = 320 / (480 - safariNavBarWhenShrunk);
 
-const computeLayoutParameters = function({numRows, numColumns, numPages},
+const computeLayoutParameters = function({numColumns,
+                                          numMaxVisibleRows,
+                                          numPages},
                                          {pageWidthPx, pageHeightPx},
                                          {deviceOrientation, deviceType},
                                          {navigationPadEnabled,
@@ -82,10 +84,8 @@ const computeLayoutParameters = function({numRows, numColumns, numPages},
         //  2. The presence of the exercise toolbar.
         //  3. The presence of the view pager indicator.
         //  4. Any browser chrome that may appear later.
-        //  5. The possibility of a popover rendering from the top row (in which
-        //     case, we reserve space for an extra button above the keypad).
-        const reservedSpace = minSpaceAbovePopover + maxButtonSize +
-            browserChromeHeight + (toolbarEnabled ? toolbarHeightPx : 0) +
+        const reservedSpace = minSpaceAboveKeypad + browserChromeHeight +
+            (toolbarEnabled ? toolbarHeightPx : 0) +
             (paginationEnabled ? pageIndicatorHeightPx : 0);
 
         // Next, compute the effective width and height. We can use the page
@@ -101,10 +101,13 @@ const computeLayoutParameters = function({numRows, numColumns, numPages},
                         : pageWidthPx / worstCaseAspectRatio;
         const maxKeypadHeight = effectiveHeight - reservedSpace;
 
-        // Finally, compute the button height and width.
+        // Finally, compute the button height and width. In computing the
+        // height, accommodate for the maximum number of rows that will ever be
+        // visible (since the toggling of popovers can increase the number of
+        // visible rows).
         const buttonHeightPx = Math.max(
             Math.min(
-                maxKeypadHeight / numRows,
+                maxKeypadHeight / numMaxVisibleRows,
                 maxButtonSize
             ),
             minButtonHeight

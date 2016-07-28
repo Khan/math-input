@@ -374,6 +374,7 @@ const createStore = () => {
         gridDimensions: {
             numRows: keypadForType[defaultKeypadType].rows,
             numColumns: keypadForType[defaultKeypadType].columns,
+            numMaxVisibleRows: keypadForType[defaultKeypadType].maxVisibleRows,
             numPages: keypadForType[defaultKeypadType].numPages,
         },
         buttonDimensions: {
@@ -406,23 +407,22 @@ const createStore = () => {
 
         // Using that information, make some decisions (or assumptions)
         // about the resulting layout.
-        // HACK(charlie): It's not great that we're making assumptions
-        // about the toolbar here (which is rendered by webapp). But
-        // this is primarily a heuristic (the goal is to preserve a
-        // 'good' amount of space between the top of the keypad and the
-        // top of the page) so we can have some margin of error.
         const navigationPadEnabled = deviceType === DeviceTypes.TABLET;
         const paginationEnabled = deviceType === DeviceTypes.PHONE &&
             deviceOrientation === DeviceOrientations.PORTRAIT;
-        const probablyToolbarEnabled =
-            deviceType === DeviceTypes.TABLET ||
-                deviceOrientation === DeviceOrientations.PORTRAIT;
 
         const deviceInfo = {deviceOrientation, deviceType};
         const layoutOptions = {
             navigationPadEnabled,
             paginationEnabled,
-            toolbarEnabled: probablyToolbarEnabled,
+            // HACK(charlie): It's not great that we're making assumptions about
+            // the toolbar (which is rendered by webapp, and should always be
+            // visible and anchored to the bottom of the page for phone and
+            // tablet exercises). But this is primarily a heuristic (the goal is
+            // to preserve a 'good' amount of space between the top of the
+            // keypad and the top of the page) so we afford to have some margin
+            // of error.
+            toolbarEnabled: true,
         };
 
         return {
@@ -446,6 +446,7 @@ const createStore = () => {
                 const gridDimensions = {
                     numRows: keypadForType[keypadType].rows,
                     numColumns: keypadForType[keypadType].columns,
+                    numMaxVisibleRows: keypadForType[keypadType].maxVisibleRows,
                     numPages: keypadForType[keypadType].numPages,
                 };
 
