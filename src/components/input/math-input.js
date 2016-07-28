@@ -112,12 +112,12 @@ const MathInput = React.createClass({
                 // Only blur if the touch is both outside of the input, and
                 // above or to the left or right of the keypad (if it has been
                 // provided). The reasoning for not blurring when touches occur
-                // below the keypad is that the keypad may be anchored above the
-                // 'Check answer' bottom bar, in which case, we don't want to
-                // dismiss the keypad on check.
+                // below the keypad is that the keypad may be anchored above
+                // the 'Check answer' bottom bar, in which case, we don't want
+                // to dismiss the keypad on check.
                 // TODO(charlie): Inject this logic.
                 if (!this._container.contains(evt.target)) {
-                    let touchDidStartInOrBelowKeypad;
+                    let touchDidStartInOrBelowKeypad = false;
                     if (this.props.keypadElement) {
                         const node = ReactDOM.findDOMNode(
                             this.props.keypadElement);
@@ -127,8 +127,12 @@ const MathInput = React.createClass({
                                 evt.changedTouches[i].clientX,
                                 evt.changedTouches[i].clientY,
                             ];
-                            touchDidStartInOrBelowKeypad |= (bounds.left <= x &&
-                                bounds.right >= x && bounds.top <= y);
+                            if ((bounds.left <= x && bounds.right >= x &&
+                                    bounds.top <= y && bounds.bottom >= y) ||
+                                    bounds.bottom < y) {
+                                touchDidStartInOrBelowKeypad = true;
+                                break;
+                            }
                         }
                     }
 
