@@ -375,70 +375,93 @@ const createStore = () => {
             widthPx: 48,
             heightPx: 48,
         },
+        pageDimensions: {
+            pageWidthPx: 0,
+            pageHeightPx: 0,
+        },
         layoutMode: LayoutModes.FULLSCREEN,
         paginationEnabled: false,
         navigationPadEnabled: false,
+    };
+
+    /**
+     * Compute the additional layout state based on the provided page and grid
+     * dimensions.
+     */
+    const layoutParametersForDimensions = (pageDimensions, gridDimensions) => {
+        const {pageWidthPx, pageHeightPx} = pageDimensions;
+
+        // Determine the device type and orientation.
+        const deviceOrientation = pageWidthPx > pageHeightPx
+                ? DeviceOrientations.LANDSCAPE
+                : DeviceOrientations.PORTRAIT;
+        const deviceType =
+            Math.min(pageWidthPx, pageHeightPx) > tabletCutoffPx ?
+                DeviceTypes.TABLET : DeviceTypes.PHONE;
+
+        // Using that information, make some decisions (or assumptions)
+        // about the resulting layout.
+        // HACK(charlie): It's not great that we're making assumptions
+        // about the toolbar here (which is rendered by webapp). But
+        // this is primarily a heuristic (the goal is to preserve a
+        // 'good' amount of space between the top of the keypad and the
+        // top of the page) so we can have some margin of error.
+        const navigationPadEnabled = deviceType === DeviceTypes.TABLET;
+        const paginationEnabled = deviceType === DeviceTypes.PHONE &&
+            deviceOrientation === DeviceOrientations.PORTRAIT;
+        const probablyToolbarEnabled =
+            deviceType === DeviceTypes.TABLET ||
+                deviceOrientation === DeviceOrientations.PORTRAIT;
+
+        const deviceInfo = {deviceOrientation, deviceType};
+        const layoutOptions = {
+            navigationPadEnabled,
+            paginationEnabled,
+            toolbarEnabled: probablyToolbarEnabled,
+        };
+
+        return {
+            ...computeLayoutParameters(
+                gridDimensions,
+                pageDimensions,
+                deviceInfo,
+                layoutOptions
+            ),
+            // Pass along some of the layout information, so that other
+            // components in the heirarchy can adapt appropriately.
+            navigationPadEnabled,
+            paginationEnabled,
+        };
     };
 
     const layoutReducer = function(state = initialLayoutState, action) {
         switch (action.type) {
             case 'ConfigureKeypad':
                 const {keypadType} = action.configuration;
+                const gridDimensions = {
+                    numRows: keypadForType[keypadType].rows,
+                    numColumns: keypadForType[keypadType].columns,
+                    numPages: keypadForType[keypadType].numPages,
+                };
+
                 return {
                     ...state,
-                    gridDimensions: {
-                        numRows: keypadForType[keypadType].rows,
-                        numColumns: keypadForType[keypadType].columns,
-                        numPages: keypadForType[keypadType].numPages,
-                    },
+                    ...layoutParametersForDimensions(
+                        state.pageDimensions, gridDimensions
+                    ),
+                    gridDimensions,
                 };
 
             case 'SetPageSize':
                 const {pageWidthPx, pageHeightPx} = action;
-
-                // Determine the device type and orientation.
-                const deviceOrientation = pageWidthPx > pageHeightPx
-                        ? DeviceOrientations.LANDSCAPE
-                        : DeviceOrientations.PORTRAIT;
-                const deviceType =
-                    Math.min(pageWidthPx, pageHeightPx) > tabletCutoffPx ?
-                        DeviceTypes.TABLET : DeviceTypes.PHONE;
-
-                // Using that information, make some decisions (or assumptions)
-                // about the resulting layout.
-                // HACK(charlie): It's not great that we're making assumptions
-                // about the toolbar here (which is rendered by webapp). But
-                // this is primarily a heuristic (the goal is to preserve a
-                // 'good' amount of space between the top of the keypad and the
-                // top of the page) so we can have some margin of error.
-                const navigationPadEnabled = deviceType === DeviceTypes.TABLET;
-                const paginationEnabled = deviceType === DeviceTypes.PHONE &&
-                    deviceOrientation === DeviceOrientations.PORTRAIT;
-                const probablyToolbarEnabled =
-                    deviceType === DeviceTypes.TABLET ||
-                        deviceOrientation === DeviceOrientations.PORTRAIT;
-
                 const pageDimensions = {pageWidthPx, pageHeightPx};
-                const deviceInfo = {deviceOrientation, deviceType};
-                const layoutOptions = {
-                    navigationPadEnabled,
-                    paginationEnabled,
-                    toolbarEnabled: probablyToolbarEnabled,
-                };
 
-                const layoutParameters = computeLayoutParameters(
-                    state.gridDimensions,
-                    pageDimensions,
-                    deviceInfo,
-                    layoutOptions
-                );
                 return {
                     ...state,
-                    ...layoutParameters,
-                    // Pass along some of the layout information, so that other
-                    // components in the heirarchy can adapt appropriately.
-                    paginationEnabled,
-                    navigationPadEnabled,
+                    ...layoutParametersForDimensions(
+                        pageDimensions, state.gridDimensions
+                    ),
+                    pageDimensions,
                 };
 
             default:
