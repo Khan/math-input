@@ -167,10 +167,6 @@ const MathInput = React.createClass({
         if (this.mathField.getContent() !== this.props.value) {
             this.mathField.setContent(this.props.value);
         }
-
-        if (this.state.focused && this.mathField.isEmpty()) {
-            this.mathField.getCursor().hide();
-        }
     },
 
     componentWillUnmount() {
@@ -456,7 +452,6 @@ const MathInput = React.createClass({
 
             // Make the cursor visible and set the handle-less cursor's
             // location.
-            this.mathField.getCursor().show();
             const touch = e.changedTouches[0];
             this._insertCursorAtClosestNode(touch.clientX, touch.clientY);
         }

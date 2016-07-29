@@ -1,6 +1,10 @@
-.keypad-input .mq-editable-field .mq-cursor:not(:only-child) {
+.keypad-input .mq-editable-field .mq-cursor:not(:only-child),
+.keypad-input .mq-editable-field .mq-root-block.mq-hasCursor > .mq-cursor:only-child
+ {
     /* HACK(charlie): Magic numbers to properly size and position the vertical
-       cursor. */
+       cursor, which is visible whenever the cursor is not alone in its parent,
+       with the exception that it's also visible when the entire input is
+       empty. */
     height: 20px !important;
     vertical-align: middle !important;
     margin-top: -5px !important;
