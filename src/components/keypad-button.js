@@ -3,6 +3,7 @@
  */
 
 const React = require('react');
+const PureRenderMixin = require('react-addons-pure-render-mixin');
 const {connect} = require('react-redux');
 
 const {StyleSheet, css} = require('aphrodite');
@@ -54,6 +55,8 @@ const KeypadButton = React.createClass({
         // with borders and such.
         widthPx: React.PropTypes.number.isRequired,
     },
+
+    mixins: [PureRenderMixin],
 
     getDefaultProps() {
         return {

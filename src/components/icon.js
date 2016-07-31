@@ -3,6 +3,7 @@
  */
 
 const React = require('react');
+const PureRenderMixin = require('react-addons-pure-render-mixin');
 const {StyleSheet} = require('aphrodite');
 
 const MathIcon = require('./math-icon');
@@ -24,6 +25,8 @@ const Icon = React.createClass({
         // (and not SVG icons).
         style: React.PropTypes.any,
     },
+
+    mixins: [PureRenderMixin],
 
     render() {
         const {focused, icon, style} = this.props;
