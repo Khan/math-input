@@ -162,7 +162,15 @@ const KeypadContainer = React.createClass({
             style={keypadContainerStyle}
             dynamicStyle={dynamicStyle}
         >
-            <View style={keypadStyle} ref={onElementMounted}>
+            <View
+                style={keypadStyle}
+                ref={element => {
+                    if (!this.hasMounted && element) {
+                        this.hasMounted = true;
+                        onElementMounted(element);
+                    }
+                }}
+            >
                 {navigationPadEnabled &&
                     <NavigationPad
                         roundTopLeft={layoutMode === LayoutModes.COMPACT}
