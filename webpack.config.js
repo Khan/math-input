@@ -38,11 +38,6 @@ module.exports = {
             mathquill: path.join(__dirname, "mathquill/mathquill.js"),
         },
     },
-    externals: {
-        // We rely on KaTeX being provided by the client repo, and that it is
-        // exposed on `window`.
-        "katex": "katex",
-    },
     module: {
         loaders: [{
             test: /\.jsx?$/,

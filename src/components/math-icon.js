@@ -4,7 +4,6 @@
 
 const React = require('react');
 const ReactDOM = require('react-dom');
-const katex = require('katex');
 const {StyleSheet} = require('aphrodite');
 
 const {View} = require('../fake-react-native-web');
@@ -29,7 +28,7 @@ const MathIcon = React.createClass({
 
     _renderMath() {
         const {math} = this.props;
-        katex.render(math, ReactDOM.findDOMNode(this));
+        window.katex.render(math, ReactDOM.findDOMNode(this));
     },
 
     render() {
