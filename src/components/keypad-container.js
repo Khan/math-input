@@ -191,8 +191,9 @@ const borderWidthPx = 1;
 const styles = StyleSheet.create({
     keypadContainer: {
         bottom: 0,
+        left: 0,
+        right: 0,
         position: 'fixed',
-        width: '100%',
         transition: `${keypadAnimationDurationMs}ms ease-out`,
         transitionProperty: 'transform',
         zIndex: zIndexes.keypad,
