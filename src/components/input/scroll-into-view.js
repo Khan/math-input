@@ -9,31 +9,39 @@
  * level in the component tree--perhaps even into webapp, beyond Perseus.
  */
 
+const {toolbarHeightPx} = require('../common-style');
+
 const scrollIntoView = (containerNode, keypadNode) => {
-    // TODO(charlie): See if we can cache all of the reads here to avoid
-    // introducing jank into the initial dismiss animation.
+    // TODO(charlie): There's no need for us to be reading the keypad bounds
+    // here, since they're pre-determined by logic in the store. We should
+    // instead pass around an object that knows the bounds.
     const containerBounds = containerNode.getBoundingClientRect();
     const containerBottomPx = containerBounds.bottom;
     const containerTopPx = containerBounds.top;
 
-    const marginPx = 16;
+    const desiredMarginPx = 16;
 
     if (keypadNode) {
         // NOTE(charlie): We can't use the bounding rect of the keypad,
         // as it is likely in the process of animating in. Instead, to
         // calculate its top, we make the strong assumption that the
-        // keypad will end up anchored at the bottom of the page and use
-        // its height, which is known at this point.
+        // keypad will end up anchored at the bottom of the page, but above the
+        // toolbar, and use its height, which is known at this point. Note that,
+        // in the native apps (where the toolbar is rendered natively), this
+        // will result in us leaving excess space between the input and the
+        // keypad, but that seems okay.
         const pageHeightPx = window.innerHeight;
         const keypadHeightPx = keypadNode.clientHeight;
-        const keypadTopPx = pageHeightPx - keypadHeightPx;
+        const keypadTopPx = pageHeightPx - (keypadHeightPx + toolbarHeightPx);
 
         if (containerBottomPx > keypadTopPx) {
-            // If the input would be obscured by the keypad, scroll such
-            // that the bottom of the input is just above the top of the
-            // keypad.
-            const scrollOffset =
-                containerBottomPx - keypadTopPx + marginPx;
+            // If the input would be obscured by the keypad, scroll such that
+            // the bottom of the input is just above the top of the keypad,
+            // taking care not to scroll the input out of view.
+            const scrollOffset = Math.min(
+                containerBottomPx - keypadTopPx + desiredMarginPx,
+                containerTopPx
+            );
 
             document.body.scrollTop += scrollOffset;
             return;
@@ -43,8 +51,8 @@ const scrollIntoView = (containerNode, keypadNode) => {
     // Alternatively, if the input is out of the viewport or nearly out
     // of the viewport, scroll it into view. We can do this regardless
     // of whether the keypad has been provided.
-    if (containerTopPx < marginPx) {
-        document.body.scrollTop -= containerBounds.height + marginPx;
+    if (containerTopPx < desiredMarginPx) {
+        document.body.scrollTop -= containerBounds.height + desiredMarginPx;
     }
 };
 
