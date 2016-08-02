@@ -14,6 +14,7 @@ const Keys = {
     TIMES: 'TIMES',
     DIVIDE: 'DIVIDE',
     DECIMAL: 'DECIMAL',
+    PERIOD: 'PERIOD',
     PERCENT: 'PERCENT',
     CDOT: 'CDOT',
     EQUAL: 'EQUAL',

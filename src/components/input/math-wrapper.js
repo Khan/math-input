@@ -4,6 +4,8 @@
  * from MathQuill changes.
  */
 
+/* globals icu */
+
 const $ = require('jquery');
 // TODO(kevinb) allow test code to use const MathQuill = require('mathquill');
 const MathQuill = window.MathQuill;
@@ -26,7 +28,10 @@ const KeyActions = {
     [Keys.NEGATIVE]: {str: '-', fn: WRITE},
     [Keys.TIMES]: {str: '\\times', fn: WRITE},
     [Keys.DIVIDE]: {str: '\\div', fn: WRITE},
-    [Keys.DECIMAL]: {str: '.', fn: WRITE},
+    [Keys.DECIMAL]: {
+        str: icu.getDecimalFormatSymbols().decimal_separator,
+        fn: WRITE,
+    },
     [Keys.EQUAL]: {str: '=', fn: WRITE},
     [Keys.NEQ]: {str: '\\neq', fn: WRITE},
     [Keys.CDOT]: {str: '\\cdot', fn: WRITE},

@@ -26,7 +26,7 @@ module.exports = {
     RIGHT_PAREN: require('./right-paren'),
     GT: require('./gt'),
     DIVIDE: require('./divide'),
-    DECIMAL: require('./decimal'),
+    PERIOD: require('./period'),
     PERCENT: require('./percent'),
     TIMES: require('./times'),
     TOGGLE_SIGN: require('./toggle-sign'),

@@ -30,7 +30,7 @@ filename_to_symbol = {
     'multiplication-dot': 'CDOT',
     'percent': 'PERCENT',
     'negate': 'TOGGLE_SIGN',
-    'radix-character': 'DECIMAL',
+    'radix-character': 'PERIOD',
     'radical': 'RADICAL',
     'radical-2': 'SQRT',
     'radical-3': 'CUBE_ROOT',
