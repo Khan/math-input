@@ -8,6 +8,7 @@ const {View} = require('../../fake-react-native-web');
 const CursorHandle = require('./cursor-handle');
 const MathWrapper = require('./math-wrapper');
 const scrollIntoView = require('./scroll-into-view');
+const DragListener = require('./drag-listener');
 const {
     cursorHandleRadiusPx,
     cursorHandleDistanceMultiplier,
@@ -138,10 +139,16 @@ const MathInput = React.createClass({
 
                     if (!touchDidStartInOrBelowKeypad) {
                         this.didTouchOutside = true;
-                        this.scrollListener = () => {
+
+                        if (this.dragListener) {
+                            this.dragListener.detach();
+                        }
+
+                        this.dragListener = new DragListener(() => {
                             this.didScroll = true;
-                        };
-                        window.addEventListener('scroll', this.scrollListener);
+                            this.dragListener.detach();
+                        }, evt);
+                        this.dragListener.attach();
                     }
                 }
             }
@@ -149,13 +156,22 @@ const MathInput = React.createClass({
 
         this.blurOnTouchEndOutside = (evt) => {
             // If the user didn't scroll, blur the input.
+            // TODO(charlie): Verify that the touch that ended actually started
+            // outside the keypad. Right now, you can touch down on the keypad,
+            // touch elsewhere, release the finger on the keypad, and trigger a
+            // dismissal. This code needs to be generalized to handle
+            // multi-touch.
             if (this.state.focused && this.didTouchOutside && !this.didScroll) {
                 this.blur();
             }
 
             this.didTouchOutside = false;
             this.didScroll = false;
-            window.removeEventListener('scroll', this.scrollListener);
+
+            if (this.dragListener) {
+                this.dragListener.detach();
+                this.removeListeners = null;
+            }
         };
 
         window.addEventListener('touchstart', this.recordTouchStartOutside);
