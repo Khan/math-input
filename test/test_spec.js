@@ -38,11 +38,13 @@ describe('MathQuill', () => {
                     // jQuery is hard dep of MathQuill
                     'http://code.jquery.com/jquery.js',
                     'mathquill/mathquill.js',
+                    'lib/icu.js',
                 ],
                 done: function(err, win) {
                     document = win.document;
                     global.window = win;
                     global.document = document;
+                    global.icu = window.icu;
 
                     MathWrapper = require('./test-math-wrapper');
                     mathField = createMathField(document, MathWrapper);
@@ -423,6 +425,32 @@ describe('MathQuill', () => {
             mathField.pressKey(Keys.RIGHT);
             mathField.pressKey(Keys.BACKSPACE);
             assert.equal(mathField.getContent(), '');
+        });
+
+        it('should delete an empty radical when cursor is in body', () => {
+            mathField.pressKey(Keys.RADICAL);
+            mathField.pressKey(Keys.RIGHT);
+            mathField.pressKey(Keys.BACKSPACE);
+            assert.equal(mathField.getContent(), '');
+        });
+
+        it('should select an empty radical with non-empty root', () => {
+            mathField.pressKey(Keys.CUBE_ROOT);
+            const expr = mathField.getContent();
+            mathField.pressKey(Keys.BACKSPACE);
+
+            assert(mathField.isSelected());
+            assert.equal(mathField.getContent(), expr);
+        });
+
+        it('should normally delete within a non-empty radical', () => {
+            mathField.pressKey(Keys.CUBE_ROOT);
+            const expr = mathField.getContent();
+
+            mathField.pressKey('NUM_2');
+            mathField.pressKey(Keys.BACKSPACE);
+
+            assert.equal(mathField.getContent(), expr);
         });
 
         it('deletes nthroot index normally', () => {

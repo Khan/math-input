@@ -252,6 +252,24 @@ class MathWrapper {
     // All of the code below is super fragile.  Please be especially careful
     // when upgrading MathQuill.
 
+    _handleBackspaceInNthRoot(cursor) {
+        const isAtLeftEnd = cursor[this.MQ.L] === MQ_END;
+
+        const isRootEmpty = this._isInsideEmptyNode(
+            cursor.parent.parent.blocks[0].ends
+        );
+
+        if (isAtLeftEnd) {
+            this._selectNode(cursor.parent.parent, cursor);
+
+            if (isRootEmpty) {
+                this.mathField.keystroke('Backspace');
+            }
+        } else {
+            this.mathField.keystroke('Backspace');
+        }
+    }
+
     /**
      * Selects and deletes part of the expression based on the cursor location.
      * See inline comments for precise behavior of different cases.
@@ -289,6 +307,9 @@ class MathWrapper {
             } else if (leftNode.ctrlSeq === '\\ge ' ||
                     leftNode.ctrlSeq === '\\le ') {
                 this._handleBackspaceAfterLigaturedSymbol(cursor);
+
+            } else if (this._isNthRoot(grandparent) && leftNode === MQ_END) {
+                this._handleBackspaceInNthRoot(cursor);
 
             } else {
                 this.mathField.keystroke('Backspace');
