@@ -13,12 +13,22 @@ const SvgIcon = React.createClass({
         name: React.PropTypes.string.isRequired,
     },
 
-    // TODO(kevinb) remove this when we upgrade to React 15
-    componentDidMount() {
+    _addFillRule() {
+        // TODO(kevinb) remove this when we upgrade to React 15.
         const node = ReactDOM.findDOMNode(this);
         if (node instanceof SVGElement) {
             const firstGroup = node.querySelector('g');
             firstGroup.setAttributeNS(null, 'fill-rule', 'evenodd');
+        }
+    },
+
+    componentDidMount() {
+        this._addFillRule();
+    },
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.name !== this.props.name) {
+            this._addFillRule();
         }
     },
 
