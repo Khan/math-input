@@ -2,10 +2,11 @@
  * This file contains configuration settings for the buttons in the keypad.
  */
 
-/* globals i18n, icu */
+/* globals i18n */
 
 const Keys = require('../data/keys');
-const {IconTypes, KeyTypes} = require('../consts');
+const {DecimalSeparators, IconTypes, KeyTypes} = require('../consts');
+const {decimalSeparator} = require('../utils');
 
 const KeyConfigs = {
     // Basic math keys.
@@ -48,7 +49,7 @@ const KeyConfigs = {
         type: KeyTypes.VALUE,
         // I18N: A label for a decimal symbol.
         ariaLabel: i18n._('Decimal'),
-        icon: icu.getDecimalFormatSymbols().decimal_separator === ',' ? {
+        icon: decimalSeparator === DecimalSeparators.COMMA ? {
             // TODO(charlie): Get an SVG icon for the comma, or verify with
             // design that the text-rendered version is acceptable.
             type: IconTypes.TEXT,

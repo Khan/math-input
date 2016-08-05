@@ -60,6 +60,11 @@ module.exports = {
         TEXT: 'TEXT',
     },
 
+    DecimalSeparators: {
+        COMMA: 'COMMA',
+        PERIOD: 'PERIOD',
+    },
+
     // Configurable settings.
     JumpOutTypes: {
         STATIC: 'STATIC',

@@ -4,14 +4,16 @@
  * from MathQuill changes.
  */
 
-/* globals icu */
-
 const $ = require('jquery');
 // TODO(kevinb) allow test code to use const MathQuill = require('mathquill');
 const MathQuill = window.MathQuill;
 
 const Keys = require('../../data/keys');
 const CursorContexts = require('./cursor-contexts');
+const {DecimalSeparators} = require('../../consts');
+const {decimalSeparator} = require('../../utils');
+
+const decimalSymbol = decimalSeparator === DecimalSeparators.COMMA ? ',' : '.';
 
 const WRITE = 'write';
 const CMD = 'cmd';
@@ -29,7 +31,7 @@ const KeyActions = {
     [Keys.TIMES]: {str: '\\times', fn: WRITE},
     [Keys.DIVIDE]: {str: '\\div', fn: WRITE},
     [Keys.DECIMAL]: {
-        str: icu.getDecimalFormatSymbols().decimal_separator,
+        str: decimalSymbol,
         fn: WRITE,
     },
     [Keys.EQUAL]: {str: '=', fn: WRITE},
