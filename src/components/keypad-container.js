@@ -38,8 +38,17 @@ const KeypadContainer = React.createClass({
         // It's okay to use the viewport units since they'll be overridden as
         // soon as the JavaScript kicks in.
         return {
+            hasBeenActivated: false,
             viewportWidth: "100vw",
         };
+    },
+
+    componentWillMount() {
+        if (this.props.active) {
+            this.setState({
+                hasBeenActivated: this.props.active,
+            });
+        }
     },
 
     componentDidMount() {
@@ -51,6 +60,14 @@ const KeypadContainer = React.createClass({
         window.addEventListener(
             "orientationchange", this._throttleResizeHandler
         );
+    },
+
+    componentWillReceiveProps(nextProps) {
+        if (!this.state.hasBeenActivated && nextProps.active) {
+            this.setState({
+                hasBeenActivated: true,
+            });
+        }
     },
 
     componentDidUpdate(prevProps) {
@@ -134,11 +151,15 @@ const KeypadContainer = React.createClass({
             onElementMounted,
             style,
         } = this.props;
+        const {hasBeenActivated} = this.state;
 
         // NOTE(charlie): We render the transforms as pure inline styles to
         // avoid an Aphrodite bug in mobile Safari.
         //   See: https://github.com/Khan/aphrodite/issues/68.
-        const dynamicStyle = active ? inlineStyles.active : inlineStyles.hidden;
+        const dynamicStyle = {
+            ...(active ? inlineStyles.active : inlineStyles.hidden),
+            ...(!active && !hasBeenActivated ? inlineStyles.invisible : {}),
+        };
 
         const keypadContainerStyle = [
             row,
@@ -238,6 +259,13 @@ const styles = StyleSheet.create({
 
 // Note: these don't go through an autoprefixer/aphrodite.
 const inlineStyles = {
+    // If the keypad is yet to have ever been activated, we keep it invisible
+    // so as to avoid, e.g., the keypad flashing at the bottom of the page
+    // during the initial render.
+    invisible: {
+        visibility: 'hidden',
+    },
+
     hidden: {
         msTransform: 'translate3d(0, 100%, 0)',
         WebkitTransform: 'translate3d(0, 100%, 0)',
