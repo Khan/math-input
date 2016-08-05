@@ -66,6 +66,31 @@ const NormalCommands = {
 const ArithmeticOperators = ['+', '-', '\\cdot', '\\times', '\\div'];
 const EqualityOperators = ['=', '\\neq', '<', '\\leq', '>', '\\geq'];
 
+const Numerals = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+const GreekLetters = ['\\theta', '\\pi'];
+const Letters = [
+    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+    'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+];
+
+// We only consider numerals, variables, and Greek Letters to be proper
+// leaf nodes.
+const ValidLeaves = [
+    ...Numerals,
+    ...GreekLetters,
+    ...Letters.map(letter => letter.toLowerCase()),
+    ...Letters.map(letter => letter.toUpperCase()),
+];
+
+const KeysForJumpContext = {
+    [CursorContexts.IN_PARENS]: Keys.JUMP_OUT_PARENTHESES,
+    [CursorContexts.IN_SUPER_SCRIPT]:  Keys.JUMP_OUT_EXPONENT,
+    [CursorContexts.IN_SUB_SCRIPT]: Keys.JUMP_OUT_BASE,
+    [CursorContexts.BEFORE_FRACTION]: Keys.JUMP_INTO_NUMERATOR,
+    [CursorContexts.IN_NUMERATOR]: Keys.JUMP_OUT_NUMERATOR,
+    [CursorContexts.IN_DENOMINATOR]: Keys.JUMP_OUT_DENOMINATOR,
+};
+
 class MathWrapper {
 
     constructor(element, options = {}, callbacks = {}) {
@@ -142,6 +167,13 @@ class MathWrapper {
             this._handleExponent(cursor, key);
         } else if (key === Keys.TOGGLE_SIGN) {
             this._handleToggleSign(cursor);
+        } else if (key === Keys.JUMP_OUT_PARENTHESES ||
+                key === Keys.JUMP_OUT_EXPONENT ||
+                key === Keys.JUMP_OUT_BASE ||
+                key === Keys.JUMP_INTO_NUMERATOR ||
+                key === Keys.JUMP_OUT_NUMERATOR ||
+                key === Keys.JUMP_OUT_DENOMINATOR) {
+            this._handleJumpOut(cursor, key);
         } else if (key === Keys.BACKSPACE) {
             this._handleBackspace(cursor);
         } else if (key === Keys.LEFT) {
@@ -166,7 +198,7 @@ class MathWrapper {
         // on the MathField, as that handler isn't triggered on navigation
         // events.
         return {
-            context: this._contextForCursor(cursor),
+            context: this.contextForCursor(cursor),
         };
     }
 
@@ -211,7 +243,7 @@ class MathWrapper {
 
             if (this.callbacks.onCursorMove) {
                 this.callbacks.onCursorMove({
-                    context: this._contextForCursor(cursor),
+                    context: this.contextForCursor(cursor),
                 });
             }
         }
@@ -269,6 +301,90 @@ class MathWrapper {
             }
         } else {
             this.mathField.keystroke('Backspace');
+        }
+    }
+
+    /**
+     * Advances the cursor to the next logical position.
+     *
+     * @param {cursor} cursor
+     * @private
+     */
+    _handleJumpOut(cursor, key) {
+        const context = this.contextForCursor(cursor);
+
+        // Validate that the current cursor context matches the key's intent.
+        if (KeysForJumpContext[context] !== key) {
+            // If we don't have a valid cursor context, yet the user was able
+            // to trigger a jump-out key, that's a broken invariant. Rather
+            // than throw an error (which would kick the user out of the
+            // exercise), we do nothing, as a fallback strategy. The user can
+            // still move the cursor manually.
+            return;
+        }
+
+        switch (context) {
+            case CursorContexts.IN_PARENS:
+                // Insert at the end of the parentheses, and then navigate right
+                // once more to get 'beyond' the parentheses.
+                cursor.insRightOf(cursor.parent.parent);
+                break;
+
+            case CursorContexts.BEFORE_FRACTION:
+                // Find the nearest fraction to the right of the cursor.
+                let fractionNode;
+                let visitor = cursor;
+                while (visitor[this.MQ.R] !== MQ_END) {
+                    if (this._isFraction(visitor[this.MQ.R])) {
+                        fractionNode = visitor[this.MQ.R];
+                    }
+                    visitor = visitor[this.MQ.R];
+                }
+
+                // Jump into it!
+                cursor.insLeftOf(fractionNode);
+                this.mathField.keystroke('Right');
+                break;
+
+            case CursorContexts.IN_NUMERATOR:
+                // HACK(charlie): I can't find a better way to do this. The goal
+                // is to place the cursor at the start of the matching
+                // denominator. So, we identify the appropriate node, and
+                // continue rightwards until we find ourselves inside of it.
+                // It's possible that there are cases in which we don't reach
+                // the denominator, though I can't think of any.
+                const siblingDenominator = cursor.parent.parent.blocks[1];
+                while (cursor.parent !== siblingDenominator) {
+                    this.mathField.keystroke('Right');
+                }
+                break;
+
+            case CursorContexts.IN_DENOMINATOR:
+                cursor.insRightOf(cursor.parent.parent);
+                break;
+
+            case CursorContexts.IN_SUB_SCRIPT:
+                // Insert just beyond the superscript.
+                cursor.insRightOf(cursor.parent.parent);
+
+                // Navigate right once more, if we're right before parens. This
+                // is to handle the standard case in which the subscript is the
+                // base of a custom log.
+                if (this._isParens(cursor[this.MQ.R])) {
+                    this.mathField.keystroke('Right');
+                }
+                break;
+
+            case CursorContexts.IN_SUPER_SCRIPT:
+                // Insert just beyond the superscript.
+                cursor.insRightOf(cursor.parent.parent);
+                break;
+
+            default:
+                throw new Error(
+                    `Attempted to 'Jump Out' from node, but found no ` +
+                    `appropriate cursor context: ${context}`
+                );
         }
     }
 
@@ -514,6 +630,39 @@ class MathWrapper {
 
     _isFraction(node) {
         return node.jQ && node.jQ.hasClass('mq-fraction');
+    }
+
+    _isNumerator(node) {
+        return node.jQ && node.jQ.hasClass('mq-numerator');
+    }
+
+    _isDenominator(node) {
+        return node.jQ && node.jQ.hasClass('mq-denominator');
+    }
+
+    _isSubScript(node) {
+        // NOTE(charlie): MyScript has a structure whereby its superscripts seem
+        // to be represented as a parent node with 'mq-sup-only' containing a
+        // single child with 'mq-sup'.
+        return node.jQ &&
+            (node.jQ.hasClass('mq-sub-only') || node.jQ.hasClass('mq-sub'));
+    }
+
+    _isSuperScript(node) {
+        // NOTE(charlie): MyScript has a structure whereby its superscripts seem
+        // to be represented as a parent node with 'mq-sup-only' containing a
+        // single child with 'mq-sup'.
+        return node.jQ &&
+            (node.jQ.hasClass('mq-sup-only') || node.jQ.hasClass('mq-sup'));
+    }
+
+    _isParens(node) {
+        return node && node.ctrlSeq === '\\left(';
+    }
+
+    _isLeaf(node) {
+        return node && node.ctrlSeq &&
+            ValidLeaves.includes(node.ctrlSeq.trim());
     }
 
     _isSquareRoot(node) {
@@ -784,19 +933,32 @@ class MathWrapper {
         this.mathField.keystroke('Backspace');
     }
 
-    _contextForCursor(cursor) {
-        if (this._isAtTopLevel(cursor)) {
-            if (this._isInsideEmptyNode(cursor)) {
-                return CursorContexts.EMPTY;
-            } else if (cursor[this.MQ.L] === MQ_END) {
-                return CursorContexts.LEFT_END;
-            } else if (cursor[this.MQ.R] === MQ_END) {
-                return CursorContexts.RIGHT_END;
-            } else {
-                return CursorContexts.TOP_LEVEL;
+    contextForCursor(cursor) {
+        // First, try to find any fraction to the right, unimpeded.
+        let visitor = cursor;
+        while (visitor[this.MQ.R] !== MQ_END) {
+            if (this._isFraction(visitor[this.MQ.R])) {
+                return CursorContexts.BEFORE_FRACTION;
+            } else if (!this._isLeaf(visitor[this.MQ.R])) {
+                break;
             }
+            visitor = visitor[this.MQ.R];
+        }
+
+        // If that didn't work, check if the parent or grandparent is a special
+        // context, so that we can jump outwards.
+        if (this._isParens(cursor.parent && cursor.parent.parent)) {
+            return CursorContexts.IN_PARENS;
+        } else if (this._isNumerator(cursor.parent)) {
+            return CursorContexts.IN_NUMERATOR;
+        } else if (this._isDenominator(cursor.parent)) {
+            return CursorContexts.IN_DENOMINATOR;
+        } else if (this._isSubScript(cursor.parent)) {
+            return CursorContexts.IN_SUB_SCRIPT;
+        } else if (this._isSuperScript(cursor.parent)) {
+            return CursorContexts.IN_SUPER_SCRIPT;
         } else {
-            return CursorContexts.NESTED;
+            return CursorContexts.NONE;
         }
     }
 

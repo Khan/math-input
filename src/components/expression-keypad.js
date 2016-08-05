@@ -18,12 +18,11 @@ const {
     roundedTopLeft,
     roundedTopRight,
 } = require('./styles');
-const {BorderStyles, JumpOutTypes} = require('../consts');
+const {BorderStyles} = require('../consts');
 const {valueGrey, controlGrey} = require('./common-style');
 const {cursorContextPropType, keyIdPropType} = require('./prop-types');
 const KeyConfigs = require('../data/key-configs');
 const CursorContexts = require('./input/cursor-contexts');
-const {jumpOutType} = require('../settings');
 
 const ExpressionKeypad = React.createClass({
     propTypes: {
@@ -45,12 +44,6 @@ const ExpressionKeypad = React.createClass({
         numPages: 2,
     },
 
-    getDefaultProps() {
-        return {
-            dynamicJumpOut: jumpOutType === JumpOutTypes.DYNAMIC,
-        };
-    },
-
     render() {
         const {
             currentPage,
@@ -62,8 +55,37 @@ const ExpressionKeypad = React.createClass({
         } = this.props;
 
         let dismissOrJumpOutKey;
-        if (dynamicJumpOut && cursorContext === CursorContexts.NESTED) {
-            dismissOrJumpOutKey = KeyConfigs.JUMP_OUT;
+        if (dynamicJumpOut) {
+            switch (cursorContext) {
+                case CursorContexts.IN_PARENS:
+                    dismissOrJumpOutKey = KeyConfigs.JUMP_OUT_PARENTHESES;
+                    break;
+
+                case CursorContexts.IN_SUPER_SCRIPT:
+                    dismissOrJumpOutKey = KeyConfigs.JUMP_OUT_EXPONENT;
+                    break;
+
+                case CursorContexts.IN_SUB_SCRIPT:
+                    dismissOrJumpOutKey = KeyConfigs.JUMP_OUT_BASE;
+                    break;
+
+                case CursorContexts.BEFORE_FRACTION:
+                    dismissOrJumpOutKey = KeyConfigs.JUMP_INTO_NUMERATOR;
+                    break;
+
+                case CursorContexts.IN_NUMERATOR:
+                    dismissOrJumpOutKey = KeyConfigs.JUMP_OUT_NUMERATOR;
+                    break;
+
+                case CursorContexts.IN_DENOMINATOR:
+                    dismissOrJumpOutKey = KeyConfigs.JUMP_OUT_DENOMINATOR;
+                    break;
+
+                case CursorContexts.NONE:
+                default:
+                    dismissOrJumpOutKey = KeyConfigs.DISMISS;
+                    break;
+            }
         } else {
             dismissOrJumpOutKey = KeyConfigs.DISMISS;
         }
@@ -288,6 +310,7 @@ const mapStateToProps = (state) => {
     return {
         currentPage: state.pager.currentPage,
         cursorContext: state.input.cursor.context,
+        dynamicJumpOut: !state.layout.navigationPadEnabled,
     };
 };
 

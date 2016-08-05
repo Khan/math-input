@@ -12,7 +12,6 @@ module.exports = {
     NEQ: require('./neq'),
     GEQ: require('./geq'),
     LN: require('./ln'),
-    JUMP_OUT: require('./jump-out'),
     DISMISS: require('./dismiss'),
     SIN: require('./sin'),
     LT: require('./lt'),
@@ -41,4 +40,10 @@ module.exports = {
     RADICAL: require('./radical'),
     FRAC_INCLUSIVE: require('./frac-inclusive'),
     FRAC_EXCLUSIVE: require('./frac-exclusive'),
+    JUMP_OUT_PARENTHESES: require('./jump-out-parentheses'),
+    JUMP_OUT_EXPONENT: require('./jump-out-exponent'),
+    JUMP_OUT_BASE: require('./jump-out-base'),
+    JUMP_INTO_NUMERATOR: require('./jump-into-numerator'),
+    JUMP_OUT_NUMERATOR: require('./jump-out-numerator'),
+    JUMP_OUT_DENOMINATOR: require('./jump-out-denominator'),
 };

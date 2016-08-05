@@ -451,6 +451,11 @@ const MathInput = React.createClass({
         } else {
             cursor.insAtLeftEnd(this.mathField.mathField.__controller.root);
         }
+        // In that event, we need to update the cursor context ourselves.
+        this.props.keypadElement &&
+            this.props.keypadElement.setCursor({
+                context: this.mathField.contextForCursor(cursor),
+            });
     },
 
     handleTouchStart(e) {

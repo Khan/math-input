@@ -30,7 +30,7 @@ const createStore = () => {
     const initialInputState = {
         keyHandler: null,
         cursor: {
-            context: CursorContexts.EMPTY,
+            context: CursorContexts.NONE,
         },
     };
 

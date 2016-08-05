@@ -769,6 +769,10 @@ describe('MathQuill', () => {
         });
     });
 
+    describe.skip('Jump out', () => {
+        // TODO(charlie): Write extensive tests for the 'Jump out' behavior.
+    });
+
     describe('Toggle sign', () => {
         it('adds \'-\' to an empty expression', () => {
             mathField.setContent('');

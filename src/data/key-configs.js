@@ -206,9 +206,31 @@ const KeyConfigs = {
         type: KeyTypes.INPUT_NAVIGATION,
         ariaLabel: i18n._('Left arrow'),
     },
-    [Keys.JUMP_OUT]: {
+    [Keys.JUMP_OUT_PARENTHESES]: {
         type: KeyTypes.INPUT_NAVIGATION,
-        ariaLabel: i18n._('Navigate right'),
+        ariaLabel: i18n._('Navigate right out of a set of parentheses'),
+    },
+    [Keys.JUMP_OUT_EXPONENT]: {
+        type: KeyTypes.INPUT_NAVIGATION,
+        ariaLabel: i18n._('Navigate right out of an exponent'),
+    },
+    [Keys.JUMP_OUT_BASE]: {
+        type: KeyTypes.INPUT_NAVIGATION,
+        ariaLabel: i18n._('Navigate right out of a base'),
+    },
+    [Keys.JUMP_INTO_NUMERATOR]: {
+        type: KeyTypes.INPUT_NAVIGATION,
+        ariaLabel: i18n._('Navigate right into the numerator of a fraction'),
+    },
+    [Keys.JUMP_OUT_NUMERATOR]: {
+        type: KeyTypes.INPUT_NAVIGATION,
+        ariaLabel: i18n._(
+            'Navigate right out of the numerator and into the denominator'),
+    },
+    [Keys.JUMP_OUT_DENOMINATOR]: {
+        type: KeyTypes.INPUT_NAVIGATION,
+        ariaLabel: i18n._(
+            'Navigate right out of the denominator of a fraction'),
     },
     [Keys.BACKSPACE]: {
         type: KeyTypes.INPUT_NAVIGATION,

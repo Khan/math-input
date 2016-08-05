@@ -2,7 +2,6 @@ const queryString = require('query-string');
 const {
     KeypadTypes,
     EchoAnimationTypes,
-    JumpOutTypes,
     DebugSwitcherTypes,
 } = require('./consts');
 
@@ -13,7 +12,6 @@ const containsConfigurationOptions = Object.keys(parsed).length > 0;
 
 const defaults = {
     keypadType: KeypadTypes.EXPRESSION,
-    jumpOutType: JumpOutTypes.STATIC,
     echoAnimation: EchoAnimationTypes.FADE_ONLY,
     iconStyle: 'fancy',
     debugSwitcher: containsConfigurationOptions ?
@@ -24,7 +22,6 @@ const defaults = {
 
 const settings = {
     keypadType: parsed.keypad_type || defaults.keypadType,
-    jumpOutType: parsed.jump_out_type || defaults.jumpOutType,
     echoAnimation: parsed.echo_animation || defaults.echoAnimation,
     iconStyle: parsed.icon_style || defaults.iconStyle,
     debugSwitcher: parsed.debug_switcher || defaults.debugSwitcher,

@@ -13,16 +13,6 @@ const createMathField = (document, MathWrapper) => {
     return new MathWrapper(span);
 };
 
-// TODO(charlie): Add proper tests to distinguish between left-end, right-end,
-// empty, and top-level contexts. (Note that the first three contexts all imply
-// top-level.)
-const isAtTopLevel = (context) => {
-    return context === CursorContexts.TOP_LEVEL ||
-        context === CursorContexts.EMPTY ||
-        context === CursorContexts.LEFT_END ||
-        context === CursorContexts.RIGHT_END;
-};
-
 describe('Cursor context', () => {
     let document;
     let MathWrapper;
@@ -57,65 +47,160 @@ describe('Cursor context', () => {
         }
     });
 
-    it('should treat number-only expressions as top-level', () => {
+    it('should treat number-only expressions as non-jumpable', () => {
         mathField.pressKey('NUM_1');
         mathField.pressKey('NUM_2');
         const cursor = mathField.pressKey('NUM_3');
-        assert.ok(isAtTopLevel(cursor.context));
+        assert.equal(cursor.context, null);
     });
 
-    it('should treat numbers and ternary operators as top-level', () => {
+    it('should treat numbers and ternary operators as non-jumpable', () => {
         mathField.pressKey('NUM_1');
         mathField.pressKey(Keys.CDOT);
         const cursor = mathField.pressKey('NUM_2');
-        assert.ok(isAtTopLevel(cursor.context));
+        assert.equal(cursor.context, null);
     });
 
-    it('should treat fractions as nested', () => {
-        const cursor = mathField.pressKey(Keys.FRAC_INCLUSIVE);
-        assert.equal(cursor.context, CursorContexts.NESTED);
+    describe('Before fraction', () => {
+        it('should detect when immediately to the left', () => {
+            const cursor = mathField.pressKey(Keys.FRAC_EXCLUSIVE);
+            assert.equal(cursor.context, CursorContexts.BEFORE_FRACTION);
+        });
+
+        it('should detect when numbers are between', () => {
+            mathField.pressKey('NUM_1');
+            mathField.pressKey(Keys.FRAC_EXCLUSIVE);
+            mathField.pressKey(Keys.LEFT);
+            const cursor = mathField.pressKey(Keys.LEFT);
+            assert.equal(cursor.context, CursorContexts.BEFORE_FRACTION);
+        });
+
+        it('should not detect when operators are between', () => {
+            mathField.pressKey('NUM_1');
+            mathField.pressKey(Keys.PLUS);
+            mathField.pressKey('NUM_2');
+            mathField.pressKey(Keys.FRAC_EXCLUSIVE);
+            mathField.pressKey(Keys.LEFT);
+            mathField.pressKey(Keys.LEFT);
+            mathField.pressKey(Keys.LEFT);
+            const cursor = mathField.pressKey(Keys.LEFT);
+            assert.equal(cursor.context, null);
+        });
+
+        it('should not detect when parens are between', () => {
+            mathField.pressKey('NUM_1');
+            mathField.pressKey(Keys.LEFT_PAREN);
+            mathField.pressKey(Keys.RIGHT_PAREN);
+            mathField.pressKey('NUM_2');
+            mathField.pressKey(Keys.FRAC_EXCLUSIVE);
+            mathField.pressKey(Keys.LEFT);
+            mathField.pressKey(Keys.LEFT);
+            mathField.pressKey(Keys.LEFT);
+            mathField.pressKey(Keys.LEFT);
+            const cursor = mathField.pressKey(Keys.LEFT);
+            assert.equal(cursor.context, null);
+        });
     });
 
-    it('should treat mixed-number fractions as nested', () => {
-        mathField.pressKey('NUM_1');
-        const cursor = mathField.pressKey(Keys.FRAC_EXCLUSIVE);
-        assert.equal(cursor.context, CursorContexts.NESTED);
+    describe('In parens', () => {
+        it('should detect when inside empty parens', () => {
+            mathField.pressKey(Keys.LEFT_PAREN);
+            mathField.pressKey(Keys.RIGHT_PAREN);
+            const cursor = mathField.pressKey(Keys.LEFT);
+            assert.equal(cursor.context, CursorContexts.IN_PARENS);
+        });
+
+        it('should detect when inside non-empty parens', () => {
+            mathField.pressKey(Keys.LEFT_PAREN);
+            mathField.pressKey('NUM_2');
+            mathField.pressKey(Keys.RIGHT_PAREN);
+            const cursor = mathField.pressKey(Keys.LEFT);
+            assert.equal(cursor.context, CursorContexts.IN_PARENS);
+        });
     });
 
-    it('should treat parentheses as nested', () => {
-        const cursor = mathField.pressKey(Keys.LEFT_PAREN);
-        assert.equal(cursor.context, CursorContexts.NESTED);
+    describe('In superscript', () => {
+        it('should detect when inside empty superscript', () => {
+            mathField.pressKey('NUM_2');
+            const cursor = mathField.pressKey(Keys.EXP);
+            assert.equal(cursor.context, CursorContexts.IN_SUPER_SCRIPT);
+        });
+
+        it('should detect when inside non-empty superscript', () => {
+            mathField.pressKey('NUM_2');
+            mathField.pressKey(Keys.EXP);
+            const cursor = mathField.pressKey('NUM_3');
+            assert.equal(cursor.context, CursorContexts.IN_SUPER_SCRIPT);
+        });
     });
 
-    it('should treat square roots as nested', () => {
-        const cursor = mathField.pressKey(Keys.SQRT);
-        assert.equal(cursor.context, CursorContexts.NESTED);
+    describe('In subscript', () => {
+        it('should detect when inside empty superscript', () => {
+            const cursor = mathField.pressKey(Keys.LOG_N);
+            assert.equal(cursor.context, CursorContexts.IN_SUB_SCRIPT);
+        });
+
+        it('should detect when inside non-empty superscript', () => {
+            mathField.pressKey(Keys.LOG_N);
+            const cursor = mathField.pressKey('NUM_2');
+            assert.equal(cursor.context, CursorContexts.IN_SUB_SCRIPT);
+        });
     });
 
-    it('should treat multiply nested expressions as nested', () => {
-        mathField.pressKey(Keys.LEFT_PAREN);
-        const cursor = mathField.pressKey(Keys.SQRT);
-        assert.equal(cursor.context, CursorContexts.NESTED);
+    describe('In numerator', () => {
+        it('should detect when inside empty numerator', () => {
+            const cursor = mathField.pressKey(Keys.FRAC_INCLUSIVE);
+            assert.equal(cursor.context, CursorContexts.IN_NUMERATOR);
+        });
+
+        it('should detect when inside non-empty numerator', () => {
+            mathField.pressKey(Keys.FRAC_INCLUSIVE);
+            const cursor = mathField.pressKey('NUM_2');
+            assert.equal(cursor.context, CursorContexts.IN_NUMERATOR);
+        });
     });
 
-    it('should treat the right of a nested expression as top-level', () => {
-        mathField.pressKey(Keys.LEFT_PAREN);
-        const cursor = mathField.pressKey(Keys.RIGHT);
-        assert.ok(isAtTopLevel(cursor.context));
+    describe('In denominator', () => {
+        it('should detect when inside empty denominator', () => {
+            mathField.pressKey(Keys.FRAC_INCLUSIVE);
+            const cursor = mathField.pressKey(Keys.RIGHT);
+            assert.equal(cursor.context, CursorContexts.IN_DENOMINATOR);
+        });
+
+        it('should detect when inside non-empty denominator', () => {
+            mathField.pressKey(Keys.FRAC_INCLUSIVE);
+            mathField.pressKey(Keys.RIGHT);
+            const cursor = mathField.pressKey('NUM_2');
+            assert.equal(cursor.context, CursorContexts.IN_DENOMINATOR);
+        });
     });
 
-    it('should treat the left of a nested expression as top-level', () => {
-        mathField.pressKey(Keys.LEFT_PAREN);
-        const cursor = mathField.pressKey(Keys.LEFT);
-        assert.ok(isAtTopLevel(cursor.context));
-    });
+    describe('Nesting', () => {
+        it('should defer to jumping into fraction if possible', () => {
+            // Move inside parens, but include a fraction.
+            mathField.pressKey(Keys.LEFT_PAREN);
+            mathField.pressKey('NUM_2');
+            mathField.pressKey(Keys.FRAC_EXCLUSIVE);
+            const cursor = mathField.pressKey(Keys.LEFT);
+            assert.equal(cursor.context, CursorContexts.BEFORE_FRACTION);
+        });
 
-    it('a top-level expression in a nested expression is nested', () => {
-        mathField.pressKey(Keys.LEFT_PAREN);
-        mathField.pressKey('NUM_1');
-        mathField.pressKey(Keys.CDOT);
-        mathField.pressKey('NUM_2');
-        const cursor = mathField.pressKey(Keys.LEFT);
-        assert.equal(cursor.context, CursorContexts.NESTED);
+        it('should defer to the nearest parent (1)', () => {
+            // Move inside parens, inside a superscript.
+            mathField.pressKey('NUM_2');
+            mathField.pressKey(Keys.EXP);
+            mathField.pressKey(Keys.LEFT_PAREN);
+            const cursor = mathField.pressKey('NUM_3');
+            assert.equal(cursor.context, CursorContexts.IN_PARENS);
+        });
+
+        it('should defer to the nearest parent (2)', () => {
+            // Nest fractions, and put cursor in the denominator of the fraction
+            // in the numerator.
+            mathField.pressKey(Keys.FRAC_INCLUSIVE);
+            mathField.pressKey(Keys.FRAC_INCLUSIVE);
+            const cursor = mathField.pressKey(Keys.RIGHT);
+            assert.equal(cursor.context, CursorContexts.IN_DENOMINATOR);
+        });
     });
 });

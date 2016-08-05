@@ -25,7 +25,6 @@ filename_to_symbol = {
     'move-backward': 'ARROW',
     'parenthesis-left': 'LEFT_PAREN',
     'parenthesis-right': 'RIGHT_PAREN',
-    'jump-out': 'JUMP_OUT',
     'multiplication-cross': 'TIMES',
     'multiplication-dot': 'CDOT',
     'percent': 'PERCENT',
@@ -34,4 +33,10 @@ filename_to_symbol = {
     'radical': 'RADICAL',
     'radical-2': 'SQRT',
     'radical-3': 'CUBE_ROOT',
+    'jump-out-numerator': 'JUMP_OUT_NUMERATOR',
+    'jump-out-base': 'JUMP_OUT_BASE',
+    'jump-out-exponent': 'JUMP_OUT_EXPONENT',
+    'jump-out-mixed-number-integer': 'JUMP_INTO_NUMERATOR',
+    'jump-out-denominator': 'JUMP_OUT_DENOMINATOR',
+    'jump-out-parentheses': 'JUMP_OUT_PARENTHESES'
 }

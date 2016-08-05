@@ -1,25 +1,31 @@
 /**
- * Constants that define the various contexts in which a cursor can exist. In
- * the future, we may, for example, have a context for being in a numerator, a
- * context for being in a denominator, a context for being in an exponent, and
- * so forth.
+ * Constants that define the various contexts in which a cursor can exist. The
+ * active context is determined first by looking at the cursor's siblings (e.g.,
+ * for the `BEFORE_FRACTION` context), and then at its direct parent. Though a
+ * cursor could in theory be nested in multiple contexts, we only care about the
+ * immediate context.
+ *
+ * TODO(charlie): Add a context to represent being inside of a radical. Right
+ * now, we show the dismiss button rather than allowing the user to jump out of
+ * the radical.
  */
 
 module.exports = {
-    // The cursor is located in a nested expression. For example, it may be in
-    // a numerator or denominator, or within a set of parentheses.
-    NESTED: 'NESTED',
-    // The cursor is located in a top-level expression; that is, anything that
-    // is not nested.
-    TOP_LEVEL: 'TOP_LEVEL',
-    // The cursor is located at the left end of the input. Note that this
-    // implies that the cursor is at the top-level.
-    LEFT_END: 'LEFT_END',
-    // The cursor is located at the right end of the input. Note that this
-    // implies that the cursor is at the top-level.
-    RIGHT_END: 'RIGHT_END',
-    // The cursor is located in an empty input. Note that this
-    // implies that the cursor is at the top-level, and at the right and left
-    // ends.
-    EMPTY: 'EMPTY',
+    // The cursor is not in any of the other viable contexts.
+    NONE: 'NONE',
+    // The cursor is within a set of parentheses.
+    IN_PARENS: 'IN_PARENS',
+    // The cursor is within a superscript (e.g., an exponent).
+    IN_SUPER_SCRIPT: 'IN_SUPER_SCRIPT',
+    // The cursor is within a subscript (e.g., the base of a custom logarithm).
+    IN_SUB_SCRIPT: 'IN_SUB_SCRIPT',
+    // The cursor is in the numerator of a fraction.
+    IN_NUMERATOR: 'IN_NUMERATOR',
+    // The cursor is in the denominator of a fraction.
+    IN_DENOMINATOR: 'IN_DENOMINATOR',
+    // The cursor is sitting before a fraction; that is, the cursor is within
+    // what looks to be a mixed number preceding a fraction. This will only be
+    // the case when the only math between the cursor and the fraction to its
+    // write is non-leaf math (numbers and variables).
+    BEFORE_FRACTION: 'BEFORE_FRACTION',
 };

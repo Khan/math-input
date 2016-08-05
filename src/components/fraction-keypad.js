@@ -18,6 +18,7 @@ const KeyConfigs = require('../data/key-configs');
 const FractionKeypad = React.createClass({
     propTypes: {
         cursorContext: cursorContextPropType.isRequired,
+        dynamicJumpOut: React.PropTypes.bool,
         roundTopLeft: React.PropTypes.bool,
         roundTopRight: React.PropTypes.bool,
     },
@@ -33,7 +34,48 @@ const FractionKeypad = React.createClass({
     },
 
     render() {
-        const {cursorContext, roundTopLeft, roundTopRight} = this.props;
+        const {
+            cursorContext,
+            dynamicJumpOut,
+            roundTopLeft,
+            roundTopRight,
+        } = this.props;
+
+        let dismissOrJumpOutKey;
+        if (dynamicJumpOut) {
+            switch (cursorContext) {
+                case CursorContexts.IN_PARENS:
+                    dismissOrJumpOutKey = KeyConfigs.JUMP_OUT_PARENTHESES;
+                    break;
+
+                case CursorContexts.IN_SUPER_SCRIPT:
+                    dismissOrJumpOutKey = KeyConfigs.JUMP_OUT_EXPONENT;
+                    break;
+
+                case CursorContexts.IN_SUB_SCRIPT:
+                    dismissOrJumpOutKey = KeyConfigs.JUMP_OUT_BASE;
+                    break;
+
+                case CursorContexts.BEFORE_FRACTION:
+                    dismissOrJumpOutKey = KeyConfigs.JUMP_INTO_NUMERATOR;
+                    break;
+
+                case CursorContexts.IN_NUMERATOR:
+                    dismissOrJumpOutKey = KeyConfigs.JUMP_OUT_NUMERATOR;
+                    break;
+
+                case CursorContexts.IN_DENOMINATOR:
+                    dismissOrJumpOutKey = KeyConfigs.JUMP_OUT_DENOMINATOR;
+                    break;
+
+                case CursorContexts.NONE:
+                default:
+                    dismissOrJumpOutKey = KeyConfigs.DISMISS;
+                    break;
+            }
+        } else {
+            dismissOrJumpOutKey = KeyConfigs.DISMISS;
+        }
 
         return <Keypad>
             <View style={row}>
@@ -53,13 +95,14 @@ const FractionKeypad = React.createClass({
                 <TouchableKeypadButton
                     keyConfig={KeyConfigs.FRAC_MULTI}
                     disabled={
-                        // We can use `NESTED` rather than a more specific
-                        // context (e.g., `IN_FRACTION`) because we know that
-                        // the only way to create a nested expression in this
-                        // keypad is by creating a fraction. If, for example, we
-                        // added parentheses to this keypad, we'd need to create
-                        // a more specific context.
-                        cursorContext === CursorContexts.NESTED
+                        // NOTE(charlie): It's only sufficient to use
+                        // `IN_NUMERATOR` and `IN_DENOMINATOR` here because we
+                        // don't support parentheses in this keypad. If we did,
+                        // then when the cursor was inside a parenthetical
+                        // expression in a numerator or denominator, this check
+                        // would fail.
+                        cursorContext === CursorContexts.IN_NUMERATOR ||
+                        cursorContext === CursorContexts.IN_DENOMINATOR
                     }
                     style={roundTopRight && roundedTopRight}
                 />
@@ -111,7 +154,7 @@ const FractionKeypad = React.createClass({
                     borders={BorderStyles.LEFT}
                 />
                 <TouchableKeypadButton
-                    keyConfig={KeyConfigs.DISMISS}
+                    keyConfig={dismissOrJumpOutKey}
                     borders={BorderStyles.LEFT}
                 />
             </View>
@@ -122,6 +165,7 @@ const FractionKeypad = React.createClass({
 const mapStateToProps = (state) => {
     return {
         cursorContext: state.input.cursor.context,
+        dynamicJumpOut: !state.layout.navigationPadEnabled,
     };
 };
 

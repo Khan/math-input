@@ -66,10 +66,6 @@ module.exports = {
     },
 
     // Configurable settings.
-    JumpOutTypes: {
-        STATIC: 'STATIC',
-        DYNAMIC: 'DYNAMIC',
-    },
     EchoAnimationTypes: {
         SLIDE_AND_FADE: 'SLIDE_AND_FADE',
         FADE_ONLY: 'FADE_ONLY',
