@@ -459,7 +459,7 @@ const MathInput = React.createClass({
     },
 
     handleTouchStart(e) {
-        e.preventDefault();
+        e.stopPropagation();
 
         // Hide the cursor handle on touch start, if the handle itself isn't
         // handling the touch event.
@@ -484,6 +484,8 @@ const MathInput = React.createClass({
     },
 
     handleTouchMove(e) {
+        e.stopPropagation();
+
         // Update the handle-less cursor's location on move, if there's any
         // content in the box.
         if (this.mathField.getContent() !== "") {
@@ -493,6 +495,8 @@ const MathInput = React.createClass({
     },
 
     handleTouchEnd(e) {
+        e.stopPropagation();
+
         // And on touch-end, reveal the cursor, unless the input is empty.
         if (this.mathField.getContent() !== "") {
             this._updateCursorHandle();
@@ -651,6 +655,7 @@ const MathInput = React.createClass({
             onTouchStart={this.handleTouchStart}
             onTouchMove={this.handleTouchMove}
             onTouchEnd={this.handleTouchEnd}
+            onClick={e => e.stopPropagation()}
             role={'textbox'}
             ariaLabel={i18n._('Math input box')}
         >
