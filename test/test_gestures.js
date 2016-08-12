@@ -339,4 +339,39 @@ describe('GestureStateMachine', () => {
         ];
         assertEvents(expectedEventsAfterSwipeStart);
     });
+
+    it('should be robust to extraneous fingers', () => {
+        const firstTouchId = 1;
+        const firstTouchStartX = 15;
+        const secondTouchId = 2;
+        const secondTouchStartX = firstTouchStartX + 2 * swipeThresholdPx;
+
+        // The first finger initiates a gesture, but the second finger starts
+        // elsewhere on the screen and doesn't register a start...
+        stateMachine.onTouchStart(
+            () => NodeIds.first, firstTouchId, firstTouchStartX
+        );
+
+        // Move the first finger, but less than the swipe threshold, and then
+        // start showing move events from the second finger (as it slides into
+        // the components we care about on screen)
+        stateMachine.onTouchMove(
+            () => NodeIds.first,
+            firstTouchId,
+            firstTouchStartX + swipeThresholdPx - 1,
+            true
+        );
+        stateMachine.onTouchMove(
+            () => NodeIds.second,
+            secondTouchId,
+            secondTouchStartX,
+            true
+        );
+
+        // Assert we've started focusing but haven't blown up.
+        const initialExpectedEvents = [
+            ['onFocus', NodeIds.first],
+        ];
+        assertEvents(initialExpectedEvents);
+    });
 });

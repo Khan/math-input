@@ -181,7 +181,9 @@ class GestureStateMachine {
             if (this.swipeState.touchId === touchId) {
                 this.handlers.onSwipeChange(pageX - this.swipeState.startX);
             }
-        } else {
+        } else if (this.touchState[touchId]) {
+            // It could be touch events started outside the keypad and
+            // moved into it; ignore them.
             const {
                 activeNodeId, startX, swipeLocked,
             } = this.touchState[touchId];
@@ -224,7 +226,9 @@ class GestureStateMachine {
                 this.handlers.onSwipeEnd(pageX - this.swipeState.startX);
                 this.swipeState = null;
             }
-        } else {
+        } else if (this.touchState[touchId]) {
+            // It could be touch events started outside the keypad and
+            // moved into it; ignore them.
             const {
                 activeNodeId, pressAndHoldIntervalId,
             } = this.touchState[touchId];
@@ -257,7 +261,7 @@ class GestureStateMachine {
                 this.handlers.onSwipeEnd(0);
                 this.swipeState = null;
             }
-        } else {
+        } else if (this.touchState[touchId]) {
             // Otherwise, trigger a full blur. We don't want to trigger a
             // touch-up, since the cancellation means that the user probably
             // didn't release over a key intentionally.
