@@ -165,8 +165,6 @@ class MathWrapper {
         } else if (key === Keys.EXP || key === Keys.EXP_2 ||
                 key === Keys.EXP_3) {
             this._handleExponent(cursor, key);
-        } else if (key === Keys.TOGGLE_SIGN) {
-            this._handleToggleSign(cursor);
         } else if (key === Keys.JUMP_OUT_PARENTHESES ||
                 key === Keys.JUMP_OUT_EXPONENT ||
                 key === Keys.JUMP_OUT_BASE ||
@@ -874,57 +872,6 @@ class MathWrapper {
         // begin with.
         if (isEmpty) {
             this.mathField.keystroke('Backspace');
-        }
-    }
-
-    /**
-     * Handle the 'toggle sign' operation.
-     *
-     * This implementation makes non-trivial assumptions about the behavior of
-     * our keypads. Namely, it assumes that the 'toggle sign' operation can
-     * only be performed on keypads that will never have selection states, and
-     * will never have nested expressions.
-     */
-    _handleToggleSign(cursor) {
-        // Pre-compute a few values before mutating the cursor.
-        const leftNode = cursor[this.MQ.L];
-        const parent = cursor.parent;
-        const isAtTopLevel = this._isAtTopLevel(cursor);
-
-        // Store the selection, if it exists.
-        const leftEnd = cursor.selection && cursor.selection.ends[this.MQ.L];
-        const rightEnd = cursor.selection && cursor.selection.ends[this.MQ.R];
-
-        const latex = this.getContent();
-        const minusSign = '-';
-        if (latex.charAt(0) === minusSign) {
-            // If the input is leading with a minus sign, remove it.
-            this.mathField.moveToDirEnd(this.MQ.L);
-            this.mathField.keystroke('Right');
-            this.mathField.keystroke('Backspace');
-        } else {
-            // Otherwise, write it at the start of the expression.
-            this.mathField.moveToDirEnd(this.MQ.L);
-            this.mathField.write(minusSign);
-        }
-
-        // If you had something selected, restore it.
-        if (leftEnd && rightEnd) {
-            cursor.insLeftOf(leftEnd);
-            cursor.startSelection();
-            cursor.insRightOf(rightEnd);
-            cursor.select();
-            cursor.endSelection();
-        } if (leftNode === MQ_END && !isAtTopLevel) {
-            // Otherwise, if we started in an empty, non-top-level node (like an
-            // empty numerator), then we need to re-insert into the end of that
-            // node.
-            cursor.insAtLeftEnd(parent);
-        } else if (leftNode !== MQ_END && leftNode.latex() !== minusSign) {
-            // Finally, if our cursor wasn't at the start of the expression and
-            // wasn't at the minus sign (in such cases, it would naturally be in
-            // the right place after insertion), re-insert it.
-            cursor.insRightOf(leftNode);
         }
     }
 

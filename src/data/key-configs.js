@@ -25,16 +25,6 @@ const KeyConfigs = {
         // I18N: A label for a minus sign.
         ariaLabel: i18n._('Negative'),
     },
-    [Keys.TOGGLE_SIGN]: {
-        type: KeyTypes.OPERATOR,
-        // TODO(charlie): Change this to 'Toggle negative' and add an
-        // aria-pressed={true} based on the current state of the input. Right
-        // now, that's tricky to do as the rendering of the keypad button is
-        // ignorant of the contents of the input.
-        // I18N: A label for a button that will change the input from positive
-        // to negative or the other way around.
-        ariaLabel: i18n._('Toggle positive/negative'),
-    },
     [Keys.TIMES]: {
         type: KeyTypes.OPERATOR,
         // I18N: A label for a multiplication sign (represented with an 'x').

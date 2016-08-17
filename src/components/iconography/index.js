@@ -28,7 +28,6 @@ module.exports = {
     PERIOD: require('./period'),
     PERCENT: require('./percent'),
     TIMES: require('./times'),
-    TOGGLE_SIGN: require('./toggle-sign'),
     EXP_3: require('./exp-3'),
     EXP_2: require('./exp-2'),
     RIGHT: require('./right'),

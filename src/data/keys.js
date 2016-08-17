@@ -10,7 +10,6 @@ const Keys = {
     PLUS: 'PLUS',
     MINUS: 'MINUS',
     NEGATIVE: 'NEGATIVE',
-    TOGGLE_SIGN: 'TOGGLE_SIGN',
     TIMES: 'TIMES',
     DIVIDE: 'DIVIDE',
     DECIMAL: 'DECIMAL',

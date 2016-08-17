@@ -28,7 +28,6 @@ filename_to_symbol = {
     'multiplication-cross': 'TIMES',
     'multiplication-dot': 'CDOT',
     'percent': 'PERCENT',
-    'negate': 'TOGGLE_SIGN',
     'radix-character': 'PERIOD',
     'radical': 'RADICAL',
     'radical-2': 'SQRT',
