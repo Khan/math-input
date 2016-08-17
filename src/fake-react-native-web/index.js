@@ -8,7 +8,6 @@
  */
 
 module.exports = {
-    Image: require('./image'),
     Text: require('./text'),
     View: require('./view'),
 };
