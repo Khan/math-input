@@ -6,12 +6,10 @@
  * multi-touch interactions, tracking gesture state on a per-touch basis.
  */
 
-const {holdIntervalMs} = require('../settings');
-
 const defaults = {
     longPressWaitTimeMs: 50,
     swipeThresholdPx: 20,
-    holdIntervalMs,
+    holdIntervalMs: 250,
 };
 
 class GestureStateMachine {

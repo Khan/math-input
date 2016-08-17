@@ -65,14 +65,9 @@ module.exports = {
         PERIOD: 'PERIOD',
     },
 
-    // Configurable settings.
     EchoAnimationTypes: {
         SLIDE_AND_FADE: 'SLIDE_AND_FADE',
         FADE_ONLY: 'FADE_ONLY',
         LONG_FADE_ONLY: 'LONG_FADE_ONLY',
-    },
-    DebugSwitcherTypes: {
-        ENABLED: 'ENABLED',
-        DISABLED: 'DISABLED',
     },
 };

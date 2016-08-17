@@ -19,8 +19,6 @@ const VelocityTracker = require('../components/velocity-tracker');
 const FractionKeypad = require('../components/fraction-keypad');
 const ExpressionKeypad = require('../components/expression-keypad');
 
-const Settings = require('../settings');
-
 const keypadForType = {
     [KeypadTypes.FRACTION]: FractionKeypad,
     [KeypadTypes.EXPRESSION]: ExpressionKeypad,
@@ -68,7 +66,7 @@ const createStore = () => {
         }
     };
 
-    const defaultKeypadType = Settings.keypadType;
+    const defaultKeypadType = KeypadTypes.EXPRESSION;
 
     const initialKeypadState = {
         extraKeys: ['x', 'y', Keys.THETA, Keys.PI],
