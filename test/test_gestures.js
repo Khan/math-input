@@ -118,7 +118,7 @@ describe('GestureStateMachine', () => {
         }, longPressWaitTimeMs);
     });
 
-    it('should trigger a multiple presses on hold', (done) => {
+    it('should trigger multiple presses on hold', (done) => {
         const touchId = 1;
 
         // Trigger a touch start on the multi-pressable node.
@@ -148,6 +148,46 @@ describe('GestureStateMachine', () => {
             assertEvents(expectedEventsAfterRelease);
 
             done();
+        }, holdIntervalMs);
+    });
+
+    it('should be robust to multiple touch starts', (done) => {
+        const touchId = 1;
+
+        // Trigger a touch start on the multi-pressable node twice, because
+        // the webview was acting up.
+        stateMachine.onTouchStart(() => NodeIds.multiPressable, touchId, 0);
+        stateMachine.onTouchStart(() => NodeIds.multiPressable, touchId, 0);
+
+        // Assert that we see only one set of focus and triggers.
+        const initialExpectedEvents = [
+            ['onFocus', NodeIds.multiPressable],
+            ['onTrigger', NodeIds.multiPressable],
+        ];
+        assertEvents(initialExpectedEvents);
+
+        setTimeout(() => {
+            // Assert that we see an additional trigger after the delay.
+            const expectedEventsAfterHold = [
+                ...initialExpectedEvents,
+                ['onTrigger', NodeIds.multiPressable],
+            ];
+            assertEvents(expectedEventsAfterHold);
+
+            // Now release, and verify that we see a blur, but no touch-end.
+            stateMachine.onTouchEnd(() => NodeIds.multiPressable, touchId, 0);
+            const expectedEventsAfterRelease = [
+                ...expectedEventsAfterHold,
+                ['onBlur'],
+            ];
+            assertEvents(expectedEventsAfterRelease);
+
+            setTimeout(() => {
+                // Ensure the touch end cleaned it up, and that we didn't
+                // create multiple listeners.
+                assertEvents(expectedEventsAfterRelease);
+                done();
+            }, holdIntervalMs);
         }, holdIntervalMs);
     });
 

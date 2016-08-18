@@ -155,6 +155,17 @@ class GestureStateMachine {
             return;
         }
 
+        if (this.touchState[touchId]) {
+            // It turns out we can get multiple touch starts with no
+            // intervening move, end, or cancel events in Android WebViews.
+            // TODO(benkomalo): it's not entirely clear why this happens, but
+            // it seems to happen with the backspace button. It may be related
+            // to FastClick (https://github.com/ftlabs/fastclick/issues/71)
+            // though I haven't verified, and it's probably good to be robust
+            // here anyways.
+            return;
+        }
+
         const startingNodeId = getId();
         this.touchState[touchId] = {
             swipeLocked: this.swipeDisabledNodeIds.includes(startingNodeId),
