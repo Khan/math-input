@@ -51,14 +51,14 @@ describe('Cursor context', () => {
         mathField.pressKey('NUM_1');
         mathField.pressKey('NUM_2');
         const cursor = mathField.pressKey('NUM_3');
-        assert.equal(cursor.context, null);
+        assert.equal(cursor.context, CursorContexts.NONE);
     });
 
     it('should treat numbers and ternary operators as non-jumpable', () => {
         mathField.pressKey('NUM_1');
         mathField.pressKey(Keys.CDOT);
         const cursor = mathField.pressKey('NUM_2');
-        assert.equal(cursor.context, null);
+        assert.equal(cursor.context, CursorContexts.NONE);
     });
 
     describe('Before fraction', () => {
@@ -84,7 +84,7 @@ describe('Cursor context', () => {
             mathField.pressKey(Keys.LEFT);
             mathField.pressKey(Keys.LEFT);
             const cursor = mathField.pressKey(Keys.LEFT);
-            assert.equal(cursor.context, null);
+            assert.equal(cursor.context, CursorContexts.NONE);
         });
 
         it('should not detect when parens are between', () => {
@@ -98,7 +98,7 @@ describe('Cursor context', () => {
             mathField.pressKey(Keys.LEFT);
             mathField.pressKey(Keys.LEFT);
             const cursor = mathField.pressKey(Keys.LEFT);
-            assert.equal(cursor.context, null);
+            assert.equal(cursor.context, CursorContexts.NONE);
         });
     });
 
