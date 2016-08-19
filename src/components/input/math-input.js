@@ -120,9 +120,7 @@ const MathInput = React.createClass({
                 if (!this._container.contains(evt.target)) {
                     let touchDidStartInOrBelowKeypad = false;
                     if (this.props.keypadElement) {
-                        const node = ReactDOM.findDOMNode(
-                            this.props.keypadElement);
-                        const bounds = node.getBoundingClientRect();
+                        const bounds = this._getKeypadBounds();
                         for (let i = 0; i < evt.changedTouches.length; i++) {
                             const [x, y] = [
                                 evt.changedTouches[i].clientX,
@@ -177,6 +175,22 @@ const MathInput = React.createClass({
         window.addEventListener('touchstart', this.recordTouchStartOutside);
         window.addEventListener('touchend', this.blurOnTouchEndOutside);
         window.addEventListener('touchcancel', this.blurOnTouchEndOutside);
+
+        // HACK(benkomalo): if the window resizes, the keypad bounds can
+        // change. That's a bit peeking into the internals of the keypad
+        // itself, since we know bounds can change only when the viewport
+        // changes, but seems like a rare enough thing to get wrong that it's
+        // not worth wiring up extra things for the technical "purity" of
+        // having the keypad notify of changes to us.
+        window.addEventListener('resize', this._clearKeypadBoundsCache);
+        window.addEventListener(
+                'orientationchange', this._clearKeypadBoundsCache);
+    },
+
+    componentWillReceiveProps(props) {
+        if (this.props.keypadElement !== props.keypadElement) {
+            this._clearKeypadBoundsCache();
+        }
     },
 
     componentDidUpdate() {
@@ -189,6 +203,26 @@ const MathInput = React.createClass({
         window.removeEventListener('touchstart', this.recordTouchStartOutside);
         window.removeEventListener('touchend', this.blurOnTouchEndOutside);
         window.removeEventListener('touchcancel', this.blurOnTouchEndOutside);
+        window.removeEventListener('resize', this._clearKeypadBoundsCache());
+        window.removeEventListener(
+                'orientationchange', this._clearKeypadBoundsCache());
+    },
+
+    _clearKeypadBoundsCache(keypadNode) {
+        this._keypadBounds = null;
+    },
+
+    _cacheKeypadBounds(keypadNode) {
+        this._keypadBounds = keypadNode.getBoundingClientRect();
+    },
+
+    /** Gets and cache they bounds of the keypadElement */
+    _getKeypadBounds() {
+        if (!this._keypadBounds) {
+            const node = ReactDOM.findDOMNode(this.props.keypadElement);
+            this._cacheKeypadBounds(node);
+        }
+        return this._keypadBounds;
     },
 
     _updateCursorHandle(animateIntoPosition) {
@@ -263,6 +297,12 @@ const MathInput = React.createClass({
             // Android Browser 4.3.
             setTimeout(() => {
                 if (this.isMounted()) {
+                    // TODO(benkomalo): the keypad is animating at this point,
+                    // so we can't call _cacheKeypadBounds(), even though
+                    // it'd be nice to do so. It should probably be the case
+                    // that the higher level controller tells us when the
+                    // keypad is settled (then scrollIntoView wouldn't have
+                    // to make assumptions about that either).
                     const maybeKeypadNode = this.props.keypadElement &&
                         ReactDOM.findDOMNode(this.props.keypadElement);
                     scrollIntoView(this._container, maybeKeypadNode);
