@@ -450,7 +450,6 @@ const MathInput = React.createClass({
             y = this._containerBounds.top + 10;
         }
 
-        let dx;
         let dy;
 
         // Vertical spacing between hit tests
@@ -461,7 +460,7 @@ const MathInput = React.createClass({
         // Note: This value depends on the font size.  If the gap is too small
         // we end up placing the cursor at the end of the expression when we
         // shouldn't.
-        dx = 5;
+        const dx = 5;
 
         if (this._findHitNode(this._containerBounds, x, y, dx, dy)) {
             return;
@@ -710,8 +709,7 @@ const MathInput = React.createClass({
                         this._mathContainer = ReactDOM.findDOMNode(node);
                     }}
                     style={innerStyle}
-                >
-                </div>
+                />
             </div>
             {focused && handle.visible && <CursorHandle
                 {...handle}

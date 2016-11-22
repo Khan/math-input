@@ -47,7 +47,7 @@ const TouchableKeypadButton = React.createClass({
 
     render() {
         const {
-            borders, childKeyIds, disabled, gestureManager, id, ...rest,
+            borders, childKeyIds, disabled, gestureManager, id, ...rest
         } = this.props;
 
         // Only bind the relevant event handlers if the key is enabled.
