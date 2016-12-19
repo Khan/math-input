@@ -526,8 +526,12 @@ const MathInput = React.createClass({
         e.stopPropagation();
 
         // Update the handle-less cursor's location on move, if there's any
-        // content in the box.
-        if (this.mathField.getContent() !== "") {
+        // content in the box. Note that if the user touched outside the keypad
+        // (e.g., with a different finger) during this touch interaction, we
+        // may have blurred, in which case we should ignore the touch (since
+        // the cursor is no longer visible and the input is no longer
+        // highlighted).
+        if (this.mathField.getContent() !== "" && this.state.focused) {
             const touch = e.changedTouches[0];
             this._insertCursorAtClosestNode(touch.clientX, touch.clientY);
         }
@@ -536,8 +540,12 @@ const MathInput = React.createClass({
     handleTouchEnd(e) {
         e.stopPropagation();
 
-        // And on touch-end, reveal the cursor, unless the input is empty.
-        if (this.mathField.getContent() !== "") {
+        // And on touch-end, reveal the cursor, unless the input is empty. Note
+        // that if the user touched outside the keypad (e.g., with a different
+        // finger) during this touch interaction, we may have blurred, in which
+        // case we should ignore the touch (since the cursor is no longer
+        // visible and the input is no longer highlighted).
+        if (this.mathField.getContent() !== "" && this.state.focused) {
             this._updateCursorHandle();
         }
     },
