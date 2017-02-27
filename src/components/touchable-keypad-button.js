@@ -7,6 +7,7 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 const {connect} = require('react-redux');
+const {StyleSheet} = require('aphrodite');
 
 const KeypadButton = require('./keypad-button');
 const KeyConfigs = require('../data/key-configs');
@@ -47,7 +48,7 @@ const TouchableKeypadButton = React.createClass({
 
     render() {
         const {
-            borders, childKeyIds, disabled, gestureManager, id, ...rest
+            borders, childKeyIds, disabled, gestureManager, id, style, ...rest
         } = this.props;
 
         // Only bind the relevant event handlers if the key is enabled.
@@ -60,12 +61,18 @@ const TouchableKeypadButton = React.createClass({
             onTouchCancel: (evt) => gestureManager.onTouchCancel(evt),
         };
 
+        const styleWithAddons = [
+            ...(Array.isArray(style) ? style : [style]),
+            styles.preventScrolls,
+        ];
+
         return <KeypadButton
             ref={(node) => gestureManager.registerDOMNode(
                 id, ReactDOM.findDOMNode(node), childKeyIds, borders
             )}
             borders={borders}
             disabled={disabled}
+            style={styleWithAddons}
             {...eventHandlers}
             {...rest}
         />;
@@ -105,5 +112,13 @@ const mapStateToProps = (state, ownProps) => {
         ...extractProps(useFirstChildProps ? childKeys[0] : keyConfig),
     };
 };
+
+const styles = StyleSheet.create({
+    preventScrolls: {
+        // Touch events that start in the touchable buttons shouldn't be
+        // allowed to produce page scrolls.
+        touchAction: "none",
+    },
+});
 
 module.exports = connect(mapStateToProps)(TouchableKeypadButton);

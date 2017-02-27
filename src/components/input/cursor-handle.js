@@ -65,6 +65,9 @@ const CursorHandle = React.createClass({
             transform: transformString,
             width: touchTargetWidthPx,
             height: touchTargetHeightPx,
+            // Touch events that start on the cursor shouldn't be allowed to
+            // produce page scrolls.
+            touchAction: "none",
             ...animationStyle,
         };
 
