@@ -182,6 +182,7 @@ const KeypadContainer = React.createClass({
         return <View
             style={keypadContainerStyle}
             dynamicStyle={dynamicStyle}
+            extraClassName="keypad-container"
         >
             <View
                 style={keypadStyle}

@@ -100,3 +100,9 @@
     color: white !important;
     border-color: white !important;
 }
+
+// The keypad sets its own color styles for KaTeX elements that are rendered in
+// its keys, so prevent any external styling.
+.keypad-container .katex {
+    color: inherit !important;
+}
