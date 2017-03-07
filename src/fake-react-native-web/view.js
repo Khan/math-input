@@ -74,6 +74,43 @@ const View = React.createClass({
             onTouchEnd={this.props.onTouchEnd}
             onTouchMove={this.props.onTouchMove}
             onTouchStart={this.props.onTouchStart}
+            onMouseDown={(e) => {
+                // Touch events have extra properties compared to mouse
+                // events and also have a concept of "pointer lock",
+                // where the element that receives the touchstart event
+                // receives all subsequent events for that same touch,
+                // whereas mouse events change target if the cursor
+                // moves. We take mouse events and pretend they're touch
+                // events.
+                const augmentMouseEvent = (e) => {
+                    e.touches = e.changedTouches = [{
+                        identifier: 1,
+                        clientX: e.clientX,
+                        clientY: e.clientY,
+                    }];
+                };
+
+                const doc = this._div.ownerDocument;
+                const onMove = (e) => {
+                    augmentMouseEvent(e);
+                    this.props.onTouchMove && this.props.onTouchMove(e);
+                };
+                const onUp = (e) => {
+                    doc.removeEventListener('mousemove', onMove);
+                    doc.removeEventListener('mouseup', onUp);
+                    augmentMouseEvent(e);
+                    this.props.onTouchEnd && this.props.onTouchEnd(e);
+                };
+                doc.addEventListener('mousemove', onMove, false);
+                doc.addEventListener('mouseup', onUp, false);
+
+                // Need to .persist() a React event object before adding
+                // properties to it since it's reused otherwise.
+                e.persist();
+                augmentMouseEvent(e);
+                this.props.onTouchStart && this.props.onTouchStart(e);
+            }}
+            ref={(node) => this._div = node}
             aria-label={this.props.ariaLabel}
             role={this.props.role}
         >
