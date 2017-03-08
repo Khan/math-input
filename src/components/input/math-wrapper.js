@@ -98,8 +98,8 @@ class MathWrapper {
         this.mathField = this.MQ.MathField(element, {
             // use a span instead of a textarea so that we don't bring up the
             // native keyboard on mobile when selecting the input
-            substituteTextarea: function() {
-                return document.createElement('span');
+            substituteTextarea: () => {
+                return this.fakeTextarea = document.createElement('span');
             },
         });
         this.callbacks = callbacks;

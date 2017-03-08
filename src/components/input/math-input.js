@@ -255,36 +255,78 @@ const MathInput = React.createClass({
         });
     },
 
+    _forwardGlobalKeydown(e) {
+        if (e.keyCode === 13 || e.keyCode === 27) { // Enter, Esc
+            this.props.keypadElement.dismiss();
+            return;
+        }
+        if (e.fakeForMathquill) {
+            return;
+        }
+        const e2 = new KeyboardEvent(e.type, e);
+        Object.defineProperty(e2, 'keyCode', {get: () => e.keyCode});
+        Object.defineProperty(e2, 'charCode', {get: () => e.charCode});
+        Object.defineProperty(e2, 'which', {get: () => e.which});
+        e2.fakeForMathquill = true;
+        this.mathField.fakeTextarea.value = '';
+        this.mathField.fakeTextarea.dispatchEvent(e2);
+        this._postKeyEvent();
+    },
+
+    _forwardGlobalKeypress(e) {
+        if (e.fakeForMathquill) {
+            return;
+        }
+        // Don't allow spaces, since they invalidate a lot of expressions in our grader
+        if (e.charCode === 32) {
+            return;
+        }
+        const e2 = new KeyboardEvent(e.type, e);
+        Object.defineProperty(e2, 'keyCode', {get: () => e.keyCode});
+        Object.defineProperty(e2, 'charCode', {get: () => e.charCode});
+        Object.defineProperty(e2, 'which', {get: () => e.which});
+        e2.fakeForMathquill = true;
+        this.mathField.fakeTextarea.value = String.fromCharCode(e.charCode);
+        this.mathField.fakeTextarea.dispatchEvent(e2);
+        this._postKeyEvent();
+    },
+
     blur() {
+        window.removeEventListener('keydown', this._forwardGlobalKeydown);
+        window.removeEventListener('keypress', this._forwardGlobalKeypress);
         this.mathField.blur();
         this.props.onBlur && this.props.onBlur();
         this.setState({focused: false, handle: {visible: false}});
     },
 
+    _postKeyEvent() {
+      // Trigger an `onChange` if the value in the input changed, and hide
+      // the cursor handle whenever the user types a key. If the value
+      // changed as a result of a keypress, we need to be careful not to
+      // call `setState` until after `onChange` has resolved.
+      const hideCursor = () => {
+          this.setState({
+              handle: {
+                  visible: false
+              }
+          });
+      };
+      const value = this.mathField.getContent();
+      if (this.props.value !== value) {
+          this.props.onChange(value, hideCursor);
+      } else {
+          hideCursor();
+      }
+    },
+
     focus() {
+        window.addEventListener('keydown', this._forwardGlobalKeydown);
+        window.addEventListener('keypress', this._forwardGlobalKeypress);
         // Pass this component's handleKey method to the keypad so it can call
         // it whenever it needs to trigger a keypress action.
         this.props.keypadElement.setKeyHandler(key => {
             const cursor = this.mathField.pressKey(key);
-
-            // Trigger an `onChange` if the value in the input changed, and hide
-            // the cursor handle whenever the user types a key. If the value
-            // changed as a result of a keypress, we need to be careful not to
-            // call `setState` until after `onChange` has resolved.
-            const hideCursor = () => {
-                this.setState({
-                    handle: {
-                        visible: false,
-                    },
-                });
-            };
-            const value = this.mathField.getContent();
-            if (this.props.value !== value) {
-                this.props.onChange(value, hideCursor);
-            } else {
-                hideCursor();
-            }
-
+            this._postKeyEvent();
             return cursor;
         });
 
