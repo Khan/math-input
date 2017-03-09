@@ -203,9 +203,9 @@ const MathInput = React.createClass({
         window.removeEventListener('touchstart', this.recordTouchStartOutside);
         window.removeEventListener('touchend', this.blurOnTouchEndOutside);
         window.removeEventListener('touchcancel', this.blurOnTouchEndOutside);
-        window.removeEventListener('resize', this._clearKeypadBoundsCache());
+        window.removeEventListener('resize', this._clearKeypadBoundsCache);
         window.removeEventListener(
-                'orientationchange', this._clearKeypadBoundsCache());
+                'orientationchange', this._clearKeypadBoundsCache);
     },
 
     _clearKeypadBoundsCache(keypadNode) {
