@@ -288,7 +288,10 @@ const MathInput = React.createClass({
         e2.fakeForMathquill = true;
         this.mathField.fakeTextarea.value = String.fromCharCode(e.charCode);
         this.mathField.fakeTextarea.dispatchEvent(e2);
-        this._postKeyEvent();
+        // Mathquill seems to not be fully initialized for the first time this is called;
+        // this prevents the first keypress from being "lost"
+        // TODO(Aria): understand why.
+        setTimeout(this._postKeyEvent, 0);
     },
 
     blur() {
