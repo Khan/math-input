@@ -6,11 +6,11 @@ Built with [React](https://github.com/facebook/react), [Redux](https://github.co
 
 ![](https://cloud.githubusercontent.com/assets/1309177/15994911/d1acd29e-30c5-11e6-9707-6bef8e69114f.gif)
 
-**Disclaimer**: `math-input` is under active development and, in fact, is yet to be fully rolled out across [khanacademy.org](https://www.khanacademy.org/). Its API could (and most likely will) change substantially in the near future!
+Try it yourself on [Khan Academy](https://www.khanacademy.org/math/algebra-basics/alg-basics-algebraic-expressions/alg-basics-distributive-property/e/distributive-property-with-variables). (Note: you'll need to enable mobile emulation, if you're accessing the site from a desktop browser.)
 
 ## Supported Features
 
-- Multiple keypad configurations, so as to accommodate for a range of possible input types (i.e., fractions/mixed numbers and algebraic expressions).
+- Multiple keypad configurations, so as to accommodate a range of input types (i.e., fractions/mixed numbers, algebraic expressions).
 - Multi-page keypads, with swipeable page navigation.
 - Touch-and-drag interactions (as supported by the stock iOS and Android keypads).
 - A draggable cursor with a detached handle, for fine-grained control on touch devices.
@@ -22,7 +22,7 @@ Built with [React](https://github.com/facebook/react), [Redux](https://github.co
 
 A live demo is available via [GitHub Pages](http://khan.github.io/math-input/). You can configure some of the keypad's behaviors, along with the set of active keys, via the [editor](http://khan.github.io/math-input/custom.html).
 
-Note that, as the input and keypad only respond to touch events, you'll need to enable mobile emulation mode (e.g., as supported by Chrome) in order to use the keypad in a desktop browser.
+Note that, as the input and keypad only respond to touch events, you'll need to enable mobile emulation (e.g., as supported by Chrome) in order to use the keypad in a desktop browser.
 
 To run the demo locally, clone the repo, `npm install`, `npm run watch`, and open the `index.html` page. The local behaviors can similarly be customized via the editor @ `custom.html`.
 
