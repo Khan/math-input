@@ -24,7 +24,7 @@ A live demo is available via [GitHub Pages](http://khan.github.io/math-input/). 
 
 Note that, as the input and keypad only respond to touch events, you'll need to enable mobile emulation (e.g., as supported by Chrome) in order to use the keypad in a desktop browser.
 
-To run the demo locally, clone the repo, `npm install`, `npm run watch`, and open the `index.html` page. The local behaviors can similarly be customized via the editor @ `custom.html`.
+To run the demo locally, clone the repo, `yarn install`, `yarn watch`, and open the `index.html` page. The local behaviors can similarly be customized via the editor @ `custom.html`.
 
 ## License
 
