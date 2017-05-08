@@ -172,9 +172,29 @@ const MathInput = React.createClass({
             }
         };
 
+        this.blurOnClickOutside = (evt) => {
+          if (this.state.focused) {
+              const isOutside = true;
+              if (this.props.keypadElement) {
+                  const bounds = this._getKeypadBounds();
+                  const x = evt.clientX;
+                  const y = evt.clientY;
+                  if ((bounds.left <= x && bounds.right >= x &&
+                          bounds.top <= y && bounds.bottom >= y) ||
+                          bounds.bottom < y) {
+                      isOutside = false;
+                  }
+              }
+              this.blur();
+          }
+          this.didTouchOutside = false;
+          this.didScroll = false;
+        };
+
         window.addEventListener('touchstart', this.recordTouchStartOutside);
         window.addEventListener('touchend', this.blurOnTouchEndOutside);
         window.addEventListener('touchcancel', this.blurOnTouchEndOutside);
+        window.addEventListener('click', this.blurOnClickOutside);
 
         // HACK(benkomalo): if the window resizes, the keypad bounds can
         // change. That's a bit peeking into the internals of the keypad
