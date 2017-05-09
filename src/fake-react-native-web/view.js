@@ -88,6 +88,7 @@ const View = React.createClass({
                         clientX: e.clientX,
                         clientY: e.clientY,
                     }];
+                    e.isMouseEvent = true;
                 };
 
                 const doc = this._div.ownerDocument;

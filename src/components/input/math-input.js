@@ -19,6 +19,11 @@ const {brightGreen, gray17} = require('../common-style');
 
 const constrainingFrictionFactor = 0.8;
 
+const rectContainsXY = (bounds, x, y) => {
+    return (bounds.left <= x && bounds.right >= x &&
+            bounds.top <= y && bounds.bottom >= y);
+};
+
 const MathInput = React.createClass({
     propTypes: {
         // The React element node associated with the keypad that will send
@@ -126,9 +131,7 @@ const MathInput = React.createClass({
                                 evt.changedTouches[i].clientX,
                                 evt.changedTouches[i].clientY,
                             ];
-                            if ((bounds.left <= x && bounds.right >= x &&
-                                    bounds.top <= y && bounds.bottom >= y) ||
-                                    bounds.bottom < y) {
+                            if (rectContainsXY(bounds, x, y) || bounds.bottom < y) {
                                 touchDidStartInOrBelowKeypad = true;
                                 break;
                             }
@@ -173,15 +176,14 @@ const MathInput = React.createClass({
         };
 
         this.blurOnClickOutside = (evt) => {
-          if (this.state.focused) {
+          const x = evt.clientX;
+          const y = evt.clientY;
+          const containerBounds = this._container.getBoundingClientRect();
+          if (this.state.focused && !rectContainsXY(containerBounds, x, y)) {
               const isOutside = true;
               if (this.props.keypadElement) {
                   const bounds = this._getKeypadBounds();
-                  const x = evt.clientX;
-                  const y = evt.clientY;
-                  if ((bounds.left <= x && bounds.right >= x &&
-                          bounds.top <= y && bounds.bottom >= y) ||
-                          bounds.bottom < y) {
+                  if (rectContainsXY(bounds, x, y) || bounds.bottom < y) {
                       isOutside = false;
                   }
               }
@@ -195,6 +197,7 @@ const MathInput = React.createClass({
         window.addEventListener('touchend', this.blurOnTouchEndOutside);
         window.addEventListener('touchcancel', this.blurOnTouchEndOutside);
         window.addEventListener('click', this.blurOnClickOutside);
+        window.addEventListener('mousedown', this.blurOnClickOutside);
 
         // HACK(benkomalo): if the window resizes, the keypad bounds can
         // change. That's a bit peeking into the internals of the keypad
@@ -566,7 +569,12 @@ const MathInput = React.createClass({
     },
 
     handleTouchStart(e) {
-        e.stopPropagation();
+        // Propagating touch events breaks zoom things; not propagating
+        // mouse events breaks switching between inputs.
+        // TODO(aria): Figure out how to simplify this for everything
+        if (!e.isMouseEvent) {
+          e.stopPropagation();
+        }
 
         // Hide the cursor handle on touch start, if the handle itself isn't
         // handling the touch event.
@@ -591,7 +599,12 @@ const MathInput = React.createClass({
     },
 
     handleTouchMove(e) {
-        e.stopPropagation();
+        // Propagating touch events breaks zoom things; not propagating
+        // mouse events breaks switching between inputs.
+        // TODO(aria): Figure out how to simplify this for everything
+        if (!e.isMouseEvent) {
+          e.stopPropagation();
+        }
 
         // Update the handle-less cursor's location on move, if there's any
         // content in the box. Note that if the user touched outside the keypad
@@ -606,7 +619,12 @@ const MathInput = React.createClass({
     },
 
     handleTouchEnd(e) {
-        e.stopPropagation();
+        // Propagating touch events breaks zoom things; not propagating
+        // mouse events breaks switching between inputs.
+        // TODO(aria): Figure out how to simplify this for everything
+        if (!e.isMouseEvent) {
+          e.stopPropagation();
+        }
 
         // And on touch-end, reveal the cursor, unless the input is empty. Note
         // that if the user touched outside the keypad (e.g., with a different
@@ -770,7 +788,7 @@ const MathInput = React.createClass({
             onTouchStart={this.handleTouchStart}
             onTouchMove={this.handleTouchMove}
             onTouchEnd={this.handleTouchEnd}
-            onClick={e => e.stopPropagation()}
+            onClick={e => null }
             role={'textbox'}
             ariaLabel={i18n._('Math input box')}
         >
