@@ -228,6 +228,7 @@ const MathInput = React.createClass({
                 'orientationchange', this._clearKeypadBoundsCache);
         window.removeEventListener('keydown', this._forwardGlobalKeydown);
         window.removeEventListener('keypress', this._forwardGlobalKeypress);
+        window.removeEventListener('click', this.blurOnClickOutside);
     },
 
     _clearKeypadBoundsCache(keypadNode) {
