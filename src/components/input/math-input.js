@@ -180,14 +180,16 @@ const MathInput = React.createClass({
           const y = evt.clientY;
           const containerBounds = this._container.getBoundingClientRect();
           if (this.state.focused && !rectContainsXY(containerBounds, x, y)) {
-              const isOutside = true;
+              let isOutside = true;
               if (this.props.keypadElement) {
                   const bounds = this._getKeypadBounds();
                   if (rectContainsXY(bounds, x, y) || bounds.bottom < y) {
                       isOutside = false;
                   }
               }
-              this.blur();
+              if (isOutside) {
+                this.blur();
+              }
           }
           this.didTouchOutside = false;
           this.didScroll = false;
