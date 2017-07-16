@@ -1,8 +1,8 @@
 const React = require('react');
 const {StyleSheet, css} = require('aphrodite');
 
-const View = React.createClass({
-    propTypes: {
+class View extends React.Component {
+    static propTypes = {
         ariaLabel: React.PropTypes.string,
         children: React.PropTypes.oneOfType([
             React.PropTypes.arrayOf(React.PropTypes.node),
@@ -27,37 +27,35 @@ const View = React.createClass({
         onTouchStart: React.PropTypes.func,
         role: React.PropTypes.string,
         style: React.PropTypes.any,
-    },
+    };
 
-    statics: {
-        styles: StyleSheet.create({
-            // From: https://github.com/necolas/react-native-web/blob/master/src/components/View/index.js
-            initial: {
-                alignItems: 'stretch',
-                borderWidth: 0,
-                borderStyle: 'solid',
-                boxSizing: 'border-box',
-                display: 'flex',
-                flexBasis: 'auto',
-                flexDirection: 'column',
-                margin: 0,
-                padding: 0,
-                position: 'relative',
-                // button and anchor reset
-                backgroundColor: 'transparent',
-                color: 'inherit',
-                font: 'inherit',
-                textAlign: 'inherit',
-                textDecorationLine: 'none',
-                // list reset
-                listStyle: 'none',
-                // fix flexbox bugs
-                maxWidth: '100%',
-                minHeight: 0,
-                minWidth: 0,
-            },
-        }),
-    },
+    static styles = StyleSheet.create({
+        // From: https://github.com/necolas/react-native-web/blob/master/src/components/View/index.js
+        initial: {
+            alignItems: 'stretch',
+            borderWidth: 0,
+            borderStyle: 'solid',
+            boxSizing: 'border-box',
+            display: 'flex',
+            flexBasis: 'auto',
+            flexDirection: 'column',
+            margin: 0,
+            padding: 0,
+            position: 'relative',
+            // button and anchor reset
+            backgroundColor: 'transparent',
+            color: 'inherit',
+            font: 'inherit',
+            textAlign: 'inherit',
+            textDecorationLine: 'none',
+            // list reset
+            listStyle: 'none',
+            // fix flexbox bugs
+            maxWidth: '100%',
+            minHeight: 0,
+            minWidth: 0,
+        },
+    });
 
     render() {
         const className = css(
@@ -79,7 +77,7 @@ const View = React.createClass({
         >
             {this.props.children}
         </div>;
-    },
-});
+    }
+}
 
 module.exports = View;

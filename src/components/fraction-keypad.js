@@ -15,23 +15,23 @@ const CursorContexts = require('./input/cursor-contexts');
 const {cursorContextPropType} = require('./prop-types');
 const KeyConfigs = require('../data/key-configs');
 
-const FractionKeypad = React.createClass({
-    propTypes: {
+class FractionKeypad extends React.Component {
+    static propTypes = {
         cursorContext: cursorContextPropType.isRequired,
         dynamicJumpOut: React.PropTypes.bool,
         roundTopLeft: React.PropTypes.bool,
         roundTopRight: React.PropTypes.bool,
-    },
+    };
 
-    statics: {
-        rows: 4,
-        columns: 4,
-        // Since we include a two-key popover in the top-right, when the popover
-        // is visible, the keypad will expand to fill the equivalent of five
-        // rows vertically.
-        maxVisibleRows: 5,
-        numPages: 1,
-    },
+    static rows = 4;
+    static columns = 4;
+
+    // Since we include a two-key popover in the top-right, when the popover
+    // is visible, the keypad will expand to fill the equivalent of five
+    // rows vertically.
+    static maxVisibleRows = 5;
+
+    static numPages = 1;
 
     render() {
         const {
@@ -159,8 +159,8 @@ const FractionKeypad = React.createClass({
                 />
             </View>
         </Keypad>;
-    },
-});
+    }
+}
 
 const mapStateToProps = (state) => {
     return {

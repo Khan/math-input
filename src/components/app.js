@@ -5,13 +5,11 @@ const {components} = require('../index');
 
 const {Keypad, KeypadInput} = components;
 
-const App = React.createClass({
-    getInitialState() {
-        return {
-            keypadElement: null,
-            value: "",
-        };
-    },
+class App extends React.Component {
+    state = {
+        keypadElement: null,
+        value: "",
+    };
 
     render() {
         return <View>
@@ -39,7 +37,7 @@ const App = React.createClass({
                 }}
             />
         </View>;
-    },
-});
+    }
+}
 
 module.exports = App;

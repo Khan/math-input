@@ -15,13 +15,13 @@ const {
     innerBorderColor, innerBorderStyle, innerBorderWidthPx, gray85,
 } = require('./common-style');
 
-const TwoPageKeypad = React.createClass({
-    propTypes: {
+class TwoPageKeypad extends React.Component {
+    static propTypes = {
         currentPage: React.PropTypes.oneOf([0, 1]).isRequired,
         leftPage: React.PropTypes.node.isRequired,
         paginationEnabled: React.PropTypes.bool.isRequired,
         rightPage: React.PropTypes.node.isRequired,
-    },
+    };
 
     render() {
         const {
@@ -53,8 +53,8 @@ const TwoPageKeypad = React.createClass({
                 </View>
             </Keypad>;
         }
-    },
-});
+    }
+}
 
 const styles = StyleSheet.create({
     keypad: {

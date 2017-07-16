@@ -19,8 +19,8 @@ const {brightGreen, gray17} = require('../common-style');
 
 const constrainingFrictionFactor = 0.8;
 
-const MathInput = React.createClass({
-    propTypes: {
+class MathInput extends React.Component {
+    static propTypes = {
         // The React element node associated with the keypad that will send
         // key-press events to this input. If provided, this can be used to:
         //   (1) Avoid blurring the input, on user interaction with the keypad.
@@ -37,29 +37,27 @@ const MathInput = React.createClass({
         // An extra, vanilla style object, to be applied to the math input.
         style: React.PropTypes.any,
         value: React.PropTypes.string,
-    },
+    };
 
-    getDefaultProps() {
-        return {
-            scrollable: false,
-            style: {},
-            value: "",
-        };
-    },
+    static defaultProps = {
+        scrollable: false,
+        style: {},
+        value: "",
+    };
 
-    getInitialState() {
-        return {
-            focused: false,
-            handle: {
-                animateIntoPosition: false,
-                visible: false,
-                x: 0,
-                y: 0,
-            },
-        };
-    },
+    state = {
+        focused: false,
+        handle: {
+            animateIntoPosition: false,
+            visible: false,
+            x: 0,
+            y: 0,
+        },
+    };
 
     componentDidMount() {
+        this._isMounted = true;
+
         this.mathField = new MathWrapper(this._mathContainer, {}, {
             onCursorMove: (cursor) => {
                 // TODO(charlie): It's not great that there is so much coupling
@@ -185,47 +183,49 @@ const MathInput = React.createClass({
         window.addEventListener('resize', this._clearKeypadBoundsCache);
         window.addEventListener(
                 'orientationchange', this._clearKeypadBoundsCache);
-    },
+    }
 
     componentWillReceiveProps(props) {
         if (this.props.keypadElement !== props.keypadElement) {
             this._clearKeypadBoundsCache();
         }
-    },
+    }
 
     componentDidUpdate() {
         if (this.mathField.getContent() !== this.props.value) {
             this.mathField.setContent(this.props.value);
         }
-    },
+    }
 
     componentWillUnmount() {
+        this._isMounted = false;
+
         window.removeEventListener('touchstart', this.recordTouchStartOutside);
         window.removeEventListener('touchend', this.blurOnTouchEndOutside);
         window.removeEventListener('touchcancel', this.blurOnTouchEndOutside);
         window.removeEventListener('resize', this._clearKeypadBoundsCache());
         window.removeEventListener(
                 'orientationchange', this._clearKeypadBoundsCache());
-    },
+    }
 
-    _clearKeypadBoundsCache(keypadNode) {
+    _clearKeypadBoundsCache = (keypadNode) => {
         this._keypadBounds = null;
-    },
+    };
 
-    _cacheKeypadBounds(keypadNode) {
+    _cacheKeypadBounds = (keypadNode) => {
         this._keypadBounds = keypadNode.getBoundingClientRect();
-    },
+    };
 
     /** Gets and cache they bounds of the keypadElement */
-    _getKeypadBounds() {
+    _getKeypadBounds = () => {
         if (!this._keypadBounds) {
             const node = ReactDOM.findDOMNode(this.props.keypadElement);
             this._cacheKeypadBounds(node);
         }
         return this._keypadBounds;
-    },
+    };
 
-    _updateCursorHandle(animateIntoPosition) {
+    _updateCursorHandle = (animateIntoPosition) => {
         const containerBounds = this._container.getBoundingClientRect();
         const cursor = this._container.querySelector('.mq-cursor');
         const cursorBounds = cursor.getBoundingClientRect();
@@ -243,9 +243,9 @@ const MathInput = React.createClass({
                 y: cursorBounds.bottom + gapBelowCursor - containerBounds.top,
             },
         });
-    },
+    };
 
-    _hideCursorHandle() {
+    _hideCursorHandle = () => {
         this.setState({
             handle: {
                 visible: false,
@@ -253,15 +253,15 @@ const MathInput = React.createClass({
                 y: 0,
             },
         });
-    },
+    };
 
-    blur() {
+    blur = () => {
         this.mathField.blur();
         this.props.onBlur && this.props.onBlur();
         this.setState({focused: false, handle: {visible: false}});
-    },
+    };
 
-    focus() {
+    focus = () => {
         // Pass this component's handleKey method to the keypad so it can call
         // it whenever it needs to trigger a keypress action.
         this.props.keypadElement.setKeyHandler(key => {
@@ -296,7 +296,7 @@ const MathInput = React.createClass({
             // we'd use requestAnimationFrame here, but it's unsupported on
             // Android Browser 4.3.
             setTimeout(() => {
-                if (this.isMounted()) {
+                if (this._isMounted) {
                     // TODO(benkomalo): the keypad is animating at this point,
                     // so we can't call _cacheKeypadBounds(), even though
                     // it'd be nice to do so. It should probably be the case
@@ -309,7 +309,7 @@ const MathInput = React.createClass({
                 }
             });
         });
-    },
+    };
 
     /**
      * Tries to determine which DOM node to place the cursor next to based on
@@ -335,7 +335,7 @@ const MathInput = React.createClass({
      *                      sign determines direction.
      * @returns {boolean} - true if a node was hit, false otherwise.
      */
-    _findHitNode(containerBounds, x, y, dx, dy) {
+    _findHitNode = (containerBounds, x, y, dx, dy) => {
         while (y >= containerBounds.top && y <= containerBounds.bottom) {
             y += dy;
 
@@ -425,7 +425,7 @@ const MathInput = React.createClass({
         }
 
         return false;
-    },
+    };
 
     /**
      * Inserts the cursor at the DOM node closest to the given coordinates,
@@ -434,7 +434,7 @@ const MathInput = React.createClass({
      * @param {number} x - the x coordinate in the viewport
      * @param {number} y - the y coordinate in the viewport
      */
-    _insertCursorAtClosestNode(x, y) {
+    _insertCursorAtClosestNode = (x, y) => {
         const cursor = this.mathField.getCursor();
 
         // Pre-emptively check if the input has any child nodes; if not, the
@@ -495,9 +495,9 @@ const MathInput = React.createClass({
             this.props.keypadElement.setCursor({
                 context: this.mathField.contextForCursor(cursor),
             });
-    },
+    };
 
-    handleTouchStart(e) {
+    handleTouchStart = (e) => {
         e.stopPropagation();
 
         // Hide the cursor handle on touch start, if the handle itself isn't
@@ -520,9 +520,9 @@ const MathInput = React.createClass({
         if (!this.state.focused) {
             this.focus();
         }
-    },
+    };
 
-    handleTouchMove(e) {
+    handleTouchMove = (e) => {
         e.stopPropagation();
 
         // Update the handle-less cursor's location on move, if there's any
@@ -535,9 +535,9 @@ const MathInput = React.createClass({
             const touch = e.changedTouches[0];
             this._insertCursorAtClosestNode(touch.clientX, touch.clientY);
         }
-    },
+    };
 
-    handleTouchEnd(e) {
+    handleTouchEnd = (e) => {
         e.stopPropagation();
 
         // And on touch-end, reveal the cursor, unless the input is empty. Note
@@ -548,7 +548,7 @@ const MathInput = React.createClass({
         if (this.mathField.getContent() !== "" && this.state.focused) {
             this._updateCursorHandle();
         }
-    },
+    };
 
     /**
      * When a touch starts in the cursor handle, we track it so as to avoid
@@ -556,7 +556,7 @@ const MathInput = React.createClass({
      *
      * @param {TouchEvent} e - the raw touch event from the browser
      */
-    onCursorHandleTouchStart(e) {
+    onCursorHandleTouchStart = (e) => {
         // NOTE(charlie): The cursor handle is a child of this view, so whenever
         // it receives a touch event, that event would also typically be bubbled
         // up to our own handlers. However, we want the cursor to handle its own
@@ -570,9 +570,9 @@ const MathInput = React.createClass({
 
         // Cache the container bounds, so as to avoid re-computing.
         this._containerBounds = this._container.getBoundingClientRect();
-    },
+    };
 
-    _constrainToBound(value, min, max, friction) {
+    _constrainToBound = (value, min, max, friction) => {
         if (value < min) {
             return min + (value - min) * friction;
         } else if (value > max) {
@@ -580,7 +580,7 @@ const MathInput = React.createClass({
         } else {
             return value;
         }
-    },
+    };
 
     /**
      * When the user moves the cursor handle update the position of the cursor
@@ -588,7 +588,7 @@ const MathInput = React.createClass({
      *
      * @param {TouchEvent} e - the raw touch event from the browser
      */
-    onCursorHandleTouchMove(e) {
+    onCursorHandleTouchMove = (e) => {
         e.stopPropagation();
 
         const x = e.changedTouches[0].clientX;
@@ -634,29 +634,29 @@ const MathInput = React.createClass({
         const adjustedY = y - distanceAboveFingerToTrySelecting;
 
         this._insertCursorAtClosestNode(x, adjustedY);
-    },
+    };
 
     /**
      * When the user releases the cursor handle, animate it back into place.
      *
      * @param {TouchEvent} e - the raw touch event from the browser
      */
-    onCursorHandleTouchEnd(e) {
+    onCursorHandleTouchEnd = (e) => {
         e.stopPropagation();
 
         this._updateCursorHandle(true);
-    },
+    };
 
     /**
      * If the gesture is cancelled mid-drag, simply hide it.
      *
      * @param {TouchEvent} e - the raw touch event from the browser
      */
-    onCursorHandleTouchCancel(e) {
+    onCursorHandleTouchCancel = (e) => {
         e.stopPropagation();
 
         this._updateCursorHandle(true);
-    },
+    };
 
     render() {
         const {focused, handle} = this.state;
@@ -727,8 +727,8 @@ const MathInput = React.createClass({
                 onTouchCancel={this.onCursorHandleTouchCancel}
             />}
         </View>;
-    },
-});
+    }
+}
 
 const fontSizePt = 18;
 

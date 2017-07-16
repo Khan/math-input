@@ -8,10 +8,10 @@ const {StyleSheet} = require('aphrodite');
 const {View} = require('../fake-react-native-web');
 const {gray25} = require('./common-style');
 
-const CornerDecal = React.createClass({
-    propTypes: {
+class CornerDecal extends React.Component {
+    static propTypes = {
         style: React.PropTypes.any,
-    },
+    };
 
     render() {
         const {style} = this.props;
@@ -34,8 +34,8 @@ const CornerDecal = React.createClass({
                 />
             </svg>
         </View>;
-    },
-});
+    }
+}
 
 const triangleSizePx = 7;
 

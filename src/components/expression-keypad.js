@@ -24,25 +24,25 @@ const {cursorContextPropType, keyIdPropType} = require('./prop-types');
 const KeyConfigs = require('../data/key-configs');
 const CursorContexts = require('./input/cursor-contexts');
 
-const ExpressionKeypad = React.createClass({
-    propTypes: {
+class ExpressionKeypad extends React.Component {
+    static propTypes = {
         currentPage: React.PropTypes.number.isRequired,
         cursorContext: cursorContextPropType.isRequired,
         dynamicJumpOut: React.PropTypes.bool,
         extraKeys: React.PropTypes.arrayOf(keyIdPropType),
         roundTopLeft: React.PropTypes.bool,
         roundTopRight: React.PropTypes.bool,
-    },
+    };
 
-    statics: {
-        rows: 4,
-        columns: 5,
-        // Though we include an infinite-key popover in the bottom-left, it's
-        // assumed that we don't need to accommodate cases in which that key
-        // contains more than four children.
-        maxVisibleRows: 4,
-        numPages: 2,
-    },
+    static rows = 4;
+    static columns = 5;
+
+    // Though we include an infinite-key popover in the bottom-left, it's
+    // assumed that we don't need to accommodate cases in which that key
+    // contains more than four children.
+    static maxVisibleRows = 4;
+
+    static numPages = 2;
 
     render() {
         const {
@@ -288,8 +288,8 @@ const ExpressionKeypad = React.createClass({
             rightPage={rightPage}
             leftPage={leftPage}
         />;
-    },
-});
+    }
+}
 
 const styles = StyleSheet.create({
     // NOTE(charlie): These backgrounds are applied to as to fill in some

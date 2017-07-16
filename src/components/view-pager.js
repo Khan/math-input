@@ -18,20 +18,18 @@ const {
     innerBorderWidthPx,
 } = require('./common-style');
 
-const ViewPager = React.createClass({
-    propTypes: {
+class ViewPager extends React.Component {
+    static propTypes = {
         // Whether the page should animate to its next specified position.
         animateToPosition: React.PropTypes.bool,
         children: childrenPropType,
         pageWidthPx: React.PropTypes.number.isRequired,
         translateX: React.PropTypes.number.isRequired,
-    },
+    };
 
-    getInitialState() {
-        return {
-            animationDurationMs: 0,
-        };
-    },
+    state = {
+        animationDurationMs: 0,
+    };
 
     componentWillReceiveProps(newProps) {
         // Compute the appropriate animation length, if the pager should
@@ -50,7 +48,7 @@ const ViewPager = React.createClass({
         this.setState({
             animationDurationMs,
         });
-    },
+    }
 
     render() {
         const {children, pageWidthPx, translateX} = this.props;
@@ -91,8 +89,8 @@ const ViewPager = React.createClass({
                 {children[1]}
             </View>
         </View>;
-    },
-});
+    }
+}
 
 const styles = StyleSheet.create({
     twoPagePager: {

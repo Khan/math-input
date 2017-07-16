@@ -18,8 +18,8 @@ const {
     compactKeypadBorderRadiusPx,
 } = require('./common-style');
 
-const KeypadContainer = React.createClass({
-    propTypes: {
+class KeypadContainer extends React.Component {
+    static propTypes = {
         active: React.PropTypes.bool,
         extraKeys: React.PropTypes.arrayOf(keyIdPropType),
         keypadType: React.PropTypes.oneOf(Object.keys(KeypadTypes)).isRequired,
@@ -31,17 +31,12 @@ const KeypadContainer = React.createClass({
         onElementMounted: React.PropTypes.func,
         onPageSizeChange: React.PropTypes.func.isRequired,
         style: React.PropTypes.any,
-    },
+    };
 
-    getInitialState() {
-        // Use (partially unsupported) viewport units until componentDidMount.
-        // It's okay to use the viewport units since they'll be overridden as
-        // soon as the JavaScript kicks in.
-        return {
-            hasBeenActivated: false,
-            viewportWidth: "100vw",
-        };
-    },
+    state = {
+        hasBeenActivated: false,
+        viewportWidth: "100vw",
+    };
 
     componentWillMount() {
         if (this.props.active) {
@@ -49,7 +44,7 @@ const KeypadContainer = React.createClass({
                 hasBeenActivated: this.props.active,
             });
         }
-    },
+    }
 
     componentDidMount() {
         // Relay the initial size metrics.
@@ -60,7 +55,7 @@ const KeypadContainer = React.createClass({
         window.addEventListener(
             "orientationchange", this._throttleResizeHandler
         );
-    },
+    }
 
     componentWillReceiveProps(nextProps) {
         if (!this.state.hasBeenActivated && nextProps.active) {
@@ -68,22 +63,22 @@ const KeypadContainer = React.createClass({
                 hasBeenActivated: true,
             });
         }
-    },
+    }
 
     componentDidUpdate(prevProps) {
         if (prevProps.active && !this.props.active) {
             this.props.onDismiss && this.props.onDismiss();
         }
-    },
+    }
 
     componentWillUnmount() {
         window.removeEventListener("resize", this._throttleResizeHandler);
         window.removeEventListener(
             "orientationchange", this._throttleResizeHandler
         );
-    },
+    }
 
-    _throttleResizeHandler() {
+    _throttleResizeHandler = () => {
         // Throttle the resize callbacks.
         // https://developer.mozilla.org/en-US/docs/Web/Events/resize
         if (this._resizeTimeout == null) {
@@ -93,9 +88,9 @@ const KeypadContainer = React.createClass({
                 this._onResize();
             }, 66);
         }
-    },
+    };
 
-    _onResize() {
+    _onResize = () => {
         // Whenever the page resizes, we need to force an update, as the button
         // heights and keypad width are computed based on horizontal space.
         this.setState({
@@ -103,9 +98,9 @@ const KeypadContainer = React.createClass({
         });
 
         this.props.onPageSizeChange(window.innerWidth, window.innerHeight);
-    },
+    };
 
-    renderKeypad() {
+    renderKeypad = () => {
         const {
             extraKeys,
             keypadType,
@@ -141,7 +136,7 @@ const KeypadContainer = React.createClass({
             default:
                 throw new Error("Invalid keypad type: " + keypadType);
         }
-    },
+    };
 
     render() {
         const {
@@ -204,8 +199,8 @@ const KeypadContainer = React.createClass({
                 </View>
             </View>
         </View>;
-    },
-});
+    }
+}
 
 const keypadAnimationDurationMs = 300;
 const borderWidthPx = 1;

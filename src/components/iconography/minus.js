@@ -5,14 +5,14 @@
  */
 const React = require('react');
 
-const Minus = React.createClass({
-    propTypes: {
+class Minus extends React.Component {
+    static propTypes = {
         color: React.PropTypes.string.isRequired,
-    },
+    };
 
     render() {
         return <svg width="48" height="48" viewBox="0 0 48 48"><g fill="none" fillRule="evenodd"><path fill="none" d="M0 0h48v48H0z"/><path d="M19 24h10" stroke={this.props.color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></g></svg>;
-    },
-});
+    }
+}
 
 module.exports = Minus;

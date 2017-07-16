@@ -13,8 +13,8 @@ const EchoManager = require('./echo-manager');
 const PopoverManager = require('./popover-manager');
 const {echoPropType, popoverPropType} = require('./prop-types');
 
-const Keypad = React.createClass({
-    propTypes: {
+class Keypad extends React.Component {
+    static propTypes = {
         // Whether the keypad is active, i.e., whether it should be rendered as
         // visible or invisible.
         active: React.PropTypes.bool,
@@ -26,29 +26,33 @@ const Keypad = React.createClass({
         popover: popoverPropType,
         removeEcho: React.PropTypes.func.isRequired,
         style: React.PropTypes.any,
-    },
+    };
 
     componentDidMount() {
+        this._isMounted = true;
+
         window.addEventListener("resize", this._onResize);
         this._updateSizeAndPosition();
-    },
+    }
 
     componentWillReceiveProps(newProps) {
         if (!this._container && (newProps.popover || newProps.echoes.length)) {
             this._computeContainer();
         }
-    },
+    }
 
     componentWillUnmount() {
-        window.removeEventListener("resize", this._onResize);
-    },
+        this._isMounted = false;
 
-    _computeContainer() {
+        window.removeEventListener("resize", this._onResize);
+    }
+
+    _computeContainer = () => {
         const domNode = ReactDOM.findDOMNode(this);
         this._container = domNode.getBoundingClientRect();
-    },
+    };
 
-    _updateSizeAndPosition() {
+    _updateSizeAndPosition = () => {
         // Mark the container for recalculation next time the keypad is
         // opened.
         // TODO(charlie): Since we're not recalculating the container
@@ -57,9 +61,9 @@ const Keypad = React.createClass({
         // difficult to do and, as such, incredibly unlikely, but we may
         // want to reconsider the caching here.
         this._container = null;
-    },
+    };
 
-    _onResize() {
+    _onResize = () => {
         // Whenever the page resizes, we need to recompute the container's
         // bounding box. This is the only time that the bounding box can change.
 
@@ -69,12 +73,12 @@ const Keypad = React.createClass({
             this._resizeTimeout = setTimeout(() => {
                 this._resizeTimeout = null;
 
-                if (this.isMounted()) {
+                if (this._isMounted) {
                     this._updateSizeAndPosition();
                 }
             }, 66);
         }
-    },
+    };
 
     render() {
         const {
@@ -123,8 +127,8 @@ const Keypad = React.createClass({
             />
             <PopoverManager popover={relativePopover} />
         </View>;
-    },
-});
+    }
+}
 
 const mapStateToProps = (state) => {
     return {

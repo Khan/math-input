@@ -13,10 +13,10 @@ const KeyConfigs = require('../data/key-configs');
 const {KeyTypes} = require('../consts');
 const {keyIdPropType} = require('./prop-types');
 
-const ManyKeypadButton = React.createClass({
-    propTypes: {
+class ManyKeypadButton extends React.Component {
+    static propTypes = {
         keys: React.PropTypes.arrayOf(keyIdPropType).isRequired,
-    },
+    };
 
     render() {
         const {keys, ...rest} = this.props;
@@ -37,7 +37,7 @@ const ManyKeypadButton = React.createClass({
             };
             return <TouchableKeypadButton keyConfig={keyConfig} {...rest} />;
         }
-    },
-});
+    }
+}
 
 module.exports = ManyKeypadButton;

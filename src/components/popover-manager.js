@@ -21,11 +21,11 @@ const animationDurationMs = 200;
 
 // A container component used to position a popover absolutely at a specific
 // position.
-const PopoverContainer = React.createClass({
-    propTypes: {
+class PopoverContainer extends React.Component {
+    static propTypes = {
         bounds: boundingBoxPropType.isRequired,
         childKeys: React.PropTypes.arrayOf(keyConfigPropType).isRequired,
-    },
+    };
 
     render() {
         const {bounds, childKeys} = this.props;
@@ -38,13 +38,13 @@ const PopoverContainer = React.createClass({
         return <div style={containerStyle}>
             <MultiSymbolPopover keys={childKeys} />
         </div>;
-    },
-});
+    }
+}
 
-const PopoverManager = React.createClass({
-    propTypes: {
+class PopoverManager extends React.Component {
+    static propTypes = {
         popover: popoverPropType,
-    },
+    };
 
     render() {
         const {popover} = this.props;
@@ -61,7 +61,7 @@ const PopoverManager = React.createClass({
                 childKeys={popover.childKeyIds.map(id => KeyConfigs[id])}
             />}
         </ReactCSSTransitionGroup>;
-    },
-});
+    }
+}
 
 module.exports = PopoverManager;
