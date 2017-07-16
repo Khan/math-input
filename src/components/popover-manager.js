@@ -15,7 +15,7 @@ const {
 } = require('./prop-types');
 
 // NOTE(charlie): These must be kept in sync with the transition durations and
-// classnames specified in popover.css.
+// classnames specified in popover.less.
 const animationTransitionName = 'popover';
 const animationDurationMs = 200;
 

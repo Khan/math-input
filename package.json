@@ -4,9 +4,10 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
+    "css": "./node_modules/.bin/lessc --autoprefix=\"chrome>=1,ie>=1,ff>=1,safari>=1\" --clean-css=\"--s1 --advanced --compatibility=ie8\" less/main.less build/math-input.css",
     "test": "mocha test/test_*.js --compilers js:babel-register",
     "watch_test": "mocha test/test_spec.js --watch --compilers js:babel-register",
-    "watch": "webpack --config webpack.config.dev.js --watch"
+    "watch": "npm run css && webpack --config webpack.config.dev.js --watch"
   },
   "author": "",
   "license": "MIT",
@@ -28,6 +29,9 @@
     "babel-register": "^6.7.2",
     "exports-loader": "^0.6.3",
     "jsdom": "^8.4.0",
+    "less": "^2.7.2",
+    "less-plugin-autoprefix": "^1.5.1",
+    "less-plugin-clean-css": "^1.5.1",
     "mocha": "^2.4.5",
     "mocha-jsdom": "^1.1.0",
     "react": "15.3.2",
