@@ -20,7 +20,14 @@ module.exports = {
         loaders: [
             {
                 test: /\.jsx?$/,
-                loaders: ['babel'],
+                loader: 'babel',
+                query: {
+                    presets: [
+                        ["es2015", {"loose": true}],
+                        "react",
+                        "stage-2",
+                    ],
+                },
                 exclude: /(node_modules|mathquill)/,
             },
         ],
