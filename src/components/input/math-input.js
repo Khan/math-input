@@ -117,7 +117,8 @@ class MathInput extends React.Component {
                 // TODO(charlie): Inject this logic.
                 if (!this._container.contains(evt.target)) {
                     let touchDidStartInOrBelowKeypad = false;
-                    if (this.props.keypadElement) {
+                    if (this.props.keypadElement
+                            && this.props.keypadElement.getDOMNode()) {
                         const bounds = this._getKeypadBounds();
                         for (let i = 0; i < evt.changedTouches.length; i++) {
                             const [x, y] = [
@@ -219,7 +220,7 @@ class MathInput extends React.Component {
     /** Gets and cache they bounds of the keypadElement */
     _getKeypadBounds = () => {
         if (!this._keypadBounds) {
-            const node = ReactDOM.findDOMNode(this.props.keypadElement);
+            const node = this.props.keypadElement.getDOMNode();
             this._cacheKeypadBounds(node);
         }
         return this._keypadBounds;
@@ -304,7 +305,7 @@ class MathInput extends React.Component {
                     // keypad is settled (then scrollIntoView wouldn't have
                     // to make assumptions about that either).
                     const maybeKeypadNode = this.props.keypadElement &&
-                        ReactDOM.findDOMNode(this.props.keypadElement);
+                        this.props.keypadElement.getDOMNode();
                     scrollIntoView(this._container, maybeKeypadNode);
                 }
             });

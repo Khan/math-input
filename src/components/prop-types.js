@@ -34,13 +34,14 @@ const keypadConfigurationPropType = React.PropTypes.shape({
     extraKeys: React.PropTypes.arrayOf(keyIdPropType),
 });
 
-// NOTE(charlie): This is a React element.
+// NOTE(jared): This is no longer guaranteed to be React element
 const keypadElementPropType = React.PropTypes.shape({
     activate: React.PropTypes.func.isRequired,
     dismiss: React.PropTypes.func.isRequired,
     configure: React.PropTypes.func.isRequired,
     setCursor: React.PropTypes.func.isRequired,
     setKeyHandler: React.PropTypes.func.isRequired,
+    getDOMNode: React.PropTypes.func.isRequired,
 });
 
 const bordersPropType =  React.PropTypes.arrayOf(

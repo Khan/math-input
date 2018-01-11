@@ -1,4 +1,5 @@
 const React = require('react');
+const ReactDOM = require('react-dom');
 const {Provider} = require('react-redux');
 
 const KeypadContainer = require('./keypad-container');
@@ -47,6 +48,10 @@ class ProvidedKeypad extends React.Component {
 
     setKeyHandler = (keyHandler) => {
         this.store.dispatch(setKeyHandler(keyHandler));
+    };
+
+    getDOMNode = () => {
+        return ReactDOM.findDOMNode(this);
     };
 
     render() {
