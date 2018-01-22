@@ -69,6 +69,7 @@ class ProvidedKeypad extends React.Component {
                         configure: this.configure,
                         setCursor: this.setCursor,
                         setKeyHandler: this.setKeyHandler,
+                        getDOMNode: this.getDOMNode,
                     };
                     onElementMounted &&
                         onElementMounted(elementWithDispatchMethods);

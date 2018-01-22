@@ -4,6 +4,7 @@ const webpack = require('webpack');
 module.exports = {
     entry: {
         app: './src/app',
+        nativeApp: './src/native-app',
         deps: [
             'react',
             'react-dom',
