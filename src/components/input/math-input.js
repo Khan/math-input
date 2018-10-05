@@ -1,5 +1,3 @@
-/* globals i18n */
-
 const React = require('react');
 const ReactDOM = require('react-dom');
 const {StyleSheet} = require("aphrodite");
@@ -16,6 +14,8 @@ const {
  } = require('../common-style');
 const {keypadElementPropType} = require('../prop-types');
 const {brightGreen, gray17} = require('../common-style');
+
+const i18n = window.i18n || {_: s => s};
 
 const constrainingFrictionFactor = 0.8;
 

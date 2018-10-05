@@ -5,8 +5,9 @@
  */
 
 const $ = require('jquery');
-// TODO(kevinb) allow test code to use const MathQuill = require('mathquill');
-const MathQuill = window.MathQuill;
+// Keeping `window` in place for test suite and GitHub Pages.
+// If it does not exist, fall back to CommonJS require. - jsatk
+const MathQuill = window.MathQuill || require('mathquill');
 
 const Keys = require('../../data/keys');
 const CursorContexts = require('./cursor-contexts');

@@ -2,11 +2,10 @@
  * This file contains configuration settings for the buttons in the keypad.
  */
 
-/* globals i18n */
-
 const Keys = require('../data/keys');
 const {DecimalSeparators, IconTypes, KeyTypes} = require('../consts');
 const {decimalSeparator} = require('../utils');
+const i18n = window.i18n || {_: s => s};
 
 const KeyConfigs = {
     // Basic math keys.
