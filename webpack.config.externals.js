@@ -74,5 +74,10 @@ module.exports = {
             commonjs2: 'mathquill',
             amd: 'mathquill',
         },
+        'katex': {
+            commonjs: 'katex',
+            commonjs2: 'katex',
+            amd: 'katex',
+        },
     },
 };
