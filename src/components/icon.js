@@ -3,6 +3,7 @@
  */
 
 const React = require('react');
+const PropTypes = require('prop-types');
 const {StyleSheet} = require('aphrodite');
 
 const MathIcon = require('./math-icon');
@@ -17,12 +18,12 @@ const unfocusedColor = gray25;
 
 class Icon extends React.PureComponent {
     static propTypes = {
-        focused: React.PropTypes.bool,
+        focused: PropTypes.bool,
         icon: iconPropType.isRequired,
         // An Aphrodite style object, or an array of Aphrodite style objects.
         // Note that custom styles will only be applied to text and math icons
         // (and not SVG icons).
-        style: React.PropTypes.any,
+        style: PropTypes.any,
     };
 
     render() {

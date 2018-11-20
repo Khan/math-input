@@ -1,4 +1,5 @@
 const React = require('react');
+const PropTypes = require('prop-types');
 const {connect} = require('react-redux');
 const {StyleSheet} = require('aphrodite');
 
@@ -20,17 +21,17 @@ const {
 
 class KeypadContainer extends React.Component {
     static propTypes = {
-        active: React.PropTypes.bool,
-        extraKeys: React.PropTypes.arrayOf(keyIdPropType),
-        keypadType: React.PropTypes.oneOf(Object.keys(KeypadTypes)).isRequired,
-        layoutMode: React.PropTypes.oneOf(Object.keys(LayoutModes)).isRequired,
-        navigationPadEnabled: React.PropTypes.bool.isRequired,
-        onDismiss: React.PropTypes.func,
+        active: PropTypes.bool,
+        extraKeys: PropTypes.arrayOf(keyIdPropType),
+        keypadType: PropTypes.oneOf(Object.keys(KeypadTypes)).isRequired,
+        layoutMode: PropTypes.oneOf(Object.keys(LayoutModes)).isRequired,
+        navigationPadEnabled: PropTypes.bool.isRequired,
+        onDismiss: PropTypes.func,
         // A callback that should be triggered with the root React element on
         // mount.
-        onElementMounted: React.PropTypes.func,
-        onPageSizeChange: React.PropTypes.func.isRequired,
-        style: React.PropTypes.any,
+        onElementMounted: PropTypes.func,
+        onPageSizeChange: PropTypes.func.isRequired,
+        style: PropTypes.any,
     };
 
     state = {

@@ -34,6 +34,11 @@ module.exports = {
     },
     // TODO(alex): Pick just one type below, e.g. commonjs2
     externals: {
+        'prop-types': {
+            commonjs: 'prop-types',
+            commonjs2: 'prop-types',
+            amd: 'prop-types',
+        },
         'react': {
             commonjs: 'react',
             commonjs2: 'react',

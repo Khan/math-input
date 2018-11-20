@@ -3,6 +3,7 @@
  */
 
 const React = require('react');
+const PropTypes = require('prop-types');
 const {connect} = require('react-redux');
 
 const {StyleSheet, css} = require('aphrodite');
@@ -29,30 +30,30 @@ const {
 
 class KeypadButton extends React.PureComponent {
     static propTypes = {
-        ariaLabel: React.PropTypes.string,
+        ariaLabel: PropTypes.string,
         // The borders to display on the button. Typically, this should be set
         // using one of the preset `BorderStyles` options.
         borders: bordersPropType,
         // Any additional keys that can be accessed by long-pressing on the
         // button.
-        childKeys: React.PropTypes.arrayOf(keyConfigPropType),
+        childKeys: PropTypes.arrayOf(keyConfigPropType),
         // Whether the button should be rendered in a 'disabled' state, i.e.,
         // without any touch feedback.
-        disabled: React.PropTypes.bool,
-        focused: React.PropTypes.bool,
-        heightPx: React.PropTypes.number.isRequired,
+        disabled: PropTypes.bool,
+        focused: PropTypes.bool,
+        heightPx: PropTypes.number.isRequired,
         icon: iconPropType,
-        onTouchCancel: React.PropTypes.func,
-        onTouchEnd: React.PropTypes.func,
-        onTouchMove: React.PropTypes.func,
-        onTouchStart: React.PropTypes.func,
-        popoverEnabled: React.PropTypes.bool,
-        style: React.PropTypes.any,
-        type: React.PropTypes.oneOf(Object.keys(KeyTypes)).isRequired,
+        onTouchCancel: PropTypes.func,
+        onTouchEnd: PropTypes.func,
+        onTouchMove: PropTypes.func,
+        onTouchStart: PropTypes.func,
+        popoverEnabled: PropTypes.bool,
+        style: PropTypes.any,
+        type: PropTypes.oneOf(Object.keys(KeyTypes)).isRequired,
         // NOTE(charlie): We may want to make this optional for phone layouts
         // (and rely on Flexbox instead), since it might not be pixel perfect
         // with borders and such.
-        widthPx: React.PropTypes.number.isRequired,
+        widthPx: PropTypes.number.isRequired,
     };
 
     static defaultProps = {

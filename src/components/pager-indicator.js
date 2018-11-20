@@ -4,6 +4,7 @@
  */
 
 const React = require('react');
+const PropTypes = require('prop-types');
 const {StyleSheet} = require('aphrodite');
 
 const {View} = require('../fake-react-native-web');
@@ -11,8 +12,8 @@ const {pageIndicatorHeightPx, gray68, gray85} = require('./common-style');
 
 class PagerIcon extends React.Component {
     static propTypes = {
-        active: React.PropTypes.bool,
-        radiusPx: React.PropTypes.number,
+        active: PropTypes.bool,
+        radiusPx: PropTypes.number,
     };
 
     static defaultProps = {
@@ -38,8 +39,8 @@ class PagerIcon extends React.Component {
 
 class PagerIndicator extends React.Component {
     static propTypes = {
-        currentPage: React.PropTypes.number.isRequired,
-        numPages: React.PropTypes.number.isRequired,
+        currentPage: PropTypes.number.isRequired,
+        numPages: PropTypes.number.isRequired,
     };
 
     render() {

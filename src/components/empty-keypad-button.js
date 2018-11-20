@@ -3,6 +3,7 @@
  */
 
 const React = require('react');
+const PropTypes = require('prop-types');
 const {connect} = require('react-redux');
 
 const GestureManager = require('./gesture-manager');
@@ -11,7 +12,7 @@ const KeypadButton = require('./keypad-button');
 
 class EmptyKeypadButton extends React.Component {
     static propTypes = {
-        gestureManager: React.PropTypes.instanceOf(GestureManager),
+        gestureManager: PropTypes.instanceOf(GestureManager),
     };
 
     render() {

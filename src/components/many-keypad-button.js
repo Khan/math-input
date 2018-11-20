@@ -4,6 +4,7 @@
  */
 
 const React = require('react');
+const PropTypes = require('prop-types');
 
 const EmptyKeypadButton = require('./empty-keypad-button');
 const TouchableKeypadButton = require('./touchable-keypad-button');
@@ -15,7 +16,7 @@ const {keyIdPropType} = require('./prop-types');
 
 class ManyKeypadButton extends React.Component {
     static propTypes = {
-        keys: React.PropTypes.arrayOf(keyIdPropType).isRequired,
+        keys: PropTypes.arrayOf(keyIdPropType).isRequired,
     };
 
     render() {

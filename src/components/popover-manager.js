@@ -4,6 +4,7 @@
  */
 
 const React = require('react');
+const PropTypes = require('prop-types');
 const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 
 const KeyConfigs = require('../data/key-configs');
@@ -24,7 +25,7 @@ const animationDurationMs = 200;
 class PopoverContainer extends React.Component {
     static propTypes = {
         bounds: boundingBoxPropType.isRequired,
-        childKeys: React.PropTypes.arrayOf(keyConfigPropType).isRequired,
+        childKeys: PropTypes.arrayOf(keyConfigPropType).isRequired,
     };
 
     render() {

@@ -2,7 +2,7 @@
  * React PropTypes that may be shared between components.
  */
 
-const React = require('react');
+const PropTypes = require('prop-types');
 
 const KeyConfigs = require('../data/key-configs');
 const CursorContexts = require('./input/cursor-contexts');
@@ -14,52 +14,52 @@ const {
     KeypadTypes,
 } = require('../consts');
 
-const iconPropType = React.PropTypes.shape({
-    type: React.PropTypes.oneOf(Object.keys(IconTypes)).isRequired,
-    data: React.PropTypes.string.isRequired,
+const iconPropType = PropTypes.shape({
+    type: PropTypes.oneOf(Object.keys(IconTypes)).isRequired,
+    data: PropTypes.string.isRequired,
 });
 
-const keyIdPropType = React.PropTypes.oneOf(Object.keys(KeyConfigs));
+const keyIdPropType = PropTypes.oneOf(Object.keys(KeyConfigs));
 
-const keyConfigPropType = React.PropTypes.shape({
-    ariaLabel: React.PropTypes.string,
+const keyConfigPropType = PropTypes.shape({
+    ariaLabel: PropTypes.string,
     id: keyIdPropType.isRequired,
-    type: React.PropTypes.oneOf(Object.keys(KeyTypes)).isRequired,
-    childKeyIds: React.PropTypes.arrayOf(keyIdPropType),
+    type: PropTypes.oneOf(Object.keys(KeyTypes)).isRequired,
+    childKeyIds: PropTypes.arrayOf(keyIdPropType),
     icon: iconPropType.isRequired,
 });
 
-const keypadConfigurationPropType = React.PropTypes.shape({
-    keypadType: React.PropTypes.oneOf(Object.keys(KeypadTypes)).isRequired,
-    extraKeys: React.PropTypes.arrayOf(keyIdPropType),
+const keypadConfigurationPropType = PropTypes.shape({
+    keypadType: PropTypes.oneOf(Object.keys(KeypadTypes)).isRequired,
+    extraKeys: PropTypes.arrayOf(keyIdPropType),
 });
 
 // NOTE(jared): This is no longer guaranteed to be React element
-const keypadElementPropType = React.PropTypes.shape({
-    activate: React.PropTypes.func.isRequired,
-    dismiss: React.PropTypes.func.isRequired,
-    configure: React.PropTypes.func.isRequired,
-    setCursor: React.PropTypes.func.isRequired,
-    setKeyHandler: React.PropTypes.func.isRequired,
-    getDOMNode: React.PropTypes.func.isRequired,
+const keypadElementPropType = PropTypes.shape({
+    activate: PropTypes.func.isRequired,
+    dismiss: PropTypes.func.isRequired,
+    configure: PropTypes.func.isRequired,
+    setCursor: PropTypes.func.isRequired,
+    setKeyHandler: PropTypes.func.isRequired,
+    getDOMNode: PropTypes.func.isRequired,
 });
 
-const bordersPropType =  React.PropTypes.arrayOf(
-    React.PropTypes.oneOf(Object.keys(BorderDirections))
+const bordersPropType =  PropTypes.arrayOf(
+    PropTypes.oneOf(Object.keys(BorderDirections))
 );
 
-const boundingBoxPropType = React.PropTypes.shape({
-    height: React.PropTypes.number,
-    width: React.PropTypes.number,
-    top: React.PropTypes.number,
-    right: React.PropTypes.number,
-    bottom: React.PropTypes.number,
-    left: React.PropTypes.number,
+const boundingBoxPropType = PropTypes.shape({
+    height: PropTypes.number,
+    width: PropTypes.number,
+    top: PropTypes.number,
+    right: PropTypes.number,
+    bottom: PropTypes.number,
+    left: PropTypes.number,
 });
 
-const echoPropType = React.PropTypes.shape({
-    animationId: React.PropTypes.string.isRequired,
-    animationType: React.PropTypes.oneOf(
+const echoPropType = PropTypes.shape({
+    animationId: PropTypes.string.isRequired,
+    animationType: PropTypes.oneOf(
         Object.keys(EchoAnimationTypes)
     ).isRequired,
     borders: bordersPropType,
@@ -67,19 +67,19 @@ const echoPropType = React.PropTypes.shape({
     initialBounds: boundingBoxPropType.isRequired,
 });
 
-const cursorContextPropType = React.PropTypes.oneOf(
+const cursorContextPropType = PropTypes.oneOf(
     Object.keys(CursorContexts)
 );
 
-const popoverPropType = React.PropTypes.shape({
+const popoverPropType = PropTypes.shape({
     parentId: keyIdPropType.isRequired,
     bounds: boundingBoxPropType.isRequired,
-    childKeyIds: React.PropTypes.arrayOf(keyIdPropType).isRequired,
+    childKeyIds: PropTypes.arrayOf(keyIdPropType).isRequired,
 });
 
-const childrenPropType = React.PropTypes.oneOfType([
-    React.PropTypes.arrayOf(React.PropTypes.node),
-    React.PropTypes.node,
+const childrenPropType = PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
 ]);
 
 module.exports = {

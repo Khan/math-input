@@ -4,6 +4,7 @@
  */
 
 const React = require('react');
+const PropTypes = require('prop-types');
 const {connect} = require('react-redux');
 
 const {View} = require('../fake-react-native-web');
@@ -18,9 +19,9 @@ const KeyConfigs = require('../data/key-configs');
 class FractionKeypad extends React.Component {
     static propTypes = {
         cursorContext: cursorContextPropType.isRequired,
-        dynamicJumpOut: React.PropTypes.bool,
-        roundTopLeft: React.PropTypes.bool,
-        roundTopRight: React.PropTypes.bool,
+        dynamicJumpOut: PropTypes.bool,
+        roundTopLeft: PropTypes.bool,
+        roundTopRight: PropTypes.bool,
     };
 
     static rows = 4;

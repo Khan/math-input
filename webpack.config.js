@@ -6,6 +6,7 @@ module.exports = {
         app: './src/app',
         nativeApp: './src/native-app',
         deps: [
+            'prop-types',
             'react',
             'react-dom',
             'react-redux',
@@ -46,7 +47,7 @@ module.exports = {
             exclude: /(node_modules|mathquill)/,
         }, {
             // appends `module.exports = window.MathQuill` to mathquill.js
-            test: /[\/]mathquill\.js$/,
+            test: /\/mathquill\.js$/,
             loader: "exports?window.MathQuill",
         }],
     },

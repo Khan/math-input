@@ -34,6 +34,7 @@
     "less-plugin-clean-css": "^1.5.1",
     "mocha": "^2.4.5",
     "mocha-jsdom": "^1.1.0",
+    "prop-types": "15.6.1",
     "react": "15.3.2",
     "react-addons-create-fragment": "15.3.2",
     "react-addons-css-transition-group": "15.3.2",

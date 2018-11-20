@@ -3,6 +3,7 @@
  */
 
 const React = require('react');
+const PropTypes = require('prop-types');
 const {connect} = require('react-redux');
 const {StyleSheet} = require('aphrodite');
 
@@ -17,10 +18,10 @@ const {
 
 class TwoPageKeypad extends React.Component {
     static propTypes = {
-        currentPage: React.PropTypes.oneOf([0, 1]).isRequired,
-        leftPage: React.PropTypes.node.isRequired,
-        paginationEnabled: React.PropTypes.bool.isRequired,
-        rightPage: React.PropTypes.node.isRequired,
+        currentPage: PropTypes.oneOf([0, 1]).isRequired,
+        leftPage: PropTypes.node.isRequired,
+        paginationEnabled: PropTypes.bool.isRequired,
+        rightPage: PropTypes.node.isRequired,
     };
 
     render() {

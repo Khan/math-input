@@ -3,6 +3,7 @@
  */
 
 const React = require('react');
+const PropTypes = require('prop-types');
 
 const {
     cursorHandleRadiusPx,
@@ -21,14 +22,14 @@ const cursorWidthPx = 2 * cursorRadiusPx;
 
 class CursorHandle extends React.Component {
     static propTypes = {
-        animateIntoPosition: React.PropTypes.bool,
-        onTouchCancel: React.PropTypes.func.isRequired,
-        onTouchEnd: React.PropTypes.func.isRequired,
-        onTouchMove: React.PropTypes.func.isRequired,
-        onTouchStart: React.PropTypes.func.isRequired,
-        visible: React.PropTypes.bool.isRequired,
-        x: React.PropTypes.number.isRequired,
-        y: React.PropTypes.number.isRequired,
+        animateIntoPosition: PropTypes.bool,
+        onTouchCancel: PropTypes.func.isRequired,
+        onTouchEnd: PropTypes.func.isRequired,
+        onTouchMove: PropTypes.func.isRequired,
+        onTouchStart: PropTypes.func.isRequired,
+        visible: PropTypes.bool.isRequired,
+        x: PropTypes.number.isRequired,
+        y: PropTypes.number.isRequired,
     };
 
     static defaultProps = {
