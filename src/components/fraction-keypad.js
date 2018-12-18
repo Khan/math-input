@@ -94,7 +94,7 @@ class FractionKeypad extends React.Component {
                     borders={BorderStyles.NONE}
                 />
                 <TouchableKeypadButton
-                    keyConfig={KeyConfigs.FRAC_MULTI}
+                    keyConfig={KeyConfigs.FRAC}
                     disabled={
                         // NOTE(charlie): It's only sufficient to use
                         // `IN_NUMERATOR` and `IN_DENOMINATOR` here because we

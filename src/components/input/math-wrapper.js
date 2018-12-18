@@ -51,9 +51,6 @@ const KeyActions = {
     [Keys.GEQ]: {str: '\\geq', fn: WRITE},
     [Keys.UP]: {str: 'Up', fn: KEYSTROKE},
     [Keys.DOWN]: {str: 'Down', fn: KEYSTROKE},
-    // The `FRAC_EXCLUSIVE` variant is handled manually, since we may need to do
-    // some additional navigation depending on the cursor position.
-    [Keys.FRAC_INCLUSIVE]: {str: '/', fn: CMD},
 };
 
 const NormalCommands = {
@@ -147,14 +144,9 @@ class MathWrapper {
             }
         } else if (Object.keys(NormalCommands).includes(key)) {
             this._writeNormalFunction(NormalCommands[key]);
-        } else if (key === Keys.FRAC_EXCLUSIVE) {
-            // If there's nothing to the left of the cursor, then we want to
-            // leave the cursor to the left of the fraction after creating it.
+        } else if (key === Keys.FRAC) {
             const shouldNavigateLeft = cursor[this.MQ.L] === MQ_END;
             this.mathField.cmd('\\frac');
-            if (shouldNavigateLeft) {
-                this.mathField.keystroke('Left');
-            }
         } else if (key === Keys.LOG_N) {
             this.mathField.write('log_{ }\\left(\\right)');
             this.mathField.keystroke('Left'); // into parentheses

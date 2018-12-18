@@ -172,7 +172,7 @@ class ExpressionKeypad extends React.Component {
             </View>
             <View style={[column, oneColumn]}>
                 <TouchableKeypadButton
-                    keyConfig={KeyConfigs.FRAC_INCLUSIVE}
+                    keyConfig={KeyConfigs.FRAC}
                     style={roundTopRight && roundedTopRight}
                 />
                 <TouchableKeypadButton keyConfig={KeyConfigs.CDOT} />
