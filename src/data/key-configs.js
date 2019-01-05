@@ -84,6 +84,21 @@ const KeyConfigs = {
         type: KeyTypes.OPERATOR,
         ariaLabel: i18n._('Less than or equal to sign'),
     },
+    // mobile native
+    [Keys.FRAC_INCLUSIVE]: {
+        type: KeyTypes.OPERATOR,
+        // I18N: A label for a button that creates a new fraction and puts the
+        // current expression in the numerator of that fraction.
+        ariaLabel: i18n._('Fraction, with current expression in numerator'),
+    },
+    // mobile native
+    [Keys.FRAC_EXCLUSIVE]: {
+        type: KeyTypes.OPERATOR,
+        // I18N: A label for a button that creates a new fraction next to the
+        // cursor.
+        ariaLabel: i18n._('Fraction, excluding the current expression'),
+    },
+    // mobile web
     [Keys.FRAC]: {
         type: KeyTypes.OPERATOR,
         // I18N: A label for a button that creates a new fraction next to the
@@ -227,6 +242,16 @@ const KeyConfigs = {
         // I18N: A label for a button that will dismiss/hide a keypad.
         ariaLabel: i18n._('Dismiss'),
     },
+};
+
+// Add in any multi-function buttons. By default, these keys will mix in any
+// configuration settings from their default child key (i.e., the first key in
+// the `childKeyIds` array).
+// TODO(charlie): Make the multi-function button's long-press interaction
+// accessible.
+// NOTE(kevinb): This is only used in the mobile native app.
+KeyConfigs[Keys.FRAC_MULTI] = {
+    childKeyIds: [Keys.FRAC_INCLUSIVE, Keys.FRAC_EXCLUSIVE],
 };
 
 // TODO(charlie): Use the numeral color for the 'Many' key.
