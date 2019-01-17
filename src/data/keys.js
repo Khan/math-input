@@ -22,6 +22,8 @@ const Keys = {
     LT: 'LT',
     GEQ: 'GEQ',
     LEQ: 'LEQ',
+    FRAC_INCLUSIVE: 'FRAC_INCLUSIVE', // mobile native only
+    FRAC_EXCLUSIVE: 'FRAC_EXCLUSIVE', // mobile native only
     FRAC: 'FRAC',
     EXP: 'EXP',
     EXP_2: 'EXP_2',
@@ -57,6 +59,9 @@ const Keys = {
     JUMP_OUT_DENOMINATOR: 'JUMP_OUT_DENOMINATOR',
 
     NOOP: 'NOOP',
+
+    // Multi-functional keys.
+    FRAC_MULTI: 'FRAC_MULTI', // mobile native only
 
     // A custom key that captures an arbitrary number of symbols but has no
     // 'default' symbol or action.
