@@ -13,6 +13,10 @@ class App extends React.Component {
         keypadType: consts.KeypadTypes.EXPRESSION,
     };
 
+    componentDidUpdate(prevProps, prevState) {
+        this.state.value !== prevState.value && window.postMessage(JSON.stringify({ latex: this.state.value }));
+    }
+
     handleChange = (e: SyntheticEvent<>) => {
         this.state.keypadElement.configure({
             keypadType: e.target.value,
