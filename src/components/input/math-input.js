@@ -660,6 +660,27 @@ class MathInput extends React.Component {
         this._updateCursorHandle(true);
     };
 
+    getOverflow() {
+        try {
+            const firstChildBounds = this._root.firstChild.getBoundingClientRect();
+            const lastChildBounds = this._root.lastChild.getBoundingClientRect();
+
+            const left = firstChildBounds.left;
+            const right = lastChildBounds.right;
+            const width = right - left;
+            const boundWidth = this._root.getBoundingClientRect().width;
+
+            return Math.max(width - boundWidth, 0);
+        }
+        catch (err) {
+            return 0;
+        }
+    }
+
+    getDOMNode() {
+        return this._container;
+    }
+
     render() {
         const {focused, handle} = this.state;
         const {style} = this.props;
