@@ -11,19 +11,66 @@ class App extends React.Component {
         keypadElement: null,
         value: "",
         keypadType: consts.KeypadTypes.EXPRESSION,
+        displayKeypadSelector: false
     };
 
+    keypadInputElement = null;
+
+    componentDidMount() {
+        this.messageEventDisposer = this.addMessageListener();
+        this.resizeEventDisposer = this.addResizeListener();
+    }
+
     componentDidUpdate(prevProps, prevState) {
-        this.state.value !== prevState.value && window.postMessage(JSON.stringify({ latex: this.state.value }));
+        this.state.value !== prevState.value && this.postMessage({ latex: this.state.value });
+    }
+
+    componentWillUnmount() {
+        this.messageEventDisposer();
+        this.resizeEventDisposer();
+    }
+
+    addMessageListener() {
+        const listener = (e) => {
+            const { latex, keypadType } = JSON.parse(e.data);
+            if (latex && latex !== this.state.value) {
+                this.setState({ value: latex });
+            }
+            if (keypadType && (keypadType === consts.KeypadTypes.EXPRESSION || keypadType === consts.KeypadTypes.FRACTION)) {
+                this.setKeypad(keypadType);
+            }
+        };
+
+        window.addEventListener('message', listener);
+        return () => window.removeEventListener("message", listener);
+    }
+
+    addResizeListener() {
+        const listener = () => this.postMessage();
+        window.addEventListener('resize', listener);
+        return () => window.removeEventListener("message", listener);
+    }
+
+    postMessage(data = {}) {
+        const keypadLayout = this.state.keypadElement.getDOMNode().getBoundingClientRect().toJSON();
+        const keypadInputLayout = this.keypadInputElement ? {
+            ...this.keypadInputElement.getDOMNode().getBoundingClientRect().toJSON(),
+            overflow: this.keypadInputElement.getOverflow()
+        } : {};
+        window.postMessage(JSON.stringify({ ...data, keypadLayout, keypadInputLayout }));
     }
 
     handleChange = (e: SyntheticEvent<>) => {
+        this.setKeypad(e.target.value);
+    };
+
+    setKeypad(keypadType) {
         this.state.keypadElement.configure({
-            keypadType: e.target.value,
+            keypadType,
             extraKeys: ["x", "y", "PI", "THETA"],
         });
-        this.setState({keypadType: e.target.value});
-    };
+        this.setState({ keypadType });
+    }
 
     render() {
         return <View>
@@ -31,11 +78,13 @@ class App extends React.Component {
                 <KeypadInput
                     value={this.state.value}
                     keypadElement={this.state.keypadElement}
-                    onChange={(value, cb) => this.setState({value}, cb)}
+                    onChange={(value, cb) => this.setState({ value }, cb)}
                     onFocus={() => this.state.keypadElement.activate()}
                     onBlur={() => this.state.keypadElement.dismiss()}
+                    ref={(node) => this.keypadInputElement = node}
+                    style={styles.hide}
                 />
-                <View style={styles.selectContainer}>
+                <View style={[styles.selectContainer, !this.state.displayKeypadSelector && styles.hide]}>
                     Keypad type: 
                     <select 
                         onChange={this.handleChange}
@@ -70,8 +119,11 @@ const styles = StyleSheet.create({
     },
     selectContainer: {
         marginTop: 16,
-        flexDirection: "row",
+        flexDirection: "row"
     },
+    hide: {
+        display: "none"
+    }
 });
 
 module.exports = App;
