@@ -32,7 +32,7 @@ class App extends React.Component {
 
     addMessageListener() {
         const listener = (e) => {
-            const { latex, keypadType } = JSON.parse(e.data);
+            const { latex, keypadType } = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
             if (latex && latex !== this.state.value) {
                 this.setState({ value: latex });
             }
