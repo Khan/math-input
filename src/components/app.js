@@ -57,7 +57,13 @@ class App extends React.Component {
             ...this.keypadInputElement.getDOMNode().getBoundingClientRect().toJSON(),
             overflow: this.keypadInputElement.getOverflow()
         } : {};
-        window.postMessage(JSON.stringify({ ...data, keypadLayout, keypadInputLayout }));
+        const message = JSON.stringify({ ...data, keypadLayout, keypadInputLayout });
+
+        window.postMessage(message);
+        /**
+         * see https://github.com/react-native-community/react-native-webview/blob/master/docs/Reference.md#onmessage
+         * */
+        window.ReactNativeWebView && window.ReactNativeWebView.postMessage(message);
     }
 
     handleChange = (e: SyntheticEvent<>) => {
@@ -82,7 +88,6 @@ class App extends React.Component {
                     onFocus={() => this.state.keypadElement.activate()}
                     onBlur={() => this.state.keypadElement.dismiss()}
                     ref={(node) => this.keypadInputElement = node}
-                    style={styles.hide}
                 />
                 <View style={[styles.selectContainer, !this.state.displayKeypadSelector && styles.hide]}>
                     Keypad type: 
