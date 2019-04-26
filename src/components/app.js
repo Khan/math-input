@@ -4,7 +4,9 @@ const {StyleSheet} = require("aphrodite");
 const {View} = require('../fake-react-native-web');
 const {components, consts} = require('../index');
 
-const {Keypad, KeypadInput} = components;
+const { Keypad, KeypadInput } = components;
+
+const TAG = 'ReactNativeJS';
 
 class App extends React.Component {
     state = {
@@ -32,7 +34,8 @@ class App extends React.Component {
 
     addMessageListener() {
         const listener = (e) => {
-            const { latex, keypadType } = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
+            const { latex, keypadType, origin } = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
+            if (!origin || origin !== TAG) return;
             if (latex && latex !== this.state.value) {
                 this.setState({ value: latex });
             }
@@ -59,11 +62,12 @@ class App extends React.Component {
         } : {};
         const message = JSON.stringify({ ...data, keypadLayout, keypadInputLayout });
 
-        window.postMessage(message);
+        
         /**
          * see https://github.com/react-native-community/react-native-webview/blob/master/docs/Reference.md#onmessage
          * */
         window.ReactNativeWebView && window.ReactNativeWebView.postMessage(message);
+        //window.postMessage(message);
     }
 
     handleChange = (e: SyntheticEvent<>) => {
