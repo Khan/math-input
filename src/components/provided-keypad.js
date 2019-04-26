@@ -18,7 +18,8 @@ class ProvidedKeypad extends React.Component {
         onElementMounted: PropTypes.func,
     };
 
-    componentWillMount() {
+    constructor(props) {
+        super(props);
         this.store = createStore();
     }
 
