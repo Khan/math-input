@@ -186,9 +186,8 @@ class MathInput extends React.Component {
         // changes, but seems like a rare enough thing to get wrong that it's
         // not worth wiring up extra things for the technical "purity" of
         // having the keypad notify of changes to us.
-        window.addEventListener('resize', this._clearKeypadBoundsCache);
-        window.addEventListener(
-                'orientationchange', this._clearKeypadBoundsCache);
+        window.addEventListener('resize', this._resizeEventHandler);
+        window.addEventListener('orientationchange', this._resizeEventHandler);
     }
 
     componentWillReceiveProps(props) {
@@ -220,9 +219,16 @@ class MathInput extends React.Component {
         window.removeEventListener('touchstart', this.recordTouchStartOutside);
         window.removeEventListener('touchend', this.blurOnTouchEndOutside);
         window.removeEventListener('touchcancel', this.blurOnTouchEndOutside);
-        window.removeEventListener('resize', this._clearKeypadBoundsCache());
-        window.removeEventListener(
-                'orientationchange', this._clearKeypadBoundsCache());
+        window.removeEventListener('resize', this._resizeEventHandler);
+        window.removeEventListener('orientationchange', this._resizeEventHandler);
+    }
+
+    _resizeEventHandler = () => {
+        this._clearKeypadBoundsCache();
+        if (this.props.scalesToFit) {
+            this.setFontSize(fontSizePt);
+            this.scaleFontToFitBounds();
+        }
     }
 
     _clearKeypadBoundsCache = (keypadNode) => {
