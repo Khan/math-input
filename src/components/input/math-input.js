@@ -176,8 +176,6 @@ class MathInput extends React.Component {
             }
         };
 
-        this._setInitialCursorPosition();
-
         window.addEventListener('touchstart', this.recordTouchStartOutside);
         window.addEventListener('touchend', this.blurOnTouchEndOutside);
         window.addEventListener('touchcancel', this.blurOnTouchEndOutside);
@@ -205,7 +203,7 @@ class MathInput extends React.Component {
     componentDidUpdate() {
         if (this.mathField.getContent() !== this.props.value) {
             this.mathField.setContent(this.props.value);
-            if(!this.mathField.getCursor().jQ[0]) this._setInitialCursorPosition();
+            this._setInitialCursorPosition();
         }
 
         if (this.props.scalesToFit) {
@@ -282,11 +280,17 @@ class MathInput extends React.Component {
     };
 
     _setInitialCursorPosition() {
+        const cursor = this._container.querySelector('.mq-cursor');
+        if (cursor) return;
+        this._root.scrollLeft = this.getOverflow();
+        this.mathField.setCursorPosition(this._root.getBoundingClientRect().right, 0, this._root.lastChild);
+        /*
         if (this.getOverflow() > 0) {
             this.mathField.setCursorPosition(0, 0, this._root.firstChild);
         } else {
             this.mathField.setCursorPosition(this._root.getBoundingClientRect().right, 0, this._root.lastChild);
         }
+        */
     }
 
     blur = () => {
