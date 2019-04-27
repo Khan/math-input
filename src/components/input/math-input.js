@@ -356,9 +356,9 @@ class MathInput extends React.Component {
      * @param {number} dx - horizontal spacing between elementFromPoint calls
      * @param {number} dy - vertical spacing between elementFromPoint calls,
      *                      sign determines direction.
-     * @returns {boolean} - true if a node was hit, false otherwise.
+     * @returns {Node} - node if a node was hit, null otherwise.
      */
-    _findHitNode = (containerBounds, x, y, dx, dy) => {
+    __findHitNode = (containerBounds, x, y, dx, dy) => {
         while (y >= containerBounds.top && y <= containerBounds.bottom) {
             y += dy;
 
@@ -367,7 +367,7 @@ class MathInput extends React.Component {
                 [x, y],
                 [x + dx, y],
             ];
-
+            
             const elements = points
                 .map(point => document.elementFromPoint(...point))
                 // We exclude the root container itself and any nodes marked
@@ -442,13 +442,92 @@ class MathInput extends React.Component {
             }
 
             if (hitNode !== null) {
-                this.mathField.setCursorPosition(x, y, hitNode);
-                return true;
+                return hitNode;
             }
         }
 
-        return false;
+        return null;
     };
+
+
+    /**
+     * Tries to determine which DOM node to place the cursor next to based on
+     * where the user drags the cursor handle.  If it finds a node it will
+     * place the cursor next to it, update the handle to be under the cursor,
+     * and return true.  If it doesn't find a node, it returns false.
+     *
+     * It searches for nodes by doing it tests at the following points:
+     *
+     *   (x - dx, y), (x, y), (x + dx, y)
+     *
+     * If it doesn't find any nodes from the rendered math it will update y
+     * by adding dy.
+     *
+     * The algorithm ends its search when y goes outside the bounds of
+     * containerBounds.
+     *
+     * @param {ClientRect} containerBounds - bounds of the container node
+     * @param {number} x - the initial x coordinate in the viewport
+     * @param {number} y - the initial y coordinate in the viewport
+     * @param {number} dx - horizontal spacing between elementFromPoint calls
+     * @param {number} dy - vertical spacing between elementFromPoint calls,
+     *                      sign determines direction.
+     * @returns {boolean} - true if a node was hit, false otherwise.
+     */
+    _findHitNode = (containerBounds, x, y, dx, dy) => {
+        const hitNode = this.__findHitNode(containerBounds, x, y, dx, dy);
+        if (hitNode !== null) {
+            this.mathField.setCursorPosition(x, y, hitNode);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Inserts the cursor at the DOM node closest to the given coordinates,
+     * based on hit-tests conducted looping through #_findHitNode.
+     *
+     * @param {number} x - the x coordinate in the viewport
+     * @param {number} y - the y coordinate in the viewport
+     * @returns {boolean} - true if a node was hit, false otherwise.
+     */
+    _findHitNodeHandler = (x, y) => {
+        let dy, hitNode;
+
+        //  changed by @ShaMan123: 
+        //  I'm not sure about this. 
+        //  In the case of scalesToFit === true should this method scale it's dx, dy accordingly?
+        //  Seems to work as expected.
+        const scale = this.scale;
+
+        // Vertical spacing between hit tests
+        // dy is negative because we're moving upwards.
+        dy = -8 * scale;
+
+        // Horizontal spacing between hit tests
+        // Note: This value depends on the font size.  If the gap is too small
+        // we end up placing the cursor at the end of the expression when we
+        // shouldn't.
+        const dx = 5 * scale;
+
+        hitNode = this._findHitNode(this._containerBounds, x, y, dx, dy);
+        if (hitNode) {
+            return hitNode;
+        }
+
+        // If we haven't found anything start from the top.
+        y = this._containerBounds.top;
+
+        // dy is positive b/c we're going downwards.
+        dy = 8 * scale;
+
+        hitNode = this._findHitNode(this._containerBounds, x, y, dx, dy);
+        if (hitNode) {
+            return hitNode;
+        }
+
+        return false;
+    }
 
     /**
      * Inserts the cursor at the DOM node closest to the given coordinates,
@@ -473,41 +552,38 @@ class MathInput extends React.Component {
             y = this._containerBounds.top + 10;
         }
 
-        let dy;
-
-        // Vertical spacing between hit tests
-        // dy is negative because we're moving upwards.
-        dy = -8;
-
-        // Horizontal spacing between hit tests
-        // Note: This value depends on the font size.  If the gap is too small
-        // we end up placing the cursor at the end of the expression when we
-        // shouldn't.
-        const dx = 5;
-
-        if (this._findHitNode(this._containerBounds, x, y, dx, dy)) {
-            return;
-        }
-
-        // If we haven't found anything start from the top.
-        y = this._containerBounds.top;
-
-        // dy is positive b/c we're going downwards.
-        dy = 8;
-
-        if (this._findHitNode(this._containerBounds, x, y, dx, dy)) {
-            return;
-        }
-
+        if (this._findHitNodeHandler(x, y)) return;
         const firstChildBounds = this._root.firstChild.getBoundingClientRect();
         const lastChildBounds = this._root.lastChild.getBoundingClientRect();
 
         const left = firstChildBounds.left;
         const right = lastChildBounds.right;
 
+        const rootWidth = this._rootBounds.width;
+        const scroll = this._root.scrollLeft;       
+        
+        //  see #_findHitNodeHandler
+        const scale = this.scale;
+        const dx = 5 * scale;
+        const scrollDiff = this.props.scrollable || this.props.scalesToFit ? 0 : dx;
+        const vLeft = left + scroll;
+        const vRight = vLeft + rootWidth;
+
         // We've exhausted all of the options. We're likely either to the right
         // or left of all of the math, so we place the cursor at the end to
         // which it's closest.
+
+        // First We check if the view is overflowing.
+        if (Math.trunc(right - left) > rootWidth) {
+            if (Math.abs(x - right) < Math.abs(x - left)) {
+                this._findHitNodeHandler(vRight - scrollDiff, y);
+            } else {
+                this._findHitNodeHandler(vLeft + scrollDiff, y);
+            }
+            return;
+        }
+
+        //If view is not overflowing.
         if (Math.abs(x - right) < Math.abs(x - left)) {
             cursor.insAtRightEnd(this.mathField.mathField.__controller.root);
         } else {
@@ -532,7 +608,7 @@ class MathInput extends React.Component {
         // moved anyway.
         if (this.mathField.getContent() !== "") {
             this._containerBounds = this._container.getBoundingClientRect();
-
+            this._rootBounds = this._root.getBoundingClientRect();
             // Make the cursor visible and set the handle-less cursor's
             // location.
             const touch = e.changedTouches[0];
@@ -593,6 +669,7 @@ class MathInput extends React.Component {
 
         // Cache the container bounds, so as to avoid re-computing.
         this._containerBounds = this._container.getBoundingClientRect();
+        this._rootBounds = this._root.getBoundingClientRect();
     };
 
     _constrainToBound = (value, min, max, friction) => {
@@ -690,7 +767,6 @@ class MathInput extends React.Component {
             const right = lastChildBounds.right;
             const width = right - left;
             const boundWidth = this._root.getBoundingClientRect().width;
-
             return Math.max(width - boundWidth, 0);
         }
         catch (err) {
@@ -714,6 +790,10 @@ class MathInput extends React.Component {
     setFontSize(size) {
         this.fontSize = size;
         this._root.style.fontSize = `${size}pt`;
+    }
+
+    get scale() {
+        return this.fontSize / fontSizePt;
     }
 
     render() {
