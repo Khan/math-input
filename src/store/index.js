@@ -98,6 +98,7 @@ const createStore = () => {
 
             case 'PressKey':
                 const keyConfig = KeyConfigs[action.key];
+                window.ReactNativeWebView && window.ReactNativeWebView.postMessage(JSON.stringify({ key: keyConfig.id }));
                 // NOTE(charlie): Our keypad system operates by triggering key
                 // presses with key IDs in a dumb manner, such that the keys
                 // don't know what they can do--instead, the store is
@@ -106,7 +107,7 @@ const createStore = () => {
                 // dismissal here rather than dispatching a dismiss action in
                 // the first place.
                 if (keyConfig.id === Keys.DISMISS) {
-                    return keypadReducer(state, {type: 'DismissKeypad'});
+                    return keypadReducer(state, { type: 'DismissKeypad' });
                 }
                 return state;
 
