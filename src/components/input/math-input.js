@@ -176,6 +176,8 @@ class MathInput extends React.Component {
             }
         };
 
+        this._setInitialCursorPosition();
+
         window.addEventListener('touchstart', this.recordTouchStartOutside);
         window.addEventListener('touchend', this.blurOnTouchEndOutside);
         window.addEventListener('touchcancel', this.blurOnTouchEndOutside);
@@ -203,6 +205,7 @@ class MathInput extends React.Component {
     componentDidUpdate() {
         if (this.mathField.getContent() !== this.props.value) {
             this.mathField.setContent(this.props.value);
+            if(!this.mathField.getCursor().jQ[0]) this._setInitialCursorPosition();
         }
 
         if (this.props.scalesToFit) {
@@ -278,6 +281,14 @@ class MathInput extends React.Component {
         });
     };
 
+    _setInitialCursorPosition() {
+        if (this.getOverflow() > 0) {
+            this.mathField.setCursorPosition(0, 0, this._root.firstChild);
+        } else {
+            this.mathField.setCursorPosition(this._root.getBoundingClientRect().right, 0, this._root.lastChild);
+        }
+    }
+
     blur = () => {
         this.mathField.blur();
         this.props.onBlur && this.props.onBlur();
@@ -303,14 +314,14 @@ class MathInput extends React.Component {
             };
             const value = this.mathField.getContent();
             if (this.props.value !== value) {
-                this.props.onChange(value, hideCursor);
+                this.props.onChange(value, hideCursor, key);
             } else {
                 hideCursor();
             }
 
             return cursor;
         });
-
+        
         this.mathField.focus();
         this.props.onFocus && this.props.onFocus();
         this.setState({focused: true}, () => {
@@ -538,7 +549,7 @@ class MathInput extends React.Component {
      */
     _insertCursorAtClosestNode = (x, y) => {
         const cursor = this.mathField.getCursor();
-
+       
         // Pre-emptively check if the input has any child nodes; if not, the
         // input is empty, so we throw the cursor at the start.
         if (!this._root.hasChildNodes()) {

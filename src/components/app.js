@@ -12,6 +12,7 @@ class App extends React.Component {
     state = {
         keypadElement: null,
         value: "",
+        key: "",
         keypadType: consts.KeypadTypes.EXPRESSION,
         displayKeypadSelector: false,
         scrollable: true,
@@ -26,7 +27,7 @@ class App extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        this.state.value !== prevState.value && this.postMessage({ latex: this.state.value });
+        this.state.value !== prevState.value && this.postMessage({ latex: this.state.value, key: this.state.key });
     }
 
     componentWillUnmount() {
@@ -100,7 +101,7 @@ class App extends React.Component {
                 <KeypadInput
                     value={this.state.value}
                     keypadElement={this.state.keypadElement}
-                    onChange={(value, cb) => this.setState({ value }, cb)}
+                    onChange={(value, cb, key) => this.setState({ value, key }, cb)}
                     onFocus={() => this.state.keypadElement.activate()}
                     onBlur={() => this.state.keypadElement.dismiss()}
                     ref={(node) => this.keypadInputElement = node}
