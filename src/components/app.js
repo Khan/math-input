@@ -1,5 +1,5 @@
 const React = require('react');
-const {StyleSheet} = require("aphrodite");
+const { StyleSheet } = require("aphrodite");
 
 const {View} = require('../fake-react-native-web');
 const {components, consts} = require('../index');
@@ -101,7 +101,7 @@ class App extends React.Component {
                 <KeypadInput
                     value={this.state.value}
                     keypadElement={this.state.keypadElement}
-                    onChange={(value, cb, key) => this.setState({ value, key }, cb)}
+                    onChange={(value, key, cb) => this.setState({ value, key }, cb)}
                     onFocus={() => this.state.keypadElement.activate()}
                     onBlur={() => this.state.keypadElement.dismiss()}
                     ref={(node) => this.keypadInputElement = node}
