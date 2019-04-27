@@ -41,7 +41,7 @@ class App extends React.Component {
             if (!origin || origin !== TAG) return;
             const stateReducer = {};
             if (latex && latex !== this.state.value) {
-                Object.assign(stateReducer, { value: latex });
+                Object.assign(stateReducer, { value: latex, key: '' });
             }
             if (typeof scrollable === 'boolean' && scrollable !== this.state.scrollable) {
                 Object.assign(stateReducer, { scrollable });
