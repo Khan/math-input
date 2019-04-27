@@ -34,13 +34,16 @@ class MathInput extends React.Component {
         // Whether the input should be scrollable. This is typically only
         // necessary when a fixed width has been provided through the `style`
         // prop.
+        scalesToFit: PropTypes.bool,
         scrollable: PropTypes.bool,
+        
         // An extra, vanilla style object, to be applied to the math input.
         style: PropTypes.any,
         value: PropTypes.string,
     };
 
     static defaultProps = {
+        scalesToFit: false,
         scrollable: false,
         style: {},
         value: "",
@@ -91,6 +94,7 @@ class MathInput extends React.Component {
         // As it causes layout jank due to jQuery animations of scroll
         // properties, we disable it unless it is explicitly requested (as it
         // should be in the case of a fixed-width input).
+        this.__scrollHandler = this.mathField.mathField.__controller.scrollHoriz;
         if (!this.props.scrollable) {
             this.mathField.mathField.__controller.scrollHoriz = function() {};
         }
@@ -191,11 +195,22 @@ class MathInput extends React.Component {
         if (this.props.keypadElement !== props.keypadElement) {
             this._clearKeypadBoundsCache();
         }
+
+        if (this.props.scrollable !== props.scrollable) {
+            this.mathField.mathField.__controller.scrollHoriz = props.scrollable ? this.__scrollHandler : function () { };
+        }
     }
 
     componentDidUpdate() {
         if (this.mathField.getContent() !== this.props.value) {
             this.mathField.setContent(this.props.value);
+        }
+
+        if (this.props.scalesToFit) {
+            this.scaleFontToFitBounds();
+        }
+        else if (this.fontSize !== fontSizePt) {
+            this.setFontSize(fontSizePt);
         }
     }
 
@@ -679,6 +694,20 @@ class MathInput extends React.Component {
 
     getDOMNode() {
         return this._container;
+    }
+
+    fontSize = fontSizePt;
+    scaleFontToFitBounds() {
+        const boundWidth = this._root.getBoundingClientRect().width;
+        const overflow = this.getOverflow();
+        const scaler = boundWidth / (boundWidth + overflow);
+        this.fontSize *= scaler;
+        this.setFontSize(this.fontSize);
+    }
+
+    setFontSize(size) {
+        this.fontSize = size;
+        this._root.style.fontSize = `${size}pt`;
     }
 
     render() {

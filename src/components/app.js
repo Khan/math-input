@@ -13,7 +13,9 @@ class App extends React.Component {
         keypadElement: null,
         value: "",
         keypadType: consts.KeypadTypes.EXPRESSION,
-        displayKeypadSelector: false
+        displayKeypadSelector: false,
+        scrollable: true,
+        scalesToFit: false
     };
 
     keypadInputElement = null;
@@ -34,14 +36,24 @@ class App extends React.Component {
 
     addMessageListener() {
         const listener = (e) => {
-            const { latex, keypadType, origin } = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
+            let { latex, keypadType, scrollable, scalesToFit, origin } = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
             if (!origin || origin !== TAG) return;
+            const stateReducer = {};
             if (latex && latex !== this.state.value) {
-                this.setState({ value: latex });
+                Object.assign(stateReducer, { value: latex });
             }
-            if (keypadType && (keypadType === consts.KeypadTypes.EXPRESSION || keypadType === consts.KeypadTypes.FRACTION)) {
-                this.setKeypad(keypadType);
+            if (typeof scrollable === 'boolean' && scrollable !== this.state.scrollable) {
+                Object.assign(stateReducer, { scrollable });
             }
+            if (typeof scalesToFit === 'boolean' && scalesToFit !== this.state.scalesToFit) {
+                Object.assign(stateReducer, { scalesToFit });
+            }
+            if ((keypadType === consts.KeypadTypes.EXPRESSION || keypadType === consts.KeypadTypes.FRACTION) && keypadType !== this.state.keypadType) {
+                this.configureKeypad(keypadType);
+                Object.assign(stateReducer, { keypadType });
+            }
+
+            return Object.keys(stateReducer).length > 0 && this.setState(stateReducer);
         };
 
         window.addEventListener('message', listener);
@@ -71,15 +83,15 @@ class App extends React.Component {
     }
 
     handleChange = (e: SyntheticEvent<>) => {
-        this.setKeypad(e.target.value);
+        this.configureKeypad(e.target.value);
+        this.setState({ keypadType });
     };
 
-    setKeypad(keypadType) {
+    configureKeypad(keypadType) {
         this.state.keypadElement.configure({
             keypadType,
             extraKeys: ["x", "y", "PI", "THETA"],
         });
-        this.setState({ keypadType });
     }
 
     render() {
@@ -92,6 +104,8 @@ class App extends React.Component {
                     onFocus={() => this.state.keypadElement.activate()}
                     onBlur={() => this.state.keypadElement.dismiss()}
                     ref={(node) => this.keypadInputElement = node}
+                    scrollable={this.state.scrollable}
+                    scalesToFit={this.state.scalesToFit}
                 />
                 <View style={[styles.selectContainer, !this.state.displayKeypadSelector && styles.hide]}>
                     Keypad type: 
