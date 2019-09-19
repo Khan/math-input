@@ -108,8 +108,11 @@ class NodeManager {
      */
     layoutPropsForId(id) {
         if (!this._cachedBoundingBoxesById[id]) {
-            this._cachedBoundingBoxesById[id] =
-                this._nodesById[id].getBoundingClientRect();
+            const node = this._nodesById[id];
+
+            this._cachedBoundingBoxesById[id] = node
+                ? node.getBoundingClientRect()
+                : new DOMRect();
         }
 
         return {
