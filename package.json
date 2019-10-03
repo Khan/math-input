@@ -15,7 +15,7 @@
   "dependencies": {
     "aphrodite": "^1.1.0",
     "jquery": "^2.1.1",
-    "katex": "^0.9.0",
+    "katex": "0.11.1",
     "performance-now": "^0.2.0",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0"
