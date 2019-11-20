@@ -185,6 +185,8 @@ class MathInput extends React.Component {
         window.addEventListener('resize', this._clearKeypadBoundsCache);
         window.addEventListener(
                 'orientationchange', this._clearKeypadBoundsCache);
+
+        window.document.addEventListener("focusout", this._keepInputFocus);
     }
 
     componentWillReceiveProps(props) {
@@ -208,6 +210,7 @@ class MathInput extends React.Component {
         window.removeEventListener('resize', this._clearKeypadBoundsCache());
         window.removeEventListener(
                 'orientationchange', this._clearKeypadBoundsCache());
+        window.document.addEventListener("focusout", this._keepInputFocus);
     }
 
     _clearKeypadBoundsCache = (keypadNode) => {
@@ -217,6 +220,20 @@ class MathInput extends React.Component {
     _cacheKeypadBounds = (keypadNode) => {
         this._keypadBounds = keypadNode.getBoundingClientRect();
     };
+
+    _keepInputFocus = event => {
+        if (!this.state.focused) {
+          return;
+        }
+    
+        if (event.relatedTarget === null) {
+          event.preventDefault();
+          this.inputRef.focus();
+        } else {
+          this.inputRef.blur();
+          this.blur();
+        }
+      };
 
     /** Gets and cache they bounds of the keypadElement */
     _getKeypadBounds = () => {
@@ -710,7 +727,13 @@ class MathInput extends React.Component {
         >
             {/* NOTE(charlie): This is used purely to namespace the styles in
                 overrides.css. */}
-            <div className='keypad-input'>
+            <div 
+                className="keypad-input"
+                tabIndex={"0"}
+                ref={ref => {
+                this.inputRef = ref;
+                }}
+            >
                 {/* NOTE(charlie): This element must be styled with inline
                     styles rather than with Aphrodite classes, as MathQuill
                     modifies the class names on the DOM node. */}
