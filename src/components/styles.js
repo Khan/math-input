@@ -35,4 +35,19 @@ module.exports = StyleSheet.create({
     roundedTopRight: {
         borderTopRightRadius: compactKeypadBorderRadiusPx,
     },
+    reverseRow: {
+        flexDirection: 'row-reverse',
+    },
+    reverseColumn: {
+        flexDirection: 'column-reverse',
+    },
+    keyLeft: {
+        order: 1,
+    },
+    keyCenter: {
+        order: 2,
+    },
+    keyRight: {
+        order: 3,
+    }
 });

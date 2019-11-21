@@ -11,7 +11,7 @@ const Keypad = require('./keypad');
 const ViewPager = require('./view-pager');
 const PagerIndicator = require('./pager-indicator');
 const {View} = require('../fake-react-native-web');
-const {column, row, fullWidth} = require('./styles');
+const {column, reverseRow, fullWidth} = require('./styles');
 const {
     innerBorderColor, innerBorderStyle, innerBorderWidthPx, gray85,
 } = require('./common-style');
@@ -44,12 +44,12 @@ class TwoPageKeypad extends React.Component {
             </Keypad>;
         } else {
             return <Keypad style={styles.keypad}>
-                <View style={row}>
-                    <View style={fullWidth}>
-                        {leftPage}
-                    </View>
+                <View style={reverseRow}>
                     <View style={[styles.borderLeft, fullWidth]}>
                         {rightPage}
+                    </View>
+                    <View style={fullWidth}>
+                        {leftPage}
                     </View>
                 </View>
             </Keypad>;
