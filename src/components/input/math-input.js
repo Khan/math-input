@@ -730,8 +730,8 @@ class MathInput extends React.Component {
             <div 
                 className="keypad-input"
                 tabIndex={"0"}
-                ref={ref => {
-                this.inputRef = ref;
+                ref={node => {
+                    this.inputRef = node;
                 }}
             >
                 {/* NOTE(charlie): This element must be styled with inline
