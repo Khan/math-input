@@ -1,0 +1,26 @@
+version: 2
+jobs:
+  test:
+    docker:
+      - image: circleci/node:8-browsers
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - npm-deps-{{ checksum "yarn.lock" }}
+            - npm-deps-
+      - run: yarn install
+      - save_cache:
+          key: npm-deps-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+      # --runInBand forces tests to be run in the main process.
+      # This is useful for debugging or in this case only using
+      # a single process.  This prevents ENOMEM when running on
+      # circleci.
+      - run: yarn test --runInBand
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test
