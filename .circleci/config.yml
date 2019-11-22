@@ -14,15 +14,9 @@ jobs:
           key: npm-deps-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
-      # --runInBand forces tests to be run in the main process.
-      # This is useful for debugging or in this case only using
-      # a single process.  This prevents ENOMEM when running on
-      # circleci.
-      - run: yarn test --runInBand
+      - run: yarn test
 workflows:
   version: 2
   test:
     jobs:
       - test
-
-      
