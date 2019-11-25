@@ -5,9 +5,9 @@
 
 const React = require('react');
 const PropTypes = require('prop-types');
-const { connect } = require('react-redux');
+const {connect} = require('react-redux');
 
-const { View } = require('../fake-react-native-web');
+const {View} = require('../fake-react-native-web');
 const Keypad = require('./keypad');
 const TouchableKeypadButton = require('./touchable-keypad-button');
 const {
@@ -21,9 +21,9 @@ const {
     keyCenter,
     keyRight
 } = require('./styles');
-const { BorderStyles } = require('../consts');
+const {BorderStyles} = require('../consts');
 const CursorContexts = require('./input/cursor-contexts');
-const { cursorContextPropType } = require('./prop-types');
+const {cursorContextPropType} = require('./prop-types');
 const KeyConfigs = require('../data/key-configs');
 
 class FractionKeypad extends React.Component {
@@ -31,7 +31,7 @@ class FractionKeypad extends React.Component {
         cursorContext: cursorContextPropType.isRequired,
         dynamicJumpOut: PropTypes.bool,
         roundTopLeft: PropTypes.bool,
-        roundTopRight: PropTypes.bool
+        roundTopRight: PropTypes.bool,
     };
 
     static rows = 4;
@@ -49,7 +49,7 @@ class FractionKeypad extends React.Component {
             cursorContext,
             dynamicJumpOut,
             roundTopLeft,
-            roundTopRight
+            roundTopRight,
         } = this.props;
 
         let dismissOrJumpOutKey;
@@ -194,10 +194,10 @@ class FractionKeypad extends React.Component {
     }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         cursorContext: state.input.cursor.context,
-        dynamicJumpOut: !state.layout.navigationPadEnabled
+        dynamicJumpOut: !state.layout.navigationPadEnabled,
     };
 };
 

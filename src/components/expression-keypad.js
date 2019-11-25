@@ -4,10 +4,10 @@
 
 const React = require('react');
 const PropTypes = require('prop-types');
-const { connect } = require('react-redux');
-const { StyleSheet } = require('aphrodite');
+const {connect} = require('react-redux');
+const {StyleSheet} = require('aphrodite');
 
-const { View } = require('../fake-react-native-web');
+const {View} = require('../fake-react-native-web');
 const TwoPageKeypad = require('./two-page-keypad');
 const ManyKeypadButton = require('./many-keypad-button');
 const TouchableKeypadButton = require('./touchable-keypad-button');
@@ -23,9 +23,9 @@ const {
     keyCenter,
     keyRight,
 } = require('./styles');
-const { BorderStyles } = require('../consts');
-const { valueGrey, controlGrey } = require('./common-style');
-const { cursorContextPropType, keyIdPropType } = require('./prop-types');
+const {BorderStyles} = require('../consts');
+const {valueGrey, controlGrey} = require('./common-style');
+const {cursorContextPropType, keyIdPropType} = require('./prop-types');
 const KeyConfigs = require('../data/key-configs');
 const CursorContexts = require('./input/cursor-contexts');
 
@@ -36,7 +36,7 @@ class ExpressionKeypad extends React.Component {
         dynamicJumpOut: PropTypes.bool,
         extraKeys: PropTypes.arrayOf(keyIdPropType),
         roundTopLeft: PropTypes.bool,
-        roundTopRight: PropTypes.bool
+        roundTopRight: PropTypes.bool,
     };
 
     static rows = 4;
@@ -56,7 +56,7 @@ class ExpressionKeypad extends React.Component {
             dynamicJumpOut,
             extraKeys,
             roundTopLeft,
-            roundTopRight
+            roundTopRight,
         } = this.props;
 
         let dismissOrJumpOutKey;
@@ -212,7 +212,7 @@ class ExpressionKeypad extends React.Component {
             column,
             fullWidth,
             styles.leftPage,
-            roundTopLeft && roundedTopLeft
+            roundTopLeft && roundedTopLeft,
         ];
         const leftPage = (
             <View style={leftPageStyle}>
@@ -321,13 +321,11 @@ class ExpressionKeypad extends React.Component {
             </View>
         );
 
-        return (
-            <TwoPageKeypad
-                currentPage={currentPage}
-                rightPage={rightPage}
-                leftPage={leftPage}
-            />
-        );
+        return <TwoPageKeypad
+            currentPage={currentPage}
+            rightPage={rightPage}
+            leftPage={leftPage}
+        />;
     }
 }
 
@@ -338,19 +336,19 @@ const styles = StyleSheet.create({
     // dismiss).
     // TODO(charlie): Apply the proper background between the 'command' keys.
     rightPage: {
-        backgroundColor: valueGrey
+        backgroundColor: valueGrey,
     },
 
     leftPage: {
-        backgroundColor: controlGrey
+        backgroundColor: controlGrey,
     },
 });
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         currentPage: state.pager.currentPage,
         cursorContext: state.input.cursor.context,
-        dynamicJumpOut: !state.layout.navigationPadEnabled
+        dynamicJumpOut: !state.layout.navigationPadEnabled,
     };
 };
 
