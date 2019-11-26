@@ -194,7 +194,7 @@ class KeypadContainer extends React.Component {
                 <View style={styles.keypadLayout}>
                     {this.renderKeypad()}
                 </View>
-                {navigationPadEnabled &&
+                {active && navigationPadEnabled &&
                     <NavigationPad
                         roundTopLeft={layoutMode === LayoutModes.COMPACT}
                         style={styles.navigationPadContainer}

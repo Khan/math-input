@@ -83,6 +83,7 @@ class Keypad extends React.Component {
 
     render() {
         const {
+            active,
             children,
             echoes,
             removeEcho,
@@ -121,7 +122,7 @@ class Keypad extends React.Component {
         };
 
         return <View style={style}>
-            {children}
+            {active && children}
             <EchoManager
                 echoes={relativeEchoes}
                 onAnimationFinish={removeEcho}
