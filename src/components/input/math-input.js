@@ -185,6 +185,8 @@ class MathInput extends React.Component {
         window.addEventListener('resize', this._clearKeypadBoundsCache);
         window.addEventListener(
                 'orientationchange', this._clearKeypadBoundsCache);
+
+        window.document.addEventListener("focusout", this._keepInputFocus);
     }
 
     componentWillReceiveProps(props) {
@@ -208,6 +210,7 @@ class MathInput extends React.Component {
         window.removeEventListener('resize', this._clearKeypadBoundsCache());
         window.removeEventListener(
                 'orientationchange', this._clearKeypadBoundsCache());
+        window.document.removeEventListener("focusout", this._keepInputFocus);
     }
 
     _clearKeypadBoundsCache = (keypadNode) => {
@@ -217,6 +220,40 @@ class MathInput extends React.Component {
     _cacheKeypadBounds = (keypadNode) => {
         this._keypadBounds = keypadNode.getBoundingClientRect();
     };
+
+    /*
+    Keep the currently focused input focused: This sounds strange
+    but Mathquil and our gesture setup do a lot to mess with focus.
+    This code keeps the input focused and prevents a screen reader
+    from jumping to the close button by listening for blur events
+    that blur to null (which will cause the body to become focused).
+    */
+    _keepInputFocus = event => {
+        /*
+        Only if this is the currently focused input
+        */
+        if (!this.state.focused) {
+          return;
+        }
+    
+        /*
+        If the next target is null (blurring to the body)
+        Then prevent that from happening and refocus on the input
+        */
+        if (event.relatedTarget === null) {
+          event.preventDefault();
+          this.inputRef.focus();
+        } 
+        /*
+        Otherwise if the next element is something that's intentionally being
+        select, either via tab or clicking then blur this input and dismiss
+        the keyboard
+        */
+        else {
+          this.inputRef.blur();
+          this.blur();
+        }
+      };
 
     /** Gets and cache they bounds of the keypadElement */
     _getKeypadBounds = () => {
@@ -710,7 +747,13 @@ class MathInput extends React.Component {
         >
             {/* NOTE(charlie): This is used purely to namespace the styles in
                 overrides.css. */}
-            <div className='keypad-input'>
+            <div 
+                className="keypad-input"
+                tabIndex={"0"}
+                ref={node => {
+                    this.inputRef = node;
+                }}
+            >
                 {/* NOTE(charlie): This element must be styled with inline
                     styles rather than with Aphrodite classes, as MathQuill
                     modifies the class names on the DOM node. */}
