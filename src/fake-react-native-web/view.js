@@ -28,6 +28,7 @@ class View extends React.Component {
         onTouchStart: PropTypes.func,
         role: PropTypes.string,
         style: PropTypes.any,
+        tabIndex: PropTypes.number,
     };
 
     static styles = StyleSheet.create({
@@ -75,6 +76,7 @@ class View extends React.Component {
             onTouchStart={this.props.onTouchStart}
             aria-label={this.props.ariaLabel}
             role={this.props.role}
+            tabIndex={this.props.tabIndex}
         >
             {this.props.children}
         </div>;

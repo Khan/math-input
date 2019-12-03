@@ -11,7 +11,7 @@ const zIndexes = require('./z-indexes');
 const {setPageSize} = require('../actions');
 const {keyIdPropType} = require('./prop-types');
 const {KeypadTypes, LayoutModes} = require('../consts');
-const {row, centered, fullWidth} = require('./styles');
+const {row, reverseRow, centered, fullWidth} = require('./styles');
 const {
     innerBorderColor,
     innerBorderStyle,
@@ -166,7 +166,7 @@ class KeypadContainer extends React.Component {
         ];
 
         const keypadStyle = [
-            row,
+            reverseRow,
             styles.keypadBorder,
             layoutMode === LayoutModes.FULLSCREEN ? styles.fullscreen
                                                   : styles.compact,
@@ -181,6 +181,8 @@ class KeypadContainer extends React.Component {
             extraClassName="keypad-container"
         >
             <View
+                // List in logical tab order for a11y and
+                // correct visual order with styling
                 style={keypadStyle}
                 ref={element => {
                     if (!this.hasMounted && element) {
@@ -189,15 +191,15 @@ class KeypadContainer extends React.Component {
                     }
                 }}
             >
-                {navigationPadEnabled &&
+                <View style={styles.keypadLayout}>
+                    {this.renderKeypad()}
+                </View>
+                {active && navigationPadEnabled &&
                     <NavigationPad
                         roundTopLeft={layoutMode === LayoutModes.COMPACT}
                         style={styles.navigationPadContainer}
                     />
                 }
-                <View style={styles.keypadLayout}>
-                    {this.renderKeypad()}
-                </View>
             </View>
         </View>;
     }

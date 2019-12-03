@@ -11,7 +11,7 @@ const {connect} = require('react-redux');
 const {StyleSheet} = require('aphrodite');
 
 const {View} = require('../fake-react-native-web');
-const {row} = require('./styles');
+const {reverseRow} = require('./styles');
 const {childrenPropType} = require('./prop-types');
 const {
     innerBorderColor,
@@ -55,7 +55,7 @@ class ViewPager extends React.Component {
         const {children, pageWidthPx, translateX} = this.props;
         const {animationDurationMs} = this.state;
 
-        const pagerStyle = [row, styles.twoPagePager];
+        const pagerStyle = [reverseRow, styles.twoPagePager];
 
         const transform = {
             msTransform: `translate3d(${translateX}px, 0, 0)`,
@@ -83,11 +83,12 @@ class ViewPager extends React.Component {
         };
 
         return <View style={pagerStyle} dynamicStyle={dynamicPagerStyle}>
+            {/* list the number keypad page first for tab order */}
             <View dynamicStyle={dynamicPageStyle}>
-                {children[0]}
+                {children[1]}
             </View>
             <View style={styles.rightPage} dynamicStyle={dynamicPageStyle}>
-                {children[1]}
+                {children[0]}
             </View>
         </View>;
     }
