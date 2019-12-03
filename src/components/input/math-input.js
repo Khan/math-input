@@ -304,7 +304,6 @@ class MathInput extends React.Component {
     focus = () => {
         // Pass this component's handleKey method to the keypad so it can call
         // it whenever it needs to trigger a keypress action.
-        // BLAH
         this.props.keypadElement.setKeyHandler(key => {
             const cursor = this.mathField.pressKey(key);
 
@@ -747,6 +746,7 @@ class MathInput extends React.Component {
             if (this.props.value !== value) {
                 this.mathField.setContent(this.props.value);
                 this.props.onChange(value, false);
+                this._hideCursorHandle();
             }
         }
     };      
