@@ -44,6 +44,10 @@ class TwoPageKeypad extends React.Component {
             </Keypad>;
         } else {
             return <Keypad style={styles.keypad}>
+                {/* a11y: Put the right page before the left page in
+                the DOM so that the numbers (right page) receive focus
+                before the additional math keys (left page) in the tab
+                order. */}
                 <View style={reverseRow}>
                     <View style={[styles.borderLeft, fullWidth]}>
                         {rightPage}

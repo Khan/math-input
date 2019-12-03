@@ -41,6 +41,10 @@ module.exports = StyleSheet.create({
     reverseColumn: {
         flexDirection: 'column-reverse',
     },
+
+    // Styles for manually placing the keys in visual order even if
+    // they're not in the same logical DOM order.
+    // Specifically for a 3-column keypad.
     keyLeft: {
         order: 1,
     },
