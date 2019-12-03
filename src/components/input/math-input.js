@@ -15,6 +15,7 @@ const {
  } = require('../common-style');
 const {keypadElementPropType} = require('../prop-types');
 const {brightGreen, gray17} = require('../common-style');
+const Keys = require("../../data/keys");
 
 const i18n = window.i18n || {_: s => s};
 
@@ -303,6 +304,7 @@ class MathInput extends React.Component {
     focus = () => {
         // Pass this component's handleKey method to the keypad so it can call
         // it whenever it needs to trigger a keypress action.
+        // BLAH
         this.props.keypadElement.setKeyHandler(key => {
             const cursor = this.mathField.pressKey(key);
 
@@ -697,6 +699,58 @@ class MathInput extends React.Component {
         this._updateCursorHandle(true);
     };
 
+    domKeyToMathQuillKey = (key) => {
+        // Numbers
+        if (['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(key)){
+            return `NUM_${key}`;
+        } 
+
+        // Operators
+        else if (key == "+"){
+            return Keys.PLUS;
+        } else if (key == "-"){
+            return Keys.MINUS;
+        } else if (key == "*"){
+            return Keys.TIMES;
+        } else if (key == "/"){
+            return Keys.DIVIDE;
+        } else if (key == "."){
+            return Keys.DECIMAL;
+        } else if (key == "%"){
+            return Keys.PERCENT;
+        } else if (key == "="){
+            return Keys.EQUAL;
+        } else if (key == ">"){
+            return Keys.GT;
+        } else if (key == "<"){
+            return Keys.LT;
+        } else if (key == "^"){
+            return Keys.EXP;
+        }
+
+        // Movement keys
+        else if (key == "Backspace"){
+            return Keys.BACKSPACE
+        }
+
+        // The key pressed doesn't map to any of the math input operators
+        return null;
+    }
+
+    handleKeyPress = (event) => {
+        const mathQuillKey = this.domKeyToMathQuillKey(event.key);
+
+        if (mathQuillKey){
+            this.mathField.pressKey(mathQuillKey);
+
+            const value = this.mathField.getContent();
+            if (this.props.value !== value) {
+                this.mathField.setContent(this.props.value);
+                this.props.onChange(value, false);
+            }
+        }
+    };      
+
     render() {
         const {focused, handle} = this.state;
         const {style} = this.props;
@@ -753,6 +807,7 @@ class MathInput extends React.Component {
                 ref={node => {
                     this.inputRef = node;
                 }}
+                onKeyUp={this.handleKeyPress}
             >
                 {/* NOTE(charlie): This element must be styled with inline
                     styles rather than with Aphrodite classes, as MathQuill
