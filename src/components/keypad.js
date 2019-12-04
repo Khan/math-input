@@ -83,7 +83,6 @@ class Keypad extends React.Component {
 
     render() {
         const {
-            active,
             children,
             echoes,
             removeEcho,
@@ -122,10 +121,7 @@ class Keypad extends React.Component {
         };
 
         return <View style={style}>
-            {/* a11y: Only render the children after keyboard has been
-            activated. Buttons should only be added to the DOM and be able to
-            receive focus if the keyboard is already active. */}
-            {active && children}
+            {children}
             <EchoManager
                 echoes={relativeEchoes}
                 onAnimationFinish={removeEcho}
