@@ -699,32 +699,22 @@ class MathInput extends React.Component {
     };
 
     domKeyToMathQuillKey = (key) => {
+        const keyMap = {
+            "+": Keys.PLUS,
+            "-": Keys.MINUS,
+            "*": Keys.TIMES,
+            "/": Keys.DIVIDE,
+            ".": Keys.DECIMAL,
+            "%": Keys.PERCENT,
+            "=": Keys.EQUAL,
+            ">": Keys.GT,
+            "<": Keys.LT,
+            "^": Keys.EXP
+        };
+
         // Numbers
         if (['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(key)){
             return `NUM_${key}`;
-        } 
-
-        // Operators
-        else if (key == "+"){
-            return Keys.PLUS;
-        } else if (key == "-"){
-            return Keys.MINUS;
-        } else if (key == "*"){
-            return Keys.TIMES;
-        } else if (key == "/"){
-            return Keys.DIVIDE;
-        } else if (key == "."){
-            return Keys.DECIMAL;
-        } else if (key == "%"){
-            return Keys.PERCENT;
-        } else if (key == "="){
-            return Keys.EQUAL;
-        } else if (key == ">"){
-            return Keys.GT;
-        } else if (key == "<"){
-            return Keys.LT;
-        } else if (key == "^"){
-            return Keys.EXP;
         }
 
         // Movement keys
@@ -732,11 +722,17 @@ class MathInput extends React.Component {
             return Keys.BACKSPACE
         }
 
+        // Operators
+        else if (key in keyMap){
+             return keyMap[key];
+
+        }
+
         // The key pressed doesn't map to any of the math input operators
         return null;
     }
 
-    handleKeyPress = (event) => {
+    handleKeyUp = (event) => {
         const mathQuillKey = this.domKeyToMathQuillKey(event.key);
 
         if (mathQuillKey){
@@ -807,7 +803,7 @@ class MathInput extends React.Component {
                 ref={node => {
                     this.inputRef = node;
                 }}
-                onKeyUp={this.handleKeyPress}
+                onKeyUp={this.handleKeyUp}
             >
                 {/* NOTE(charlie): This element must be styled with inline
                     styles rather than with Aphrodite classes, as MathQuill
