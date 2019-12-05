@@ -7,25 +7,25 @@
 // We should clean it up by removing this file and requiring clients to use the
 // `id` field on the key configurations.
 const Keys = {
-    PLUS: 'PLUS',
+    PLUS: 'PLUS', //
     MINUS: 'MINUS',
-    NEGATIVE: 'NEGATIVE',
-    TIMES: 'TIMES',
-    DIVIDE: 'DIVIDE',
+    NEGATIVE: 'NEGATIVE', //
+    TIMES: 'TIMES', //
+    DIVIDE: 'DIVIDE', //
     DECIMAL: 'DECIMAL',
-    PERIOD: 'PERIOD',
-    PERCENT: 'PERCENT',
+    PERIOD: 'PERIOD', //
+    PERCENT: 'PERCENT', //
     CDOT: 'CDOT',
-    EQUAL: 'EQUAL',
+    EQUAL: 'EQUAL', //
     NEQ: 'NEQ',
-    GT: 'GT',
-    LT: 'LT',
+    GT: 'GT', //
+    LT: 'LT', //
     GEQ: 'GEQ',
     LEQ: 'LEQ',
     FRAC_INCLUSIVE: 'FRAC_INCLUSIVE', // mobile native only
     FRAC_EXCLUSIVE: 'FRAC_EXCLUSIVE', // mobile native only
     FRAC: 'FRAC',
-    EXP: 'EXP',
+    EXP: 'EXP', //
     EXP_2: 'EXP_2',
     EXP_3: 'EXP_3',
     SQRT: 'SQRT',
