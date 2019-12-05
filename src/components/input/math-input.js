@@ -187,7 +187,7 @@ class MathInput extends React.Component {
         window.addEventListener(
                 'orientationchange', this._clearKeypadBoundsCache);
 
-        window.document.addEventListener("focusout", this._keepInputFocus);
+        // window.document.addEventListener("focusout", this._keepInputFocus);
     }
 
     componentWillReceiveProps(props) {
@@ -211,7 +211,7 @@ class MathInput extends React.Component {
         window.removeEventListener('resize', this._clearKeypadBoundsCache());
         window.removeEventListener(
                 'orientationchange', this._clearKeypadBoundsCache());
-        window.document.removeEventListener("focusout", this._keepInputFocus);
+        // window.document.removeEventListener("focusout", this._keepInputFocus);
     }
 
     _clearKeypadBoundsCache = (keypadNode) => {
@@ -236,7 +236,7 @@ class MathInput extends React.Component {
         if (!this.state.focused) {
           return;
         }
-    
+
         /*
         If the next target is null (blurring to the body)
         Then prevent that from happening and refocus on the input
@@ -244,7 +244,7 @@ class MathInput extends React.Component {
         if (event.relatedTarget === null) {
           event.preventDefault();
           this.inputRef.focus();
-        } 
+        }
         /*
         Otherwise if the next element is something that's intentionally being
         select, either via tab or clicking then blur this input and dismiss
@@ -745,7 +745,7 @@ class MathInput extends React.Component {
                 this._hideCursorHandle();
             }
         }
-    };      
+    };
 
     render() {
         const {focused, handle} = this.state;
@@ -797,12 +797,12 @@ class MathInput extends React.Component {
         >
             {/* NOTE(charlie): This is used purely to namespace the styles in
                 overrides.css. */}
-            <div 
+            <div
                 className="keypad-input"
                 tabIndex={"0"}
-                ref={node => {
-                    this.inputRef = node;
-                }}
+                // ref={node => {
+                //     this.inputRef = node;
+                // }}
                 onKeyUp={this.handleKeyUp}
             >
                 {/* NOTE(charlie): This element must be styled with inline
