@@ -15,6 +15,7 @@ const {
  } = require('../common-style');
 const {keypadElementPropType} = require('../prop-types');
 const {brightGreen, gray17} = require('../common-style');
+const Keys = require("../../data/keys");
 
 const i18n = window.i18n || {_: s => s};
 
@@ -697,6 +698,55 @@ class MathInput extends React.Component {
         this._updateCursorHandle(true);
     };
 
+    domKeyToMathQuillKey = (key) => {
+        const keyMap = {
+            "+": Keys.PLUS,
+            "-": Keys.MINUS,
+            "*": Keys.TIMES,
+            "/": Keys.DIVIDE,
+            ".": Keys.DECIMAL,
+            "%": Keys.PERCENT,
+            "=": Keys.EQUAL,
+            ">": Keys.GT,
+            "<": Keys.LT,
+            "^": Keys.EXP
+        };
+
+        // Numbers
+        if (['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(key)){
+            return `NUM_${key}`;
+        }
+
+        // Movement keys
+        else if (key == "Backspace"){
+            return Keys.BACKSPACE
+        }
+
+        // Operators
+        else if (key in keyMap){
+             return keyMap[key];
+
+        }
+
+        // The key pressed doesn't map to any of the math input operators
+        return null;
+    }
+
+    handleKeyUp = (event) => {
+        const mathQuillKey = this.domKeyToMathQuillKey(event.key);
+
+        if (mathQuillKey){
+            this.mathField.pressKey(mathQuillKey);
+
+            const value = this.mathField.getContent();
+            if (this.props.value !== value) {
+                this.mathField.setContent(this.props.value);
+                this.props.onChange(value, false);
+                this._hideCursorHandle();
+            }
+        }
+    };      
+
     render() {
         const {focused, handle} = this.state;
         const {style} = this.props;
@@ -753,6 +803,7 @@ class MathInput extends React.Component {
                 ref={node => {
                     this.inputRef = node;
                 }}
+                onKeyUp={this.handleKeyUp}
             >
                 {/* NOTE(charlie): This element must be styled with inline
                     styles rather than with Aphrodite classes, as MathQuill
