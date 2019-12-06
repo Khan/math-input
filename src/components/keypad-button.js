@@ -218,7 +218,6 @@ class KeypadButton extends React.PureComponent {
             const manyButtonA11yMarkup = {
                 role: 'button',
                 ariaLabel: childKeys[0].ariaLabel,
-                tabIndex: 0
             };
             const icons = childKeys.map(keyConfig => {
                 return keyConfig.icon;
@@ -238,7 +237,6 @@ class KeypadButton extends React.PureComponent {
             const a11yMarkup = {
                 role: 'button',
                 ariaLabel: ariaLabel,
-                tabIndex: 0
             };
 
             return <View style={buttonStyle} {...eventHandlers} {...a11yMarkup}>
