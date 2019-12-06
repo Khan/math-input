@@ -35,4 +35,23 @@ module.exports = StyleSheet.create({
     roundedTopRight: {
         borderTopRightRadius: compactKeypadBorderRadiusPx,
     },
+    reverseRow: {
+        flexDirection: 'row-reverse',
+    },
+    reverseColumn: {
+        flexDirection: 'column-reverse',
+    },
+
+    // Styles for manually placing the keys in visual order even if
+    // they're not in the same logical DOM order.
+    // Specifically for a 3-column keypad.
+    keyLeft: {
+        order: 1,
+    },
+    keyCenter: {
+        order: 2,
+    },
+    keyRight: {
+        order: 3,
+    }
 });
