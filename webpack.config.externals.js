@@ -23,9 +23,8 @@ module.exports = {
                 loader: 'babel',
                 query: {
                     presets: [
-                        ["es2015", {"loose": true}],
-                        "react",
-                        "stage-2",
+                        "@babel/env",
+                        "@babel/react",
                     ],
                 },
                 exclude: /(node_modules|mathquill)/,
