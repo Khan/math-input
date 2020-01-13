@@ -1,5 +1,4 @@
 /* eslint-env node, mocha */
-require('babel-polyfill');
 const assert = require('assert');
 
 const NodeManager = require('../src/components/node-manager');

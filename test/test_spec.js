@@ -1,5 +1,4 @@
 /* eslint-env node, mocha */
-require('babel-polyfill');
 const jsdom = require('jsdom');
 const assert = require('assert');
 
