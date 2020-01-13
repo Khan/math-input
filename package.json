@@ -8,7 +8,7 @@
     "test": "mocha test/test_*.js --compilers js:@babel/register",
     "watch_test": "mocha test/test_spec.js --watch --compilers js:@babel/register",
     "watch": "npm run css && webpack --config webpack.config.dev.js --watch",
-    "prepare": "npm run css && webpack --config webpack.config.externals.js"
+    "start": "webpack-dev-server --open"
   },
   "author": "",
   "license": "MIT",
@@ -30,19 +30,25 @@
     "@babel/register": "^7.0.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-loader": "7.1.1",
+    "css-loader": "^3.4.2",
     "exports-loader": "^0.6.3",
+    "html-webpack-plugin": "^3.2.0",
     "jsdom": "^8.4.0",
     "less": "^2.7.2",
+    "less-loader": "^5.0.0",
     "less-plugin-autoprefix": "^1.5.1",
     "less-plugin-clean-css": "^1.5.1",
     "mocha": "^2.4.5",
     "mocha-jsdom": "^1.1.0",
     "prop-types": "15.6.1",
-    "react": "15.3.2",
+    "react": "16.5",
     "react-addons-create-fragment": "15.3.2",
-    "react-addons-css-transition-group": "15.3.2",
+    "react-addons-css-transition-group": "15.6.2",
     "react-addons-pure-render-mixin": "15.3.2",
-    "react-dom": "15.3.2",
-    "webpack": "^1.13.0"
+    "react-dom": "16.5",
+    "webpack": "^4.32.2",
+    "webpack-cli": "^3.3.2",
+    "webpack-dev-server": "^3.4.1",
+    "file-loader": "^4.0.0"
   }
 }

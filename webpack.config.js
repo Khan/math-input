@@ -1,54 +1,74 @@
-const path = require('path');
-const webpack = require('webpack');
+const path = require("path");
+var HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
+    mode: "development",
     entry: {
-        app: './src/app',
-        nativeApp: './src/native-app',
-        deps: [
-            'prop-types',
-            'react',
-            'react-dom',
-            'react-redux',
-            'redux',
-            'aphrodite',
-            // TODO(kevinb) create a build config for test code
-            // 'mathquill',
-        ],
+        index: "./src/app.js",
     },
     output: {
-        path: path.join(__dirname, 'build'),
-        filename: '[name].js',
+        publicPath: "/",
+        filename: "[name].bundle.js",
+        chunkFilename: "[name].bundle.js",
+        path: path.resolve(__dirname, "dist"),
+    },
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                exclude: /(node_modules|mathquill)/,
+                use: {
+                    loader: "babel-loader",
+                },
+            },
+            {
+                test: /\.less$/,
+                use: [
+                  {
+                    loader: 'css-loader',
+                  },
+                  {
+                    loader: 'less-loader',
+                  },
+                ],
+            },
+            {
+                test: /\.css$/,
+                use: [
+                  {
+                    loader: 'css-loader',
+                  }
+                ],
+            },
+            {
+                test: /\.(woff|woff2|ttf|otf|eot|svg)$/,
+                use: [
+                    {
+                        loader: "file-loader",
+                    },
+                ],
+            }
+        ],
     },
     plugins: [
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'deps',
-        }),
-        new webpack.DefinePlugin({
-            'process.env.NODE_ENV': '"production"',
-        }),
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false,
-            },
+        new HtmlWebpackPlugin({
+            template: "index.html",
+            title: "math-toolbox",
         }),
     ],
     resolve: {
-        extensions: ['', '.js', '.jsx'],
+        extensions: [".js", ".json"],
         alias: {
-            // allows us to do `const MathQuill = require('mathquill');`
-            mathquill: path.join(__dirname, "mathquill/mathquill.js"),
+            // "react-dom": "@hot-loader/react-dom",
+            mathquill: path.join(__dirname, "mathquill/mathquill.js")
         },
     },
-    module: {
-        loaders: [{
-            test: /\.jsx?$/,
-            loaders: ['babel'],
-            exclude: /(node_modules|mathquill)/,
-        }, {
-            // appends `module.exports = window.MathQuill` to mathquill.js
-            test: /\/mathquill\.js$/,
-            loader: "exports?window.MathQuill",
-        }],
+    devtool: "source-map",
+    devServer: {
+        hot: true,
+        liveReload: false,
+        contentBase: path.join(__dirname, "dist"),
+        compress: true,
+        port: 9000,
     },
 };
