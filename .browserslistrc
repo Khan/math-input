@@ -1,0 +1,8 @@
+# Browsers that we support
+
+Chrome 41 # used by googlebot
+last 1 Edge version
+last 1 Firefox version
+last 1 Safari version # desktop Safari
+last 1 iOS version # mobile Safari
+node 8
