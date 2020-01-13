@@ -13,7 +13,7 @@ class App extends React.Component {
         keypadType: consts.KeypadTypes.EXPRESSION,
     };
 
-    handleChange = (e: SyntheticEvent<>) => {
+    handleChange = (e) => {
         this.state.keypadElement.configure({
             keypadType: e.target.value,
             extraKeys: ["x", "y", "PI", "THETA"],
