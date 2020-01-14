@@ -1,5 +1,6 @@
 const path = require("path");
 var HtmlWebpackPlugin = require("html-webpack-plugin");
+var webpack = require("webpack");
 
 module.exports = {
     mode: "development",
@@ -11,7 +12,7 @@ module.exports = {
         filename: "[name].bundle.js",
         chunkFilename: "[name].bundle.js",
         path: path.resolve(__dirname, "dist"),
-    },
+    }, 
     module: {
         rules: [
             {
@@ -55,6 +56,11 @@ module.exports = {
             template: "index.html",
             title: "math-toolbox",
         }),
+        new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery",
+            "window.jQuery": "jquery"
+          })      
     ],
     resolve: {
         extensions: [".js", ".json"],
