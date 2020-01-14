@@ -1,3 +1,8 @@
+/*
+TODO:
+- This needs to be updated to work with the new version of webpack
+*/
+
 const path = require('path');
 const webpack = require('webpack');
 
