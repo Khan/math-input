@@ -4,53 +4,51 @@
 
 const React = require('react');
 const PropTypes = require('prop-types');
-const {connect} = require('react-redux');
-const {StyleSheet} = require('aphrodite');
+const { connect } = require('react-redux');
+const { StyleSheet } = require('aphrodite');
 
 const Keypad = require('./keypad');
 const ViewPager = require('./view-pager');
 const PagerIndicator = require('./pager-indicator');
-const {View} = require('../fake-react-native-web');
-const {column, row, fullWidth} = require('./styles');
+const { View } = require('../fake-react-native-web');
+const { column, row, fullWidth } = require('./styles');
 const {
     innerBorderColor, innerBorderStyle, innerBorderWidthPx, gray85,
 } = require('./common-style');
 
 class TwoPageKeypad extends React.Component {
     static propTypes = {
-        currentPage: PropTypes.oneOf([0, 1]).isRequired,
-        leftPage: PropTypes.node.isRequired,
+        currentPage: PropTypes.number.isRequired,
+        children: PropTypes.node.isRequired,
         paginationEnabled: PropTypes.bool.isRequired,
-        rightPage: PropTypes.node.isRequired,
     };
 
     render() {
         const {
             currentPage,
-            leftPage,
+            children,
             paginationEnabled,
-            rightPage,
         } = this.props;
 
         if (paginationEnabled) {
             return <Keypad style={[column, styles.keypad]}>
-                <PagerIndicator numPages={2} currentPage={currentPage} />
+                <PagerIndicator numPages={React.Children.count(children)} currentPage={currentPage} />
                 <View style={styles.borderTop}>
-                    <ViewPager>
-                        {leftPage}
-                        {rightPage}
-                    </ViewPager>
+                    <ViewPager children={children} />
                 </View>
             </Keypad>;
         } else {
             return <Keypad style={styles.keypad}>
                 <View style={row}>
-                    <View style={fullWidth}>
-                        {leftPage}
-                    </View>
-                    <View style={[styles.borderLeft, fullWidth]}>
-                        {rightPage}
-                    </View>
+                    {
+                        React.Children.map(children, (child) => {
+                            return (
+                                <View style={fullWidth}>
+                                    {child}
+                                </View>
+                            )
+                        })
+                    }
                 </View>
             </Keypad>;
         }

@@ -4,11 +4,11 @@
 
 const React = require('react');
 const PropTypes = require('prop-types');
-const {connect} = require('react-redux');
-const {StyleSheet} = require('aphrodite');
+const { connect } = require('react-redux');
+const { StyleSheet } = require('aphrodite');
 
-const {View} = require('../fake-react-native-web');
-const TwoPageKeypad = require('./two-page-keypad');
+const { View } = require('../fake-react-native-web');
+const MultiPageKeypad = require('./multi-page-keypad');
 const ManyKeypadButton = require('./many-keypad-button');
 const TouchableKeypadButton = require('./touchable-keypad-button');
 const {
@@ -19,9 +19,9 @@ const {
     roundedTopLeft,
     roundedTopRight,
 } = require('./styles');
-const {BorderStyles} = require('../consts');
-const {valueGrey, controlGrey} = require('./common-style');
-const {cursorContextPropType, keyIdPropType} = require('./prop-types');
+const { BorderStyles } = require('../consts');
+const { valueGrey, controlGrey } = require('./common-style');
+const { cursorContextPropType, keyIdPropType } = require('./prop-types');
 const KeyConfigs = require('../data/key-configs');
 const CursorContexts = require('./input/cursor-contexts');
 
@@ -284,11 +284,12 @@ class ExpressionKeypad extends React.Component {
             </View>
         </View>;
 
-        return <TwoPageKeypad
+        return <MultiPageKeypad
             currentPage={currentPage}
-            rightPage={rightPage}
-            leftPage={leftPage}
-        />;
+        >
+            {leftPage}
+            {rightPage}
+        </MultiPageKeypad>;
     }
 }
 

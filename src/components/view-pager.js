@@ -7,12 +7,12 @@
 
 const React = require('react');
 const PropTypes = require('prop-types');
-const {connect} = require('react-redux');
-const {StyleSheet} = require('aphrodite');
+const { connect } = require('react-redux');
+const { StyleSheet } = require('aphrodite');
 
-const {View} = require('../fake-react-native-web');
-const {row} = require('./styles');
-const {childrenPropType} = require('./prop-types');
+const { View } = require('../fake-react-native-web');
+const { row } = require('./styles');
+const { childrenPropType } = require('./prop-types');
 const {
     innerBorderColor,
     innerBorderStyle,
@@ -51,11 +51,25 @@ class ViewPager extends React.Component {
         });
     }
 
-    render() {
-        const {children, pageWidthPx, translateX} = this.props;
-        const {animationDurationMs} = this.state;
+    static createDynamicStyle(childCount, additional = 50) {
+        // Note: By default, <View> sets a `maxWidth` of 100% to fix some
+        // Flexbox bugs. We have to override it to accommodate for our two
+        // pages. The exact value here isn't super important, as long as it's
+        // large enough to accommodate for two pages (so, 200%) and some
+        // separators.
+        //maxWidth: '250%',
+        return StyleSheet.create({
+            style: {
+                maxWidth: `${childCount * 100 + additional}%`
+            }
+        }).style;
+    }
 
-        const pagerStyle = [row, styles.twoPagePager];
+    render() {
+        const { children, pageWidthPx, translateX } = this.props;
+        const { animationDurationMs } = this.state;
+
+        const pagerStyle = [row, styles.twoPagePager, ViewPager.createDynamicStyle(React.Children.count(children))];
 
         const transform = {
             msTransform: `translate3d(${translateX}px, 0, 0)`,
@@ -83,12 +97,15 @@ class ViewPager extends React.Component {
         };
 
         return <View style={pagerStyle} dynamicStyle={dynamicPagerStyle}>
-            <View dynamicStyle={dynamicPageStyle}>
-                {children[0]}
-            </View>
-            <View style={styles.rightPage} dynamicStyle={dynamicPageStyle}>
-                {children[1]}
-            </View>
+            {
+                React.Children.map(children, (child) => {
+                    return (
+                        <View dynamicStyle={dynamicPageStyle}>
+                            {child}
+                        </View>
+                    )
+                })
+            }
         </View>;
     }
 }
@@ -96,12 +113,6 @@ class ViewPager extends React.Component {
 const styles = StyleSheet.create({
     twoPagePager: {
         alignSelf: 'flex-start',
-        // Note: By default, <View> sets a `maxWidth` of 100% to fix some
-        // Flexbox bugs. We have to override it to accommodate for our two
-        // pages. The exact value here isn't super important, as long as it's
-        // large enough to accommodate for two pages (so, 200%) and some
-        // separators.
-        maxWidth: '250%',
     },
 
     rightPage: {
@@ -112,7 +123,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-    const {animateToPosition, currentPage, dx, pageWidthPx} = state.pager;
+    const { animateToPosition, currentPage, dx, pageWidthPx } = state.pager;
+    console.error(state.pager)
     return {
         animateToPosition,
         pageWidthPx,
