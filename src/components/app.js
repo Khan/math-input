@@ -1,8 +1,8 @@
 const React = require('react');
 const { StyleSheet } = require("aphrodite");
 
-const {View} = require('../fake-react-native-web');
-const {components, consts} = require('../index');
+const { View } = require('../fake-react-native-web');
+const { components, consts } = require('../index');
 
 const { Keypad, KeypadInput } = components;
 
@@ -24,6 +24,14 @@ class App extends React.Component {
     componentDidMount() {
         this.messageEventDisposer = this.addMessageListener();
         this.resizeEventDisposer = this.addResizeListener();
+
+        if (__DEV__ && !window.ReactNativeWebView) {
+            window.ReactNativeWebView = {
+                postMessage(message) {
+                    console.log('react native message receiver stub:', message);
+                }
+            }
+        }
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -75,7 +83,7 @@ class App extends React.Component {
         } : {};
         const message = JSON.stringify({ ...data, keypadLayout, keypadInputLayout });
 
-        
+
         /**
          * see https://github.com/react-native-community/react-native-webview/blob/master/docs/Reference.md#onmessage
          * */
@@ -109,8 +117,8 @@ class App extends React.Component {
                     scalesToFit={this.state.scalesToFit}
                 />
                 <View style={[styles.selectContainer, !this.state.displayKeypadSelector && styles.hide]}>
-                    Keypad type: 
-                    <select 
+                    Keypad type:
+                    <select
                         onChange={this.handleChange}
                         value={this.state.keypadType}
                     >
@@ -126,7 +134,7 @@ class App extends React.Component {
             <Keypad
                 onElementMounted={node => {
                     if (node && !this.state.keypadElement) {
-                        this.setState({keypadElement: node});
+                        this.setState({ keypadElement: node });
                     }
                 }}
             />
