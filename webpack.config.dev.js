@@ -10,6 +10,10 @@ config.plugins = [
     new webpack.optimize.CommonsChunkPlugin({
         name: 'deps',
     }),
+    new webpack.DefinePlugin({
+        'process.env.NODE_ENV': '"development"',
+        __DEV__: true
+    }),
 ];
 
 config.devtool = '#eval-source-map';
