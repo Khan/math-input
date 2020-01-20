@@ -124,7 +124,6 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     const { animateToPosition, currentPage, dx, pageWidthPx } = state.pager;
-    console.error(state.pager)
     return {
         animateToPosition,
         pageWidthPx,
