@@ -13,7 +13,7 @@ const MultiSymbolGrid = require('./multi-symbol-grid');
 const CornerDecal = require('./corner-decal');
 const {KeyTypes, BorderDirections, BorderStyles} = require('../consts');
 const {
-    brightGreen,
+    wonderBlocksBlue,
     innerBorderColor,
     innerBorderStyle,
     innerBorderWidthPx,
@@ -296,7 +296,7 @@ const styles = StyleSheet.create({
     },
 
     bright: {
-        backgroundColor: brightGreen,
+        backgroundColor: wonderBlocksBlue,
     },
     light: {
         backgroundColor: 'rgba(33, 36, 44, 0.1)',

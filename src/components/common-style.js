@@ -5,7 +5,9 @@
 const gray85 = '#D6D8DA';
 
 module.exports = {
-    brightGreen: '#78C008',
+    wonderBlocksBlue: '#1865f2',
+    offBlack50: 'rgba(33, 36, 44, 0.50)',
+
     gray17: '#21242C',
     gray25: '#3B3E40',
     gray68: '#888D93',

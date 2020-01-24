@@ -11,10 +11,10 @@ const DragListener = require('./drag-listener');
 const {
     cursorHandleRadiusPx,
     cursorHandleDistanceMultiplier,
-    gray76,
+    offBlack50,
  } = require('../common-style');
 const {keypadElementPropType} = require('../prop-types');
-const {brightGreen, gray17} = require('../common-style');
+const {wonderBlocksBlue, gray17} = require('../common-style');
 const Keys = require("../../data/keys");
 
 const i18n = window.i18n || {_: s => s};
@@ -102,6 +102,7 @@ class MathInput extends React.Component {
 
         this._root = this._container.querySelector('.mq-root-block');
         this._root.style.fontSize = `${fontSizePt}pt`;
+        this._root.addEventListener("scroll", () => this._hideCursorHandle());
 
         // Record the initial scroll displacement on touch start. This allows
         // us to detect whether a touch event was a scroll and only blur the
@@ -236,7 +237,7 @@ class MathInput extends React.Component {
         if (!this.state.focused) {
           return;
         }
-    
+
         /*
         If the next target is null (blurring to the body)
         Then prevent that from happening and refocus on the input
@@ -244,7 +245,7 @@ class MathInput extends React.Component {
         if (event.relatedTarget === null) {
           event.preventDefault();
           this.inputRef.focus();
-        } 
+        }
         /*
         Otherwise if the next element is something that's intentionally being
         select, either via tab or clicking then blur this input and dismiss
@@ -273,16 +274,31 @@ class MathInput extends React.Component {
         const cursorWidth = cursorBounds.width;
         const gapBelowCursor = 2;
 
-        this.setState({
-            handle: {
-                visible: true,
-                animateIntoPosition,
-                // We subtract containerBounds' left/top to correct for the
-                // position of the container within the page.
-                x: cursorBounds.left + cursorWidth / 2 - containerBounds.left,
-                y: cursorBounds.bottom + gapBelowCursor - containerBounds.top,
-            },
-        });
+        const inputInnerPadding = this.getInputInnerPadding();
+
+        // The cursor should never be further right than the edge of the container
+        const furthestRightCursorBound = containerBounds.right - cursorWidth - inputInnerPadding.paddingRight;
+        const furthestLeftCursorBound = containerBounds.left + cursorWidth + inputInnerPadding.paddingLeft;
+
+        let cursorBoundsLeft = cursorBounds.left;
+        if (cursorBounds.left > furthestRightCursorBound) {
+            cursorBoundsLeft = furthestRightCursorBound;
+        } else if (cursorBounds.left < furthestLeftCursorBound) {
+            cursorBoundsLeft = furthestLeftCursorBound;
+        }
+
+        this.setState(
+            {
+                handle: {
+                    visible: true,
+                    animateIntoPosition,
+                    // We subtract containerBounds' left/top to correct for the
+                    // position of the container within the page.
+                    x: cursorBoundsLeft + cursorWidth / 2 - containerBounds.left,
+                    y: cursorBounds.bottom + gapBelowCursor - containerBounds.top,
+                },
+            }
+        );
     };
 
     _hideCursorHandle = () => {
@@ -475,6 +491,7 @@ class MathInput extends React.Component {
      * @param {number} y - the y coordinate in the viewport
      */
     _insertCursorAtClosestNode = (x, y) => {
+        console.log("is this being called?");
         const cursor = this.mathField.getCursor();
 
         // Pre-emptively check if the input has any child nodes; if not, the
@@ -485,9 +502,14 @@ class MathInput extends React.Component {
         }
 
         if (y > this._containerBounds.bottom) {
-            y = this._containerBounds.bottom;
+            y = this._containerBounds.bottom - 10;
         } else if (y < this._containerBounds.top) {
             y = this._containerBounds.top + 10;
+        }
+        if (x > this._containerBounds.right) {
+            x = this._containerBounds.right - 15;
+        } else if (x < this._containerBounds.left) {
+            x = this._containerBounds.left + 15;
         }
 
         let dy;
@@ -521,6 +543,8 @@ class MathInput extends React.Component {
 
         const left = firstChildBounds.left;
         const right = lastChildBounds.right;
+
+
 
         // We've exhausted all of the options. We're likely either to the right
         // or left of all of the math, so we place the cursor at the end to
@@ -738,6 +762,9 @@ class MathInput extends React.Component {
         if (mathQuillKey){
             this.mathField.pressKey(mathQuillKey);
 
+            // TODO(diedra): If the new value being added is off-screen to the right
+            // due to the max-width of the text box, scroll the box to show the newest
+            // value
             const value = this.mathField.getContent();
             if (this.props.value !== value) {
                 this.mathField.setContent(this.props.value);
@@ -745,22 +772,23 @@ class MathInput extends React.Component {
                 this._hideCursorHandle();
             }
         }
-    };      
+    };
 
-    render() {
-        const {focused, handle} = this.state;
-        const {style} = this.props;
-
-        // Calculate the appropriate padding based on the border width (which is
-        // considered 'padding', since we're using 'border-box') and the fact
-        // that MathQuill automatically applies 2px of padding to the inner
-        // input.
+    getBorderWidthPx = () => {
+        // TODO(diedra): Move these to the common style package.
         const normalBorderWidthPx = 1;
         const focusedBorderWidthPx = 2;
-        const borderWidthPx = this.state.focused ? focusedBorderWidthPx
-                                                 : normalBorderWidthPx;
+
+        return this.state.focused ? focusedBorderWidthPx : normalBorderWidthPx;
+    };
+
+    // Calculate the appropriate padding based on the border width (which is
+    // considered 'padding', since we're using 'border-box') and the fact
+    // that MathQuill automatically applies 2px of padding to the inner
+    // input.
+    getInputInnerPadding = () => {
         const builtInMathQuillPadding = 2;
-        const paddingInset = totalDesiredPadding - borderWidthPx -
+        const paddingInset = totalDesiredPadding - this.getBorderWidthPx() -
             builtInMathQuillPadding;
 
         // Now, translate that to the appropriate padding for each direction.
@@ -778,11 +806,20 @@ class MathInput extends React.Component {
             paddingLeft: paddingInset,
         };
 
+        return padding;
+    };
+
+    render() {
+        const {focused, handle} = this.state;
+        const {style} = this.props;
+
         const innerStyle = {
             ...inlineStyles.innerContainer,
-            borderWidth: borderWidthPx,
-            ...padding,
-            ...(focused ? {borderColor: brightGreen} : {}),
+            borderWidth: this.getBorderWidthPx(),
+            ...this.getInputInnerPadding(),
+            ...(focused ? {
+                borderColor: wonderBlocksBlue,
+            } : {}),
             ...style,
         };
 
@@ -797,7 +834,7 @@ class MathInput extends React.Component {
         >
             {/* NOTE(charlie): This is used purely to namespace the styles in
                 overrides.css. */}
-            <div 
+            <div
                 className="keypad-input"
                 tabIndex={"0"}
                 ref={node => {
@@ -830,20 +867,20 @@ const fontSizePt = 18;
 
 // The height of numerals in Symbola (rendered at 18pt) is about 20px (though
 // they render at 24px due to padding for ascenders and descenders). We want our
-// box to be laid out such that there's 8px of padding between a numeral and the
+// box to be laid out such that there's 12px of padding between a numeral and the
 // edge of the input, so we use this 20px number as our 'base height' and
 // account for the ascender and descender padding when computing the additional
 // padding in our `render` method.
 const numeralHeightPx = 20;
-const totalDesiredPadding = 8;
+const totalDesiredPadding = 12;
 const minHeightPx = numeralHeightPx + totalDesiredPadding * 2;
-const minWidthPx = 64;
+const minWidthPx = 160;
 
 const styles = StyleSheet.create({
     input: {
         position: 'relative',
-        display: 'inline-block',
         verticalAlign: 'middle',
+        maxWidth: 288,
     },
 });
 
@@ -859,14 +896,13 @@ const inlineStyles = {
     // class names that MathQuill had applied itself.
     innerContainer: {
         backgroundColor: 'white',
-        display: 'flex',
         minHeight: minHeightPx,
         minWidth: minWidthPx,
+        maxWidth: 288,
         boxSizing: 'border-box',
         position: 'relative',
-        overflow: 'hidden',
         borderStyle: 'solid',
-        borderColor: gray76,
+        borderColor: offBlack50,
         borderRadius: 4,
         color: gray17,
     },
