@@ -13,7 +13,7 @@ const PagerIndicator = require('./pager-indicator');
 const {View} = require('../fake-react-native-web');
 const {column, reverseRow, fullWidth} = require('./styles');
 const {
-    innerBorderColor, innerBorderStyle, innerBorderWidthPx, gray85,
+    innerBorderColor, innerBorderStyle, innerBorderWidthPx, offBlack16,
 } = require('./common-style');
 
 class TwoPageKeypad extends React.Component {
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     keypad: {
         // Set the background to light grey, so that when the user drags the
         // keypad pages past the edges, there's a grey backdrop.
-        backgroundColor: gray85,
+        backgroundColor: offBlack16,
     },
 
     borderTop: {

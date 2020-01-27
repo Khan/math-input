@@ -1,5 +1,5 @@
-@brightGreen: #78C008;
-@gray: #CCC;
+@wonderBlocksBlue: #1865f2;
+@offBlack16: rgba(33, 36, 44, 0.16);
 
 @cursorWidth: 2px;
 @cursorMargin: -1px;
@@ -12,6 +12,8 @@
 @cursorAnimationDuration: 500ms;
 
 .keypad-input {
+    outline: none !important;
+
     .mq-editable-field {
         .mq-cursor:not(:only-child),
         .mq-root-block.mq-hasCursor > .mq-cursor:only-child {
@@ -25,9 +27,7 @@
         }
 
         .mq-cursor {
-            border-color: @brightGreen;
-
-            border-left: @cursorWidth solid @brightGreen !important;
+            border-left: @cursorWidth solid @wonderBlocksBlue !important;
 
             margin-left: @cursorMargin !important;
             margin-right: @cursorMargin !important;
@@ -48,15 +48,15 @@
         .mq-non-leaf .mq-cursor:only-child {
             // Set the cursor to a grey rectangle, rather than a vertical line.
             border: @cursorWidth solid !important;
-            border-color: @brightGreen !important;
+            border-color: @wonderBlocksBlue !important;
             border-radius: @emptyBlockBorderRadius;
             opacity: 1 !important;
             padding: 0 @emptyBlockPadding 0 @emptyBlockPadding;
             transition: border-color @cursorAnimationDuration ease-out !important;
 
             &.mq-blink {
-                // And animate it between bright green and gray.
-                border-color: @gray !important;
+                // And animate it between blue and gray.
+                border-color: @wonderBlocksBlue !important;
                 opacity: 1 !important;
                 transition: border-color @cursorAnimationDuration ease-in !important;
             }
@@ -72,7 +72,7 @@
     // loses focus).
     .mq-empty:not(.mq-root-block):after,
     .mq-hasCursor:empty:not(.mq-root-block):after {
-        border: @cursorWidth solid @gray;
+        border: @cursorWidth solid @offBlack16;
         border-radius: @emptyBlockBorderRadius;
         // Hides the 'c' content added by MathQuill to measure the width.
         color: transparent;
@@ -96,7 +96,7 @@
     .mq-math-mode .mq-selection,
     .mq-editable-field .mq-selection {
         .mq-non-leaf {
-            background: @brightGreen !important;
+            background: @wonderBlocksBlue !important;
             border-color: white !important;
             color: white !important;
         }
@@ -109,7 +109,7 @@
     }
 
     .mq-selection {
-        background: @brightGreen !important;
+        background: @wonderBlocksBlue !important;
         border-color: white !important;
         color: white !important;
         display: inline-block !important;

@@ -11,10 +11,10 @@ const DragListener = require('./drag-listener');
 const {
     cursorHandleRadiusPx,
     cursorHandleDistanceMultiplier,
-    gray76,
+    offBlack50,
  } = require('../common-style');
 const {keypadElementPropType} = require('../prop-types');
-const {brightGreen, gray17} = require('../common-style');
+const {wonderBlocksBlue, offBlack} = require('../common-style');
 const Keys = require("../../data/keys");
 
 const i18n = window.i18n || {_: s => s};
@@ -782,7 +782,7 @@ class MathInput extends React.Component {
             ...inlineStyles.innerContainer,
             borderWidth: borderWidthPx,
             ...padding,
-            ...(focused ? {borderColor: brightGreen} : {}),
+            ...(focused ? {borderColor: wonderBlocksBlue} : {}),
             ...style,
         };
 
@@ -866,9 +866,9 @@ const inlineStyles = {
         position: 'relative',
         overflow: 'hidden',
         borderStyle: 'solid',
-        borderColor: gray76,
+        borderColor: offBlack50,
         borderRadius: 4,
-        color: gray17,
+        color: offBlack,
     },
 };
 
