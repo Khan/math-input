@@ -1,9 +1,9 @@
 const React = require('react');
 const PropTypes = require('prop-types');
 const ReactDOM = require('react-dom');
-const {StyleSheet} = require("aphrodite");
+const { StyleSheet } = require("aphrodite");
 
-const {View} = require('../../fake-react-native-web');
+const { View } = require('../../fake-react-native-web');
 const CursorHandle = require('./cursor-handle');
 const MathWrapper = require('./math-wrapper');
 const scrollIntoView = require('./scroll-into-view');
@@ -12,12 +12,12 @@ const {
     cursorHandleRadiusPx,
     cursorHandleDistanceMultiplier,
     gray76,
- } = require('../common-style');
-const {keypadElementPropType} = require('../prop-types');
-const {brightGreen, gray17} = require('../common-style');
+} = require('../common-style');
+const { keypadElementPropType } = require('../prop-types');
+const { brightGreen, gray17 } = require('../common-style');
 const Keys = require("../../data/keys");
 
-const i18n = window.i18n || {_: s => s};
+const i18n = window.i18n || { _: s => s };
 
 const constrainingFrictionFactor = 0.8;
 
@@ -93,7 +93,7 @@ class MathInput extends React.Component {
         // properties, we disable it unless it is explicitly requested (as it
         // should be in the case of a fixed-width input).
         if (!this.props.scrollable) {
-            this.mathField.mathField.__controller.scrollHoriz = function() {};
+            this.mathField.mathField.__controller.scrollHoriz = function () { };
         }
 
         this.mathField.setContent(this.props.value);
@@ -120,7 +120,7 @@ class MathInput extends React.Component {
                 if (!this._container.contains(evt.target)) {
                     let touchDidStartInOrBelowKeypad = false;
                     if (this.props.keypadElement
-                            && this.props.keypadElement.getDOMNode()) {
+                        && this.props.keypadElement.getDOMNode()) {
                         const bounds = this._getKeypadBounds();
                         for (let i = 0; i < evt.changedTouches.length; i++) {
                             const [x, y] = [
@@ -128,8 +128,8 @@ class MathInput extends React.Component {
                                 evt.changedTouches[i].clientY,
                             ];
                             if ((bounds.left <= x && bounds.right >= x &&
-                                    bounds.top <= y && bounds.bottom >= y) ||
-                                    bounds.bottom < y) {
+                                bounds.top <= y && bounds.bottom >= y) ||
+                                bounds.bottom < y) {
                                 touchDidStartInOrBelowKeypad = true;
                                 break;
                             }
@@ -185,9 +185,7 @@ class MathInput extends React.Component {
         // having the keypad notify of changes to us.
         window.addEventListener('resize', this._clearKeypadBoundsCache);
         window.addEventListener(
-                'orientationchange', this._clearKeypadBoundsCache);
-
-        window.document.addEventListener("focusout", this._keepInputFocus);
+            'orientationchange', this._clearKeypadBoundsCache);
     }
 
     componentWillReceiveProps(props) {
@@ -210,8 +208,7 @@ class MathInput extends React.Component {
         window.removeEventListener('touchcancel', this.blurOnTouchEndOutside);
         window.removeEventListener('resize', this._clearKeypadBoundsCache());
         window.removeEventListener(
-                'orientationchange', this._clearKeypadBoundsCache());
-        window.document.removeEventListener("focusout", this._keepInputFocus);
+            'orientationchange', this._clearKeypadBoundsCache());
     }
 
     _clearKeypadBoundsCache = (keypadNode) => {
@@ -221,40 +218,6 @@ class MathInput extends React.Component {
     _cacheKeypadBounds = (keypadNode) => {
         this._keypadBounds = keypadNode.getBoundingClientRect();
     };
-
-    /*
-    Keep the currently focused input focused: This sounds strange
-    but Mathquil and our gesture setup do a lot to mess with focus.
-    This code keeps the input focused and prevents a screen reader
-    from jumping to the close button by listening for blur events
-    that blur to null (which will cause the body to become focused).
-    */
-    _keepInputFocus = event => {
-        /*
-        Only if this is the currently focused input
-        */
-        if (!this.state.focused) {
-          return;
-        }
-    
-        /*
-        If the next target is null (blurring to the body)
-        Then prevent that from happening and refocus on the input
-        */
-        if (event.relatedTarget === null) {
-          event.preventDefault();
-          this.inputRef.focus();
-        } 
-        /*
-        Otherwise if the next element is something that's intentionally being
-        select, either via tab or clicking then blur this input and dismiss
-        the keyboard
-        */
-        else {
-          this.inputRef.blur();
-          this.blur();
-        }
-      };
 
     /** Gets and cache they bounds of the keypadElement */
     _getKeypadBounds = () => {
@@ -298,7 +261,7 @@ class MathInput extends React.Component {
     blur = () => {
         this.mathField.blur();
         this.props.onBlur && this.props.onBlur();
-        this.setState({focused: false, handle: {visible: false}});
+        this.setState({ focused: false, handle: { visible: false } });
     };
 
     focus = () => {
@@ -330,7 +293,7 @@ class MathInput extends React.Component {
 
         this.mathField.focus();
         this.props.onFocus && this.props.onFocus();
-        this.setState({focused: true}, () => {
+        this.setState({ focused: true }, () => {
             // NOTE(charlie): We use `setTimeout` to allow for a layout pass to
             // occur. Otherwise, the keypad is measured incorrectly. Ideally,
             // we'd use requestAnimationFrame here, but it's unsupported on
@@ -398,13 +361,13 @@ class MathInput extends React.Component {
                 // included, neither mq-numerator nor mq-denominator nodes are
                 // and neither are subscripts or superscripts.
                 .filter(element => element && this._root.contains(element) &&
-                        ((
-                          !element.classList.contains('mq-root-block') &&
-                          !element.classList.contains('mq-non-leaf')
-                         ) ||
-                         element.classList.contains('mq-empty') ||
-                         element.classList.contains('mq-hasCursor')
-                        ));
+                    ((
+                        !element.classList.contains('mq-root-block') &&
+                        !element.classList.contains('mq-non-leaf')
+                    ) ||
+                        element.classList.contains('mq-empty') ||
+                        element.classList.contains('mq-hasCursor')
+                    ));
 
             let hitNode = null;
 
@@ -637,7 +600,7 @@ class MathInput extends React.Component {
         const relativeX = x - this._containerBounds.left;
         const relativeY =
             y - 2 * cursorHandleRadiusPx * cursorHandleDistanceMultiplier
-                - this._containerBounds.top;
+            - this._containerBounds.top;
 
         // We subtract the containerBounds left/top to correct for the
         // MathInput's position on the page. On top of that, we subtract an
@@ -713,18 +676,18 @@ class MathInput extends React.Component {
         };
 
         // Numbers
-        if (['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(key)){
+        if (['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(key)) {
             return `NUM_${key}`;
         }
 
         // Movement keys
-        else if (key == "Backspace"){
+        else if (key == "Backspace") {
             return Keys.BACKSPACE
         }
 
         // Operators
-        else if (key in keyMap){
-             return keyMap[key];
+        else if (key in keyMap) {
+            return keyMap[key];
 
         }
 
@@ -735,7 +698,7 @@ class MathInput extends React.Component {
     handleKeyUp = (event) => {
         const mathQuillKey = this.domKeyToMathQuillKey(event.key);
 
-        if (mathQuillKey){
+        if (mathQuillKey) {
             this.mathField.pressKey(mathQuillKey);
 
             const value = this.mathField.getContent();
@@ -745,11 +708,11 @@ class MathInput extends React.Component {
                 this._hideCursorHandle();
             }
         }
-    };      
+    };
 
     render() {
-        const {focused, handle} = this.state;
-        const {style} = this.props;
+        const { focused, handle } = this.state;
+        const { style } = this.props;
 
         // Calculate the appropriate padding based on the border width (which is
         // considered 'padding', since we're using 'border-box') and the fact
@@ -758,7 +721,7 @@ class MathInput extends React.Component {
         const normalBorderWidthPx = 1;
         const focusedBorderWidthPx = 2;
         const borderWidthPx = this.state.focused ? focusedBorderWidthPx
-                                                 : normalBorderWidthPx;
+            : normalBorderWidthPx;
         const builtInMathQuillPadding = 2;
         const paddingInset = totalDesiredPadding - borderWidthPx -
             builtInMathQuillPadding;
@@ -782,7 +745,7 @@ class MathInput extends React.Component {
             ...inlineStyles.innerContainer,
             borderWidth: borderWidthPx,
             ...padding,
-            ...(focused ? {borderColor: brightGreen} : {}),
+            ...(focused ? { borderColor: brightGreen } : {}),
             ...style,
         };
 
@@ -797,7 +760,7 @@ class MathInput extends React.Component {
         >
             {/* NOTE(charlie): This is used purely to namespace the styles in
                 overrides.css. */}
-            <div 
+            <div
                 className="keypad-input"
                 tabIndex={"0"}
                 ref={node => {
