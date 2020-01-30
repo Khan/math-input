@@ -44,6 +44,8 @@
     "react-addons-css-transition-group": "15.3.2",
     "react-addons-pure-render-mixin": "15.3.2",
     "react-dom": "15.3.2",
-    "webpack": "^1.13.0"
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.1"
   }
 }

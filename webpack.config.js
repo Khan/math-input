@@ -21,34 +21,30 @@ module.exports = {
         filename: '[name].js',
     },
     plugins: [
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'deps',
-        }),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': '"production"',
         }),
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false,
-            },
-        }),
     ],
     resolve: {
-        extensions: ['', '.js', '.jsx'],
+        extensions: ['.js', '.jsx'],
         alias: {
             // allows us to do `const MathQuill = require('mathquill');`
             mathquill: path.join(__dirname, "mathquill/mathquill.js"),
         },
     },
     module: {
-        loaders: [{
+        rules: [{
             test: /\.jsx?$/,
-            loaders: ['babel'],
             exclude: /(node_modules|mathquill)/,
+            use: {
+                loader: 'babel-loader',
+            }
         }, {
             // appends `module.exports = window.MathQuill` to mathquill.js
             test: /\/mathquill\.js$/,
-            loader: "exports?window.MathQuill",
+            use: {
+                loader: "exports-loader?window.MathQuill",
+            }   
         }],
-    },
+    }
 };
