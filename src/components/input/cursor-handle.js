@@ -7,7 +7,7 @@ const PropTypes = require('prop-types');
 
 const {
     cursorHandleRadiusPx,
-    brightGreen,
+    wonderBlocksBlue,
     cursorHandleDistanceMultiplier,
 } = require('../common-style');
 
@@ -97,7 +97,7 @@ class CursorHandle extends React.Component {
                           ${0.707 * cursorRadiusPx} ${0.707 * cursorRadiusPx}
                         Z`
                     }
-                    fill={brightGreen}
+                    fill={wonderBlocksBlue}
                 />
             </svg>
         </span>;

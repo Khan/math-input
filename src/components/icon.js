@@ -11,10 +11,10 @@ const SvgIcon = require('./svg-icon');
 const TextIcon = require('./text-icon');
 const {IconTypes} = require('../consts');
 const {iconPropType} = require('./prop-types');
-const {gray25} = require('./common-style');
+const {offBlack} = require('./common-style');
 
 const focusedColor = '#FFF';
-const unfocusedColor = gray25;
+const unfocusedColor = offBlack;
 
 class Icon extends React.PureComponent {
     static propTypes = {

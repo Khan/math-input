@@ -1,16 +1,17 @@
 /**
  * Common parameters used to style components.
  */
-
-const gray85 = '#D6D8DA';
+const offBlack16 = 'rgba(33, 36, 44, 0.16)';
 
 module.exports = {
-    brightGreen: '#78C008',
-    gray17: '#21242C',
-    gray25: '#3B3E40',
-    gray68: '#888D93',
-    gray76: '#BABEC2',
-    gray85,
+    // TODO(diedra): Import Wonder Blocks and get these values from there.
+    wonderBlocksBlue: '#1865f2',
+    offBlack: '#21242c',
+    offBlack50: 'rgba(33, 36, 44, 0.50)',
+    offBlack32: 'rgba(33, 36, 44, 0.32)',
+    offBlack16,
+    offBlack8: 'rgba(33, 36, 44, 0.8)',
+
     iconSizeHeightPx: 48,
     iconSizeWidthPx: 48,
     compactKeypadBorderRadiusPx: 4,
@@ -29,7 +30,7 @@ module.exports = {
     emptyGrey : '#F0F1F2',
 
     // Constants defining any borders between elements in the keypad.
-    innerBorderColor: gray85,
+    innerBorderColor: offBlack16,
     innerBorderStyle: 'solid',
     innerBorderWidthPx: 1,
 

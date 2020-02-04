@@ -13,7 +13,7 @@ const {
     navigationPadWidthPx,
     controlGrey,
     valueGrey,
-    gray85,
+    offBlack16,
 } = require('./common-style');
 const {BorderStyles} = require('../consts');
 const KeyConfigs = require('../data/key-configs');
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     },
 
     navigationKey: {
-        borderColor: gray85,
+        borderColor: offBlack16,
         backgroundColor: valueGrey,
         width: buttonSizePx,
         height: buttonSizePx,
