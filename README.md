@@ -8,6 +8,14 @@ Built with [React](https://github.com/facebook/react), [Redux](https://github.co
 
 Try it yourself on [Khan Academy](https://www.khanacademy.org/math/algebra-basics/alg-basics-algebraic-expressions/alg-basics-distributive-property/e/distributive-property-with-variables). (Note: you'll need to enable mobile emulation, if you're accessing the site from a desktop browser.)
 
+## Getting started
+
+- Clone the project: `git clone git@github.com:Khan/math-input.git`
+- Install dependencies: `yarn install`
+- Start the development server: `yarn start`
+
+When you start the project you'll need to be on a device that supports touch or touch emulation to see the keyboard. The easiest way to get started is open the developer tools on Google Chrome.
+
 ## Supported Features
 
 - Multiple keypad configurations, so as to accommodate a range of input types (i.e., fractions/mixed numbers, algebraic expressions).
