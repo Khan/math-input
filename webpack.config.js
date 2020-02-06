@@ -12,7 +12,7 @@ module.exports = {
         filename: "[name].bundle.js",
         chunkFilename: "[name].bundle.js",
         path: path.resolve(__dirname, "dist"),
-    }, 
+    },
     module: {
         rules: [
             {
@@ -25,20 +25,20 @@ module.exports = {
             {
                 test: /\.less$/,
                 use: [
-                  {
-                    loader: 'css-loader',
-                  },
-                  {
-                    loader: 'less-loader',
-                  },
+                    {
+                        loader: 'css-loader',
+                    },
+                    {
+                        loader: 'less-loader',
+                    },
                 ],
             },
             {
                 test: /\.css$/,
                 use: [
-                  {
-                    loader: 'css-loader',
-                  }
+                    {
+                        loader: 'css-loader',
+                    }
                 ],
             },
             {
@@ -60,7 +60,7 @@ module.exports = {
             $: "jquery",
             jQuery: "jquery",
             "window.jQuery": "jquery"
-          })      
+        })
     ],
     resolve: {
         extensions: [".js", ".json"],
@@ -73,7 +73,10 @@ module.exports = {
     devServer: {
         hot: true,
         liveReload: false,
-        contentBase: path.join(__dirname, "dist"),
+        contentBase: [
+            path.join(__dirname, "dist"),
+            path.join(__dirname, 'mathquill')
+        ],
         compress: true,
         port: 9000,
     },
