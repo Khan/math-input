@@ -99,8 +99,12 @@ class MathInput extends React.Component {
         this.mathField.setContent(this.props.value);
 
         this._container = ReactDOM.findDOMNode(this);
-
         this._root = this._container.querySelector('.mq-root-block');
+
+        const padding = this.getInputInnerPadding();
+        // NOTE(diedra): This overrides the default 2px padding from Mathquil.
+        this._root.style.padding = `${padding.paddingTop}px ${padding.paddingRight}px` +
+            ` ${padding.paddingBottom}px ${padding.paddingLeft}px`;
         this._root.style.fontSize = `${fontSizePt}pt`;
         this._root.addEventListener("scroll", () => this._hideCursorHandle());
 
@@ -787,9 +791,7 @@ class MathInput extends React.Component {
     // that MathQuill automatically applies 2px of padding to the inner
     // input.
     getInputInnerPadding = () => {
-        const builtInMathQuillPadding = 2;
-        const paddingInset = totalDesiredPadding - this.getBorderWidthPx() -
-            builtInMathQuillPadding;
+        const paddingInset = totalDesiredPadding - this.getBorderWidthPx();
 
         // Now, translate that to the appropriate padding for each direction.
         // The complication here is that we want numerals to be centered within
@@ -816,7 +818,6 @@ class MathInput extends React.Component {
         const innerStyle = {
             ...inlineStyles.innerContainer,
             borderWidth: this.getBorderWidthPx(),
-            ...this.getInputInnerPadding(),
             ...(focused ? {
                 borderColor: wonderBlocksBlue,
             } : {}),
