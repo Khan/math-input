@@ -503,6 +503,8 @@ class MathInput extends React.Component {
             return;
         }
 
+        // NOTE(diedra): The adding and subtracting of 10 or 15 pixels here accounts
+        // for the padding that surrounds the input values.
         if (y > this._containerBounds.bottom) {
             y = this._containerBounds.bottom - 10;
         } else if (y < this._containerBounds.top) {
