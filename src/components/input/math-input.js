@@ -241,7 +241,7 @@ class MathInput extends React.Component {
         if (!this.state.focused) {
           return;
         }
-    
+
         /*
         If the next target is null (blurring to the body)
         Then prevent that from happening and refocus on the input
@@ -249,7 +249,7 @@ class MathInput extends React.Component {
         if (event.relatedTarget === null) {
           event.preventDefault();
           this.inputRef.focus();
-        } 
+        }
         /*
         Otherwise if the next element is something that's intentionally being
         select, either via tab or clicking then blur this input and dismiss
@@ -507,6 +507,8 @@ class MathInput extends React.Component {
             return;
         }
 
+        // NOTE(diedra): The adding and subtracting of 10 or 15 pixels here accounts
+        // for the padding that surrounds the input values.
         if (y > this._containerBounds.bottom) {
             y = this._containerBounds.bottom - 10;
         } else if (y < this._containerBounds.top) {
@@ -835,7 +837,7 @@ class MathInput extends React.Component {
         >
             {/* NOTE(charlie): This is used purely to namespace the styles in
                 overrides.css. */}
-            <div 
+            <div
                 className="keypad-input"
                 tabIndex={"0"}
                 ref={node => {
