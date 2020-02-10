@@ -1,8 +1,3 @@
-/*
-TODO:
-- This needs to be updated to work with the new version of webpack
-*/
-
 const path = require('path');
 const webpack = require('webpack');
 
@@ -14,26 +9,45 @@ module.exports = {
         library: 'math-input',
         libraryTarget: 'umd',
     },
-    plugins: [
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false,
-            },
-        }),
-    ],
+    optimization: {
+        minimize: false
+    },
     module: {
-        loaders: [
+        rules: [
             {
-                test: /\.jsx?$/,
-                loader: 'babel',
-                query: {
-                    presets: [
-                        "@babel/env",
-                        "@babel/react",
-                    ],
-                },
+                test: /\.js$/,
                 exclude: /(node_modules|mathquill)/,
+                use: {
+                    loader: "babel-loader",
+                },
             },
+            {
+                test: /\.less$/,
+                use: [
+                    {
+                        loader: 'css-loader',
+                    },
+                    {
+                        loader: 'less-loader',
+                    },
+                ],
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    {
+                        loader: 'css-loader',
+                    }
+                ],
+            },
+            {
+                test: /\.(woff|woff2|ttf|otf|eot|svg)$/,
+                use: [
+                    {
+                        loader: "file-loader",
+                    },
+                ],
+            }
         ],
     },
     // TODO(alex): Pick just one type below, e.g. commonjs2
