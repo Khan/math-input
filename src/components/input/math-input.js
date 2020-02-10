@@ -98,14 +98,10 @@ class MathInput extends React.Component {
 
         this.mathField.setContent(this.props.value);
 
+        this._updateInputPadding();
+
         this._container = ReactDOM.findDOMNode(this);
         this._root = this._container.querySelector('.mq-root-block');
-
-        const padding = this.getInputInnerPadding();
-        // NOTE(diedra): This overrides the default 2px padding from Mathquil.
-        this._root.style.padding = `${padding.paddingTop}px ${padding.paddingRight}px` +
-            ` ${padding.paddingBottom}px ${padding.paddingLeft}px`;
-        this._root.style.fontSize = `${fontSizePt}pt`;
         this._root.addEventListener("scroll", () => this._hideCursorHandle());
 
         // Record the initial scroll displacement on touch start. This allows
@@ -201,9 +197,13 @@ class MathInput extends React.Component {
         }
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps, prevState) {
         if (this.mathField.getContent() !== this.props.value) {
             this.mathField.setContent(this.props.value);
+        }
+
+        if (prevState.focused !== this.state.focused) {
+            this._updateInputPadding()
         }
     }
 
@@ -225,6 +225,17 @@ class MathInput extends React.Component {
 
     _cacheKeypadBounds = (keypadNode) => {
         this._keypadBounds = keypadNode.getBoundingClientRect();
+    };
+
+    _updateInputPadding = () => {
+        this._container = ReactDOM.findDOMNode(this);
+        this._root = this._container.querySelector('.mq-root-block');
+
+        const padding = this.getInputInnerPadding();
+        // NOTE(diedra): This overrides the default 2px padding from Mathquil.
+        this._root.style.padding = `${padding.paddingTop}px ${padding.paddingRight}px` +
+            ` ${padding.paddingBottom}px ${padding.paddingLeft}px`;
+        this._root.style.fontSize = `${fontSizePt}pt`;
     };
 
     /*
