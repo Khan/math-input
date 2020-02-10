@@ -15,6 +15,10 @@
     outline: none !important;
 
     .mq-editable-field {
+        .mq-root-block {
+            overflow-x: scroll;
+        }
+
         .mq-cursor:not(:only-child),
         .mq-root-block.mq-hasCursor > .mq-cursor:only-child {
             /* HACK(charlie): Magic numbers to properly size and position the vertical
