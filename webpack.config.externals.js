@@ -3,6 +3,7 @@ const webpack = require('webpack');
 
 module.exports = {
     entry: './src/index.js',
+    mode: "production",
     output: {
         path: path.join(__dirname, 'build'),
         filename: 'math-input.js',
