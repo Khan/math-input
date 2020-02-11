@@ -4,10 +4,8 @@
   "description": "",
   "main": "dist/index.bundle.js",
   "scripts": {
-    "css": "./node_modules/.bin/lessc --autoprefix=\"chrome>=1,ie>=1,ff>=1,safari>=1\" --clean-css=\"--s1 --advanced --compatibility=ie8\" less/main.less build/math-input.css",
     "test": "mocha test/test_*.js --compilers js:@babel/register",
     "watch_test": "mocha test/test_spec.js --watch --compilers js:@babel/register",
-    "watch": "npm run css && webpack --config webpack.config.dev.js --watch",
     "compile": "webpack --config webpack.config.externals.js",
     "start": "webpack-dev-server --open"
   },
