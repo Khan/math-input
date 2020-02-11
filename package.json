@@ -2,7 +2,7 @@
   "name": "math-input",
   "version": "0.0.1",
   "description": "",
-  "main": "build/math-input.js",
+  "main": "dist/index.bundle.js",
   "scripts": {
     "css": "./node_modules/.bin/lessc --autoprefix=\"chrome>=1,ie>=1,ff>=1,safari>=1\" --clean-css=\"--s1 --advanced --compatibility=ie8\" less/main.less build/math-input.css",
     "test": "mocha test/test_*.js --compilers js:@babel/register",
