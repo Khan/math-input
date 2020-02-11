@@ -7,12 +7,12 @@
 const $ = require('jquery');
 // Keeping `window` in place for test suite and GitHub Pages.
 // If it does not exist, fall back to CommonJS require. - jsatk
-const MathQuill = window.MathQuill || require('exports-loader?window.MathQuill!../../../mathquill/mathquill.js');
+const MathQuill = require('mathquill');
 
 const Keys = require('../../data/keys');
 const CursorContexts = require('./cursor-contexts');
-const {DecimalSeparators} = require('../../consts');
-const {decimalSeparator} = require('../../utils');
+const { DecimalSeparators } = require('../../consts');
+const { decimalSeparator } = require('../../utils');
 
 const decimalSymbol = decimalSeparator === DecimalSeparators.COMMA ? ',' : '.';
 
@@ -26,34 +26,34 @@ const MQ_END = 0;
 // that do not provide explicit actions (like the numeral keys) will merely
 // write their contents to MathQuill.
 const KeyActions = {
-    [Keys.PLUS]: {str: '+', fn: WRITE},
-    [Keys.MINUS]: {str: '-', fn: WRITE},
-    [Keys.NEGATIVE]: {str: '-', fn: WRITE},
-    [Keys.TIMES]: {str: '\\times', fn: WRITE},
-    [Keys.DIVIDE]: {str: '\\div', fn: WRITE},
+    [Keys.PLUS]: { str: '+', fn: WRITE },
+    [Keys.MINUS]: { str: '-', fn: WRITE },
+    [Keys.NEGATIVE]: { str: '-', fn: WRITE },
+    [Keys.TIMES]: { str: '\\times', fn: WRITE },
+    [Keys.DIVIDE]: { str: '\\div', fn: WRITE },
     [Keys.DECIMAL]: {
         str: decimalSymbol,
         fn: WRITE,
     },
-    [Keys.EQUAL]: {str: '=', fn: WRITE},
-    [Keys.NEQ]: {str: '\\neq', fn: WRITE},
-    [Keys.CDOT]: {str: '\\cdot', fn: WRITE},
-    [Keys.PERCENT]: {str: '%', fn: WRITE},
-    [Keys.LEFT_PAREN]: {str: '(', fn: CMD},
-    [Keys.RIGHT_PAREN]: {str: ')', fn: CMD},
-    [Keys.SQRT]: {str: 'sqrt', fn: CMD},
-    [Keys.PI]: {str: 'pi', fn: CMD},
-    [Keys.THETA]: {str: 'theta', fn: CMD},
-    [Keys.RADICAL]: {str: 'nthroot', fn: CMD},
-    [Keys.LT]: {str: '<', fn: WRITE},
-    [Keys.LEQ]: {str: '\\leq', fn: WRITE},
-    [Keys.GT]: {str: '>', fn: WRITE},
-    [Keys.GEQ]: {str: '\\geq', fn: WRITE},
-    [Keys.UP]: {str: 'Up', fn: KEYSTROKE},
-    [Keys.DOWN]: {str: 'Down', fn: KEYSTROKE},
+    [Keys.EQUAL]: { str: '=', fn: WRITE },
+    [Keys.NEQ]: { str: '\\neq', fn: WRITE },
+    [Keys.CDOT]: { str: '\\cdot', fn: WRITE },
+    [Keys.PERCENT]: { str: '%', fn: WRITE },
+    [Keys.LEFT_PAREN]: { str: '(', fn: CMD },
+    [Keys.RIGHT_PAREN]: { str: ')', fn: CMD },
+    [Keys.SQRT]: { str: 'sqrt', fn: CMD },
+    [Keys.PI]: { str: 'pi', fn: CMD },
+    [Keys.THETA]: { str: 'theta', fn: CMD },
+    [Keys.RADICAL]: { str: 'nthroot', fn: CMD },
+    [Keys.LT]: { str: '<', fn: WRITE },
+    [Keys.LEQ]: { str: '\\leq', fn: WRITE },
+    [Keys.GT]: { str: '>', fn: WRITE },
+    [Keys.GEQ]: { str: '\\geq', fn: WRITE },
+    [Keys.UP]: { str: 'Up', fn: KEYSTROKE },
+    [Keys.DOWN]: { str: 'Down', fn: KEYSTROKE },
     // The `FRAC_EXCLUSIVE` variant is handled manually, since we may need to do
     // some additional navigation depending on the cursor position.
-    [Keys.FRAC_INCLUSIVE]: {str: '/', fn: CMD},
+    [Keys.FRAC_INCLUSIVE]: { str: '/', fn: CMD },
 };
 
 const NormalCommands = {
@@ -85,7 +85,7 @@ const ValidLeaves = [
 
 const KeysForJumpContext = {
     [CursorContexts.IN_PARENS]: Keys.JUMP_OUT_PARENTHESES,
-    [CursorContexts.IN_SUPER_SCRIPT]:  Keys.JUMP_OUT_EXPONENT,
+    [CursorContexts.IN_SUPER_SCRIPT]: Keys.JUMP_OUT_EXPONENT,
     [CursorContexts.IN_SUB_SCRIPT]: Keys.JUMP_OUT_BASE,
     [CursorContexts.BEFORE_FRACTION]: Keys.JUMP_INTO_NUMERATOR,
     [CursorContexts.IN_NUMERATOR]: Keys.JUMP_OUT_NUMERATOR,
@@ -99,7 +99,7 @@ class MathWrapper {
         this.mathField = this.MQ.MathField(element, {
             // use a span instead of a textarea so that we don't bring up the
             // native keyboard on mobile when selecting the input
-            substituteTextarea: function() {
+            substituteTextarea: function () {
                 return document.createElement('span');
             },
         });
@@ -140,7 +140,7 @@ class MathWrapper {
         const cursor = this.mathField.__controller.cursor;
 
         if (key in KeyActions) {
-            const {str, fn} = KeyActions[key];
+            const { str, fn } = KeyActions[key];
 
             if (str && fn) {
                 this.mathField[fn](str);
@@ -167,14 +167,14 @@ class MathWrapper {
             this.mathField.write('\\sqrt[3]{}');
             this.mathField.keystroke('Left'); // under the root
         } else if (key === Keys.EXP || key === Keys.EXP_2 ||
-                key === Keys.EXP_3) {
+            key === Keys.EXP_3) {
             this._handleExponent(cursor, key);
         } else if (key === Keys.JUMP_OUT_PARENTHESES ||
-                key === Keys.JUMP_OUT_EXPONENT ||
-                key === Keys.JUMP_OUT_BASE ||
-                key === Keys.JUMP_INTO_NUMERATOR ||
-                key === Keys.JUMP_OUT_NUMERATOR ||
-                key === Keys.JUMP_OUT_DENOMINATOR) {
+            key === Keys.JUMP_OUT_EXPONENT ||
+            key === Keys.JUMP_OUT_BASE ||
+            key === Keys.JUMP_INTO_NUMERATOR ||
+            key === Keys.JUMP_OUT_NUMERATOR ||
+            key === Keys.JUMP_OUT_DENOMINATOR) {
             this._handleJumpOut(cursor, key);
         } else if (key === Keys.BACKSPACE) {
             this._handleBackspace(cursor);
@@ -425,7 +425,7 @@ class MathWrapper {
                 this._handleBackspaceInLogIndex(cursor);
 
             } else if (leftNode.ctrlSeq === '\\ge ' ||
-                    leftNode.ctrlSeq === '\\le ') {
+                leftNode.ctrlSeq === '\\le ') {
                 this._handleBackspaceAfterLigaturedSymbol(cursor);
 
             } else if (this._isNthRoot(grandparent) && leftNode === MQ_END) {
@@ -489,7 +489,7 @@ class MathWrapper {
 
         const precedingNode = cursor[this.MQ.L];
         const shouldPrefixWithParens = precedingNode === MQ_END ||
-                invalidPrefixes.includes(precedingNode.ctrlSeq.trim());
+            invalidPrefixes.includes(precedingNode.ctrlSeq.trim());
         if (shouldPrefixWithParens) {
             this.mathField.write('\\left(\\right)');
         }
@@ -589,7 +589,7 @@ class MathWrapper {
                     // If we have a single character, add it to the command
                     // name.
                     name = name + ctrlSeq;
-                } else if (ctrlSeq === commandEndSeq)  {
+                } else if (ctrlSeq === commandEndSeq) {
                     // If we hit the command end delimiter (the left
                     // parentheses surrounding its arguments), stop.
                     endNode = node;
@@ -599,7 +599,7 @@ class MathWrapper {
                 node = node[this.MQ.R];
             }
             if (validCommands.includes(name)) {
-                return {name, startNode, endNode};
+                return { name, startNode, endNode };
             } else {
                 return null;
             }

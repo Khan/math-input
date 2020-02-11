@@ -19,7 +19,8 @@
     "katex": "0.11.1",
     "performance-now": "^0.2.0",
     "react-redux": "^5.0.7",
-    "redux": "^4.0.0"
+    "redux": "^4.0.0",
+    "mathquill": "git+https://git@github.com/Khan/mathquill.git#a9ae54e057c5c1acc8244a5627acbff29901d992"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",

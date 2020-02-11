@@ -66,7 +66,6 @@ module.exports = {
         extensions: [".js", ".json"],
         alias: {
             // "react-dom": "@hot-loader/react-dom",
-            mathquill: path.join(__dirname, "mathquill/mathquill.js")
         },
     },
     devtool: "source-map",
@@ -75,7 +74,8 @@ module.exports = {
         liveReload: false,
         contentBase: [
             path.join(__dirname, "dist"),
-            path.join(__dirname, 'mathquill')
+            path.join(__dirname, 'node_modules/mathquill/build/'),
+            path.join(__dirname, 'assets/')
         ],
         compress: true,
         port: 9000,
