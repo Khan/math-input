@@ -2,11 +2,11 @@
   "name": "math-input",
   "version": "0.0.1",
   "description": "",
-  "main": "dist/index.bundle.js",
+  "main": "build/math-input.js",
   "scripts": {
     "test": "mocha test/test_*.js --compilers js:@babel/register",
     "watch_test": "mocha test/test_spec.js --watch --compilers js:@babel/register",
-    "compile": "webpack --config webpack.config.externals.js",
+    "build": "webpack --config webpack.config.externals.js",
     "start": "webpack-dev-server --open"
   },
   "author": "",
@@ -15,10 +15,10 @@
     "aphrodite": "^1.1.0",
     "jquery": "^2.1.1",
     "katex": "0.11.1",
+    "mathquill": "git+https://git@github.com/Khan/mathquill.git#a9ae54e057c5c1acc8244a5627acbff29901d992",
     "performance-now": "^0.2.0",
     "react-redux": "^5.0.7",
-    "redux": "^4.0.0",
-    "mathquill": "git+https://git@github.com/Khan/mathquill.git#a9ae54e057c5c1acc8244a5627acbff29901d992"
+    "redux": "^4.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
@@ -31,14 +31,17 @@
     "@babel/register": "^7.0.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-loader": "7.1.1",
+    "core-js": "^3.0.1",
     "css-loader": "^3.4.2",
     "exports-loader": "^0.6.3",
+    "file-loader": "^4.0.0",
     "html-webpack-plugin": "^3.2.0",
     "jsdom": "^8.4.0",
     "less": "^2.7.2",
     "less-loader": "^5.0.0",
     "less-plugin-autoprefix": "^1.5.1",
     "less-plugin-clean-css": "^1.5.1",
+    "mini-css-extract-plugin": "^0.9.0",
     "mocha": "^2.4.5",
     "mocha-jsdom": "^1.1.0",
     "prop-types": "15.6.1",
@@ -47,9 +50,9 @@
     "react-addons-css-transition-group": "15.6.2",
     "react-addons-pure-render-mixin": "15.3.2",
     "react-dom": "16.5",
+    "style-loader": "^1.1.3",
     "webpack": "^4.32.2",
     "webpack-cli": "^3.3.2",
-    "webpack-dev-server": "^3.4.1",
-    "file-loader": "^4.0.0"
+    "webpack-dev-server": "^3.4.1"
   }
 }

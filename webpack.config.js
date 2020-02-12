@@ -1,6 +1,7 @@
 const path = require("path");
-var HtmlWebpackPlugin = require("html-webpack-plugin");
-var webpack = require("webpack");
+const webpack = require("webpack");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
     mode: "development",
@@ -9,37 +10,24 @@ module.exports = {
     },
     output: {
         publicPath: "/",
-        filename: "[name].bundle.js",
-        chunkFilename: "[name].bundle.js",
-        path: path.resolve(__dirname, "dist"),
+        filename: "math-input.js",
+        chunkFilename: "math-input.js",
+        path: path.resolve(__dirname, "build"),
     },
     module: {
         rules: [
             {
                 test: /\.js$/,
                 exclude: /(node_modules|mathquill)/,
-                use: {
-                    loader: "babel-loader",
-                },
+                use: ["babel-loader"],
             },
             {
                 test: /\.less$/,
-                use: [
-                    {
-                        loader: 'css-loader',
-                    },
-                    {
-                        loader: 'less-loader',
-                    },
-                ],
+                use: ['style-loader', MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'],
             },
             {
                 test: /\.css$/,
-                use: [
-                    {
-                        loader: 'css-loader',
-                    }
-                ],
+                use: ['style-loader', MiniCssExtractPlugin.loader, 'css-loader'],
             },
             {
                 test: /\.(woff|woff2|ttf|otf|eot|svg)$/,
@@ -56,11 +44,14 @@ module.exports = {
             template: "index.html",
             title: "math-toolbox",
         }),
+        new MiniCssExtractPlugin({
+            filename: "math-input.css",
+        }),
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",
             "window.jQuery": "jquery"
-        })
+        }),
     ],
     resolve: {
         extensions: [".js", ".json"],

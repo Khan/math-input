@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
     entry: './src/index.js',
@@ -18,39 +19,27 @@ module.exports = {
             {
                 test: /\.js$/,
                 exclude: /(node_modules|mathquill)/,
-                use: {
-                    loader: "babel-loader",
-                },
+                use: ["babel-loader"],
             },
             {
                 test: /\.less$/,
-                use: [
-                    {
-                        loader: 'css-loader',
-                    },
-                    {
-                        loader: 'less-loader',
-                    },
-                ],
+                use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'],
             },
             {
                 test: /\.css$/,
-                use: [
-                    {
-                        loader: 'css-loader',
-                    }
-                ],
+                use: [MiniCssExtractPlugin.loader, 'css-loader'],
             },
             {
                 test: /\.(woff|woff2|ttf|otf|eot|svg)$/,
-                use: [
-                    {
-                        loader: "file-loader",
-                    },
-                ],
+                use: ["file-loader"],
             }
         ],
     },
+    plugins: [
+        new MiniCssExtractPlugin({
+            filename: "math-input.css",
+        }),
+    ],
     // TODO(alex): Pick just one type below, e.g. commonjs2
     externals: {
         'prop-types': {
