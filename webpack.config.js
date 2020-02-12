@@ -23,11 +23,11 @@ module.exports = {
             },
             {
                 test: /\.less$/,
-                use: ['style-loader', MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'],
+                use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'],
             },
             {
                 test: /\.css$/,
-                use: ['style-loader', MiniCssExtractPlugin.loader, 'css-loader'],
+                use: [MiniCssExtractPlugin.loader, 'css-loader'],
             },
             {
                 test: /\.(woff|woff2|ttf|otf|eot|svg)$/,
