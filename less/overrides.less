@@ -11,14 +11,15 @@
 // change this animation length at all, we'd need to modify MathQuill as well.
 @cursorAnimationDuration: 500ms;
 
+// HACK(diedra): This overrides the border styling set in math-input.js
+.keypad-input > .mq-editable-field:active {
+    border: 2px solid #1B50B3 !important;
+}
+
 .keypad-input {
     outline: none !important;
 
     .mq-editable-field {
-        :active {
-            border: 2px solid #1B50B3 !important;
-        }
-
         .mq-root-block {
             overflow-x: scroll;
             border: 2px solid rgba(0, 0, 0, 0);
