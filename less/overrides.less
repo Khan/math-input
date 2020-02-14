@@ -15,8 +15,25 @@
     outline: none !important;
 
     .mq-editable-field {
+        :active {
+            border: 2px solid #1B50B3 !important;
+        }
+
         .mq-root-block {
             overflow-x: scroll;
+            border: 2px solid rgba(0, 0, 0, 0);
+            min-height: inherit;
+        }
+
+        .mq-root-block:active {
+            /* White + 32% Blue */
+            background: linear-gradient(
+                0deg,
+                rgba(24, 101, 242, 0.32),
+                rgba(24, 101, 242, 0.32)
+            ), #FFFFFF;
+            border: 2px solid #1B50B3;
+            border-radius: 4px;
         }
 
         .mq-cursor:not(:only-child),

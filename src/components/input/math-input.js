@@ -21,6 +21,8 @@ const i18n = window.i18n || {_: s => s};
 
 const constrainingFrictionFactor = 0.8;
 
+const PADDING_AROUND_TEXTBOX = 1;
+
 class MathInput extends React.Component {
     static propTypes = {
         // The React element node associated with the keypad that will send
@@ -48,6 +50,7 @@ class MathInput extends React.Component {
     };
 
     state = {
+        hovered: false,
         focused: false,
         handle: {
             animateIntoPosition: false,
@@ -202,7 +205,9 @@ class MathInput extends React.Component {
             this.mathField.setContent(this.props.value);
         }
 
-        if (prevState.focused !== this.state.focused) {
+        if (prevState.focused !== this.state.focused ||
+            prevState.hovered !== this.state.hovered
+        ) {
             this._updateInputPadding()
         }
     }
@@ -332,7 +337,7 @@ class MathInput extends React.Component {
     blur = () => {
         this.mathField.blur();
         this.props.onBlur && this.props.onBlur();
-        this.setState({focused: false, handle: {visible: false}});
+        this.setState({hovered: false, focused: false, handle: {visible: false}});
     };
 
     focus = () => {
@@ -364,7 +369,7 @@ class MathInput extends React.Component {
 
         this.mathField.focus();
         this.props.onFocus && this.props.onFocus();
-        this.setState({focused: true}, () => {
+        this.setState({focused: true, hovered: false}, () => {
             // NOTE(charlie): We use `setTimeout` to allow for a layout pass to
             // occur. Otherwise, the keypad is measured incorrectly. Ideally,
             // we'd use requestAnimationFrame here, but it's unsupported on
@@ -791,12 +796,34 @@ class MathInput extends React.Component {
         }
     };
 
+    handleMouseEnter = () => {
+        if (!this.state.hovered && !this.state.focused) {
+            this.setState({hovered: true});
+
+            this._updateInputPadding();
+
+            // STOPSHIP(diedra): Update root border.
+        }
+    };
+
+    handleMouseLeave = () => {
+        if (this.state.hovered) {
+            this.setState({hovered: false});
+
+            this._updateInputPadding();
+
+            // STOPSHIP(diedra): Update root border.
+        }
+    };
+
     getBorderWidthPx = () => {
+        const {hovered, focused} = this.state;
+
         // TODO(diedra): Move these to the common style package.
         const normalBorderWidthPx = 1;
         const focusedBorderWidthPx = 2;
 
-        return this.state.focused ? focusedBorderWidthPx : normalBorderWidthPx;
+        return hovered || focused ? focusedBorderWidthPx : normalBorderWidthPx;
     };
 
     // Calculate the appropriate padding based on the border width (which is
@@ -804,7 +831,8 @@ class MathInput extends React.Component {
     // that MathQuill automatically applies 2px of padding to the inner
     // input.
     getInputInnerPadding = () => {
-        const paddingInset = totalDesiredPadding - this.getBorderWidthPx();
+        const paddingInset = totalDesiredPadding - this.getBorderWidthPx()
+            - PADDING_AROUND_TEXTBOX;
 
         // Now, translate that to the appropriate padding for each direction.
         // The complication here is that we want numerals to be centered within
@@ -825,13 +853,13 @@ class MathInput extends React.Component {
     };
 
     render() {
-        const {focused, handle} = this.state;
+        const {hovered, focused, handle} = this.state;
         const {style} = this.props;
 
         const innerStyle = {
             ...inlineStyles.innerContainer,
             borderWidth: this.getBorderWidthPx(),
-            ...(focused ? {
+            ...(hovered || focused ? {
                 borderColor: wonderBlocksBlue,
             } : {}),
             ...style,
@@ -864,6 +892,8 @@ class MathInput extends React.Component {
                         this._mathContainer = ReactDOM.findDOMNode(node);
                     }}
                     style={innerStyle}
+                    onMouseEnter={this.handleMouseEnter}
+                    onMouseLeave={this.handleMouseLeave}
                 />
             </div>
             {focused && handle.visible && <CursorHandle
@@ -915,6 +945,7 @@ const inlineStyles = {
         minHeight: minHeightPx,
         minWidth: minWidthPx,
         maxWidth: inputMaxWidth,
+        padding: PADDING_AROUND_TEXTBOX,
         boxSizing: 'border-box',
         position: 'relative',
         borderStyle: 'solid',
