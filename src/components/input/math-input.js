@@ -98,10 +98,10 @@ class MathInput extends React.Component {
 
         this.mathField.setContent(this.props.value);
 
-        this._container = ReactDOM.findDOMNode(this);
+        this._updateInputPadding();
 
+        this._container = ReactDOM.findDOMNode(this);
         this._root = this._container.querySelector('.mq-root-block');
-        this._root.style.fontSize = `${fontSizePt}pt`;
         this._root.addEventListener("scroll", () => this._hideCursorHandle());
 
         // Record the initial scroll displacement on touch start. This allows
@@ -197,9 +197,13 @@ class MathInput extends React.Component {
         }
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps, prevState) {
         if (this.mathField.getContent() !== this.props.value) {
             this.mathField.setContent(this.props.value);
+        }
+
+        if (prevState.focused !== this.state.focused) {
+            this._updateInputPadding()
         }
     }
 
@@ -223,6 +227,17 @@ class MathInput extends React.Component {
         this._keypadBounds = keypadNode.getBoundingClientRect();
     };
 
+    _updateInputPadding = () => {
+        this._container = ReactDOM.findDOMNode(this);
+        this._root = this._container.querySelector('.mq-root-block');
+
+        const padding = this.getInputInnerPadding();
+        // NOTE(diedra): This overrides the default 2px padding from Mathquil.
+        this._root.style.padding = `${padding.paddingTop}px ${padding.paddingRight}px` +
+            ` ${padding.paddingBottom}px ${padding.paddingLeft}px`;
+        this._root.style.fontSize = `${fontSizePt}pt`;
+    };
+
     /*
     Keep the currently focused input focused: This sounds strange
     but Mathquil and our gesture setup do a lot to mess with focus.
@@ -237,7 +252,7 @@ class MathInput extends React.Component {
         if (!this.state.focused) {
           return;
         }
-    
+
         /*
         If the next target is null (blurring to the body)
         Then prevent that from happening and refocus on the input
@@ -245,7 +260,7 @@ class MathInput extends React.Component {
         if (event.relatedTarget === null) {
           event.preventDefault();
           this.inputRef.focus();
-        } 
+        }
         /*
         Otherwise if the next element is something that's intentionally being
         select, either via tab or clicking then blur this input and dismiss
@@ -789,9 +804,7 @@ class MathInput extends React.Component {
     // that MathQuill automatically applies 2px of padding to the inner
     // input.
     getInputInnerPadding = () => {
-        const builtInMathQuillPadding = 2;
-        const paddingInset = totalDesiredPadding - this.getBorderWidthPx() -
-            builtInMathQuillPadding;
+        const paddingInset = totalDesiredPadding - this.getBorderWidthPx();
 
         // Now, translate that to the appropriate padding for each direction.
         // The complication here is that we want numerals to be centered within
@@ -818,7 +831,6 @@ class MathInput extends React.Component {
         const innerStyle = {
             ...inlineStyles.innerContainer,
             borderWidth: this.getBorderWidthPx(),
-            ...this.getInputInnerPadding(),
             ...(focused ? {
                 borderColor: wonderBlocksBlue,
             } : {}),
@@ -836,7 +848,7 @@ class MathInput extends React.Component {
         >
             {/* NOTE(charlie): This is used purely to namespace the styles in
                 overrides.css. */}
-            <div 
+            <div
                 className="keypad-input"
                 tabIndex={"0"}
                 ref={node => {
