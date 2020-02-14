@@ -187,7 +187,8 @@ class MathInput extends React.Component {
         window.addEventListener(
                 'orientationchange', this._clearKeypadBoundsCache);
 
-        window.document.addEventListener("focusout", this._keepInputFocus);
+        // TODO(nick): fix this so it doesn't break webapp
+        // window.document.addEventListener("focusout", this._keepInputFocus);
     }
 
     componentWillReceiveProps(props) {
