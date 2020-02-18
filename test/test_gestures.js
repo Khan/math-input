@@ -1,7 +1,7 @@
 /* eslint-env node, mocha */
-const assert = require('assert');
+const assert = require("assert");
 
-const GestureStateMachine = require('../src/components/gesture-state-machine');
+const GestureStateMachine = require("../src/components/gesture-state-machine");
 
 const swipeThresholdPx = 5;
 const longPressWaitTimeMs = 5;
@@ -13,15 +13,15 @@ const holdIntervalMs = 5;
 const eventTrackers = (buffer) => {
     const handlers = {};
     const callbackNames = [
-        'onBlur',
-        'onFocus',
-        'onTrigger',
-        'onTouchEnd',
-        'onLongPress',
-        'onSwipeChange',
-        'onSwipeEnd',
+        "onBlur",
+        "onFocus",
+        "onTrigger",
+        "onTouchEnd",
+        "onLongPress",
+        "onSwipeChange",
+        "onSwipeEnd",
     ];
-    callbackNames.forEach(callbackName => {
+    callbackNames.forEach((callbackName) => {
         handlers[callbackName] = function() {
             buffer.push([callbackName, ...arguments]);
         };
@@ -31,29 +31,36 @@ const eventTrackers = (buffer) => {
 
 // Arbitrary node IDs (representative of arbitrary keys) to be used in testing.
 const NodeIds = {
-    first: 'first',
-    second: 'second',
-    third: 'third',
-    swipeDisabled: 'swipeDisabled',
-    multiPressable: 'multiPressable',
+    first: "first",
+    second: "second",
+    third: "third",
+    swipeDisabled: "swipeDisabled",
+    multiPressable: "multiPressable",
 };
 
-describe('GestureStateMachine', () => {
+describe("GestureStateMachine", () => {
     let eventBuffer;
     let stateMachine;
 
     beforeEach(() => {
         eventBuffer = [];
-        stateMachine = new GestureStateMachine(eventTrackers(eventBuffer), {
-            swipeThresholdPx, longPressWaitTimeMs, holdIntervalMs,
-        }, [NodeIds.swipeDisabled], [NodeIds.multiPressable]);
+        stateMachine = new GestureStateMachine(
+            eventTrackers(eventBuffer),
+            {
+                swipeThresholdPx,
+                longPressWaitTimeMs,
+                holdIntervalMs,
+            },
+            [NodeIds.swipeDisabled],
+            [NodeIds.multiPressable],
+        );
     });
 
     const assertEvents = (expectedEvents) => {
         assert.deepEqual(eventBuffer, expectedEvents);
     };
 
-    it('should trigger a tap on a simple button', () => {
+    it("should trigger a tap on a simple button", () => {
         const touchId = 1;
 
         // Trigger a touch start, followed immediately by a touch end.
@@ -62,13 +69,13 @@ describe('GestureStateMachine', () => {
 
         // Assert that we saw a focus and a touch end, in that order.
         const expectedEvents = [
-            ['onFocus', NodeIds.first],
-            ['onTouchEnd', NodeIds.first],
+            ["onFocus", NodeIds.first],
+            ["onTouchEnd", NodeIds.first],
         ];
         assertEvents(expectedEvents);
     });
 
-    it('should shift focus to a new button on move', () => {
+    it("should shift focus to a new button on move", () => {
         const touchId = 1;
 
         // Trigger a touch start on one node before moving over another node and
@@ -79,27 +86,27 @@ describe('GestureStateMachine', () => {
 
         // Assert that we saw a focus on both nodes.
         const expectedEvents = [
-            ['onFocus', NodeIds.first],
-            ['onFocus', NodeIds.second],
-            ['onTouchEnd', NodeIds.second],
+            ["onFocus", NodeIds.first],
+            ["onFocus", NodeIds.second],
+            ["onTouchEnd", NodeIds.second],
         ];
         assertEvents(expectedEvents);
     });
 
-    it('should trigger a long press on hold', (done) => {
+    it("should trigger a long press on hold", (done) => {
         const touchId = 1;
 
         /// Trigger a touch start.
         stateMachine.onTouchStart(() => NodeIds.first, touchId, 0);
 
         // Assert that we see a focus event immediately.
-        const initialExpectedEvents = [['onFocus', NodeIds.first]];
+        const initialExpectedEvents = [["onFocus", NodeIds.first]];
         assertEvents(initialExpectedEvents);
 
         setTimeout(() => {
             const expectedEventsAfterLongPress = [
                 ...initialExpectedEvents,
-                ['onLongPress', NodeIds.first],
+                ["onLongPress", NodeIds.first],
             ];
             assertEvents(expectedEventsAfterLongPress);
 
@@ -109,7 +116,7 @@ describe('GestureStateMachine', () => {
             // Assert that we still see a touch-end.
             const expectedEventsAfterRelease = [
                 ...expectedEventsAfterLongPress,
-                ['onTouchEnd', NodeIds.first],
+                ["onTouchEnd", NodeIds.first],
             ];
             assertEvents(expectedEventsAfterRelease);
 
@@ -117,7 +124,7 @@ describe('GestureStateMachine', () => {
         }, longPressWaitTimeMs);
     });
 
-    it('should trigger multiple presses on hold', (done) => {
+    it("should trigger multiple presses on hold", (done) => {
         const touchId = 1;
 
         // Trigger a touch start on the multi-pressable node.
@@ -125,8 +132,8 @@ describe('GestureStateMachine', () => {
 
         // Assert that we see an immediate focus and trigger.
         const initialExpectedEvents = [
-            ['onFocus', NodeIds.multiPressable],
-            ['onTrigger', NodeIds.multiPressable],
+            ["onFocus", NodeIds.multiPressable],
+            ["onTrigger", NodeIds.multiPressable],
         ];
         assertEvents(initialExpectedEvents);
 
@@ -134,7 +141,7 @@ describe('GestureStateMachine', () => {
             // Assert that we see an additional trigger after the delay.
             const expectedEventsAfterHold = [
                 ...initialExpectedEvents,
-                ['onTrigger', NodeIds.multiPressable],
+                ["onTrigger", NodeIds.multiPressable],
             ];
             assertEvents(expectedEventsAfterHold);
 
@@ -142,7 +149,7 @@ describe('GestureStateMachine', () => {
             stateMachine.onTouchEnd(() => NodeIds.multiPressable, touchId, 0);
             const expectedEventsAfterRelease = [
                 ...expectedEventsAfterHold,
-                ['onBlur'],
+                ["onBlur"],
             ];
             assertEvents(expectedEventsAfterRelease);
 
@@ -150,7 +157,7 @@ describe('GestureStateMachine', () => {
         }, holdIntervalMs);
     });
 
-    it('should be robust to multiple touch starts', (done) => {
+    it("should be robust to multiple touch starts", (done) => {
         const touchId = 1;
 
         // Trigger a touch start on the multi-pressable node twice, because
@@ -160,8 +167,8 @@ describe('GestureStateMachine', () => {
 
         // Assert that we see only one set of focus and triggers.
         const initialExpectedEvents = [
-            ['onFocus', NodeIds.multiPressable],
-            ['onTrigger', NodeIds.multiPressable],
+            ["onFocus", NodeIds.multiPressable],
+            ["onTrigger", NodeIds.multiPressable],
         ];
         assertEvents(initialExpectedEvents);
 
@@ -169,7 +176,7 @@ describe('GestureStateMachine', () => {
             // Assert that we see an additional trigger after the delay.
             const expectedEventsAfterHold = [
                 ...initialExpectedEvents,
-                ['onTrigger', NodeIds.multiPressable],
+                ["onTrigger", NodeIds.multiPressable],
             ];
             assertEvents(expectedEventsAfterHold);
 
@@ -177,7 +184,7 @@ describe('GestureStateMachine', () => {
             stateMachine.onTouchEnd(() => NodeIds.multiPressable, touchId, 0);
             const expectedEventsAfterRelease = [
                 ...expectedEventsAfterHold,
-                ['onBlur'],
+                ["onBlur"],
             ];
             assertEvents(expectedEventsAfterRelease);
 
@@ -192,7 +199,7 @@ describe('GestureStateMachine', () => {
 
     /* Swiping. */
 
-    it('should transition to a swipe', () => {
+    it("should transition to a swipe", () => {
         const touchId = 1;
 
         // Trigger a touch start, followed by a move past the swipe threshold.
@@ -200,24 +207,29 @@ describe('GestureStateMachine', () => {
         const swipeDistancePx = swipeThresholdPx + 1;
         stateMachine.onTouchStart(() => NodeIds.first, touchId, startX);
         stateMachine.onTouchMove(
-            () => NodeIds.first, touchId, startX + swipeDistancePx, true
+            () => NodeIds.first,
+            touchId,
+            startX + swipeDistancePx,
+            true,
         );
         stateMachine.onTouchEnd(
-            () => NodeIds.first, touchId, startX + swipeDistancePx
+            () => NodeIds.first,
+            touchId,
+            startX + swipeDistancePx,
         );
 
         // Assert that the node is focused and then blurred before transitioning
         // to a swipe.
         const expectedEvents = [
-            ['onFocus', NodeIds.first],
-            ['onBlur'],
-            ['onSwipeChange', swipeDistancePx],
-            ['onSwipeEnd', swipeDistancePx],
+            ["onFocus", NodeIds.first],
+            ["onBlur"],
+            ["onSwipeChange", swipeDistancePx],
+            ["onSwipeEnd", swipeDistancePx],
         ];
         assertEvents(expectedEvents);
     });
 
-    it('should not transition to a swipe when swiping is diabled', () => {
+    it("should not transition to a swipe when swiping is diabled", () => {
         const touchId = 1;
 
         // Trigger a touch start, followed by a move past the swipe threshold.
@@ -225,15 +237,18 @@ describe('GestureStateMachine', () => {
         const swipeDistancePx = swipeThresholdPx + 1;
         stateMachine.onTouchStart(() => NodeIds.first, touchId, startX);
         stateMachine.onTouchMove(
-            () => NodeIds.first, touchId, startX + swipeDistancePx, false
+            () => NodeIds.first,
+            touchId,
+            startX + swipeDistancePx,
+            false,
         );
 
         // Assert that the node is focused but never blurred.
-        const expectedEvents = [['onFocus', NodeIds.first]];
+        const expectedEvents = [["onFocus", NodeIds.first]];
         assertEvents(expectedEvents);
     });
 
-    it('should not transition to a swipe on drag from a locked key', () => {
+    it("should not transition to a swipe on drag from a locked key", () => {
         const touchId = 1;
 
         // Trigger a touch start, followed by a move past the swipe threshold.
@@ -241,17 +256,20 @@ describe('GestureStateMachine', () => {
         const swipeDistancePx = swipeThresholdPx + 1;
         stateMachine.onTouchStart(() => NodeIds.swipeDisabled, touchId, startX);
         stateMachine.onTouchMove(
-            () => NodeIds.swipeDisabled, touchId, startX + swipeDistancePx, true
+            () => NodeIds.swipeDisabled,
+            touchId,
+            startX + swipeDistancePx,
+            true,
         );
 
         // Assert that the node is focused but never blurred.
-        const expectedEvents = [['onFocus', NodeIds.swipeDisabled]];
+        const expectedEvents = [["onFocus", NodeIds.swipeDisabled]];
         assertEvents(expectedEvents);
     });
 
     /* Multi-touch. */
 
-    it('should respect simultaneous taps by two fingers', () => {
+    it("should respect simultaneous taps by two fingers", () => {
         const firstTouchId = 1;
         const secondTouchId = 2;
 
@@ -264,15 +282,15 @@ describe('GestureStateMachine', () => {
 
         // Assert that we saw a focus and a touch end, in that order.
         const expectedEvents = [
-            ['onFocus', NodeIds.first],
-            ['onFocus', NodeIds.second],
-            ['onTouchEnd', NodeIds.second],
-            ['onTouchEnd', NodeIds.first],
+            ["onFocus", NodeIds.first],
+            ["onFocus", NodeIds.second],
+            ["onTouchEnd", NodeIds.second],
+            ["onTouchEnd", NodeIds.first],
         ];
         assertEvents(expectedEvents);
     });
 
-    it('should ignore any additional touches when swiping', () => {
+    it("should ignore any additional touches when swiping", () => {
         const firstTouchId = 1;
         const secondTouchId = 2;
         const thirdTouchId = 3;
@@ -285,14 +303,17 @@ describe('GestureStateMachine', () => {
         // Now, swipe with the second finger.
         const swipeDistancePx = swipeThresholdPx + 1;
         stateMachine.onTouchMove(
-            () => NodeIds.second, secondTouchId, startX + swipeDistancePx, true
+            () => NodeIds.second,
+            secondTouchId,
+            startX + swipeDistancePx,
+            true,
         );
 
         const expectedEventsAfterSwipeStart = [
-            ['onFocus', NodeIds.first],
-            ['onFocus', NodeIds.second],
-            ['onBlur'],
-            ['onSwipeChange', startX + swipeDistancePx],
+            ["onFocus", NodeIds.first],
+            ["onFocus", NodeIds.second],
+            ["onBlur"],
+            ["onSwipeChange", startX + swipeDistancePx],
         ];
         assertEvents(expectedEventsAfterSwipeStart);
 
@@ -302,7 +323,10 @@ describe('GestureStateMachine', () => {
         stateMachine.onTouchMove(() => NodeIds.first, firstTouchId, 0);
         stateMachine.onTouchMove(() => NodeIds.third, firstTouchId, 0);
         stateMachine.onTouchMove(
-            () => NodeIds.third, firstTouchId, startX + swipeDistancePx, true
+            () => NodeIds.third,
+            firstTouchId,
+            startX + swipeDistancePx,
+            true,
         );
         stateMachine.onTouchEnd(() => NodeIds.third, firstTouchId, 0);
 
@@ -317,16 +341,18 @@ describe('GestureStateMachine', () => {
 
         // Finally, release with the second finger, which is mid-swipe.
         stateMachine.onTouchEnd(
-            () => NodeIds.second, secondTouchId, startX + swipeDistancePx
+            () => NodeIds.second,
+            secondTouchId,
+            startX + swipeDistancePx,
         );
         const expectedEventsAfterSwipeEnd = [
             ...expectedEventsAfterSwipeStart,
-            ['onSwipeEnd', startX + swipeDistancePx],
+            ["onSwipeEnd", startX + swipeDistancePx],
         ];
         assertEvents(expectedEventsAfterSwipeEnd);
     });
 
-    it('should track swipe displacement on a per-finger basis', () => {
+    it("should track swipe displacement on a per-finger basis", () => {
         const firstTouchId = 1;
         const firstTouchStartX = 15;
         const secondTouchId = 2;
@@ -335,10 +361,14 @@ describe('GestureStateMachine', () => {
         // Kick off two separate touch gestures at positions separated by more
         // than the swipe displacement.
         stateMachine.onTouchStart(
-            () => NodeIds.first, firstTouchId, firstTouchStartX
+            () => NodeIds.first,
+            firstTouchId,
+            firstTouchStartX,
         );
         stateMachine.onTouchStart(
-            () => NodeIds.second, secondTouchId, secondTouchStartX
+            () => NodeIds.second,
+            secondTouchId,
+            secondTouchStartX,
         );
 
         // Move less than the swipe threshold with both fingers.
@@ -346,20 +376,20 @@ describe('GestureStateMachine', () => {
             () => NodeIds.first,
             firstTouchId,
             firstTouchStartX + swipeThresholdPx - 1,
-            true
+            true,
         );
         stateMachine.onTouchMove(
             () => NodeIds.second,
             secondTouchId,
             secondTouchStartX + swipeThresholdPx - 1,
-            true
+            true,
         );
 
         // Assert that we haven't started swiping--all we've done is focused the
         // various nodes.
         const initialExpectedEvents = [
-            ['onFocus', NodeIds.first],
-            ['onFocus', NodeIds.second],
+            ["onFocus", NodeIds.first],
+            ["onFocus", NodeIds.second],
         ];
         assertEvents(initialExpectedEvents);
 
@@ -369,17 +399,17 @@ describe('GestureStateMachine', () => {
             () => NodeIds.first,
             firstTouchId,
             firstTouchStartX + swipeDistancePx,
-            true
+            true,
         );
         const expectedEventsAfterSwipeStart = [
             ...initialExpectedEvents,
-            ['onBlur'],
-            ['onSwipeChange', swipeDistancePx],
+            ["onBlur"],
+            ["onSwipeChange", swipeDistancePx],
         ];
         assertEvents(expectedEventsAfterSwipeStart);
     });
 
-    it('should be robust to extraneous fingers', () => {
+    it("should be robust to extraneous fingers", () => {
         const firstTouchId = 1;
         const firstTouchStartX = 15;
         const secondTouchId = 2;
@@ -388,7 +418,9 @@ describe('GestureStateMachine', () => {
         // The first finger initiates a gesture, but the second finger starts
         // elsewhere on the screen and doesn't register a start...
         stateMachine.onTouchStart(
-            () => NodeIds.first, firstTouchId, firstTouchStartX
+            () => NodeIds.first,
+            firstTouchId,
+            firstTouchStartX,
         );
 
         // Move the first finger, but less than the swipe threshold, and then
@@ -398,19 +430,17 @@ describe('GestureStateMachine', () => {
             () => NodeIds.first,
             firstTouchId,
             firstTouchStartX + swipeThresholdPx - 1,
-            true
+            true,
         );
         stateMachine.onTouchMove(
             () => NodeIds.second,
             secondTouchId,
             secondTouchStartX,
-            true
+            true,
         );
 
         // Assert we've started focusing but haven't blown up.
-        const initialExpectedEvents = [
-            ['onFocus', NodeIds.first],
-        ];
+        const initialExpectedEvents = [["onFocus", NodeIds.first]];
         assertEvents(initialExpectedEvents);
     });
 });

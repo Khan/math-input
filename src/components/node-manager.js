@@ -31,7 +31,7 @@ class NodeManager {
         // page is idle and the keypad is visible (i.e., the nodes are in their
         // proper positions).
         this._cachedBoundingBoxesById = {};
-        window.addEventListener('resize', () => {
+        window.addEventListener("resize", () => {
             this._cachedBoundingBoxesById = {};
         });
     }
@@ -88,8 +88,12 @@ class NodeManager {
             const domNode = this._nodesById[id];
             if (domNode) {
                 const bounds = domNode.getBoundingClientRect();
-                if (bounds.left <= x && bounds.right > x
-                        && bounds.top <= y && bounds.bottom > y) {
+                if (
+                    bounds.left <= x &&
+                    bounds.right > x &&
+                    bounds.top <= y &&
+                    bounds.bottom > y
+                ) {
                     this._cachedBoundingBoxesById[id] = bounds;
                     return id;
                 }

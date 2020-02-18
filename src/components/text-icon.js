@@ -2,13 +2,13 @@
  * A component that renders a text-based icon.
  */
 
-const React = require('react');
-const PropTypes = require('prop-types');
-const {StyleSheet} = require('aphrodite');
+const React = require("react");
+const PropTypes = require("prop-types");
+const {StyleSheet} = require("aphrodite");
 
-const {View, Text} = require('../fake-react-native-web');
-const {row, centered} = require('./styles');
-const {iconSizeHeightPx, iconSizeWidthPx} = require('./common-style');
+const {View, Text} = require("../fake-react-native-web");
+const {row, centered} = require("./styles");
+const {iconSizeHeightPx, iconSizeWidthPx} = require("./common-style");
 
 class TextIcon extends React.Component {
     static propTypes = {
@@ -26,11 +26,11 @@ class TextIcon extends React.Component {
             styles.base,
             ...(Array.isArray(style) ? style : [style]),
         ];
-        return <View style={containerStyle}>
-            <Text>
-                {character}
-            </Text>
-        </View>;
+        return (
+            <View style={containerStyle}>
+                <Text>{character}</Text>
+            </View>
+        );
     }
 }
 
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     },
 
     base: {
-        fontFamily: 'Proxima Nova',
+        fontFamily: "Proxima Nova",
         fontSize: 25,
     },
 });

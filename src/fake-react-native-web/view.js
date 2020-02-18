@@ -1,6 +1,6 @@
-const React = require('react');
-const PropTypes = require('prop-types');
-const {StyleSheet, css} = require('aphrodite');
+const React = require("react");
+const PropTypes = require("prop-types");
+const {StyleSheet, css} = require("aphrodite");
 
 class View extends React.Component {
     static propTypes = {
@@ -33,51 +33,56 @@ class View extends React.Component {
     static styles = StyleSheet.create({
         // From: https://github.com/necolas/react-native-web/blob/master/src/components/View/index.js
         initial: {
-            alignItems: 'stretch',
+            alignItems: "stretch",
             borderWidth: 0,
-            borderStyle: 'solid',
-            boxSizing: 'border-box',
-            display: 'flex',
-            flexBasis: 'auto',
-            flexDirection: 'column',
+            borderStyle: "solid",
+            boxSizing: "border-box",
+            display: "flex",
+            flexBasis: "auto",
+            flexDirection: "column",
             margin: 0,
             padding: 0,
-            position: 'relative',
+            position: "relative",
             // button and anchor reset
-            backgroundColor: 'transparent',
-            color: 'inherit',
-            font: 'inherit',
-            textAlign: 'inherit',
-            textDecorationLine: 'none',
+            backgroundColor: "transparent",
+            color: "inherit",
+            font: "inherit",
+            textAlign: "inherit",
+            textDecorationLine: "none",
             // list reset
-            listStyle: 'none',
+            listStyle: "none",
             // fix flexbox bugs
-            maxWidth: '100%',
+            maxWidth: "100%",
             minHeight: 0,
             minWidth: 0,
         },
     });
 
     render() {
-        const className = css(
-            View.styles.initial,
-            ...(Array.isArray(this.props.style) ? this.props.style
-                                                : [this.props.style])
-        ) + (this.props.extraClassName ? ` ${this.props.extraClassName}` : "");
+        const className =
+            css(
+                View.styles.initial,
+                ...(Array.isArray(this.props.style)
+                    ? this.props.style
+                    : [this.props.style]),
+            ) +
+            (this.props.extraClassName ? ` ${this.props.extraClassName}` : "");
 
-        return <div
-            className={className}
-            style={this.props.dynamicStyle}
-            onClick={this.props.onClick}
-            onTouchCancel={this.props.onTouchCancel}
-            onTouchEnd={this.props.onTouchEnd}
-            onTouchMove={this.props.onTouchMove}
-            onTouchStart={this.props.onTouchStart}
-            aria-label={this.props.ariaLabel}
-            role={this.props.role}
-        >
-            {this.props.children}
-        </div>;
+        return (
+            <div
+                className={className}
+                style={this.props.dynamicStyle}
+                onClick={this.props.onClick}
+                onTouchCancel={this.props.onTouchCancel}
+                onTouchEnd={this.props.onTouchEnd}
+                onTouchMove={this.props.onTouchMove}
+                onTouchStart={this.props.onTouchStart}
+                aria-label={this.props.ariaLabel}
+                role={this.props.role}
+            >
+                {this.props.children}
+            </div>
+        );
     }
 }
 

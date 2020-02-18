@@ -2,16 +2,19 @@
  * A component that renders and animates the selection state effect effect.
  */
 
-const React = require('react');
-const PropTypes = require('prop-types');
-const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
-const KeypadButton = require('./keypad-button');
-const KeyConfigs = require('../data/key-configs');
-const {KeyTypes, EchoAnimationTypes} = require('../consts');
+const React = require("react");
+const PropTypes = require("prop-types");
+const ReactCSSTransitionGroup = require("react-addons-css-transition-group");
+const KeypadButton = require("./keypad-button");
+const KeyConfigs = require("../data/key-configs");
+const {KeyTypes, EchoAnimationTypes} = require("../consts");
 const {
-    echoPropType, bordersPropType, boundingBoxPropType, keyIdPropType,
-} = require('./prop-types');
-const zIndexes = require('./z-indexes');
+    echoPropType,
+    bordersPropType,
+    boundingBoxPropType,
+    keyIdPropType,
+} = require("./prop-types");
+const zIndexes = require("./z-indexes");
 
 class Echo extends React.Component {
     static propTypes = {
@@ -38,8 +41,8 @@ class Echo extends React.Component {
 
         const containerStyle = {
             zIndex: zIndexes.echo,
-            position: 'absolute',
-            pointerEvents: 'none',
+            position: "absolute",
+            pointerEvents: "none",
             ...initialBounds,
         };
 
@@ -48,14 +51,16 @@ class Echo extends React.Component {
         // animation. Thus, it's much safer to do the styles purely inline.
         // <View> makes this difficult because some of its defaults, which are
         // applied via StyleSheet, will override our inlines.
-        return <div style={containerStyle}>
-            <KeypadButton
-                name={id}
-                icon={icon}
-                type={KeyTypes.ECHO}
-                borders={borders}
-            />
-        </div>;
+        return (
+            <div style={containerStyle}>
+                <KeypadButton
+                    name={id}
+                    icon={icon}
+                    type={KeyTypes.ECHO}
+                    borders={borders}
+                />
+            </div>
+        );
     }
 }
 
@@ -74,22 +79,21 @@ class EchoManager extends React.Component {
         switch (animationType) {
             case EchoAnimationTypes.SLIDE_AND_FADE:
                 animationDurationMs = 400;
-                animationTransitionName = 'echo-slide-and-fade';
+                animationTransitionName = "echo-slide-and-fade";
                 break;
 
             case EchoAnimationTypes.FADE_ONLY:
                 animationDurationMs = 300;
-                animationTransitionName = 'echo-fade-only';
+                animationTransitionName = "echo-fade-only";
                 break;
 
             case EchoAnimationTypes.LONG_FADE_ONLY:
                 animationDurationMs = 400;
-                animationTransitionName = 'echo-long-fade-only';
+                animationTransitionName = "echo-long-fade-only";
                 break;
 
             default:
-                throw new Error(
-                    "Invalid echo animation type:", animationType);
+                throw new Error("Invalid echo animation type:", animationType);
         }
 
         return {
@@ -101,43 +105,52 @@ class EchoManager extends React.Component {
     render() {
         const {echoes, onAnimationFinish} = this.props;
 
-        return <span>
-            {Object.keys(EchoAnimationTypes).map(animationType => {
-                // Collect the relevant parameters for the animation type, and
-                // filter for the appropriate echoes.
-                const {
-                    animationDurationMs, animationTransitionName,
-                } = this._animationConfigForType(animationType);
-                const echoesForType = echoes.filter(echo => {
-                    return echo.animationType === animationType;
-                });
+        return (
+            <span>
+                {Object.keys(EchoAnimationTypes).map((animationType) => {
+                    // Collect the relevant parameters for the animation type, and
+                    // filter for the appropriate echoes.
+                    const {
+                        animationDurationMs,
+                        animationTransitionName,
+                    } = this._animationConfigForType(animationType);
+                    const echoesForType = echoes.filter((echo) => {
+                        return echo.animationType === animationType;
+                    });
 
-                // TODO(charlie): Manage this animation with Aphrodite styles.
-                // Right now, there's a bug in the autoprefixer that breaks CSS
-                // transitions on mobile Safari.
-                // See: https://github.com/Khan/aphrodite/issues/68.
-                // As such, we have to do this with a stylesheet.
-                return <ReactCSSTransitionGroup
-                    transitionName={animationTransitionName}
-                    transitionEnter={true}
-                    transitionLeave={false}
-                    transitionEnterTimeout={animationDurationMs}
-                    key={animationType}
-                >
-                    {echoesForType.map(echo => {
-                        const {animationId} = echo;
-                        return <Echo
-                            key={animationId}
-                            animationDurationMs={animationDurationMs}
-                            onAnimationFinish={
-                                () => onAnimationFinish(animationId)
-                            }
-                            {...echo}
-                        />;
-                    })}
-                </ReactCSSTransitionGroup>;
-            })}
-        </span>;
+                    // TODO(charlie): Manage this animation with Aphrodite styles.
+                    // Right now, there's a bug in the autoprefixer that breaks CSS
+                    // transitions on mobile Safari.
+                    // See: https://github.com/Khan/aphrodite/issues/68.
+                    // As such, we have to do this with a stylesheet.
+                    return (
+                        <ReactCSSTransitionGroup
+                            transitionName={animationTransitionName}
+                            transitionEnter={true}
+                            transitionLeave={false}
+                            transitionEnterTimeout={animationDurationMs}
+                            key={animationType}
+                        >
+                            {echoesForType.map((echo) => {
+                                const {animationId} = echo;
+                                return (
+                                    <Echo
+                                        key={animationId}
+                                        animationDurationMs={
+                                            animationDurationMs
+                                        }
+                                        onAnimationFinish={() =>
+                                            onAnimationFinish(animationId)
+                                        }
+                                        {...echo}
+                                    />
+                                );
+                            })}
+                        </ReactCSSTransitionGroup>
+                    );
+                })}
+            </span>
+        );
     }
 }
 

@@ -1,23 +1,23 @@
-const React = require('react');
-const PropTypes = require('prop-types');
-const {connect} = require('react-redux');
-const {StyleSheet} = require('aphrodite');
+const React = require("react");
+const PropTypes = require("prop-types");
+const {connect} = require("react-redux");
+const {StyleSheet} = require("aphrodite");
 
-const {View} = require('../fake-react-native-web');
-const FractionKeypad = require('./fraction-keypad');
-const ExpressionKeypad = require('./expression-keypad');
-const NavigationPad = require('./navigation-pad');
-const zIndexes = require('./z-indexes');
-const {setPageSize} = require('../actions');
-const {keyIdPropType} = require('./prop-types');
-const {KeypadTypes, LayoutModes} = require('../consts');
-const {row, centered, fullWidth} = require('./styles');
+const {View} = require("../fake-react-native-web");
+const FractionKeypad = require("./fraction-keypad");
+const ExpressionKeypad = require("./expression-keypad");
+const NavigationPad = require("./navigation-pad");
+const zIndexes = require("./z-indexes");
+const {setPageSize} = require("../actions");
+const {keyIdPropType} = require("./prop-types");
+const {KeypadTypes, LayoutModes} = require("../consts");
+const {row, centered, fullWidth} = require("./styles");
 const {
     innerBorderColor,
     innerBorderStyle,
     innerBorderWidthPx,
     compactKeypadBorderRadiusPx,
-} = require('./common-style');
+} = require("./common-style");
 
 class KeypadContainer extends React.Component {
     static propTypes = {
@@ -54,7 +54,8 @@ class KeypadContainer extends React.Component {
         // And update it on resize.
         window.addEventListener("resize", this._throttleResizeHandler);
         window.addEventListener(
-            "orientationchange", this._throttleResizeHandler
+            "orientationchange",
+            this._throttleResizeHandler,
         );
     }
 
@@ -75,7 +76,8 @@ class KeypadContainer extends React.Component {
     componentWillUnmount() {
         window.removeEventListener("resize", this._throttleResizeHandler);
         window.removeEventListener(
-            "orientationchange", this._throttleResizeHandler
+            "orientationchange",
+            this._throttleResizeHandler,
         );
     }
 
@@ -115,8 +117,8 @@ class KeypadContainer extends React.Component {
             // compact keypad, we need to instruct some of our child views to
             // crop themselves. At least we're colocating all the layout
             // information in this component, though.
-            roundTopLeft: layoutMode === LayoutModes.COMPACT &&
-                !navigationPadEnabled,
+            roundTopLeft:
+                layoutMode === LayoutModes.COMPACT && !navigationPadEnabled,
             roundTopRight: layoutMode === LayoutModes.COMPACT,
         };
 
@@ -168,38 +170,41 @@ class KeypadContainer extends React.Component {
         const keypadStyle = [
             row,
             styles.keypadBorder,
-            layoutMode === LayoutModes.FULLSCREEN ? styles.fullscreen
-                                                  : styles.compact,
+            layoutMode === LayoutModes.FULLSCREEN
+                ? styles.fullscreen
+                : styles.compact,
         ];
 
         // TODO(charlie): When the keypad is shorter than the width of the
         // screen, add a border on its left and right edges, and round out the
         // corners.
-        return <View
-            style={keypadContainerStyle}
-            dynamicStyle={dynamicStyle}
-            extraClassName="keypad-container"
-        >
+        return (
             <View
-                style={keypadStyle}
-                ref={element => {
-                    if (!this.hasMounted && element) {
-                        this.hasMounted = true;
-                        onElementMounted(element);
-                    }
-                }}
+                style={keypadContainerStyle}
+                dynamicStyle={dynamicStyle}
+                extraClassName="keypad-container"
             >
-                {navigationPadEnabled &&
-                    <NavigationPad
-                        roundTopLeft={layoutMode === LayoutModes.COMPACT}
-                        style={styles.navigationPadContainer}
-                    />
-                }
-                <View style={styles.keypadLayout}>
-                    {this.renderKeypad()}
+                <View
+                    style={keypadStyle}
+                    ref={(element) => {
+                        if (!this.hasMounted && element) {
+                            this.hasMounted = true;
+                            onElementMounted(element);
+                        }
+                    }}
+                >
+                    {navigationPadEnabled && (
+                        <NavigationPad
+                            roundTopLeft={layoutMode === LayoutModes.COMPACT}
+                            style={styles.navigationPadContainer}
+                        />
+                    )}
+                    <View style={styles.keypadLayout}>
+                        {this.renderKeypad()}
+                    </View>
                 </View>
             </View>
-        </View>;
+        );
     }
 }
 
@@ -211,16 +216,16 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         right: 0,
-        position: 'fixed',
+        position: "fixed",
         transition: `${keypadAnimationDurationMs}ms ease-out`,
-        transitionProperty: 'transform',
+        transitionProperty: "transform",
         zIndex: zIndexes.keypad,
     },
 
     keypadBorder: {
-        boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.1)',
-        borderColor: 'rgba(0, 0, 0, 0.2)',
-        borderStyle: 'solid',
+        boxShadow: "0 1px 4px 0 rgba(0, 0, 0, 0.1)",
+        borderColor: "rgba(0, 0, 0, 0.2)",
+        borderStyle: "solid",
     },
 
     fullscreen: {
@@ -238,9 +243,10 @@ const styles = StyleSheet.create({
 
     navigationPadContainer: {
         // Add a separator between the navigation pad and the keypad.
-        borderRight: `${innerBorderWidthPx}px ${innerBorderStyle} `
-            + `${innerBorderColor}`,
-        boxSizing: 'content-box',
+        borderRight:
+            `${innerBorderWidthPx}px ${innerBorderStyle} ` +
+            `${innerBorderColor}`,
+        boxSizing: "content-box",
     },
 
     // Defer to the navigation pad, such that the navigation pad is always
@@ -250,7 +256,7 @@ const styles = StyleSheet.create({
     keypadLayout: {
         flexGrow: 1,
         // Avoid unitless flex-basis, per: https://philipwalton.com/articles/normalizing-cross-browser-flexbox-bugs/
-        flexBasis: '0%',
+        flexBasis: "0%",
     },
 });
 
@@ -260,19 +266,19 @@ const inlineStyles = {
     // so as to avoid, e.g., the keypad flashing at the bottom of the page
     // during the initial render.
     invisible: {
-        visibility: 'hidden',
+        visibility: "hidden",
     },
 
     hidden: {
-        msTransform: 'translate3d(0, 100%, 0)',
-        WebkitTransform: 'translate3d(0, 100%, 0)',
-        transform: 'translate3d(0, 100%, 0)',
+        msTransform: "translate3d(0, 100%, 0)",
+        WebkitTransform: "translate3d(0, 100%, 0)",
+        transform: "translate3d(0, 100%, 0)",
     },
 
     active: {
-        msTransform: 'translate3d(0, 0, 0)',
-        WebkitTransform: 'translate3d(0, 0, 0)',
-        transform: 'translate3d(0, 0, 0)',
+        msTransform: "translate3d(0, 0, 0)",
+        WebkitTransform: "translate3d(0, 0, 0)",
+        transform: "translate3d(0, 0, 0)",
     },
 };
 

@@ -3,16 +3,16 @@
  * 'default' symbol.
  */
 
-const React = require('react');
-const PropTypes = require('prop-types');
+const React = require("react");
+const PropTypes = require("prop-types");
 
-const EmptyKeypadButton = require('./empty-keypad-button');
-const TouchableKeypadButton = require('./touchable-keypad-button');
+const EmptyKeypadButton = require("./empty-keypad-button");
+const TouchableKeypadButton = require("./touchable-keypad-button");
 
-const Keys = require('../data/keys');
-const KeyConfigs = require('../data/key-configs');
-const {KeyTypes} = require('../consts');
-const {keyIdPropType} = require('./prop-types');
+const Keys = require("../data/keys");
+const KeyConfigs = require("../data/key-configs");
+const {KeyTypes} = require("../consts");
+const {keyIdPropType} = require("./prop-types");
 
 class ManyKeypadButton extends React.Component {
     static propTypes = {

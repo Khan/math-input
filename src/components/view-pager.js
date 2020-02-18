@@ -5,19 +5,19 @@
  *  - It supports exactly two pages.
  */
 
-const React = require('react');
-const PropTypes = require('prop-types');
-const {connect} = require('react-redux');
-const {StyleSheet} = require('aphrodite');
+const React = require("react");
+const PropTypes = require("prop-types");
+const {connect} = require("react-redux");
+const {StyleSheet} = require("aphrodite");
 
-const {View} = require('../fake-react-native-web');
-const {row} = require('./styles');
-const {childrenPropType} = require('./prop-types');
+const {View} = require("../fake-react-native-web");
+const {row} = require("./styles");
+const {childrenPropType} = require("./prop-types");
 const {
     innerBorderColor,
     innerBorderStyle,
     innerBorderWidthPx,
-} = require('./common-style');
+} = require("./common-style");
 
 class ViewPager extends React.Component {
     static propTypes = {
@@ -62,17 +62,19 @@ class ViewPager extends React.Component {
             WebkitTransform: `translate3d(${translateX}px, 0, 0)`,
             transform: `translate3d(${translateX}px, 0, 0)`,
         };
-        const animate = animationDurationMs ? {
-            msTransitionProperty: 'transform',
-            WebkitTransitionProperty: 'transform',
-            transitionProperty: 'transform',
-            msTransitionDuration: `${animationDurationMs}ms`,
-            WebkitTransitionDuration: `${animationDurationMs}ms`,
-            transitionDuration: `${animationDurationMs}ms`,
-            msTransitionTimingFunction: 'ease-out',
-            WebkitTransitionTimingFunction: 'ease-out',
-            transitionTimingFunction: 'ease-out',
-        } : {};
+        const animate = animationDurationMs
+            ? {
+                  msTransitionProperty: "transform",
+                  WebkitTransitionProperty: "transform",
+                  transitionProperty: "transform",
+                  msTransitionDuration: `${animationDurationMs}ms`,
+                  WebkitTransitionDuration: `${animationDurationMs}ms`,
+                  transitionDuration: `${animationDurationMs}ms`,
+                  msTransitionTimingFunction: "ease-out",
+                  WebkitTransitionTimingFunction: "ease-out",
+                  transitionTimingFunction: "ease-out",
+              }
+            : {};
         const dynamicPagerStyle = {
             ...transform,
             ...animate,
@@ -82,32 +84,33 @@ class ViewPager extends React.Component {
             width: pageWidthPx,
         };
 
-        return <View style={pagerStyle} dynamicStyle={dynamicPagerStyle}>
-            <View dynamicStyle={dynamicPageStyle}>
-                {children[0]}
+        return (
+            <View style={pagerStyle} dynamicStyle={dynamicPagerStyle}>
+                <View dynamicStyle={dynamicPageStyle}>{children[0]}</View>
+                <View style={styles.rightPage} dynamicStyle={dynamicPageStyle}>
+                    {children[1]}
+                </View>
             </View>
-            <View style={styles.rightPage} dynamicStyle={dynamicPageStyle}>
-                {children[1]}
-            </View>
-        </View>;
+        );
     }
 }
 
 const styles = StyleSheet.create({
     twoPagePager: {
-        alignSelf: 'flex-start',
+        alignSelf: "flex-start",
         // Note: By default, <View> sets a `maxWidth` of 100% to fix some
         // Flexbox bugs. We have to override it to accommodate for our two
         // pages. The exact value here isn't super important, as long as it's
         // large enough to accommodate for two pages (so, 200%) and some
         // separators.
-        maxWidth: '250%',
+        maxWidth: "250%",
     },
 
     rightPage: {
-        borderLeft: `${innerBorderWidthPx}px ${innerBorderStyle} `
-            + `${innerBorderColor}`,
-        boxSizing: 'content-box',
+        borderLeft:
+            `${innerBorderWidthPx}px ${innerBorderStyle} ` +
+            `${innerBorderColor}`,
+        boxSizing: "content-box",
     },
 });
 

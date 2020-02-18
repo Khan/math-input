@@ -1,6 +1,6 @@
-const React = require('react');
-const PropTypes = require('prop-types');
-const {StyleSheet, css} = require('aphrodite');
+const React = require("react");
+const PropTypes = require("prop-types");
+const {StyleSheet, css} = require("aphrodite");
 
 class Text extends React.Component {
     static propTypes = {
@@ -23,31 +23,33 @@ class Text extends React.Component {
         const className = css(
             styles.initial,
             ...(Array.isArray(style) ? style : [style]),
-            numberOfLines === 1 && styles.singleLineStyle
+            numberOfLines === 1 && styles.singleLineStyle,
         );
 
-        return <span className={className} style={this.props.dynamicStyle}>
-            {this.props.children}
-        </span>;
+        return (
+            <span className={className} style={this.props.dynamicStyle}>
+                {this.props.children}
+            </span>
+        );
     }
 }
 
 // https://github.com/necolas/react-native-web/blob/master/src/components/Text/index.js
 const styles = StyleSheet.create({
     initial: {
-        color: 'inherit',
-        display: 'inline',
-        font: 'inherit',
+        color: "inherit",
+        display: "inline",
+        font: "inherit",
         margin: 0,
         padding: 0,
-        textDecorationLine: 'none',
-        wordWrap: 'break-word',
+        textDecorationLine: "none",
+        wordWrap: "break-word",
     },
     singleLineStyle: {
-        maxWidth: '100%',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
+        maxWidth: "100%",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
     },
 });
 

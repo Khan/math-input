@@ -4,17 +4,17 @@
  * touch events globally) opaque to the KeypadButton.
  */
 
-const React = require('react');
-const PropTypes = require('prop-types');
-const ReactDOM = require('react-dom');
-const {connect} = require('react-redux');
-const {StyleSheet} = require('aphrodite');
+const React = require("react");
+const PropTypes = require("prop-types");
+const ReactDOM = require("react-dom");
+const {connect} = require("react-redux");
+const {StyleSheet} = require("aphrodite");
 
-const KeypadButton = require('./keypad-button');
-const KeyConfigs = require('../data/key-configs');
-const GestureManager = require('./gesture-manager');
-const {bordersPropType, keyIdPropType} = require('./prop-types');
-const {KeyTypes} = require('../consts');
+const KeypadButton = require("./keypad-button");
+const KeyConfigs = require("../data/key-configs");
+const GestureManager = require("./gesture-manager");
+const {bordersPropType, keyIdPropType} = require("./prop-types");
+const {KeyTypes} = require("../consts");
 
 class TouchableKeypadButton extends React.Component {
     static propTypes = {
@@ -34,12 +34,15 @@ class TouchableKeypadButton extends React.Component {
         // configuration system. Namely, we know that the other props flow
         // directly from the ID, and thus don't need to be checked. If a key has
         // a custom style, we bail out (this should be rare).
-        return newProps.id !== this.props.id ||
+        return (
+            newProps.id !== this.props.id ||
             newProps.gestureManager !== this.props.gestureManager ||
             newProps.focused !== this.props.focused ||
             newProps.disabled !== this.props.disabled ||
             newProps.popoverEnabled !== this.props.popoverEnabled ||
-            newProps.type !== this.props.type || !!newProps.style;
+            newProps.type !== this.props.type ||
+            !!newProps.style
+        );
     }
 
     componentWillUnmount() {
@@ -49,34 +52,49 @@ class TouchableKeypadButton extends React.Component {
 
     render() {
         const {
-            borders, childKeyIds, disabled, gestureManager, id, style, ...rest
+            borders,
+            childKeyIds,
+            disabled,
+            gestureManager,
+            id,
+            style,
+            ...rest
         } = this.props;
 
         // Only bind the relevant event handlers if the key is enabled.
-        const eventHandlers = disabled ? {
-            onTouchStart: (evt) => evt.preventDefault(),
-        } : {
-            onTouchStart: (evt) => gestureManager.onTouchStart(evt, id),
-            onTouchEnd: (evt) => gestureManager.onTouchEnd(evt),
-            onTouchMove: (evt) => gestureManager.onTouchMove(evt),
-            onTouchCancel: (evt) => gestureManager.onTouchCancel(evt),
-        };
+        const eventHandlers = disabled
+            ? {
+                  onTouchStart: (evt) => evt.preventDefault(),
+              }
+            : {
+                  onTouchStart: (evt) => gestureManager.onTouchStart(evt, id),
+                  onTouchEnd: (evt) => gestureManager.onTouchEnd(evt),
+                  onTouchMove: (evt) => gestureManager.onTouchMove(evt),
+                  onTouchCancel: (evt) => gestureManager.onTouchCancel(evt),
+              };
 
         const styleWithAddons = [
             ...(Array.isArray(style) ? style : [style]),
             styles.preventScrolls,
         ];
 
-        return <KeypadButton
-            ref={(node) => gestureManager.registerDOMNode(
-                id, ReactDOM.findDOMNode(node), childKeyIds, borders
-            )}
-            borders={borders}
-            disabled={disabled}
-            style={styleWithAddons}
-            {...eventHandlers}
-            {...rest}
-        />;
+        return (
+            <KeypadButton
+                ref={(node) =>
+                    gestureManager.registerDOMNode(
+                        id,
+                        ReactDOM.findDOMNode(node),
+                        childKeyIds,
+                        borders,
+                    )
+                }
+                borders={borders}
+                disabled={disabled}
+                style={styleWithAddons}
+                {...eventHandlers}
+                {...rest}
+            />
+        );
     }
 }
 
@@ -91,12 +109,12 @@ const mapStateToProps = (state, ownProps) => {
     const {keyConfig, ...rest} = ownProps;
     const {id, childKeyIds, type} = keyConfig;
 
-    const childKeys = childKeyIds && childKeyIds.map(id => KeyConfigs[id]);
+    const childKeys = childKeyIds && childKeyIds.map((id) => KeyConfigs[id]);
 
     // Override with the default child props, if the key is a multi-symbol key
     // (but not a many-symbol key, which operates under different rules).
-    const useFirstChildProps = type !== KeyTypes.MANY &&
-        childKeys && childKeys.length > 0;
+    const useFirstChildProps =
+        type !== KeyTypes.MANY && childKeys && childKeys.length > 0;
 
     return {
         ...rest,

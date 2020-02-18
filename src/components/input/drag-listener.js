@@ -23,7 +23,8 @@ class DragListener {
         for (let i = 0; i < initialEvent.changedTouches.length; i++) {
             const touch = initialEvent.changedTouches[i];
             touchLocationsById[touch.identifier] = [
-                touch.clientX, touch.clientY,
+                touch.clientX,
+                touch.clientY,
             ];
         }
 
@@ -33,17 +34,12 @@ class DragListener {
                 const initialTouchLocation =
                     touchLocationsById[touch.identifier];
                 if (initialTouchLocation) {
-                    const touchLocation = [
-                        touch.clientX, touch.clientY,
-                    ];
-                    const dx = touchLocation[0] -
-                        initialTouchLocation[0];
-                    const dy = touchLocation[1] -
-                        initialTouchLocation[1];
+                    const touchLocation = [touch.clientX, touch.clientY];
+                    const dx = touchLocation[0] - initialTouchLocation[0];
+                    const dy = touchLocation[1] - initialTouchLocation[1];
 
                     const squaredDist = dx * dx + dy * dy;
-                    const squaredTouchSlop =
-                        touchSlopPx * touchSlopPx;
+                    const squaredTouchSlop = touchSlopPx * touchSlopPx;
 
                     if (squaredDist > squaredTouchSlop) {
                         onDrag();
@@ -62,17 +58,17 @@ class DragListener {
     }
 
     attach() {
-        window.addEventListener('scroll', this._scrollListener);
-        window.addEventListener('touchmove', this._moveListener);
-        window.addEventListener('touchend', this._endAndCancelListener);
-        window.addEventListener('touchcancel', this._endAndCancelListener);
+        window.addEventListener("scroll", this._scrollListener);
+        window.addEventListener("touchmove", this._moveListener);
+        window.addEventListener("touchend", this._endAndCancelListener);
+        window.addEventListener("touchcancel", this._endAndCancelListener);
     }
 
     detach() {
-        window.removeEventListener('scroll', this._scrollListener);
-        window.removeEventListener('touchmove', this._moveListener);
-        window.removeEventListener('touchend', this._endAndCancelListener);
-        window.removeEventListener('touchcancel', this._endAndCancelListener);
+        window.removeEventListener("scroll", this._scrollListener);
+        window.removeEventListener("touchmove", this._moveListener);
+        window.removeEventListener("touchend", this._endAndCancelListener);
+        window.removeEventListener("touchcancel", this._endAndCancelListener);
     }
 }
 

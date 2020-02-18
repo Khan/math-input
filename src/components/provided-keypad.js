@@ -1,17 +1,17 @@
-const React = require('react');
-const PropTypes = require('prop-types');
-const ReactDOM = require('react-dom');
-const {Provider} = require('react-redux');
+const React = require("react");
+const PropTypes = require("prop-types");
+const ReactDOM = require("react-dom");
+const {Provider} = require("react-redux");
 
-const KeypadContainer = require('./keypad-container');
+const KeypadContainer = require("./keypad-container");
 const {
     activateKeypad,
     dismissKeypad,
     configureKeypad,
     setCursor,
     setKeyHandler,
-} = require('../actions');
-const createStore = require('../store');
+} = require("../actions");
+const createStore = require("../store");
 
 class ProvidedKeypad extends React.Component {
     static propTypes = {
@@ -58,26 +58,28 @@ class ProvidedKeypad extends React.Component {
     render() {
         const {onElementMounted, ...rest} = this.props;
 
-        return <Provider store={this.store}>
-            <KeypadContainer
-                onElementMounted={(element) => {
-                    // Append the dispatch methods that we want to expose
-                    // externally to the returned React element.
-                    const elementWithDispatchMethods = {
-                        ...element,
-                        activate: this.activate,
-                        dismiss: this.dismiss,
-                        configure: this.configure,
-                        setCursor: this.setCursor,
-                        setKeyHandler: this.setKeyHandler,
-                        getDOMNode: this.getDOMNode,
-                    };
-                    onElementMounted &&
-                        onElementMounted(elementWithDispatchMethods);
-                }}
-                {...rest}
-            />
-        </Provider>;
+        return (
+            <Provider store={this.store}>
+                <KeypadContainer
+                    onElementMounted={(element) => {
+                        // Append the dispatch methods that we want to expose
+                        // externally to the returned React element.
+                        const elementWithDispatchMethods = {
+                            ...element,
+                            activate: this.activate,
+                            dismiss: this.dismiss,
+                            configure: this.configure,
+                            setCursor: this.setCursor,
+                            setKeyHandler: this.setKeyHandler,
+                            getDOMNode: this.getDOMNode,
+                        };
+                        onElementMounted &&
+                            onElementMounted(elementWithDispatchMethods);
+                    }}
+                    {...rest}
+                />
+            </Provider>
+        );
     }
 }
 

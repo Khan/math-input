@@ -1,7 +1,7 @@
-const Redux = require('redux');
+const Redux = require("redux");
 
-const {tabletCutoffPx} = require('../components/common-style');
-const computeLayoutParameters = require('../components/compute-layout-parameters');
+const {tabletCutoffPx} = require("../components/common-style");
+const computeLayoutParameters = require("../components/compute-layout-parameters");
 const {
     DeviceOrientations,
     DeviceTypes,
@@ -9,15 +9,15 @@ const {
     KeyTypes,
     KeypadTypes,
     LayoutModes,
-} = require('../consts');
-const Keys = require('../data/keys');
-const KeyConfigs = require('../data/key-configs');
-const CursorContexts = require('../components/input/cursor-contexts');
-const GestureManager = require('../components/gesture-manager');
-const VelocityTracker = require('../components/velocity-tracker');
+} = require("../consts");
+const Keys = require("../data/keys");
+const KeyConfigs = require("../data/key-configs");
+const CursorContexts = require("../components/input/cursor-contexts");
+const GestureManager = require("../components/gesture-manager");
+const VelocityTracker = require("../components/velocity-tracker");
 
-const FractionKeypad = require('../components/fraction-keypad');
-const ExpressionKeypad = require('../components/expression-keypad');
+const FractionKeypad = require("../components/fraction-keypad");
+const ExpressionKeypad = require("../components/expression-keypad");
 
 const keypadForType = {
     [KeypadTypes.FRACTION]: FractionKeypad,
@@ -34,13 +34,13 @@ const createStore = () => {
 
     const inputReducer = function(state = initialInputState, action) {
         switch (action.type) {
-            case 'SetKeyHandler':
+            case "SetKeyHandler":
                 return {
                     ...state,
                     keyHandler: action.keyHandler,
                 };
 
-            case 'PressKey':
+            case "PressKey":
                 const keyConfig = KeyConfigs[action.key];
                 if (keyConfig.type !== KeyTypes.KEYPAD_NAVIGATION) {
                     // This is probably an anti-pattern but it works for the
@@ -55,7 +55,7 @@ const createStore = () => {
                 // TODO(kevinb) get state from MathQuill and store it?
                 return state;
 
-            case 'SetCursor':
+            case "SetCursor":
                 return {
                     ...state,
                     cursor: action.cursor,
@@ -69,26 +69,26 @@ const createStore = () => {
     const defaultKeypadType = KeypadTypes.EXPRESSION;
 
     const initialKeypadState = {
-        extraKeys: ['x', 'y', Keys.THETA, Keys.PI],
+        extraKeys: ["x", "y", Keys.THETA, Keys.PI],
         keypadType: defaultKeypadType,
         active: false,
     };
 
     const keypadReducer = function(state = initialKeypadState, action) {
         switch (action.type) {
-            case 'DismissKeypad':
+            case "DismissKeypad":
                 return {
                     ...state,
                     active: false,
                 };
 
-            case 'ActivateKeypad':
+            case "ActivateKeypad":
                 return {
                     ...state,
                     active: true,
                 };
 
-            case 'ConfigureKeypad':
+            case "ConfigureKeypad":
                 return {
                     ...state,
                     // Default `extraKeys` to the empty array.
@@ -96,7 +96,7 @@ const createStore = () => {
                     ...action.configuration,
                 };
 
-            case 'PressKey':
+            case "PressKey":
                 const keyConfig = KeyConfigs[action.key];
                 // NOTE(charlie): Our keypad system operates by triggering key
                 // presses with key IDs in a dumb manner, such that the keys
@@ -106,7 +106,7 @@ const createStore = () => {
                 // dismissal here rather than dispatching a dismiss action in
                 // the first place.
                 if (keyConfig.id === Keys.DISMISS) {
-                    return keypadReducer(state, {type: 'DismissKeypad'});
+                    return keypadReducer(state, {type: "DismissKeypad"});
                 }
                 return state;
 
@@ -133,7 +133,7 @@ const createStore = () => {
 
     const pagerReducer = function(state = initialPagerState, action) {
         switch (action.type) {
-            case 'ConfigureKeypad':
+            case "ConfigureKeypad":
                 const {keypadType} = action.configuration;
                 const {numPages} = keypadForType[keypadType];
                 return {
@@ -144,23 +144,25 @@ const createStore = () => {
                     dx: 0,
                 };
 
-            case 'SetPageSize':
+            case "SetPageSize":
                 return {
                     ...state,
                     pageWidthPx: action.pageWidthPx,
                 };
 
-            case 'PressKey':
+            case "PressKey":
                 const keyConfig = KeyConfigs[action.key];
 
                 // Reset the keypad page if the user performs a math operation.
-                if (keyConfig.type === KeyTypes.VALUE ||
-                        keyConfig.type === KeyTypes.OPERATOR) {
-                    return pagerReducer(state, {type: 'ResetKeypadPage'});
+                if (
+                    keyConfig.type === KeyTypes.VALUE ||
+                    keyConfig.type === KeyTypes.OPERATOR
+                ) {
+                    return pagerReducer(state, {type: "ResetKeypadPage"});
                 }
                 return state;
 
-            case 'ResetKeypadPage':
+            case "ResetKeypadPage":
                 return {
                     ...state,
                     animateToPosition: true,
@@ -169,10 +171,10 @@ const createStore = () => {
                     dx: 0,
                 };
 
-            case 'PageKeypadRight':
+            case "PageKeypadRight":
                 const nextPage = Math.min(
                     state.currentPage + 1,
-                    state.numPages - 1
+                    state.numPages - 1,
                 );
                 return {
                     ...state,
@@ -181,7 +183,7 @@ const createStore = () => {
                     dx: 0,
                 };
 
-            case 'PageKeypadLeft':
+            case "PageKeypadLeft":
                 const prevPage = Math.max(state.currentPage - 1, 0);
                 return {
                     ...state,
@@ -190,7 +192,7 @@ const createStore = () => {
                     dx: 0,
                 };
 
-            case 'OnSwipeChange':
+            case "OnSwipeChange":
                 state.velocityTracker.push(action.dx);
 
                 return {
@@ -199,7 +201,7 @@ const createStore = () => {
                     dx: action.dx,
                 };
 
-            case 'OnSwipeEnd':
+            case "OnSwipeEnd":
                 const {pageWidthPx, velocityTracker} = state;
                 const {dx} = action;
                 const velocity = velocityTracker.getVelocity();
@@ -209,16 +211,18 @@ const createStore = () => {
                 const minFlingVelocity = 0.1;
                 const minFlingDistance = 10;
 
-                const shouldPageRight = (dx < -pageWidthPx / 2) ||
+                const shouldPageRight =
+                    dx < -pageWidthPx / 2 ||
                     (velocity < -minFlingVelocity && dx < -minFlingDistance);
 
-                const shouldPageLeft = (dx > pageWidthPx / 2) ||
+                const shouldPageLeft =
+                    dx > pageWidthPx / 2 ||
                     (velocity > minFlingVelocity && dx > minFlingDistance);
 
                 if (shouldPageRight) {
-                    return pagerReducer(state, {type: 'PageKeypadRight'});
+                    return pagerReducer(state, {type: "PageKeypadRight"});
                 } else if (shouldPageLeft) {
-                    return pagerReducer(state, {type: 'PageKeypadLeft'});
+                    return pagerReducer(state, {type: "PageKeypadLeft"});
                 }
 
                 return {
@@ -233,55 +237,54 @@ const createStore = () => {
     };
 
     const createGestureManager = (swipeEnabled) => {
-        return new GestureManager({
-            swipeEnabled,
-        }, {
-            onSwipeChange: (dx) => {
-                store.dispatch({
-                    type: 'OnSwipeChange',
-                    dx,
-                });
+        return new GestureManager(
+            {
+                swipeEnabled,
             },
-            onSwipeEnd: (dx) => {
-                store.dispatch({
-                    type: 'OnSwipeEnd',
-                    dx,
-                });
+            {
+                onSwipeChange: (dx) => {
+                    store.dispatch({
+                        type: "OnSwipeChange",
+                        dx,
+                    });
+                },
+                onSwipeEnd: (dx) => {
+                    store.dispatch({
+                        type: "OnSwipeEnd",
+                        dx,
+                    });
+                },
+                onActiveNodesChanged: (activeNodes) => {
+                    store.dispatch({
+                        type: "SetActiveNodes",
+                        activeNodes,
+                    });
+                },
+                onClick: (key, layoutProps, inPopover) => {
+                    store.dispatch({
+                        type: "PressKey",
+                        key,
+                        ...layoutProps,
+                        inPopover,
+                    });
+                },
             },
-            onActiveNodesChanged: (activeNodes) => {
-                store.dispatch({
-                    type: 'SetActiveNodes',
-                    activeNodes,
-                });
-            },
-            onClick: (key, layoutProps, inPopover) => {
-                store.dispatch({
-                    type: 'PressKey',
-                    key,
-                    ...layoutProps,
-                    inPopover,
-                });
-            },
-        }, [], [
-            Keys.BACKSPACE,
-            Keys.UP,
-            Keys.RIGHT,
-            Keys.DOWN,
-            Keys.LEFT,
-        ]);
+            [],
+            [Keys.BACKSPACE, Keys.UP, Keys.RIGHT, Keys.DOWN, Keys.LEFT],
+        );
     };
 
     const initialGestureState = {
         popover: null,
         focus: null,
         gestureManager: createGestureManager(
-            keypadForType[defaultKeypadType].numPages > 1
+            keypadForType[defaultKeypadType].numPages > 1,
         ),
     };
 
     const gestureReducer = function(state = initialGestureState, action) {
         switch (action.type) {
-            case 'DismissKeypad':
+            case "DismissKeypad":
                 // NOTE(charlie): In the past, we enforced the "gesture manager
                 // will not receive any events when the keypad is hidden"
                 // assumption by assuming that the keypad would be hidden when
@@ -294,17 +297,17 @@ const createStore = () => {
                 state.gestureManager.disableEventTracking();
                 return state;
 
-            case 'ActivateKeypad':
+            case "ActivateKeypad":
                 state.gestureManager.enableEventTracking();
                 return state;
 
-            case 'SetActiveNodes':
+            case "SetActiveNodes":
                 return {
                     ...state,
                     ...action.activeNodes,
                 };
 
-            case 'ConfigureKeypad':
+            case "ConfigureKeypad":
                 const {keypadType} = action.configuration;
                 const {numPages} = keypadForType[keypadType];
                 const swipeEnabled = numPages > 1;
@@ -329,13 +332,15 @@ const createStore = () => {
 
     const echoReducer = function(state = initialEchoState, action) {
         switch (action.type) {
-            case 'PressKey':
+            case "PressKey":
                 const keyConfig = KeyConfigs[action.key];
 
                 // Add in the echo animation if the user performs a math
                 // operation.
-                if (keyConfig.type === KeyTypes.VALUE ||
-                        keyConfig.type === KeyTypes.OPERATOR) {
+                if (
+                    keyConfig.type === KeyTypes.VALUE ||
+                    keyConfig.type === KeyTypes.OPERATOR
+                ) {
                     return {
                         ...state,
                         echoes: [
@@ -354,7 +359,7 @@ const createStore = () => {
                 }
                 return state;
 
-            case 'RemoveEcho':
+            case "RemoveEcho":
                 const remainingEchoes = state.echoes.filter((echo) => {
                     return echo.animationId !== action.animationId;
                 });
@@ -396,17 +401,20 @@ const createStore = () => {
         const {pageWidthPx, pageHeightPx} = pageDimensions;
 
         // Determine the device type and orientation.
-        const deviceOrientation = pageWidthPx > pageHeightPx
+        const deviceOrientation =
+            pageWidthPx > pageHeightPx
                 ? DeviceOrientations.LANDSCAPE
                 : DeviceOrientations.PORTRAIT;
         const deviceType =
-            Math.min(pageWidthPx, pageHeightPx) > tabletCutoffPx ?
-                DeviceTypes.TABLET : DeviceTypes.PHONE;
+            Math.min(pageWidthPx, pageHeightPx) > tabletCutoffPx
+                ? DeviceTypes.TABLET
+                : DeviceTypes.PHONE;
 
         // Using that information, make some decisions (or assumptions)
         // about the resulting layout.
         const navigationPadEnabled = deviceType === DeviceTypes.TABLET;
-        const paginationEnabled = deviceType === DeviceTypes.PHONE &&
+        const paginationEnabled =
+            deviceType === DeviceTypes.PHONE &&
             deviceOrientation === DeviceOrientations.PORTRAIT;
 
         const deviceInfo = {deviceOrientation, deviceType};
@@ -428,7 +436,7 @@ const createStore = () => {
                 gridDimensions,
                 pageDimensions,
                 deviceInfo,
-                layoutOptions
+                layoutOptions,
             ),
             // Pass along some of the layout information, so that other
             // components in the heirarchy can adapt appropriately.
@@ -439,7 +447,7 @@ const createStore = () => {
 
     const layoutReducer = function(state = initialLayoutState, action) {
         switch (action.type) {
-            case 'ConfigureKeypad':
+            case "ConfigureKeypad":
                 const {keypadType} = action.configuration;
                 const gridDimensions = {
                     numRows: keypadForType[keypadType].rows,
@@ -451,19 +459,21 @@ const createStore = () => {
                 return {
                     ...state,
                     ...layoutParametersForDimensions(
-                        state.pageDimensions, gridDimensions
+                        state.pageDimensions,
+                        gridDimensions,
                     ),
                     gridDimensions,
                 };
 
-            case 'SetPageSize':
+            case "SetPageSize":
                 const {pageWidthPx, pageHeightPx} = action;
                 const pageDimensions = {pageWidthPx, pageHeightPx};
 
                 return {
                     ...state,
                     ...layoutParametersForDimensions(
-                        pageDimensions, state.gridDimensions
+                        pageDimensions,
+                        state.gridDimensions,
                     ),
                     pageDimensions,
                 };

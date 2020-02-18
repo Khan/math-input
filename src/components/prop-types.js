@@ -2,17 +2,17 @@
  * React PropTypes that may be shared between components.
  */
 
-const PropTypes = require('prop-types');
+const PropTypes = require("prop-types");
 
-const KeyConfigs = require('../data/key-configs');
-const CursorContexts = require('./input/cursor-contexts');
+const KeyConfigs = require("../data/key-configs");
+const CursorContexts = require("./input/cursor-contexts");
 const {
     BorderDirections,
     EchoAnimationTypes,
     IconTypes,
     KeyTypes,
     KeypadTypes,
-} = require('../consts');
+} = require("../consts");
 
 const iconPropType = PropTypes.shape({
     type: PropTypes.oneOf(Object.keys(IconTypes)).isRequired,
@@ -44,8 +44,8 @@ const keypadElementPropType = PropTypes.shape({
     getDOMNode: PropTypes.func.isRequired,
 });
 
-const bordersPropType =  PropTypes.arrayOf(
-    PropTypes.oneOf(Object.keys(BorderDirections))
+const bordersPropType = PropTypes.arrayOf(
+    PropTypes.oneOf(Object.keys(BorderDirections)),
 );
 
 const boundingBoxPropType = PropTypes.shape({
@@ -59,17 +59,13 @@ const boundingBoxPropType = PropTypes.shape({
 
 const echoPropType = PropTypes.shape({
     animationId: PropTypes.string.isRequired,
-    animationType: PropTypes.oneOf(
-        Object.keys(EchoAnimationTypes)
-    ).isRequired,
+    animationType: PropTypes.oneOf(Object.keys(EchoAnimationTypes)).isRequired,
     borders: bordersPropType,
     id: keyIdPropType.isRequired,
     initialBounds: boundingBoxPropType.isRequired,
 });
 
-const cursorContextPropType = PropTypes.oneOf(
-    Object.keys(CursorContexts)
-);
+const cursorContextPropType = PropTypes.oneOf(Object.keys(CursorContexts));
 
 const popoverPropType = PropTypes.shape({
     parentId: keyIdPropType.isRequired,

@@ -4,9 +4,9 @@
  * and links them together.
  */
 
-const NodeManager = require('./node-manager');
-const PopoverStateMachine = require('./popover-state-machine');
-const GestureStateMachine = require('./gesture-state-machine');
+const NodeManager = require("./node-manager");
+const PopoverStateMachine = require("./popover-state-machine");
+const GestureStateMachine = require("./gesture-state-machine");
 
 const coordsForEvent = (evt) => {
     return [evt.changedTouches[0].clientX, evt.changedTouches[0].clientY];
@@ -29,7 +29,8 @@ class GestureManager {
                     popover: popover && {
                         parentId: popover.parentId,
                         bounds: this.nodeManager.layoutPropsForId(
-                            popover.parentId).initialBounds,
+                            popover.parentId,
+                        ).initialBounds,
                         childKeyIds: popover.childIds,
                     },
                     ...rest,
@@ -55,29 +56,34 @@ class GestureManager {
                 handlers.onClick(
                     keyId,
                     this.nodeManager.layoutPropsForId(domNodeId),
-                    inPopover
+                    inPopover,
                 );
             },
         });
-        this.gestureStateMachine = new GestureStateMachine({
-            onFocus: (id) => {
-                this.popoverStateMachine.onFocus(id);
+        this.gestureStateMachine = new GestureStateMachine(
+            {
+                onFocus: (id) => {
+                    this.popoverStateMachine.onFocus(id);
+                },
+                onLongPress: (id) => {
+                    this.popoverStateMachine.onLongPress(id);
+                },
+                onTouchEnd: (id) => {
+                    this.popoverStateMachine.onTouchEnd(id);
+                },
+                onBlur: () => {
+                    this.popoverStateMachine.onBlur();
+                },
+                onSwipeChange: handlers.onSwipeChange,
+                onSwipeEnd: handlers.onSwipeEnd,
+                onTrigger: (id) => {
+                    this.popoverStateMachine.onTrigger(id);
+                },
             },
-            onLongPress: (id) => {
-                this.popoverStateMachine.onLongPress(id);
-            },
-            onTouchEnd: (id) => {
-                this.popoverStateMachine.onTouchEnd(id);
-            },
-            onBlur: () => {
-                this.popoverStateMachine.onBlur();
-            },
-            onSwipeChange: handlers.onSwipeChange,
-            onSwipeEnd: handlers.onSwipeEnd,
-            onTrigger: (id) => {
-                this.popoverStateMachine.onTrigger(id);
-            },
-        }, {}, disabledSwipeKeys, multiPressableKeys);
+            {},
+            disabledSwipeKeys,
+            multiPressableKeys,
+        );
     }
 
     /**
@@ -103,7 +109,7 @@ class GestureManager {
             this.gestureStateMachine.onTouchStart(
                 () => id,
                 evt.changedTouches[i].identifier,
-                x
+                x,
             );
         }
 
@@ -131,7 +137,7 @@ class GestureManager {
                 () => this.nodeManager.idForCoords(x, y),
                 evt.changedTouches[i].identifier,
                 x,
-                swipeEnabled
+                swipeEnabled,
             );
         }
     }
@@ -152,7 +158,7 @@ class GestureManager {
             this.gestureStateMachine.onTouchEnd(
                 () => this.nodeManager.idForCoords(x, y),
                 evt.changedTouches[i].identifier,
-                x
+                x,
             );
         }
     }
@@ -170,7 +176,7 @@ class GestureManager {
 
         for (let i = 0; i < evt.changedTouches.length; i++) {
             this.gestureStateMachine.onTouchCancel(
-                evt.changedTouches[i].identifier
+                evt.changedTouches[i].identifier,
             );
         }
     }

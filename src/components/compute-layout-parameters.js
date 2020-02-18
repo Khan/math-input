@@ -19,13 +19,13 @@
  * might need to be.
  */
 
-const {DeviceTypes, DeviceOrientations, LayoutModes} = require('../consts');
+const {DeviceTypes, DeviceOrientations, LayoutModes} = require("../consts");
 const {
     pageIndicatorHeightPx,
     toolbarHeightPx,
     navigationPadWidthPx,
     innerBorderWidthPx,
-} = require('./common-style');
+} = require("./common-style");
 
 const minButtonHeight = 48;
 const maxButtonSize = 64;
@@ -44,8 +44,8 @@ const safariToolbar = 44;
 // shrunken navbar is always visible, but expands on scroll (and the toolbar
 // appears as well).
 const maxLandscapeBrowserChrome = safariNavBarWhenShrunk + safariToolbar;
-const maxPortraitBrowserChrome = safariToolbar +
-    (safariNavBarWhenExpanded - safariNavBarWhenShrunk);
+const maxPortraitBrowserChrome =
+    safariToolbar + (safariNavBarWhenExpanded - safariNavBarWhenShrunk);
 
 // This represents the 'worst case' aspect ratio that we care about (for
 // portrait layouts). It's taken from the iPhone 4. The height is computed by
@@ -54,17 +54,16 @@ const maxPortraitBrowserChrome = safariToolbar +
 // difference when reserving space above the keypad.)
 const worstCaseAspectRatio = 320 / (480 - safariNavBarWhenShrunk);
 
-const computeLayoutParameters = function({numColumns,
-                                          numMaxVisibleRows,
-                                          numPages},
-                                         {pageWidthPx, pageHeightPx},
-                                         {deviceOrientation, deviceType},
-                                         {navigationPadEnabled,
-                                          paginationEnabled,
-                                          toolbarEnabled}) {
+const computeLayoutParameters = function(
+    {numColumns, numMaxVisibleRows, numPages},
+    {pageWidthPx, pageHeightPx},
+    {deviceOrientation, deviceType},
+    {navigationPadEnabled, paginationEnabled, toolbarEnabled},
+) {
     // First, compute some values that will be used in multiple computations.
-    const effectiveNumColumns =
-        paginationEnabled ? numColumns : numColumns * numPages;
+    const effectiveNumColumns = paginationEnabled
+        ? numColumns
+        : numColumns * numPages;
 
     // Then, compute the button dimensions based on the provided parameters.
     let buttonDimensions;
@@ -75,8 +74,9 @@ const computeLayoutParameters = function({numColumns,
         // into `pageHeightPx`. But we have no way of knowing if that's
         // the case or not. As such, we take a conservative approach and
         // assume that the chrome is _never_ included in `pageHeightPx`.
-        const browserChromeHeight = isLandscape ? maxLandscapeBrowserChrome
-                                                : maxPortraitBrowserChrome;
+        const browserChromeHeight = isLandscape
+            ? maxLandscapeBrowserChrome
+            : maxPortraitBrowserChrome;
 
         // Count up all the space that we need to reserve on the page.
         // Namely, we need to account for:
@@ -84,7 +84,9 @@ const computeLayoutParameters = function({numColumns,
         //  2. The presence of the exercise toolbar.
         //  3. The presence of the view pager indicator.
         //  4. Any browser chrome that may appear later.
-        const reservedSpace = minSpaceAboveKeypad + browserChromeHeight +
+        const reservedSpace =
+            minSpaceAboveKeypad +
+            browserChromeHeight +
             (toolbarEnabled ? toolbarHeightPx : 0) +
             (paginationEnabled ? pageIndicatorHeightPx : 0);
 
@@ -96,9 +98,9 @@ const computeLayoutParameters = function({numColumns,
         // This prevents the keypad from changing size when browser chrome
         // appears and disappears.
         const effectiveWidth = pageWidthPx;
-        const effectiveHeight =
-            isLandscape ? pageHeightPx
-                        : pageWidthPx / worstCaseAspectRatio;
+        const effectiveHeight = isLandscape
+            ? pageHeightPx
+            : pageWidthPx / worstCaseAspectRatio;
         const maxKeypadHeight = effectiveHeight - reservedSpace;
 
         // Finally, compute the button height and width. In computing the
@@ -106,21 +108,20 @@ const computeLayoutParameters = function({numColumns,
         // visible (since the toggling of popovers can increase the number of
         // visible rows).
         const buttonHeightPx = Math.max(
-            Math.min(
-                maxKeypadHeight / numMaxVisibleRows,
-                maxButtonSize
-            ),
-            minButtonHeight
+            Math.min(maxKeypadHeight / numMaxVisibleRows, maxButtonSize),
+            minButtonHeight,
         );
 
         let buttonWidthPx;
         if (numPages > 1) {
-            const effectiveNumColumns =
-                paginationEnabled ? numColumns : numColumns * numPages;
+            const effectiveNumColumns = paginationEnabled
+                ? numColumns
+                : numColumns * numPages;
             buttonWidthPx = effectiveWidth / effectiveNumColumns;
         } else {
-            buttonWidthPx = isLandscape ? maxButtonSize
-                                        : effectiveWidth / numColumns;
+            buttonWidthPx = isLandscape
+                ? maxButtonSize
+                : effectiveWidth / numColumns;
         }
 
         buttonDimensions = {
@@ -138,15 +139,19 @@ const computeLayoutParameters = function({numColumns,
 
     // Finally, determine whether the keypad should be rendered in the
     // fullscreen layout by determining its resultant width.
-    const numSeparators = (navigationPadEnabled ? 1 : 0) +
+    const numSeparators =
+        (navigationPadEnabled ? 1 : 0) +
         (!paginationEnabled ? numPages - 1 : 0);
-    const keypadWidth = (effectiveNumColumns * buttonDimensions.widthPx) +
+    const keypadWidth =
+        effectiveNumColumns * buttonDimensions.widthPx +
         (navigationPadEnabled ? navigationPadWidthPx : 0) +
         numSeparators * innerBorderWidthPx;
     return {
         buttonDimensions,
-        layoutMode: keypadWidth >= pageWidthPx ? LayoutModes.FULLSCREEN
-                                               : LayoutModes.COMPACT,
+        layoutMode:
+            keypadWidth >= pageWidthPx
+                ? LayoutModes.FULLSCREEN
+                : LayoutModes.COMPACT,
     };
 };
 

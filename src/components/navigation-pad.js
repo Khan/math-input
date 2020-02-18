@@ -2,21 +2,21 @@
  * A component that renders a navigation pad, which consists of an arrow for
  * each possible direction.
  */
-const React = require('react');
-const PropTypes = require('prop-types');
+const React = require("react");
+const PropTypes = require("prop-types");
 
-const {StyleSheet} = require('aphrodite');
-const {View} = require('../fake-react-native-web');
-const TouchableKeypadButton = require('./touchable-keypad-button');
-const {row, column, centered, stretch, roundedTopLeft} = require('./styles');
+const {StyleSheet} = require("aphrodite");
+const {View} = require("../fake-react-native-web");
+const TouchableKeypadButton = require("./touchable-keypad-button");
+const {row, column, centered, stretch, roundedTopLeft} = require("./styles");
 const {
     navigationPadWidthPx,
     controlGrey,
     valueGrey,
     offBlack16,
-} = require('./common-style');
-const {BorderStyles} = require('../consts');
-const KeyConfigs = require('../data/key-configs');
+} = require("./common-style");
+const {BorderStyles} = require("../consts");
+const KeyConfigs = require("../data/key-configs");
 
 class NavigationPad extends React.Component {
     static propTypes = {
@@ -37,35 +37,37 @@ class NavigationPad extends React.Component {
             ...(Array.isArray(style) ? style : [style]),
         ];
 
-        return <View style={containerStyle}>
-            <View style={[row, centered]}>
-                <TouchableKeypadButton
-                    keyConfig={KeyConfigs.UP}
-                    borders={BorderStyles.NONE}
-                    style={[styles.navigationKey, styles.topArrow]}
-                />
+        return (
+            <View style={containerStyle}>
+                <View style={[row, centered]}>
+                    <TouchableKeypadButton
+                        keyConfig={KeyConfigs.UP}
+                        borders={BorderStyles.NONE}
+                        style={[styles.navigationKey, styles.topArrow]}
+                    />
+                </View>
+                <View style={[row, centered, stretch]}>
+                    <TouchableKeypadButton
+                        keyConfig={KeyConfigs.LEFT}
+                        borders={BorderStyles.NONE}
+                        style={[styles.navigationKey, styles.leftArrow]}
+                    />
+                    <View style={styles.horizontalSpacer} />
+                    <TouchableKeypadButton
+                        keyConfig={KeyConfigs.RIGHT}
+                        borders={BorderStyles.NONE}
+                        style={[styles.navigationKey, styles.rightArrow]}
+                    />
+                </View>
+                <View style={[row, centered]}>
+                    <TouchableKeypadButton
+                        keyConfig={KeyConfigs.DOWN}
+                        borders={BorderStyles.NONE}
+                        style={[styles.navigationKey, styles.bottomArrow]}
+                    />
+                </View>
             </View>
-            <View style={[row, centered, stretch]}>
-                <TouchableKeypadButton
-                    keyConfig={KeyConfigs.LEFT}
-                    borders={BorderStyles.NONE}
-                    style={[styles.navigationKey, styles.leftArrow]}
-                />
-                <View style={styles.horizontalSpacer} />
-                <TouchableKeypadButton
-                    keyConfig={KeyConfigs.RIGHT}
-                    borders={BorderStyles.NONE}
-                    style={[styles.navigationKey, styles.rightArrow]}
-                />
-            </View>
-            <View style={[row, centered]}>
-                <TouchableKeypadButton
-                    keyConfig={KeyConfigs.DOWN}
-                    borders={BorderStyles.NONE}
-                    style={[styles.navigationKey, styles.bottomArrow]}
-                />
-            </View>
-        </View>;
+        );
     }
 }
 
@@ -87,7 +89,7 @@ const styles = StyleSheet.create({
 
         // Override the default box-sizing so that our buttons are
         // `buttonSizePx` exclusive of their borders.
-        boxSizing: 'content-box',
+        boxSizing: "content-box",
     },
 
     topArrow: {
