@@ -15,7 +15,7 @@
   "license": "MIT",
   "husky": {
     "hooks": {
-      "pre-commit": "format"
+      "pre-commit": "yarn run format"
     }
   },
   "dependencies": {
