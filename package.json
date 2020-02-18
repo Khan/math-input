@@ -15,13 +15,8 @@
   "license": "MIT",
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "yarn run format"
     }
-  },
-  "lint-staged": {
-    "*.js": [
-      "yarn run format"
-    ]
   },
   "dependencies": {
     "aphrodite": "^1.1.0",
