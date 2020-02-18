@@ -18,6 +18,11 @@
       "pre-commit": "format"
     }
   },
+  "format": {
+    "*.js": [
+      "yarn format"
+    ]
+  },
   "dependencies": {
     "aphrodite": "^1.1.0",
     "jquery": "^2.1.1",
