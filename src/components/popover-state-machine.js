@@ -116,7 +116,7 @@ class PopoverStateMachine {
      * Handle the trigger (click or hold) of the node with the given identifier.
      *
      * @param {string} id - the identifier of the node that was triggered
-    */
+     */
     onTrigger(id) {
         this.handlers.onClick(id, id, false);
     }

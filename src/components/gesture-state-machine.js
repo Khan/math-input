@@ -193,12 +193,14 @@ class GestureStateMachine {
         } else if (this.touchState[touchId]) {
             // It could be touch events started outside the keypad and
             // moved into it; ignore them.
-            const {
-                activeNodeId, startX, swipeLocked,
-            } = this.touchState[touchId];
+            const {activeNodeId, startX, swipeLocked} = this.touchState[
+                touchId
+            ];
 
             const dx = pageX - startX;
-            const shouldBeginSwiping = swipeEnabled && !swipeLocked &&
+            const shouldBeginSwiping =
+                swipeEnabled &&
+                !swipeLocked &&
                 Math.abs(dx) > this.options.swipeThresholdPx;
 
             if (shouldBeginSwiping) {
@@ -238,9 +240,9 @@ class GestureStateMachine {
         } else if (this.touchState[touchId]) {
             // It could be touch events started outside the keypad and
             // moved into it; ignore them.
-            const {
-                activeNodeId, pressAndHoldIntervalId,
-            } = this.touchState[touchId];
+            const {activeNodeId, pressAndHoldIntervalId} = this.touchState[
+                touchId
+            ];
 
             this._cleanupTouchEvent(touchId);
 

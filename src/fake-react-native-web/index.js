@@ -8,6 +8,6 @@
  */
 
 module.exports = {
-    Text: require('./text'),
-    View: require('./view'),
+    Text: require("./text"),
+    View: require("./view"),
 };

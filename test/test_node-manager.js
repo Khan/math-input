@@ -1,23 +1,23 @@
 /* eslint-env node, mocha */
-const assert = require('assert');
+const assert = require("assert");
 
-const NodeManager = require('../src/components/node-manager');
+const NodeManager = require("../src/components/node-manager");
 
-describe('NodeManager', () => {
+describe("NodeManager", () => {
     let nodeManager;
 
     beforeEach(() => {
         nodeManager = new NodeManager();
     });
 
-    it('should register a single node with no children', () => {
+    it("should register a single node with no children", () => {
         const nodeId = "1";
         nodeManager.registerDOMNode(nodeId, {}, []);
         assert.ok(nodeManager._nodesById[nodeId]);
         assert.ok(nodeManager._orderedIds.includes(nodeId));
     });
 
-    it('should register a single node with children', () => {
+    it("should register a single node with children", () => {
         const nodeId = "1";
         const childNodeIds = ["2", "3"];
         nodeManager.registerDOMNode(nodeId, {}, childNodeIds);
@@ -33,7 +33,7 @@ describe('NodeManager', () => {
         }
     });
 
-    it('should order children ahead of their parents', () => {
+    it("should order children ahead of their parents", () => {
         const nodeId = "1";
         const childNodeIds = ["2", "3"];
         nodeManager.registerDOMNode(nodeId, {}, childNodeIds);
@@ -47,7 +47,7 @@ describe('NodeManager', () => {
         }
     });
 
-    it('should de-dupe the list of node IDs', () => {
+    it("should de-dupe the list of node IDs", () => {
         const nodeId = "1";
         const childNodeId = "2";
 
@@ -64,7 +64,7 @@ describe('NodeManager', () => {
         assert.deepEqual(nodeManager._orderedIds, [childNodeId, nodeId]);
     });
 
-    it('should handle multiple sets of children', () => {
+    it("should handle multiple sets of children", () => {
         const firstNodeId = "1";
         const firstNodeChildIds = ["2", "3"];
         const secondNodeId = "4";

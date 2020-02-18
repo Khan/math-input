@@ -2,13 +2,13 @@
  * A keypad button containing no symbols and triggering no actions on click.
  */
 
-const React = require('react');
-const PropTypes = require('prop-types');
-const {connect} = require('react-redux');
+const React = require("react");
+const PropTypes = require("prop-types");
+const {connect} = require("react-redux");
 
-const GestureManager = require('./gesture-manager');
-const KeyConfigs = require('../data/key-configs');
-const KeypadButton = require('./keypad-button');
+const GestureManager = require("./gesture-manager");
+const KeyConfigs = require("../data/key-configs");
+const KeypadButton = require("./keypad-button");
 
 class EmptyKeypadButton extends React.Component {
     static propTypes = {
@@ -23,14 +23,16 @@ class EmptyKeypadButton extends React.Component {
         // manager to know about touch events that start on empty buttons, but
         // we don't need it to know about their DOM nodes, as it doesn't need
         // to focus them or trigger presses.
-        return <KeypadButton
-            onTouchStart={(evt) => gestureManager.onTouchStart(evt)}
-            onTouchEnd={(evt) => gestureManager.onTouchEnd(evt)}
-            onTouchMove={(evt) => gestureManager.onTouchMove(evt)}
-            onTouchCancel={(evt) => gestureManager.onTouchCancel(evt)}
-            {...KeyConfigs.NOOP}
-            {...rest}
-        />;
+        return (
+            <KeypadButton
+                onTouchStart={(evt) => gestureManager.onTouchStart(evt)}
+                onTouchEnd={(evt) => gestureManager.onTouchEnd(evt)}
+                onTouchMove={(evt) => gestureManager.onTouchMove(evt)}
+                onTouchCancel={(evt) => gestureManager.onTouchCancel(evt)}
+                {...KeyConfigs.NOOP}
+                {...rest}
+            />
+        );
     }
 }
 

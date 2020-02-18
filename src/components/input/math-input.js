@@ -1,23 +1,23 @@
-const React = require('react');
-const PropTypes = require('prop-types');
-const ReactDOM = require('react-dom');
+const React = require("react");
+const PropTypes = require("prop-types");
+const ReactDOM = require("react-dom");
 const {StyleSheet} = require("aphrodite");
 
-const {View} = require('../../fake-react-native-web');
-const CursorHandle = require('./cursor-handle');
-const MathWrapper = require('./math-wrapper');
-const scrollIntoView = require('./scroll-into-view');
-const DragListener = require('./drag-listener');
+const {View} = require("../../fake-react-native-web");
+const CursorHandle = require("./cursor-handle");
+const MathWrapper = require("./math-wrapper");
+const scrollIntoView = require("./scroll-into-view");
+const DragListener = require("./drag-listener");
 const {
     cursorHandleRadiusPx,
     cursorHandleDistanceMultiplier,
     offBlack50,
- } = require('../common-style');
-const {keypadElementPropType} = require('../prop-types');
-const {wonderBlocksBlue, offBlack} = require('../common-style');
+} = require("../common-style");
+const {keypadElementPropType} = require("../prop-types");
+const {wonderBlocksBlue, offBlack} = require("../common-style");
 const Keys = require("../../data/keys");
 
-const i18n = window.i18n || {_: s => s};
+const i18n = window.i18n || {_: (s) => s};
 
 const constrainingFrictionFactor = 0.8;
 
@@ -60,17 +60,21 @@ class MathInput extends React.Component {
     componentDidMount() {
         this._isMounted = true;
 
-        this.mathField = new MathWrapper(this._mathContainer, {}, {
-            onCursorMove: (cursor) => {
-                // TODO(charlie): It's not great that there is so much coupling
-                // between this keypad and the input behavior. We should wrap
-                // this `MathInput` component in an intermediary component
-                // that translates accesses on the keypad into vanilla props,
-                // to make this input keypad-agnostic.
-                this.props.keypadElement &&
-                    this.props.keypadElement.setCursor(cursor);
+        this.mathField = new MathWrapper(
+            this._mathContainer,
+            {},
+            {
+                onCursorMove: (cursor) => {
+                    // TODO(charlie): It's not great that there is so much coupling
+                    // between this keypad and the input behavior. We should wrap
+                    // this `MathInput` component in an intermediary component
+                    // that translates accesses on the keypad into vanilla props,
+                    // to make this input keypad-agnostic.
+                    this.props.keypadElement &&
+                        this.props.keypadElement.setCursor(cursor);
+                },
             },
-        });
+        );
 
         // NOTE(charlie): MathQuill binds this handler to manage its
         // drag-to-select behavior. For reasons that I can't explain, the event
@@ -84,7 +88,7 @@ class MathInput extends React.Component {
         // we manage all of the cursor interactions ourselves--so we can safely
         // unbind the handler.
         this.mathField.mathField.__controller.container.unbind(
-            'mousedown.mathquill'
+            "mousedown.mathquill",
         );
 
         // NOTE(charlie): MathQuill uses this method to do some layout in the
@@ -101,7 +105,7 @@ class MathInput extends React.Component {
         this._updateInputPadding();
 
         this._container = ReactDOM.findDOMNode(this);
-        this._root = this._container.querySelector('.mq-root-block');
+        this._root = this._container.querySelector(".mq-root-block");
         this._root.addEventListener("scroll", () => this._hideCursorHandle());
 
         // Record the initial scroll displacement on touch start. This allows
@@ -120,17 +124,23 @@ class MathInput extends React.Component {
                 // TODO(charlie): Inject this logic.
                 if (!this._container.contains(evt.target)) {
                     let touchDidStartInOrBelowKeypad = false;
-                    if (this.props.keypadElement
-                            && this.props.keypadElement.getDOMNode()) {
+                    if (
+                        this.props.keypadElement &&
+                        this.props.keypadElement.getDOMNode()
+                    ) {
                         const bounds = this._getKeypadBounds();
                         for (let i = 0; i < evt.changedTouches.length; i++) {
                             const [x, y] = [
                                 evt.changedTouches[i].clientX,
                                 evt.changedTouches[i].clientY,
                             ];
-                            if ((bounds.left <= x && bounds.right >= x &&
-                                    bounds.top <= y && bounds.bottom >= y) ||
-                                    bounds.bottom < y) {
+                            if (
+                                (bounds.left <= x &&
+                                    bounds.right >= x &&
+                                    bounds.top <= y &&
+                                    bounds.bottom >= y) ||
+                                bounds.bottom < y
+                            ) {
                                 touchDidStartInOrBelowKeypad = true;
                                 break;
                             }
@@ -174,9 +184,9 @@ class MathInput extends React.Component {
             }
         };
 
-        window.addEventListener('touchstart', this.recordTouchStartOutside);
-        window.addEventListener('touchend', this.blurOnTouchEndOutside);
-        window.addEventListener('touchcancel', this.blurOnTouchEndOutside);
+        window.addEventListener("touchstart", this.recordTouchStartOutside);
+        window.addEventListener("touchend", this.blurOnTouchEndOutside);
+        window.addEventListener("touchcancel", this.blurOnTouchEndOutside);
 
         // HACK(benkomalo): if the window resizes, the keypad bounds can
         // change. That's a bit peeking into the internals of the keypad
@@ -184,9 +194,11 @@ class MathInput extends React.Component {
         // changes, but seems like a rare enough thing to get wrong that it's
         // not worth wiring up extra things for the technical "purity" of
         // having the keypad notify of changes to us.
-        window.addEventListener('resize', this._clearKeypadBoundsCache);
+        window.addEventListener("resize", this._clearKeypadBoundsCache);
         window.addEventListener(
-                'orientationchange', this._clearKeypadBoundsCache);
+            "orientationchange",
+            this._clearKeypadBoundsCache,
+        );
 
         // TODO(nick): fix this so it doesn't break webapp
         // window.document.addEventListener("focusout", this._keepInputFocus);
@@ -204,19 +216,21 @@ class MathInput extends React.Component {
         }
 
         if (prevState.focused !== this.state.focused) {
-            this._updateInputPadding()
+            this._updateInputPadding();
         }
     }
 
     componentWillUnmount() {
         this._isMounted = false;
 
-        window.removeEventListener('touchstart', this.recordTouchStartOutside);
-        window.removeEventListener('touchend', this.blurOnTouchEndOutside);
-        window.removeEventListener('touchcancel', this.blurOnTouchEndOutside);
-        window.removeEventListener('resize', this._clearKeypadBoundsCache());
+        window.removeEventListener("touchstart", this.recordTouchStartOutside);
+        window.removeEventListener("touchend", this.blurOnTouchEndOutside);
+        window.removeEventListener("touchcancel", this.blurOnTouchEndOutside);
+        window.removeEventListener("resize", this._clearKeypadBoundsCache());
         window.removeEventListener(
-                'orientationchange', this._clearKeypadBoundsCache());
+            "orientationchange",
+            this._clearKeypadBoundsCache(),
+        );
         window.document.removeEventListener("focusout", this._keepInputFocus);
     }
 
@@ -230,11 +244,12 @@ class MathInput extends React.Component {
 
     _updateInputPadding = () => {
         this._container = ReactDOM.findDOMNode(this);
-        this._root = this._container.querySelector('.mq-root-block');
+        this._root = this._container.querySelector(".mq-root-block");
 
         const padding = this.getInputInnerPadding();
         // NOTE(diedra): This overrides the default 2px padding from Mathquil.
-        this._root.style.padding = `${padding.paddingTop}px ${padding.paddingRight}px` +
+        this._root.style.padding =
+            `${padding.paddingTop}px ${padding.paddingRight}px` +
             ` ${padding.paddingBottom}px ${padding.paddingLeft}px`;
         this._root.style.fontSize = `${fontSizePt}pt`;
     };
@@ -246,12 +261,12 @@ class MathInput extends React.Component {
     from jumping to the close button by listening for blur events
     that blur to null (which will cause the body to become focused).
     */
-    _keepInputFocus = event => {
+    _keepInputFocus = (event) => {
         /*
         Only if this is the currently focused input
         */
         if (!this.state.focused) {
-          return;
+            return;
         }
 
         /*
@@ -259,19 +274,18 @@ class MathInput extends React.Component {
         Then prevent that from happening and refocus on the input
         */
         if (event.relatedTarget === null) {
-          event.preventDefault();
-          this.inputRef.focus();
-        }
-        /*
+            event.preventDefault();
+            this.inputRef.focus();
+        } else {
+            /*
         Otherwise if the next element is something that's intentionally being
         select, either via tab or clicking then blur this input and dismiss
         the keyboard
         */
-        else {
-          this.inputRef.blur();
-          this.blur();
+            this.inputRef.blur();
+            this.blur();
         }
-      };
+    };
 
     /** Gets and cache they bounds of the keypadElement */
     _getKeypadBounds = () => {
@@ -284,7 +298,7 @@ class MathInput extends React.Component {
 
     _updateCursorHandle = (animateIntoPosition) => {
         const containerBounds = this._container.getBoundingClientRect();
-        const cursor = this._container.querySelector('.mq-cursor');
+        const cursor = this._container.querySelector(".mq-cursor");
         const cursorBounds = cursor.getBoundingClientRect();
 
         const cursorWidth = cursorBounds.width;
@@ -294,10 +308,12 @@ class MathInput extends React.Component {
 
         // The cursor should never be further right or left than the edge of the
         // container's values.
-        const furthestRightCursorBound = containerBounds.right - cursorWidth
-            - inputInnerPadding.paddingRight;
-        const furthestLeftCursorBound = containerBounds.left + cursorWidth
-            + inputInnerPadding.paddingLeft;
+        const furthestRightCursorBound =
+            containerBounds.right -
+            cursorWidth -
+            inputInnerPadding.paddingRight;
+        const furthestLeftCursorBound =
+            containerBounds.left + cursorWidth + inputInnerPadding.paddingLeft;
 
         let cursorBoundsLeft = cursorBounds.left;
         if (cursorBounds.left > furthestRightCursorBound) {
@@ -306,18 +322,16 @@ class MathInput extends React.Component {
             cursorBoundsLeft = furthestLeftCursorBound;
         }
 
-        this.setState(
-            {
-                handle: {
-                    visible: true,
-                    animateIntoPosition,
-                    // We subtract containerBounds' left/top to correct for the
-                    // position of the container within the page.
-                    x: cursorBoundsLeft + cursorWidth / 2 - containerBounds.left,
-                    y: cursorBounds.bottom + gapBelowCursor - containerBounds.top,
-                },
-            }
-        );
+        this.setState({
+            handle: {
+                visible: true,
+                animateIntoPosition,
+                // We subtract containerBounds' left/top to correct for the
+                // position of the container within the page.
+                x: cursorBoundsLeft + cursorWidth / 2 - containerBounds.left,
+                y: cursorBounds.bottom + gapBelowCursor - containerBounds.top,
+            },
+        });
     };
 
     _hideCursorHandle = () => {
@@ -339,7 +353,7 @@ class MathInput extends React.Component {
     focus = () => {
         // Pass this component's handleKey method to the keypad so it can call
         // it whenever it needs to trigger a keypress action.
-        this.props.keypadElement.setKeyHandler(key => {
+        this.props.keypadElement.setKeyHandler((key) => {
             const cursor = this.mathField.pressKey(key);
 
             // Trigger an `onChange` if the value in the input changed, and hide
@@ -378,7 +392,8 @@ class MathInput extends React.Component {
                     // that the higher level controller tells us when the
                     // keypad is settled (then scrollIntoView wouldn't have
                     // to make assumptions about that either).
-                    const maybeKeypadNode = this.props.keypadElement &&
+                    const maybeKeypadNode =
+                        this.props.keypadElement &&
                         this.props.keypadElement.getDOMNode();
                     scrollIntoView(this._container, maybeKeypadNode);
                 }
@@ -421,7 +436,7 @@ class MathInput extends React.Component {
             ];
 
             const elements = points
-                .map(point => document.elementFromPoint(...point))
+                .map((point) => document.elementFromPoint(...point))
                 // We exclude the root container itself and any nodes marked
                 // as non-leaf which are fractions, parens, and roots.  The
                 // children of those nodes are included in the list because
@@ -432,14 +447,15 @@ class MathInput extends React.Component {
                 // so the naming is a bit confusing.  Although fractions are
                 // included, neither mq-numerator nor mq-denominator nodes are
                 // and neither are subscripts or superscripts.
-                .filter(element => element && this._root.contains(element) &&
-                        ((
-                          !element.classList.contains('mq-root-block') &&
-                          !element.classList.contains('mq-non-leaf')
-                         ) ||
-                         element.classList.contains('mq-empty') ||
-                         element.classList.contains('mq-hasCursor')
-                        ));
+                .filter(
+                    (element) =>
+                        element &&
+                        this._root.contains(element) &&
+                        ((!element.classList.contains("mq-root-block") &&
+                            !element.classList.contains("mq-non-leaf")) ||
+                            element.classList.contains("mq-empty") ||
+                            element.classList.contains("mq-hasCursor")),
+                );
 
             let hitNode = null;
 
@@ -455,7 +471,7 @@ class MathInput extends React.Component {
             const elementsById = {};
 
             for (const element of elements) {
-                const id = element.getAttribute('mathquill-command-id');
+                const id = element.getAttribute("mathquill-command-id");
                 if (id != null) {
                     leafElements.push(element);
 
@@ -678,8 +694,9 @@ class MathInput extends React.Component {
 
         const relativeX = x - this._containerBounds.left;
         const relativeY =
-            y - 2 * cursorHandleRadiusPx * cursorHandleDistanceMultiplier
-                - this._containerBounds.top;
+            y -
+            2 * cursorHandleRadiusPx * cursorHandleDistanceMultiplier -
+            this._containerBounds.top;
 
         // We subtract the containerBounds left/top to correct for the
         // MathInput's position on the page. On top of that, we subtract an
@@ -698,13 +715,13 @@ class MathInput extends React.Component {
                     relativeX,
                     0,
                     this._containerBounds.width,
-                    constrainingFrictionFactor
+                    constrainingFrictionFactor,
                 ),
                 y: this._constrainToBound(
                     relativeY,
                     0,
                     this._containerBounds.height,
-                    constrainingFrictionFactor
+                    constrainingFrictionFactor,
                 ),
             },
         });
@@ -751,33 +768,32 @@ class MathInput extends React.Component {
             "=": Keys.EQUAL,
             ">": Keys.GT,
             "<": Keys.LT,
-            "^": Keys.EXP
+            "^": Keys.EXP,
         };
 
         // Numbers
-        if (['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(key)){
+        if (["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(key)) {
             return `NUM_${key}`;
         }
 
         // Movement keys
-        else if (key == "Backspace"){
-            return Keys.BACKSPACE
+        else if (key == "Backspace") {
+            return Keys.BACKSPACE;
         }
 
         // Operators
-        else if (key in keyMap){
-             return keyMap[key];
-
+        else if (key in keyMap) {
+            return keyMap[key];
         }
 
         // The key pressed doesn't map to any of the math input operators
         return null;
-    }
+    };
 
     handleKeyUp = (event) => {
         const mathQuillKey = this.domKeyToMathQuillKey(event.key);
 
-        if (mathQuillKey){
+        if (mathQuillKey) {
             this.mathField.pressKey(mathQuillKey);
 
             // TODO(diedra): If the new value being added is off-screen to the right
@@ -832,49 +848,55 @@ class MathInput extends React.Component {
         const innerStyle = {
             ...inlineStyles.innerContainer,
             borderWidth: this.getBorderWidthPx(),
-            ...(focused ? {
-                borderColor: wonderBlocksBlue,
-            } : {}),
+            ...(focused
+                ? {
+                      borderColor: wonderBlocksBlue,
+                  }
+                : {}),
             ...style,
         };
 
-        return <View
-            style={styles.input}
-            onTouchStart={this.handleTouchStart}
-            onTouchMove={this.handleTouchMove}
-            onTouchEnd={this.handleTouchEnd}
-            onClick={e => e.stopPropagation()}
-            role={'textbox'}
-            ariaLabel={i18n._('Math input box')}
-        >
-            {/* NOTE(charlie): This is used purely to namespace the styles in
-                overrides.css. */}
-            <div
-                className="keypad-input"
-                tabIndex={"0"}
-                ref={node => {
-                    this.inputRef = node;
-                }}
-                onKeyUp={this.handleKeyUp}
+        return (
+            <View
+                style={styles.input}
+                onTouchStart={this.handleTouchStart}
+                onTouchMove={this.handleTouchMove}
+                onTouchEnd={this.handleTouchEnd}
+                onClick={(e) => e.stopPropagation()}
+                role={"textbox"}
+                ariaLabel={i18n._("Math input box")}
             >
-                {/* NOTE(charlie): This element must be styled with inline
+                {/* NOTE(charlie): This is used purely to namespace the styles in
+                overrides.css. */}
+                <div
+                    className="keypad-input"
+                    tabIndex={"0"}
+                    ref={(node) => {
+                        this.inputRef = node;
+                    }}
+                    onKeyUp={this.handleKeyUp}
+                >
+                    {/* NOTE(charlie): This element must be styled with inline
                     styles rather than with Aphrodite classes, as MathQuill
                     modifies the class names on the DOM node. */}
-                <div
-                    ref={(node) => {
-                        this._mathContainer = ReactDOM.findDOMNode(node);
-                    }}
-                    style={innerStyle}
-                />
-            </div>
-            {focused && handle.visible && <CursorHandle
-                {...handle}
-                onTouchStart={this.onCursorHandleTouchStart}
-                onTouchMove={this.onCursorHandleTouchMove}
-                onTouchEnd={this.onCursorHandleTouchEnd}
-                onTouchCancel={this.onCursorHandleTouchCancel}
-            />}
-        </View>;
+                    <div
+                        ref={(node) => {
+                            this._mathContainer = ReactDOM.findDOMNode(node);
+                        }}
+                        style={innerStyle}
+                    />
+                </div>
+                {focused && handle.visible && (
+                    <CursorHandle
+                        {...handle}
+                        onTouchStart={this.onCursorHandleTouchStart}
+                        onTouchMove={this.onCursorHandleTouchMove}
+                        onTouchEnd={this.onCursorHandleTouchEnd}
+                        onTouchCancel={this.onCursorHandleTouchCancel}
+                    />
+                )}
+            </View>
+        );
     }
 }
 
@@ -894,9 +916,9 @@ const minWidthPx = 160;
 
 const styles = StyleSheet.create({
     input: {
-        position: 'relative',
-        display: 'inline-block',
-        verticalAlign: 'middle',
+        position: "relative",
+        display: "inline-block",
+        verticalAlign: "middle",
         maxWidth: inputMaxWidth,
     },
 });
@@ -912,13 +934,13 @@ const inlineStyles = {
     // new CSS class name that we would apply to the element, clobbering any CSS
     // class names that MathQuill had applied itself.
     innerContainer: {
-        backgroundColor: 'white',
+        backgroundColor: "white",
         minHeight: minHeightPx,
         minWidth: minWidthPx,
         maxWidth: inputMaxWidth,
-        boxSizing: 'border-box',
-        position: 'relative',
-        borderStyle: 'solid',
+        boxSizing: "border-box",
+        position: "relative",
+        borderStyle: "solid",
         borderColor: offBlack50,
         borderRadius: 4,
         color: offBlack,

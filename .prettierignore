@@ -1,0 +1,6 @@
+*.json
+*.md
+docs
+*.css
+*.yml
+*.gitkeep

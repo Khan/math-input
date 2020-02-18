@@ -4,13 +4,13 @@ module.exports = {
     // being dispatched
     dismissKeypad() {
         return {
-            type: 'DismissKeypad',
+            type: "DismissKeypad",
         };
     },
 
     activateKeypad() {
         return {
-            type: 'ActivateKeypad',
+            type: "ActivateKeypad",
         };
     },
 
@@ -21,14 +21,14 @@ module.exports = {
      */
     configureKeypad(configuration) {
         return {
-            type: 'ConfigureKeypad',
+            type: "ConfigureKeypad",
             configuration,
         };
     },
 
     setPageSize(pageWidthPx, pageHeightPx) {
         return {
-            type: 'SetPageSize',
+            type: "SetPageSize",
             pageWidthPx,
             pageHeightPx,
         };
@@ -36,7 +36,7 @@ module.exports = {
 
     removeEcho(animationId) {
         return {
-            type: 'RemoveEcho',
+            type: "RemoveEcho",
             animationId,
         };
     },
@@ -44,14 +44,14 @@ module.exports = {
     // Input-related actions.
     setKeyHandler(keyHandler) {
         return {
-            type: 'SetKeyHandler',
+            type: "SetKeyHandler",
             keyHandler,
         };
     },
 
     setCursor(cursor) {
         return {
-            type: 'SetCursor',
+            type: "SetCursor",
             cursor,
         };
     },

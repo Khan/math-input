@@ -3,16 +3,16 @@
  * and manages the rendering of echo animations on top of those buttons.
  */
 
-const React = require('react');
-const PropTypes = require('prop-types');
-const ReactDOM = require('react-dom');
-const {connect} = require('react-redux');
+const React = require("react");
+const PropTypes = require("prop-types");
+const ReactDOM = require("react-dom");
+const {connect} = require("react-redux");
 
-const {removeEcho} = require('../actions');
-const {View} = require('../fake-react-native-web');
-const EchoManager = require('./echo-manager');
-const PopoverManager = require('./popover-manager');
-const {echoPropType, popoverPropType} = require('./prop-types');
+const {removeEcho} = require("../actions");
+const {View} = require("../fake-react-native-web");
+const EchoManager = require("./echo-manager");
+const PopoverManager = require("./popover-manager");
+const {echoPropType, popoverPropType} = require("./prop-types");
 
 class Keypad extends React.Component {
     static propTypes = {
@@ -82,17 +82,11 @@ class Keypad extends React.Component {
     };
 
     render() {
-        const {
-            children,
-            echoes,
-            removeEcho,
-            popover,
-            style,
-        } = this.props;
+        const {children, echoes, removeEcho, popover, style} = this.props;
 
         // Translate the echo boxes, as they'll be positioned absolutely to
         // this relative container.
-        const relativeEchoes = echoes.map(echo => {
+        const relativeEchoes = echoes.map((echo) => {
             const {initialBounds, ...rest} = echo;
             return {
                 ...rest,
@@ -113,21 +107,24 @@ class Keypad extends React.Component {
         const relativePopover = popover && {
             ...popover,
             bounds: {
-                bottom: this._container.height - (popover.bounds.bottom -
-                    this._container.top),
+                bottom:
+                    this._container.height -
+                    (popover.bounds.bottom - this._container.top),
                 left: popover.bounds.left - this._container.left,
                 width: popover.bounds.width,
             },
         };
 
-        return <View style={style}>
-            {children}
-            <EchoManager
-                echoes={relativeEchoes}
-                onAnimationFinish={removeEcho}
-            />
-            <PopoverManager popover={relativePopover} />
-        </View>;
+        return (
+            <View style={style}>
+                {children}
+                <EchoManager
+                    echoes={relativeEchoes}
+                    onAnimationFinish={removeEcho}
+                />
+                <PopoverManager popover={relativePopover} />
+            </View>
+        );
     }
 }
 

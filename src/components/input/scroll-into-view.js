@@ -9,15 +9,15 @@
  * level in the component tree--perhaps even into webapp, beyond Perseus.
  */
 
-const {toolbarHeightPx} = require('../common-style');
+const {toolbarHeightPx} = require("../common-style");
 
 // Taken from https://dev.opera.com/articles/fixing-the-scrolltop-bug/
 function bodyOrHtml() {
-    if ('scrollingElement' in document) {
+    if ("scrollingElement" in document) {
         return document.scrollingElement;
     }
     // Fallback for legacy browsers
-    if (navigator.userAgent.indexOf('WebKit') != -1) {
+    if (navigator.userAgent.indexOf("WebKit") != -1) {
         return document.body;
     }
     return document.documentElement;
@@ -55,7 +55,7 @@ const scrollIntoView = (containerNode, keypadNode) => {
             // taking care not to scroll the input out of view.
             const scrollOffset = Math.min(
                 containerBottomPx - keypadTopPx + desiredMarginPx,
-                containerTopPx
+                containerTopPx,
             );
 
             scrollNode.scrollTop += scrollOffset;

@@ -2,16 +2,16 @@
  * A component that renders a keypad button.
  */
 
-const React = require('react');
-const PropTypes = require('prop-types');
-const {connect} = require('react-redux');
+const React = require("react");
+const PropTypes = require("prop-types");
+const {connect} = require("react-redux");
 
-const {StyleSheet, css} = require('aphrodite');
-const {View} = require('../fake-react-native-web');
-const Icon = require('./icon');
-const MultiSymbolGrid = require('./multi-symbol-grid');
-const CornerDecal = require('./corner-decal');
-const {KeyTypes, BorderDirections, BorderStyles} = require('../consts');
+const {StyleSheet, css} = require("aphrodite");
+const {View} = require("../fake-react-native-web");
+const Icon = require("./icon");
+const MultiSymbolGrid = require("./multi-symbol-grid");
+const CornerDecal = require("./corner-decal");
+const {KeyTypes, BorderDirections, BorderStyles} = require("../consts");
 const {
     wonderBlocksBlue,
     innerBorderColor,
@@ -21,12 +21,12 @@ const {
     operatorGrey,
     controlGrey,
     emptyGrey,
-} = require('./common-style');
+} = require("./common-style");
 const {
     bordersPropType,
     iconPropType,
     keyConfigPropType,
-} = require('./prop-types');
+} = require("./prop-types");
 
 class KeypadButton extends React.PureComponent {
     static propTypes = {
@@ -67,7 +67,7 @@ class KeypadButton extends React.PureComponent {
     componentWillMount() {
         this.buttonSizeStyle = styleForButtonDimensions(
             this.props.heightPx,
-            this.props.widthPx
+            this.props.widthPx,
         );
     }
 
@@ -80,10 +80,13 @@ class KeypadButton extends React.PureComponent {
         // changed. Though it is safe to recompute the StyleSheet (since
         // they're content-addressable), it saves us a bunch of hashing and
         // other work to cache it here.
-        if (newProps.heightPx !== this.props.heightPx ||
-                newProps.widthPx !== this.props.widthPx) {
+        if (
+            newProps.heightPx !== this.props.heightPx ||
+            newProps.widthPx !== this.props.widthPx
+        ) {
             this.buttonSizeStyle = styleForButtonDimensions(
-                newProps.heightPx, newProps.widthPx
+                newProps.heightPx,
+                newProps.widthPx,
             );
 
             this._preInjectStyles();
@@ -100,15 +103,12 @@ class KeypadButton extends React.PureComponent {
         // influences the possible outcomes of `this._getFocusStyle` and
         // `this._getButtonStyle` changes (such as `this.buttonSizeStyle`).
         for (const type of Object.keys(KeyTypes)) {
-            css(
-                View.styles.initial,
-                ...this._getFocusStyle(type)
-            );
+            css(View.styles.initial, ...this._getFocusStyle(type));
 
             for (const borders of Object.values(BorderStyles)) {
                 css(
                     View.styles.initial,
-                    ...this._getButtonStyle(type, borders)
+                    ...this._getButtonStyle(type, borders),
                 );
             }
         }
@@ -116,8 +116,10 @@ class KeypadButton extends React.PureComponent {
 
     _getFocusStyle = (type) => {
         let focusBackgroundStyle;
-        if (type === KeyTypes.INPUT_NAVIGATION ||
-                type === KeyTypes.KEYPAD_NAVIGATION) {
+        if (
+            type === KeyTypes.INPUT_NAVIGATION ||
+            type === KeyTypes.KEYPAD_NAVIGATION
+        ) {
             focusBackgroundStyle = styles.light;
         } else {
             focusBackgroundStyle = styles.bright;
@@ -193,8 +195,8 @@ class KeypadButton extends React.PureComponent {
 
         // We render in the focus state if the key is focused, or if it's an
         // echo.
-        const renderFocused = !disabled && focused || popoverEnabled ||
-            type === KeyTypes.ECHO;
+        const renderFocused =
+            (!disabled && focused) || popoverEnabled || type === KeyTypes.ECHO;
         const buttonStyle = this._getButtonStyle(type, borders, style);
         const focusStyle = this._getFocusStyle(type);
         const iconWrapperStyle = [
@@ -203,11 +205,16 @@ class KeypadButton extends React.PureComponent {
         ];
 
         const eventHandlers = {
-            onTouchCancel, onTouchEnd, onTouchMove, onTouchStart,
+            onTouchCancel,
+            onTouchEnd,
+            onTouchMove,
+            onTouchStart,
         };
 
         const maybeFocusBox = renderFocused && <View style={focusStyle} />;
-        const maybeCornerDecal = !renderFocused && !disabled && childKeys &&
+        const maybeCornerDecal = !renderFocused &&
+            !disabled &&
+            childKeys &&
             childKeys.length > 0 && <CornerDecal style={styles.decalInset} />;
 
         if (type === KeyTypes.EMPTY) {
@@ -216,36 +223,43 @@ class KeypadButton extends React.PureComponent {
             // TODO(charlie): Make the long-press interaction accessible. See
             // the TODO in key-configs.js for more.
             const manyButtonA11yMarkup = {
-                role: 'button',
+                role: "button",
                 ariaLabel: childKeys[0].ariaLabel,
             };
-            const icons = childKeys.map(keyConfig => {
+            const icons = childKeys.map((keyConfig) => {
                 return keyConfig.icon;
             });
-            return <View
-                style={buttonStyle}
-                {...eventHandlers}
-                {...manyButtonA11yMarkup}
-            >
-                {maybeFocusBox}
-                <View style={iconWrapperStyle}>
-                    <MultiSymbolGrid icons={icons} focused={renderFocused} />
+            return (
+                <View
+                    style={buttonStyle}
+                    {...eventHandlers}
+                    {...manyButtonA11yMarkup}
+                >
+                    {maybeFocusBox}
+                    <View style={iconWrapperStyle}>
+                        <MultiSymbolGrid
+                            icons={icons}
+                            focused={renderFocused}
+                        />
+                    </View>
+                    {maybeCornerDecal}
                 </View>
-                {maybeCornerDecal}
-            </View>;
+            );
         } else {
             const a11yMarkup = {
-                role: 'button',
+                role: "button",
                 ariaLabel: ariaLabel,
             };
 
-            return <View style={buttonStyle} {...eventHandlers} {...a11yMarkup}>
-                {maybeFocusBox}
-                <View style={iconWrapperStyle}>
-                    <Icon icon={icon} focused={renderFocused} />
+            return (
+                <View style={buttonStyle} {...eventHandlers} {...a11yMarkup}>
+                    {maybeFocusBox}
+                    <View style={iconWrapperStyle}>
+                        <Icon icon={icon} focused={renderFocused} />
+                    </View>
+                    {maybeCornerDecal}
                 </View>
-                {maybeCornerDecal}
-            </View>;
+            );
         }
     }
 }
@@ -256,17 +270,17 @@ const focusBoxZIndex = 0;
 const styles = StyleSheet.create({
     buttonBase: {
         // HACK(benkomalo): support old style flex box in Android browsers
-        '-webkit-box-flex': '1',
+        "-webkit-box-flex": "1",
         flex: 1,
-        cursor: 'pointer',
+        cursor: "pointer",
         // Make the text unselectable
-        userSelect: 'none',
-        justifyContent: 'center',
-        alignItems: 'center',
+        userSelect: "none",
+        justifyContent: "center",
+        alignItems: "center",
         // Borders are made selectively visible.
         borderColor: innerBorderColor,
         borderStyle: innerBorderStyle,
-        boxSizing: 'border-box',
+        boxSizing: "border-box",
     },
 
     decalInset: {
@@ -277,7 +291,7 @@ const styles = StyleSheet.create({
     // Overrides for the echo state, where we want to render the borders for
     // layout purposes, but we don't want them to be visible.
     echo: {
-        borderColor: 'transparent',
+        borderColor: "transparent",
     },
 
     // Background colors and other base styles that may vary between key types.
@@ -292,14 +306,14 @@ const styles = StyleSheet.create({
     },
     empty: {
         backgroundColor: emptyGrey,
-        cursor: 'default',
+        cursor: "default",
     },
 
     bright: {
         backgroundColor: wonderBlocksBlue,
     },
     light: {
-        backgroundColor: 'rgba(33, 36, 44, 0.1)',
+        backgroundColor: "rgba(33, 36, 44, 0.1)",
     },
 
     iconWrapper: {
@@ -307,7 +321,7 @@ const styles = StyleSheet.create({
     },
 
     focusBox: {
-        position: 'absolute',
+        position: "absolute",
         zIndex: focusBoxZIndex,
         left: focusInsetPx,
         right: focusInsetPx,

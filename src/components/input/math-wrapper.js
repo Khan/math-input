@@ -4,21 +4,21 @@
  * from MathQuill changes.
  */
 
-const $ = require('jquery');
+const $ = require("jquery");
 // Keeping `window` in place for test suite and GitHub Pages.
 // If it does not exist, fall back to CommonJS require. - jsatk
-const MathQuill = require('mathquill');
+const MathQuill = require("mathquill");
 
-const Keys = require('../../data/keys');
-const CursorContexts = require('./cursor-contexts');
-const { DecimalSeparators } = require('../../consts');
-const { decimalSeparator } = require('../../utils');
+const Keys = require("../../data/keys");
+const CursorContexts = require("./cursor-contexts");
+const {DecimalSeparators} = require("../../consts");
+const {decimalSeparator} = require("../../utils");
 
-const decimalSymbol = decimalSeparator === DecimalSeparators.COMMA ? ',' : '.';
+const decimalSymbol = decimalSeparator === DecimalSeparators.COMMA ? "," : ".";
 
-const WRITE = 'write';
-const CMD = 'cmd';
-const KEYSTROKE = 'keystroke';
+const WRITE = "write";
+const CMD = "cmd";
+const KEYSTROKE = "keystroke";
 const MQ_END = 0;
 
 // A mapping from keys that can be pressed on a keypad to the way in which
@@ -26,52 +26,76 @@ const MQ_END = 0;
 // that do not provide explicit actions (like the numeral keys) will merely
 // write their contents to MathQuill.
 const KeyActions = {
-    [Keys.PLUS]: { str: '+', fn: WRITE },
-    [Keys.MINUS]: { str: '-', fn: WRITE },
-    [Keys.NEGATIVE]: { str: '-', fn: WRITE },
-    [Keys.TIMES]: { str: '\\times', fn: WRITE },
-    [Keys.DIVIDE]: { str: '\\div', fn: WRITE },
+    [Keys.PLUS]: {str: "+", fn: WRITE},
+    [Keys.MINUS]: {str: "-", fn: WRITE},
+    [Keys.NEGATIVE]: {str: "-", fn: WRITE},
+    [Keys.TIMES]: {str: "\\times", fn: WRITE},
+    [Keys.DIVIDE]: {str: "\\div", fn: WRITE},
     [Keys.DECIMAL]: {
         str: decimalSymbol,
         fn: WRITE,
     },
-    [Keys.EQUAL]: { str: '=', fn: WRITE },
-    [Keys.NEQ]: { str: '\\neq', fn: WRITE },
-    [Keys.CDOT]: { str: '\\cdot', fn: WRITE },
-    [Keys.PERCENT]: { str: '%', fn: WRITE },
-    [Keys.LEFT_PAREN]: { str: '(', fn: CMD },
-    [Keys.RIGHT_PAREN]: { str: ')', fn: CMD },
-    [Keys.SQRT]: { str: 'sqrt', fn: CMD },
-    [Keys.PI]: { str: 'pi', fn: CMD },
-    [Keys.THETA]: { str: 'theta', fn: CMD },
-    [Keys.RADICAL]: { str: 'nthroot', fn: CMD },
-    [Keys.LT]: { str: '<', fn: WRITE },
-    [Keys.LEQ]: { str: '\\leq', fn: WRITE },
-    [Keys.GT]: { str: '>', fn: WRITE },
-    [Keys.GEQ]: { str: '\\geq', fn: WRITE },
-    [Keys.UP]: { str: 'Up', fn: KEYSTROKE },
-    [Keys.DOWN]: { str: 'Down', fn: KEYSTROKE },
+    [Keys.EQUAL]: {str: "=", fn: WRITE},
+    [Keys.NEQ]: {str: "\\neq", fn: WRITE},
+    [Keys.CDOT]: {str: "\\cdot", fn: WRITE},
+    [Keys.PERCENT]: {str: "%", fn: WRITE},
+    [Keys.LEFT_PAREN]: {str: "(", fn: CMD},
+    [Keys.RIGHT_PAREN]: {str: ")", fn: CMD},
+    [Keys.SQRT]: {str: "sqrt", fn: CMD},
+    [Keys.PI]: {str: "pi", fn: CMD},
+    [Keys.THETA]: {str: "theta", fn: CMD},
+    [Keys.RADICAL]: {str: "nthroot", fn: CMD},
+    [Keys.LT]: {str: "<", fn: WRITE},
+    [Keys.LEQ]: {str: "\\leq", fn: WRITE},
+    [Keys.GT]: {str: ">", fn: WRITE},
+    [Keys.GEQ]: {str: "\\geq", fn: WRITE},
+    [Keys.UP]: {str: "Up", fn: KEYSTROKE},
+    [Keys.DOWN]: {str: "Down", fn: KEYSTROKE},
     // The `FRAC_EXCLUSIVE` variant is handled manually, since we may need to do
     // some additional navigation depending on the cursor position.
-    [Keys.FRAC_INCLUSIVE]: { str: '/', fn: CMD },
+    [Keys.FRAC_INCLUSIVE]: {str: "/", fn: CMD},
 };
 
 const NormalCommands = {
-    [Keys.LOG]: 'log',
-    [Keys.LN]: 'ln',
-    [Keys.SIN]: 'sin',
-    [Keys.COS]: 'cos',
-    [Keys.TAN]: 'tan',
+    [Keys.LOG]: "log",
+    [Keys.LN]: "ln",
+    [Keys.SIN]: "sin",
+    [Keys.COS]: "cos",
+    [Keys.TAN]: "tan",
 };
 
-const ArithmeticOperators = ['+', '-', '\\cdot', '\\times', '\\div'];
-const EqualityOperators = ['=', '\\neq', '<', '\\leq', '>', '\\geq'];
+const ArithmeticOperators = ["+", "-", "\\cdot", "\\times", "\\div"];
+const EqualityOperators = ["=", "\\neq", "<", "\\leq", ">", "\\geq"];
 
-const Numerals = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-const GreekLetters = ['\\theta', '\\pi'];
+const Numerals = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+const GreekLetters = ["\\theta", "\\pi"];
 const Letters = [
-    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-    'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "W",
+    "X",
+    "Y",
+    "Z",
 ];
 
 // We only consider numerals, variables, and Greek Letters to be proper
@@ -79,8 +103,8 @@ const Letters = [
 const ValidLeaves = [
     ...Numerals,
     ...GreekLetters,
-    ...Letters.map(letter => letter.toLowerCase()),
-    ...Letters.map(letter => letter.toUpperCase()),
+    ...Letters.map((letter) => letter.toLowerCase()),
+    ...Letters.map((letter) => letter.toUpperCase()),
 ];
 
 const KeysForJumpContext = {
@@ -93,14 +117,13 @@ const KeysForJumpContext = {
 };
 
 class MathWrapper {
-
     constructor(element, options = {}, callbacks = {}) {
         this.MQ = MathQuill.getInterface(2);
         this.mathField = this.MQ.MathField(element, {
             // use a span instead of a textarea so that we don't bring up the
             // native keyboard on mobile when selecting the input
-            substituteTextarea: function () {
-                return document.createElement('span');
+            substituteTextarea: function() {
+                return document.createElement("span");
             },
         });
         this.callbacks = callbacks;
@@ -127,7 +150,7 @@ class MathWrapper {
 
     _writeNormalFunction(name) {
         this.mathField.write(`\\${name}\\left(\\right)`);
-        this.mathField.keystroke('Left');
+        this.mathField.keystroke("Left");
     }
 
     /**
@@ -140,7 +163,7 @@ class MathWrapper {
         const cursor = this.mathField.__controller.cursor;
 
         if (key in KeyActions) {
-            const { str, fn } = KeyActions[key];
+            const {str, fn} = KeyActions[key];
 
             if (str && fn) {
                 this.mathField[fn](str);
@@ -151,30 +174,35 @@ class MathWrapper {
             // If there's nothing to the left of the cursor, then we want to
             // leave the cursor to the left of the fraction after creating it.
             const shouldNavigateLeft = cursor[this.MQ.L] === MQ_END;
-            this.mathField.cmd('\\frac');
+            this.mathField.cmd("\\frac");
             if (shouldNavigateLeft) {
-                this.mathField.keystroke('Left');
+                this.mathField.keystroke("Left");
             }
         } else if (key === Keys.FRAC) {
             const shouldNavigateLeft = cursor[this.MQ.L] === MQ_END;
-            this.mathField.cmd('\\frac');
+            this.mathField.cmd("\\frac");
         } else if (key === Keys.LOG_N) {
-            this.mathField.write('log_{ }\\left(\\right)');
-            this.mathField.keystroke('Left'); // into parentheses
-            this.mathField.keystroke('Left'); // out of parentheses
-            this.mathField.keystroke('Left'); // into index
+            this.mathField.write("log_{ }\\left(\\right)");
+            this.mathField.keystroke("Left"); // into parentheses
+            this.mathField.keystroke("Left"); // out of parentheses
+            this.mathField.keystroke("Left"); // into index
         } else if (key === Keys.CUBE_ROOT) {
-            this.mathField.write('\\sqrt[3]{}');
-            this.mathField.keystroke('Left'); // under the root
-        } else if (key === Keys.EXP || key === Keys.EXP_2 ||
-            key === Keys.EXP_3) {
+            this.mathField.write("\\sqrt[3]{}");
+            this.mathField.keystroke("Left"); // under the root
+        } else if (
+            key === Keys.EXP ||
+            key === Keys.EXP_2 ||
+            key === Keys.EXP_3
+        ) {
             this._handleExponent(cursor, key);
-        } else if (key === Keys.JUMP_OUT_PARENTHESES ||
+        } else if (
+            key === Keys.JUMP_OUT_PARENTHESES ||
             key === Keys.JUMP_OUT_EXPONENT ||
             key === Keys.JUMP_OUT_BASE ||
             key === Keys.JUMP_INTO_NUMERATOR ||
             key === Keys.JUMP_OUT_NUMERATOR ||
-            key === Keys.JUMP_OUT_DENOMINATOR) {
+            key === Keys.JUMP_OUT_DENOMINATOR
+        ) {
             this._handleJumpOut(cursor, key);
         } else if (key === Keys.BACKSPACE) {
             this._handleBackspace(cursor);
@@ -188,7 +216,8 @@ class MathWrapper {
             this.mathField[WRITE](key[4]);
         }
 
-        if (!cursor.selection) {  // don't show the cursor for selections
+        if (!cursor.selection) {
+            // don't show the cursor for selections
             cursor.show();
         }
 
@@ -220,7 +249,7 @@ class MathWrapper {
         if (el) {
             const cursor = this.getCursor();
 
-            if (el.hasAttribute('mq-root-block')) {
+            if (el.hasAttribute("mq-root-block")) {
                 // If we're in the empty area place the cursor at the right
                 // end of the expression.
                 cursor.insAtRightEnd(this.mathField.__controller.root);
@@ -239,7 +268,7 @@ class MathWrapper {
                 if (command && command.endNode) {
                     // NOTE(charlie): endNode should definitely be \left(.
                     cursor.insLeftOf(command.endNode);
-                    this.mathField.keystroke('Right');
+                    this.mathField.keystroke("Right");
                 }
             }
 
@@ -292,17 +321,17 @@ class MathWrapper {
         const isAtLeftEnd = cursor[this.MQ.L] === MQ_END;
 
         const isRootEmpty = this._isInsideEmptyNode(
-            cursor.parent.parent.blocks[0].ends
+            cursor.parent.parent.blocks[0].ends,
         );
 
         if (isAtLeftEnd) {
             this._selectNode(cursor.parent.parent, cursor);
 
             if (isRootEmpty) {
-                this.mathField.keystroke('Backspace');
+                this.mathField.keystroke("Backspace");
             }
         } else {
-            this.mathField.keystroke('Backspace');
+            this.mathField.keystroke("Backspace");
         }
     }
 
@@ -345,7 +374,7 @@ class MathWrapper {
 
                 // Jump into it!
                 cursor.insLeftOf(fractionNode);
-                this.mathField.keystroke('Right');
+                this.mathField.keystroke("Right");
                 break;
 
             case CursorContexts.IN_NUMERATOR:
@@ -357,7 +386,7 @@ class MathWrapper {
                 // the denominator, though I can't think of any.
                 const siblingDenominator = cursor.parent.parent.blocks[1];
                 while (cursor.parent !== siblingDenominator) {
-                    this.mathField.keystroke('Right');
+                    this.mathField.keystroke("Right");
                 }
                 break;
 
@@ -373,7 +402,7 @@ class MathWrapper {
                 // is to handle the standard case in which the subscript is the
                 // base of a custom log.
                 if (this._isParens(cursor[this.MQ.R])) {
-                    this.mathField.keystroke('Right');
+                    this.mathField.keystroke("Right");
                 }
                 break;
 
@@ -385,7 +414,7 @@ class MathWrapper {
             default:
                 throw new Error(
                     `Attempted to 'Jump Out' from node, but found no ` +
-                    `appropriate cursor context: ${context}`
+                        `appropriate cursor context: ${context}`,
                 );
         }
     }
@@ -405,37 +434,30 @@ class MathWrapper {
 
             if (this._isFraction(leftNode)) {
                 this._selectNode(leftNode, cursor);
-
             } else if (this._isSquareRoot(leftNode)) {
                 this._selectNode(leftNode, cursor);
-
             } else if (this._isNthRoot(leftNode)) {
                 this._selectNode(leftNode, cursor);
-
             } else if (this._isNthRootIndex(parent)) {
                 this._handleBackspaceInRootIndex(cursor);
-
-            } else if (leftNode.ctrlSeq === '\\left(') {
+            } else if (leftNode.ctrlSeq === "\\left(") {
                 this._handleBackspaceOutsideParens(cursor);
-
-            } else if (grandparent.ctrlSeq === '\\left(') {
+            } else if (grandparent.ctrlSeq === "\\left(") {
                 this._handleBackspaceInsideParens(cursor);
-
             } else if (this._isInsideLogIndex(cursor)) {
                 this._handleBackspaceInLogIndex(cursor);
-
-            } else if (leftNode.ctrlSeq === '\\ge ' ||
-                leftNode.ctrlSeq === '\\le ') {
+            } else if (
+                leftNode.ctrlSeq === "\\ge " ||
+                leftNode.ctrlSeq === "\\le "
+            ) {
                 this._handleBackspaceAfterLigaturedSymbol(cursor);
-
             } else if (this._isNthRoot(grandparent) && leftNode === MQ_END) {
                 this._handleBackspaceInNthRoot(cursor);
-
             } else {
-                this.mathField.keystroke('Backspace');
+                this.mathField.keystroke("Backspace");
             }
         } else {
-            this.mathField.keystroke('Backspace');
+            this.mathField.keystroke("Backspace");
         }
     }
 
@@ -453,7 +475,7 @@ class MathWrapper {
         if (cursor[this.MQ.L] === MQ_END) {
             const parent = cursor.parent;
             const grandparent = parent.parent;
-            if (grandparent.ctrlSeq === '\\left(') {
+            if (grandparent.ctrlSeq === "\\left(") {
                 const command = this._maybeFindCommandBeforeParens(grandparent);
                 if (command) {
                     cursor.insLeftOf(command.startNode);
@@ -463,7 +485,7 @@ class MathWrapper {
         }
 
         // Otherwise, we default to the standard MathQull left behavior.
-        this.mathField.keystroke('Left');
+        this.mathField.keystroke("Left");
     }
 
     _handleRightArrow(cursor) {
@@ -474,10 +496,10 @@ class MathWrapper {
             // done by putting it to the left of ites parentheses and then
             // moving right once.
             cursor.insLeftOf(command.endNode);
-            this.mathField.keystroke('Right');
+            this.mathField.keystroke("Right");
         } else {
             // Otherwise, we default to the standard MathQull right behavior.
-            this.mathField.keystroke('Right');
+            this.mathField.keystroke("Right");
         }
     }
 
@@ -488,16 +510,17 @@ class MathWrapper {
         const invalidPrefixes = [...ArithmeticOperators, ...EqualityOperators];
 
         const precedingNode = cursor[this.MQ.L];
-        const shouldPrefixWithParens = precedingNode === MQ_END ||
+        const shouldPrefixWithParens =
+            precedingNode === MQ_END ||
             invalidPrefixes.includes(precedingNode.ctrlSeq.trim());
         if (shouldPrefixWithParens) {
-            this.mathField.write('\\left(\\right)');
+            this.mathField.write("\\left(\\right)");
         }
 
         // Insert the appropriate exponent operator.
         switch (key) {
             case Keys.EXP:
-                this.mathField.cmd('^');
+                this.mathField.cmd("^");
                 break;
 
             case Keys.EXP_2:
@@ -509,10 +532,10 @@ class MathWrapper {
                 // exactly four left strokes, since the cursor by default would
                 // end up to the right of the exponent.
                 if (shouldPrefixWithParens) {
-                    this.mathField.keystroke('Left');
-                    this.mathField.keystroke('Left');
-                    this.mathField.keystroke('Left');
-                    this.mathField.keystroke('Left');
+                    this.mathField.keystroke("Left");
+                    this.mathField.keystroke("Left");
+                    this.mathField.keystroke("Left");
+                    this.mathField.keystroke("Left");
                 }
                 break;
 
@@ -547,15 +570,15 @@ class MathWrapper {
         // Ex) ['\\l', 'o', 'g ', '\\left(', ...]
         const commandCharRegex = /^[a-z]$/;
         const commandStartRegex = /^\\[a-z]$/;
-        const commandEndSeq = '\\left(';
+        const commandEndSeq = "\\left(";
 
         // Note: We whitelist the set of valid commands, since relying solely on
         // a command being prefixed with a backslash leads to undesired
         // behavior. For example, Greek symbols, left parentheses, and square
         // roots all get treated as commands.
-        const validCommands = ['\\log', '\\ln', '\\cos', '\\sin', '\\tan'];
+        const validCommands = ["\\log", "\\ln", "\\cos", "\\sin", "\\tan"];
 
-        let name = '';
+        let name = "";
         let startNode;
         let endNode;
 
@@ -599,7 +622,7 @@ class MathWrapper {
                 node = node[this.MQ.R];
             }
             if (validCommands.includes(name)) {
-                return { name, startNode, endNode };
+                return {name, startNode, endNode};
             } else {
                 return null;
             }
@@ -631,63 +654,74 @@ class MathWrapper {
     }
 
     _isFraction(node) {
-        return node.jQ && node.jQ.hasClass('mq-fraction');
+        return node.jQ && node.jQ.hasClass("mq-fraction");
     }
 
     _isNumerator(node) {
-        return node.jQ && node.jQ.hasClass('mq-numerator');
+        return node.jQ && node.jQ.hasClass("mq-numerator");
     }
 
     _isDenominator(node) {
-        return node.jQ && node.jQ.hasClass('mq-denominator');
+        return node.jQ && node.jQ.hasClass("mq-denominator");
     }
 
     _isSubScript(node) {
         // NOTE(charlie): MyScript has a structure whereby its superscripts seem
         // to be represented as a parent node with 'mq-sup-only' containing a
         // single child with 'mq-sup'.
-        return node.jQ &&
-            (node.jQ.hasClass('mq-sub-only') || node.jQ.hasClass('mq-sub'));
+        return (
+            node.jQ &&
+            (node.jQ.hasClass("mq-sub-only") || node.jQ.hasClass("mq-sub"))
+        );
     }
 
     _isSuperScript(node) {
         // NOTE(charlie): MyScript has a structure whereby its superscripts seem
         // to be represented as a parent node with 'mq-sup-only' containing a
         // single child with 'mq-sup'.
-        return node.jQ &&
-            (node.jQ.hasClass('mq-sup-only') || node.jQ.hasClass('mq-sup'));
+        return (
+            node.jQ &&
+            (node.jQ.hasClass("mq-sup-only") || node.jQ.hasClass("mq-sup"))
+        );
     }
 
     _isParens(node) {
-        return node && node.ctrlSeq === '\\left(';
+        return node && node.ctrlSeq === "\\left(";
     }
 
     _isLeaf(node) {
-        return node && node.ctrlSeq &&
-            ValidLeaves.includes(node.ctrlSeq.trim());
+        return (
+            node && node.ctrlSeq && ValidLeaves.includes(node.ctrlSeq.trim())
+        );
     }
 
     _isSquareRoot(node) {
-        return node.blocks && node.blocks[0].jQ &&
-            node.blocks[0].jQ.hasClass('mq-sqrt-stem');
+        return (
+            node.blocks &&
+            node.blocks[0].jQ &&
+            node.blocks[0].jQ.hasClass("mq-sqrt-stem")
+        );
     }
 
     _isNthRoot(node) {
-        return node.blocks && node.blocks[0].jQ &&
-            node.blocks[0].jQ.hasClass('mq-nthroot');
+        return (
+            node.blocks &&
+            node.blocks[0].jQ &&
+            node.blocks[0].jQ.hasClass("mq-nthroot")
+        );
     }
 
     _isNthRootIndex(node) {
-        return node.jQ && node.jQ.hasClass('mq-nthroot');
+        return node.jQ && node.jQ.hasClass("mq-nthroot");
     }
 
     _isInsideLogIndex(cursor) {
         const grandparent = cursor.parent.parent;
 
-        if (grandparent && grandparent.jQ.hasClass('mq-supsub')) {
+        if (grandparent && grandparent.jQ.hasClass("mq-supsub")) {
             const command = this._maybeFindCommandBeforeParens(grandparent);
 
-            if (command && command.name === '\\log') {
+            if (command && command.name === "\\log") {
                 return true;
             }
         }
@@ -711,22 +745,21 @@ class MathWrapper {
 
             this._selectNode(grandparent, cursor);
 
-            const rootIsEmpty = grandparent.blocks[1].jQ.text() === '';
+            const rootIsEmpty = grandparent.blocks[1].jQ.text() === "";
 
             if (rootIsEmpty) {
                 // If there is not content under the root then simply delete
                 // the whole thing.
-                this.mathField.keystroke('Backspace');
+                this.mathField.keystroke("Backspace");
             } else {
                 // Replace the nthroot with a sqrt if there was content under
                 // the root.
 
                 // Start by deleting the selection.
-                this.mathField.keystroke('Backspace');
+                this.mathField.keystroke("Backspace");
 
                 // Replace the nth-root with a sqrt.
-                this.mathField.write(
-                    latex.replace(/^\\sqrt\[\]/, '\\sqrt'));
+                this.mathField.write(latex.replace(/^\\sqrt\[\]/, "\\sqrt"));
 
                 // Adjust the cursor to be to the left the sqrt.
                 if (reinsertionPoint === MQ_END) {
@@ -739,7 +772,7 @@ class MathWrapper {
             if (cursor[this.MQ.L] !== MQ_END) {
                 // If the cursor is not at the leftmost position inside the
                 // root's index, delete a character.
-                this.mathField.keystroke('Backspace');
+                this.mathField.keystroke("Backspace");
             } else {
                 // TODO(kevinb) verify that we want this behavior after testing
                 // Do nothing because we haven't completely deleted the
@@ -766,15 +799,15 @@ class MathWrapper {
             cursor.endSelection();
 
             const isLogBodyEmpty =
-                grandparent[this.MQ.R].contentjQ.text() === '';
+                grandparent[this.MQ.R].contentjQ.text() === "";
 
             if (isLogBodyEmpty) {
                 // If there's no content inside the log's parens then delete the
                 // whole thing.
-                this.mathField.keystroke('Backspace');
+                this.mathField.keystroke("Backspace");
             }
         } else {
-            this.mathField.keystroke('Backspace');
+            this.mathField.keystroke("Backspace");
         }
     }
 
@@ -840,7 +873,7 @@ class MathWrapper {
             // This command contains math and there's some math to
             // the left of the cursor that we should delete normally
             // before doing anything special.
-            this.mathField.keystroke('Backspace');
+            this.mathField.keystroke("Backspace");
             return;
         }
 
@@ -850,8 +883,10 @@ class MathWrapper {
         // has a subscript as is the case in log_n then move the cursor into
         // the subscript, e.g. \log_{5}(|x+1) => \log_{5|}(x+1)
 
-        if (grandparent[this.MQ.L].sub) {  // if there is a subscript
-            if (grandparent[this.MQ.L].sub.jQ.text()) {  // and it contains text
+        if (grandparent[this.MQ.L].sub) {
+            // if there is a subscript
+            if (grandparent[this.MQ.L].sub.jQ.text()) {
+                // and it contains text
                 // move the cursor to the right end of the subscript
                 cursor.insAtRightEnd(grandparent[this.MQ.L].sub);
                 return;
@@ -875,13 +910,13 @@ class MathWrapper {
         // Delete the selection, but only if the parens were empty to
         // begin with.
         if (isEmpty) {
-            this.mathField.keystroke('Backspace');
+            this.mathField.keystroke("Backspace");
         }
     }
 
     _handleBackspaceAfterLigaturedSymbol(cursor) {
-        this.mathField.keystroke('Backspace');
-        this.mathField.keystroke('Backspace');
+        this.mathField.keystroke("Backspace");
+        this.mathField.keystroke("Backspace");
     }
 
     contextForCursor(cursor) {

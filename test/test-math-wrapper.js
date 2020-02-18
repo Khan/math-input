@@ -2,7 +2,7 @@
 const MathQuill = window.MathQuill;
 const MQ = MathQuill.getInterface(2);
 
-const MathWrapper = require('../src/components/input/math-wrapper');
+const MathWrapper = require("../src/components/input/math-wrapper");
 
 class TestMathWrapper extends MathWrapper {
     getContent() {

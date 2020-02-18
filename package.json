@@ -8,7 +8,8 @@
     "watch_test": "mocha test/test_spec.js --watch --compilers js:@babel/register",
     "build": "webpack --config webpack.config.externals.js",
     "watch": "webpack --config webpack.config.externals.js --watch",
-    "start": "webpack-dev-server --open"
+    "start": "webpack-dev-server --open",
+    "format": "prettier --write \"src/**\" \"test/**\" \"lib/**\""
   },
   "author": "",
   "license": "MIT",
@@ -45,6 +46,8 @@
     "mini-css-extract-plugin": "^0.9.0",
     "mocha": "^2.4.5",
     "mocha-jsdom": "^1.1.0",
+    "prettier": "^1.19.1",
+    "@khanacademy/eslint-config": "0.0.5",
     "prop-types": "15.6.1",
     "react": "16.5",
     "react-addons-create-fragment": "15.3.2",

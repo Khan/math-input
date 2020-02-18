@@ -1,16 +1,16 @@
 /**
  * Common parameters used to style components.
  */
-const offBlack16 = 'rgba(33, 36, 44, 0.16)';
+const offBlack16 = "rgba(33, 36, 44, 0.16)";
 
 module.exports = {
     // TODO(diedra): Import Wonder Blocks and get these values from there.
-    wonderBlocksBlue: '#1865f2',
-    offBlack: '#21242c',
-    offBlack50: 'rgba(33, 36, 44, 0.50)',
-    offBlack32: 'rgba(33, 36, 44, 0.32)',
+    wonderBlocksBlue: "#1865f2",
+    offBlack: "#21242c",
+    offBlack50: "rgba(33, 36, 44, 0.50)",
+    offBlack32: "rgba(33, 36, 44, 0.32)",
     offBlack16,
-    offBlack8: 'rgba(33, 36, 44, 0.8)',
+    offBlack8: "rgba(33, 36, 44, 0.8)",
 
     iconSizeHeightPx: 48,
     iconSizeWidthPx: 48,
@@ -24,14 +24,14 @@ module.exports = {
     cursorHandleDistanceMultiplier: 1.045,
 
     // Keypad button colors
-    valueGrey: '#FFF',
-    operatorGrey : '#FAFAFA',
-    controlGrey : '#F6F7F7',
-    emptyGrey : '#F0F1F2',
+    valueGrey: "#FFF",
+    operatorGrey: "#FAFAFA",
+    controlGrey: "#F6F7F7",
+    emptyGrey: "#F0F1F2",
 
     // Constants defining any borders between elements in the keypad.
     innerBorderColor: offBlack16,
-    innerBorderStyle: 'solid',
+    innerBorderStyle: "solid",
     innerBorderWidthPx: 1,
 
     // The width at which a device is classified as a "tablet" for the purposes

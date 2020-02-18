@@ -3,21 +3,21 @@
  * multi-functional keys.
  */
 
-const React = require('react');
-const PropTypes = require('prop-types');
-const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
+const React = require("react");
+const PropTypes = require("prop-types");
+const ReactCSSTransitionGroup = require("react-addons-css-transition-group");
 
-const KeyConfigs = require('../data/key-configs');
-const MultiSymbolPopover = require('./multi-symbol-popover');
+const KeyConfigs = require("../data/key-configs");
+const MultiSymbolPopover = require("./multi-symbol-popover");
 const {
     boundingBoxPropType,
     keyConfigPropType,
     popoverPropType,
-} = require('./prop-types');
+} = require("./prop-types");
 
 // NOTE(charlie): These must be kept in sync with the transition durations and
 // classnames specified in popover.less.
-const animationTransitionName = 'popover';
+const animationTransitionName = "popover";
 const animationDurationMs = 200;
 
 // A container component used to position a popover absolutely at a specific
@@ -32,13 +32,15 @@ class PopoverContainer extends React.Component {
         const {bounds, childKeys} = this.props;
 
         const containerStyle = {
-            position: 'absolute',
+            position: "absolute",
             ...bounds,
         };
 
-        return <div style={containerStyle}>
-            <MultiSymbolPopover keys={childKeys} />
-        </div>;
+        return (
+            <div style={containerStyle}>
+                <MultiSymbolPopover keys={childKeys} />
+            </div>
+        );
     }
 }
 
@@ -50,18 +52,24 @@ class PopoverManager extends React.Component {
     render() {
         const {popover} = this.props;
 
-        return <ReactCSSTransitionGroup
-            transitionName={animationTransitionName}
-            transitionEnter={true}
-            transitionLeave={false}
-            transitionEnterTimeout={animationDurationMs}
-        >
-            {popover && <PopoverContainer
-                key={popover.childKeyIds[0]}
-                bounds={popover.bounds}
-                childKeys={popover.childKeyIds.map(id => KeyConfigs[id])}
-            />}
-        </ReactCSSTransitionGroup>;
+        return (
+            <ReactCSSTransitionGroup
+                transitionName={animationTransitionName}
+                transitionEnter={true}
+                transitionLeave={false}
+                transitionEnterTimeout={animationDurationMs}
+            >
+                {popover && (
+                    <PopoverContainer
+                        key={popover.childKeyIds[0]}
+                        bounds={popover.bounds}
+                        childKeys={popover.childKeyIds.map(
+                            (id) => KeyConfigs[id],
+                        )}
+                    />
+                )}
+            </ReactCSSTransitionGroup>
+        );
     }
 }
 

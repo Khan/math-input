@@ -3,12 +3,16 @@
  * each page.
  */
 
-const React = require('react');
-const PropTypes = require('prop-types');
-const {StyleSheet} = require('aphrodite');
+const React = require("react");
+const PropTypes = require("prop-types");
+const {StyleSheet} = require("aphrodite");
 
-const {View} = require('../fake-react-native-web');
-const {pageIndicatorHeightPx, offBlack50, offBlack16} = require('./common-style');
+const {View} = require("../fake-react-native-web");
+const {
+    pageIndicatorHeightPx,
+    offBlack50,
+    offBlack16,
+} = require("./common-style");
 
 class PagerIcon extends React.Component {
     static propTypes = {
@@ -26,14 +30,16 @@ class PagerIcon extends React.Component {
 
         const fillColor = active ? offBlack50 : offBlack16;
 
-        return <svg width={2 * radiusPx} height={2 * radiusPx}>
-            <circle
-                cx={radiusPx}
-                cy={radiusPx}
-                r={radiusPx}
-                fill={fillColor}
-            />
-        </svg>;
+        return (
+            <svg width={2 * radiusPx} height={2 * radiusPx}>
+                <circle
+                    cx={radiusPx}
+                    cy={radiusPx}
+                    r={radiusPx}
+                    fill={fillColor}
+                />
+            </svg>
+        );
     }
 }
 
@@ -56,7 +62,7 @@ class PagerIndicator extends React.Component {
                     key={i}
                     active={i === currentPage}
                     radiusPx={pagerIconRadiusPx}
-                />
+                />,
             );
         }
 
@@ -68,25 +74,27 @@ class PagerIndicator extends React.Component {
             width: totalIconWidthPx + totalSpacingWidthPx,
         };
 
-        return <View style={styles.indicatorStrip}>
-            <View style={styles.iconStrip} dynamicStyle={iconStripSize}>
-                {indicators}
+        return (
+            <View style={styles.indicatorStrip}>
+                <View style={styles.iconStrip} dynamicStyle={iconStripSize}>
+                    {indicators}
+                </View>
             </View>
-        </View>;
+        );
     }
 }
 
 const styles = StyleSheet.create({
     indicatorStrip: {
-        backgroundColor: '#F0F1F2',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
+        backgroundColor: "#F0F1F2",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
         height: pageIndicatorHeightPx,
     },
     iconStrip: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        flexDirection: "row",
+        justifyContent: "space-between",
     },
 });
 

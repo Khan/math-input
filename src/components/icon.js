@@ -2,18 +2,18 @@
  * A component that renders an icon for a symbol with the given name.
  */
 
-const React = require('react');
-const PropTypes = require('prop-types');
-const {StyleSheet} = require('aphrodite');
+const React = require("react");
+const PropTypes = require("prop-types");
+const {StyleSheet} = require("aphrodite");
 
-const MathIcon = require('./math-icon');
-const SvgIcon = require('./svg-icon');
-const TextIcon = require('./text-icon');
-const {IconTypes} = require('../consts');
-const {iconPropType} = require('./prop-types');
-const {offBlack} = require('./common-style');
+const MathIcon = require("./math-icon");
+const SvgIcon = require("./svg-icon");
+const TextIcon = require("./text-icon");
+const {IconTypes} = require("../consts");
+const {iconPropType} = require("./prop-types");
+const {offBlack} = require("./common-style");
 
-const focusedColor = '#FFF';
+const focusedColor = "#FFF";
 const unfocusedColor = offBlack;
 
 class Icon extends React.PureComponent {
@@ -36,26 +36,24 @@ class Icon extends React.PureComponent {
 
         switch (icon.type) {
             case IconTypes.MATH:
-                return <MathIcon
-                    math={icon.data}
-                    style={styleWithFocus}
-                />;
+                return <MathIcon math={icon.data} style={styleWithFocus} />;
 
             case IconTypes.SVG:
                 // TODO(charlie): Support passing style objects to `SvgIcon`.
                 // This will require migrating the individual icons to use
                 // `currentColor` and accept a `className` prop, rather than
                 // relying on an explicit color prop.
-                return <SvgIcon
-                    name={icon.data}
-                    color={focused ? focusedColor : unfocusedColor}
-                />;
+                return (
+                    <SvgIcon
+                        name={icon.data}
+                        color={focused ? focusedColor : unfocusedColor}
+                    />
+                );
 
             case IconTypes.TEXT:
-                return <TextIcon
-                    character={icon.data}
-                    style={styleWithFocus}
-                />;
+                return (
+                    <TextIcon character={icon.data} style={styleWithFocus} />
+                );
         }
 
         throw new Error("No icon or symbol provided");
