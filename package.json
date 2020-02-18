@@ -15,12 +15,12 @@
   "license": "MIT",
   "husky": {
     "hooks": {
-      "pre-commit": "format"
+      "pre-commit": "lint-staged"
     }
   },
-  "format": {
+  "lint-staged": {
     "*.js": [
-      "yarn format"
+      "yarn run format"
     ]
   },
   "dependencies": {
