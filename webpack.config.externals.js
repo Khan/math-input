@@ -1,36 +1,45 @@
 const path = require('path');
 const webpack = require('webpack');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
     entry: './src/index.js',
+    mode: "production",
     output: {
         path: path.join(__dirname, 'build'),
         filename: 'math-input.js',
         library: 'math-input',
         libraryTarget: 'umd',
     },
-    plugins: [
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false,
-            },
-        }),
-    ],
+    optimization: {
+        minimize: true
+    },
     module: {
-        loaders: [
+        rules: [
             {
-                test: /\.jsx?$/,
-                loader: 'babel',
-                query: {
-                    presets: [
-                        "@babel/env",
-                        "@babel/react",
-                    ],
-                },
+                test: /\.js$/,
                 exclude: /(node_modules|mathquill)/,
+                use: ["babel-loader"],
             },
+            {
+                test: /\.less$/,
+                use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'],
+            },
+            {
+                test: /\.css$/,
+                use: [MiniCssExtractPlugin.loader, 'css-loader'],
+            },
+            {
+                test: /\.(woff|woff2|ttf|otf|eot|svg)$/,
+                use: ["file-loader"],
+            }
         ],
     },
+    plugins: [
+        new MiniCssExtractPlugin({
+            filename: "math-input.css",
+        }),
+    ],
     // TODO(alex): Pick just one type below, e.g. commonjs2
     externals: {
         'prop-types': {

@@ -1,54 +1,74 @@
-const path = require('path');
-const webpack = require('webpack');
+const path = require("path");
+const webpack = require("webpack");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
+    mode: "development",
     entry: {
-        app: './src/app',
-        nativeApp: './src/native-app',
-        deps: [
-            'prop-types',
-            'react',
-            'react-dom',
-            'react-redux',
-            'redux',
-            'aphrodite',
-            // TODO(kevinb) create a build config for test code
-            // 'mathquill',
-        ],
+        index: "./src/app.js",
     },
     output: {
-        path: path.join(__dirname, 'build'),
-        filename: '[name].js',
+        publicPath: "/",
+        filename: "math-input.js",
+        chunkFilename: "math-input.js",
+        path: path.resolve(__dirname, "build"),
+    },
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                exclude: /(node_modules|mathquill)/,
+                use: ["babel-loader"],
+            },
+            {
+                test: /\.less$/,
+                use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'],
+            },
+            {
+                test: /\.css$/,
+                use: [MiniCssExtractPlugin.loader, 'css-loader'],
+            },
+            {
+                test: /\.(woff|woff2|ttf|otf|eot|svg)$/,
+                use: [
+                    {
+                        loader: "file-loader",
+                    },
+                ],
+            }
+        ],
     },
     plugins: [
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'deps',
+        new HtmlWebpackPlugin({
+            template: "index.html",
+            title: "math-toolbox",
         }),
-        new webpack.DefinePlugin({
-            'process.env.NODE_ENV': '"production"',
+        new MiniCssExtractPlugin({
+            filename: "math-input.css",
         }),
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false,
-            },
+        new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery",
+            "window.jQuery": "jquery"
         }),
     ],
     resolve: {
-        extensions: ['', '.js', '.jsx'],
+        extensions: [".js", ".json"],
         alias: {
-            // allows us to do `const MathQuill = require('mathquill');`
-            mathquill: path.join(__dirname, "mathquill/mathquill.js"),
+            // "react-dom": "@hot-loader/react-dom",
         },
     },
-    module: {
-        loaders: [{
-            test: /\.jsx?$/,
-            loaders: ['babel'],
-            exclude: /(node_modules|mathquill)/,
-        }, {
-            // appends `module.exports = window.MathQuill` to mathquill.js
-            test: /\/mathquill\.js$/,
-            loader: "exports?window.MathQuill",
-        }],
+    devtool: "source-map",
+    devServer: {
+        hot: true,
+        liveReload: false,
+        contentBase: [
+            path.join(__dirname, "dist"),
+            path.join(__dirname, 'node_modules/mathquill/build/'),
+            path.join(__dirname, 'assets/')
+        ],
+        compress: true,
+        port: 9000,
     },
 };
