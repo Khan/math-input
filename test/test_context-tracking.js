@@ -31,7 +31,7 @@ describe.skip("Cursor context", () => {
                     "http://code.jquery.com/jquery.js",
                     "mathquill/mathquill.js",
                 ],
-                done: function (err, win) {
+                done: function(err, win) {
                     document = win.document;
                     global.window = win;
                     global.document = document;
