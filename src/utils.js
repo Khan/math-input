@@ -2,8 +2,6 @@
 
 const {DecimalSeparators} = require("./consts");
 
-const a: number = "123";
-
 // We expect `window.icu` to be exposed by the parent. When in doubt, we fall
 // back to a period. We can only depend on a subset of what localeplanet
 // provides, however -- the things in `icu-slim.js` (there's a copy in ../lib/
