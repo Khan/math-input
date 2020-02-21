@@ -1,9 +1,9 @@
 const React = require("react");
 const PropTypes = require("prop-types");
 const ReactDOM = require("react-dom");
-const { StyleSheet } = require("aphrodite");
+const {StyleSheet} = require("aphrodite");
 
-const { View } = require("../../fake-react-native-web");
+const {View} = require("../../fake-react-native-web");
 const CursorHandle = require("./cursor-handle");
 const MathWrapper = require("./math-wrapper");
 const scrollIntoView = require("./scroll-into-view");
@@ -13,11 +13,11 @@ const {
     cursorHandleDistanceMultiplier,
     offBlack50,
 } = require("../common-style");
-const { keypadElementPropType } = require("../prop-types");
-const { wonderBlocksBlue, offBlack } = require("../common-style");
+const {keypadElementPropType} = require("../prop-types");
+const {wonderBlocksBlue, offBlack} = require("../common-style");
 const Keys = require("../../data/keys");
 
-const i18n = window.i18n || { _: (s) => s };
+const i18n = window.i18n || {_: (s) => s};
 
 const constrainingFrictionFactor = 0.8;
 
@@ -97,7 +97,7 @@ class MathInput extends React.Component {
         // properties, we disable it unless it is explicitly requested (as it
         // should be in the case of a fixed-width input).
         if (!this.props.scrollable) {
-            this.mathField.mathField.__controller.scrollHoriz = function () { };
+            this.mathField.mathField.__controller.scrollHoriz = function() {};
         }
 
         this.mathField.setContent(this.props.value);
@@ -250,7 +250,6 @@ class MathInput extends React.Component {
         this._root.style.fontSize = `${fontSizePt}pt`;
     };
 
-
     /** Gets and cache they bounds of the keypadElement */
     _getKeypadBounds = () => {
         if (!this._keypadBounds) {
@@ -311,7 +310,7 @@ class MathInput extends React.Component {
     blur = () => {
         this.mathField.blur();
         this.props.onBlur && this.props.onBlur();
-        this.setState({ focused: false, handle: { visible: false } });
+        this.setState({focused: false, handle: {visible: false}});
     };
 
     focus = () => {
@@ -343,7 +342,7 @@ class MathInput extends React.Component {
 
         this.mathField.focus();
         this.props.onFocus && this.props.onFocus();
-        this.setState({ focused: true }, () => {
+        this.setState({focused: true}, () => {
             // NOTE(charlie): We use `setTimeout` to allow for a layout pass to
             // occur. Otherwise, the keypad is measured incorrectly. Ideally,
             // we'd use requestAnimationFrame here, but it's unsupported on
@@ -806,16 +805,16 @@ class MathInput extends React.Component {
     };
 
     render() {
-        const { focused, handle } = this.state;
-        const { style } = this.props;
+        const {focused, handle} = this.state;
+        const {style} = this.props;
 
         const innerStyle = {
             ...inlineStyles.innerContainer,
             borderWidth: this.getBorderWidthPx(),
             ...(focused
                 ? {
-                    borderColor: wonderBlocksBlue,
-                }
+                      borderColor: wonderBlocksBlue,
+                  }
                 : {}),
             ...style,
         };
