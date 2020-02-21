@@ -32,17 +32,12 @@ class MathInput extends React.Component {
         onBlur: PropTypes.func,
         onChange: PropTypes.func.isRequired,
         onFocus: PropTypes.func,
-        // Whether the input should be scrollable. This is typically only
-        // necessary when a fixed width has been provided through the `style`
-        // prop.
-        scrollable: PropTypes.bool,
         // An extra, vanilla style object, to be applied to the math input.
         style: PropTypes.any,
         value: PropTypes.string,
     };
 
     static defaultProps = {
-        scrollable: false,
         style: {},
         value: "",
     };
@@ -91,22 +86,13 @@ class MathInput extends React.Component {
             "mousedown.mathquill",
         );
 
-        // NOTE(charlie): MathQuill uses this method to do some layout in the
-        // case that an input overflows its bounds and must become scrollable.
-        // As it causes layout jank due to jQuery animations of scroll
-        // properties, we disable it unless it is explicitly requested (as it
-        // should be in the case of a fixed-width input).
-        if (!this.props.scrollable) {
-            this.mathField.mathField.__controller.scrollHoriz = function() {};
-        }
-
         this.mathField.setContent(this.props.value);
 
         this._updateInputPadding();
 
         this._container = ReactDOM.findDOMNode(this);
         this._root = this._container.querySelector(".mq-root-block");
-        this._root.addEventListener("scroll", () => this._hideCursorHandle());
+        this._root.addEventListener("scroll", this._handleScroll);
 
         // Record the initial scroll displacement on touch start. This allows
         // us to detect whether a touch event was a scroll and only blur the
@@ -305,6 +291,17 @@ class MathInput extends React.Component {
                 y: 0,
             },
         });
+    };
+
+    _handleScroll = () => {
+        // If animateIntoPosition is false, the user is currently manually positioning
+        // the cursor. This is important because the user can scroll the input field
+        // with the curor handle, and we don't want to override that ability.
+        // But we do want to hide the handle is the user is just scrolling the input field
+        // normally, because the handle will not move with the scroll.
+        if (this.state.handle.animateIntoPosition !== false) {
+            this._hideCursorHandle();
+        }
     };
 
     blur = () => {
