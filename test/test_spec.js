@@ -4,7 +4,7 @@ const assert = require("assert");
 
 const Keys = require("../src/data/keys");
 
-const MQ = {L: "-1", R: "1"};
+const MQ = { L: "-1", R: "1" };
 const END_OF_EXPR = 0;
 
 const createMathField = (document, MathWrapper) => {
@@ -22,7 +22,7 @@ const isInsideEmptyParens = (cursor) => {
     );
 };
 
-describe("MathQuill", () => {
+describe.skip("MathQuill", () => {
     let document;
     let MathWrapper;
     let loaded;
@@ -42,7 +42,7 @@ describe("MathQuill", () => {
                     "mathquill/mathquill.js",
                     "lib/icu.js",
                 ],
-                done: function(err, win) {
+                done: (err, win) => {
                     document = win.document;
                     global.window = win;
                     global.document = document;
@@ -779,5 +779,5 @@ describe("MathQuill", () => {
         // TODO(charlie): Write extensive tests for the 'Jump out' behavior.
     });
 
-    describe.skip("Equals =, !=, <, <=, >, >=", () => {});
+    describe.skip("Equals =, !=, <, <=, >, >=", () => { });
 });
