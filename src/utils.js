@@ -1,3 +1,5 @@
+// @flow
+
 const {DecimalSeparators} = require("./consts");
 
 // We expect `window.icu` to be exposed by the parent. When in doubt, we fall
