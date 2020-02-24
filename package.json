@@ -6,6 +6,9 @@
   "version": "0.0.1",
   "description": "",
   "main": "build/math-input.js",
+  "files": [
+    "build/"
+  ],
   "scripts": {
     "test": "mocha test/test_*.js --compilers js:@babel/register",
     "watch_test": "mocha test/test_spec.js --watch --compilers js:@babel/register",
