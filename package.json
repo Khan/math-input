@@ -1,5 +1,8 @@
 {
-  "name": "math-input",
+  "name": "@khanacademy/math-input",
+  "publishConfig": {
+    "access": "public"
+  },
   "version": "0.0.1",
   "description": "",
   "main": "build/math-input.js",
