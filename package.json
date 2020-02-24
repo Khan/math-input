@@ -15,7 +15,8 @@
     "build": "webpack --config webpack.config.externals.js",
     "watch": "webpack --config webpack.config.externals.js --watch",
     "start": "webpack-dev-server --open",
-    "format": "prettier --write \"src/**\" \"test/**\" \"lib/**\""
+    "format": "prettier --write \"src/**\" \"test/**\" \"lib/**\"",
+    "prepublish": "yarn build"
   },
   "author": "",
   "license": "MIT",
