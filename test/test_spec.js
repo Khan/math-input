@@ -22,7 +22,7 @@ const isInsideEmptyParens = (cursor) => {
     );
 };
 
-describe("MathQuill", () => {
+describe.skip("MathQuill", () => {
     let document;
     let MathWrapper;
     let loaded;
@@ -42,7 +42,7 @@ describe("MathQuill", () => {
                     "mathquill/mathquill.js",
                     "lib/icu.js",
                 ],
-                done: function(err, win) {
+                done: (err, win) => {
                     document = win.document;
                     global.window = win;
                     global.document = document;

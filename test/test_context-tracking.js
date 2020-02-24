@@ -12,7 +12,7 @@ const createMathField = (document, MathWrapper) => {
     return new MathWrapper(span);
 };
 
-describe("Cursor context", () => {
+describe.skip("Cursor context", () => {
     let document;
     let MathWrapper;
     let loaded;
