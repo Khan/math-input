@@ -16,7 +16,9 @@
     "watch": "webpack --config webpack.config.externals.js --watch",
     "start": "webpack-dev-server --open",
     "format": "prettier --write \"src/**\" \"test/**\" \"lib/**\"",
-    "prepublish": "yarn build"
+    "prepublish": "yarn build",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "author": "",
   "license": "MIT",
@@ -40,6 +42,10 @@
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.0.0",
     "@khanacademy/eslint-config": "0.0.5",
+    "@storybook/addon-actions": "^5.3.14",
+    "@storybook/addon-links": "^5.3.14",
+    "@storybook/addons": "^5.3.14",
+    "@storybook/react": "^5.3.14",
     "babel-core": "^7.0.0-bridge.0",
     "babel-loader": "7.1.1",
     "core-js": "^3.0.1",
