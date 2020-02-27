@@ -11,8 +11,9 @@ const DragListener = require("./drag-listener");
 const {
     cursorHandleRadiusPx,
     cursorHandleDistanceMultiplier,
-    offBlack50,
 } = require("../common-style");
+
+import Color from "@khanacademy/wonder-blocks-color";
 const {keypadElementPropType} = require("../prop-types");
 const {wonderBlocksBlue, offBlack} = require("../common-style");
 const Keys = require("../../data/keys");
@@ -901,7 +902,7 @@ const inlineStyles = {
         boxSizing: "border-box",
         position: "relative",
         borderStyle: "solid",
-        borderColor: offBlack50,
+        borderColor: Color.offBlack50,
         borderRadius: 4,
         color: offBlack,
     },
