@@ -42,6 +42,9 @@
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.0.0",
     "@khanacademy/eslint-config": "0.0.5",
+    "@khanacademy/wonder-blocks-clickable": "^1.0.5",
+    "@khanacademy/wonder-blocks-color": "^1.1.10",
+    "@khanacademy/wonder-blocks-core": "^2.5.0",
     "@storybook/addon-actions": "^5.3.14",
     "@storybook/addon-links": "^5.3.14",
     "@storybook/addons": "^5.3.14",
@@ -69,6 +72,7 @@
     "react-addons-css-transition-group": "15.6.2",
     "react-addons-pure-render-mixin": "15.3.2",
     "react-dom": "16.5",
+    "react-router-dom": "^4.2.2",
     "webpack": "^4.32.2",
     "webpack-cli": "^3.3.2",
     "webpack-dev-server": "^3.4.1"

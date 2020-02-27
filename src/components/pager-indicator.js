@@ -8,11 +8,8 @@ const PropTypes = require("prop-types");
 const {StyleSheet} = require("aphrodite");
 
 const {View} = require("../fake-react-native-web");
-const {
-    pageIndicatorHeightPx,
-    offBlack50,
-    offBlack16,
-} = require("./common-style");
+const {pageIndicatorHeightPx} = require("./common-style");
+import Color from "@khanacademy/wonder-blocks-color";
 
 class PagerIcon extends React.Component {
     static propTypes = {
@@ -28,7 +25,7 @@ class PagerIcon extends React.Component {
     render() {
         const {active, radiusPx} = this.props;
 
-        const fillColor = active ? offBlack50 : offBlack16;
+        const fillColor = active ? Color.offBlack50 : Color.offBlack16;
 
         return (
             <svg width={2 * radiusPx} height={2 * radiusPx}>
