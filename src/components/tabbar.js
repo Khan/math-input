@@ -3,6 +3,8 @@
 import React from "react";
 import Logo from "../../assets/images/Geometry.svg";
 
+import "../../less/tabbar.less";
+
 type ItemState = "inactive" | "active" | "disabled";
 
 type Props = {
@@ -32,9 +34,16 @@ const OuterBoxStyle = {
         },
         active: {
             background: "#1B50B3",
+            borderRadius: 3,
+        },
+        focused: {
+            border: "2px solid #1865F2",
+            boxSizing: "border-box",
+            borderRadius: 3,
         },
     },
 };
+
 export class TabbarItem extends React.Component<Props, State> {
     state: State = {
         isFocused: false,
@@ -44,19 +53,27 @@ export class TabbarItem extends React.Component<Props, State> {
 
     render() {
         const {itemState} = this.props;
-        const {isHovered, isActive} = this.state;
+        const {isHovered, isActive, isFocused} = this.state;
 
         var outBoxStyle = null;
-        if (isHovered) {
-            outBoxStyle = OuterBoxStyle.inactive.hover;
-        }
-        if (isActive) {
-            outBoxStyle = OuterBoxStyle.inactive.active;
-        }
+        // if (isFocused) {
+        //     outBoxStyle = OuterBoxStyle.inactive.focused;
+        // }
+        // if (isHovered) {
+        //     outBoxStyle = OuterBoxStyle.inactive.hover;
+        // }
+        // if (isActive) {
+        //     outBoxStyle = OuterBoxStyle.inactive.active;
+        // }
 
         var logoStyle = {
             filter: disabledGrey,
         };
+        if (isFocused) {
+            logoStyle = {
+                filter: activeBlue,
+            };
+        }
         if (isHovered) {
             logoStyle = {
                 filter: activeBlue,
@@ -76,8 +93,17 @@ export class TabbarItem extends React.Component<Props, State> {
                     width: 44,
                     justifyContent: "center",
                     boxSizing: "border-box",
+                    outline: "none",
                     ...outBoxStyle,
                 }}
+                tabindex="0"
+                onFocus={() => {
+                    this.setState({isFocused: true});
+                }}
+                onBlur={() => {
+                    this.setState({isFocused: false});
+                }}
+                className="tabbar_item"
             >
                 <img
                     src={Logo}
@@ -91,9 +117,11 @@ export class TabbarItem extends React.Component<Props, State> {
                     }}
                     onMouseDown={() => {
                         this.setState({isActive: true});
+                        return false;
                     }}
                     onMouseUp={() => {
                         this.setState({isActive: false});
+                        return false;
                     }}
                 />
             </div>
