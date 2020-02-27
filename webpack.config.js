@@ -6,7 +6,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 module.exports = {
     mode: "development",
     entry: {
-        index: "./src/app.js",
+        index: "./src/demo.js",
     },
     output: {
         publicPath: "/",
@@ -23,11 +23,11 @@ module.exports = {
             },
             {
                 test: /\.less$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'],
+                use: [MiniCssExtractPlugin.loader, "css-loader", "less-loader"],
             },
             {
                 test: /\.css$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader'],
+                use: [MiniCssExtractPlugin.loader, "css-loader"],
             },
             {
                 test: /\.(woff|woff2|ttf|otf|eot|svg)$/,
@@ -36,7 +36,7 @@ module.exports = {
                         loader: "file-loader",
                     },
                 ],
-            }
+            },
         ],
     },
     plugins: [
@@ -50,7 +50,7 @@ module.exports = {
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",
-            "window.jQuery": "jquery"
+            "window.jQuery": "jquery",
         }),
     ],
     resolve: {
@@ -65,8 +65,8 @@ module.exports = {
         liveReload: false,
         contentBase: [
             path.join(__dirname, "dist"),
-            path.join(__dirname, 'node_modules/mathquill/build/'),
-            path.join(__dirname, 'assets/')
+            path.join(__dirname, "node_modules/mathquill/build/"),
+            path.join(__dirname, "assets/"),
         ],
         compress: true,
         port: 9000,

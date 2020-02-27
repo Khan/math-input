@@ -68,6 +68,7 @@
     "react": "16.5",
     "@khanacademy/wonder-blocks-clickable": "^1.0.5",
     "@khanacademy/wonder-blocks-core": "^2.5.0",
-    "@khanacademy/wonder-blocks-color": "^1.1.10"
+    "@khanacademy/wonder-blocks-color": "^1.1.10",
+    "react-router-dom": "^4.2.2"
   }
 }
