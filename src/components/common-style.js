@@ -7,7 +7,6 @@ module.exports = {
     // TODO(diedra): Import Wonder Blocks and get these values from there.
     wonderBlocksBlue: "#1865f2",
     offBlack: "#21242c",
-    offBlack50: "rgba(33, 36, 44, 0.50)",
     offBlack32: "rgba(33, 36, 44, 0.32)",
     offBlack16,
     offBlack8: "rgba(33, 36, 44, 0.8)",
