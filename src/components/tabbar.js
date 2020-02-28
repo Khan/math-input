@@ -1,102 +1,104 @@
 // @flow
 
 import React from "react";
-import Logo from "../../assets/images/Geometry.svg";
 
-type ItemState = "inactive" | "active" | "disabled";
+import {StyleSheet} from "aphrodite";
+import Clickable from "@khanacademy/wonder-blocks-clickable";
+import {View} from "@khanacademy/wonder-blocks-core";
+import Color from "@khanacademy/wonder-blocks-color";
 
 type Props = {
-    itemState: ItemState,
+    onPress: () => void,
 };
 
-type State = {
-    isFocused: boolean,
-    isHovered: boolean,
-    isActive: boolean,
-};
+type State = {};
 
-const activeBlue =
-    "invert(27%) sepia(96%) saturate(4155%) hue-rotate(217deg) brightness(100%) contrast(90%)";
-const disabledGrey =
-    "invert(44%) sepia(7%) saturate(312%) hue-rotate(187deg) brightness(98%) contrast(89%)";
-const white =
-    "invert(100%) sepia(0%) saturate(7432%) hue-rotate(176deg) brightness(121%) contrast(114%)";
-
-const OuterBoxStyle = {
-    inactive: {
-        hover: {
-            background:
-                "linear-gradient(0deg, rgba(24, 101, 242, 0.32), rgba(24, 101, 242, 0.32)), #FFFFFF",
-            borderRadius: 3,
-            border: "1px solid #1865F2",
-        },
-        active: {
-            background: "#1B50B3",
-        },
+const styles = StyleSheet.create({
+    base: {
+        display: "flex",
+        width: 44,
+        height: 38,
+        boxSizing: "border-box",
+        borderRadius: 3,
     },
-};
+    hovered: {
+        background:
+            "linear-gradient(0deg, rgba(24, 101, 242, 0.32), rgba(24, 101, 242, 0.32)), #FFFFFF",
+        border: "1px solid #1865F2",
+    },
+    pressed: {
+        background: "#1B50B3",
+    },
+    focused: {
+        outline: "none",
+        border: "2px solid #1865F2",
+    },
+    innerBox: {
+        dislay: "flex",
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    innerBoxPressed: {
+        border: `2px solid ${Color.white}`,
+        borderRadius: 2,
+    },
+});
+
 export class TabbarItem extends React.Component<Props, State> {
-    state: State = {
-        isFocused: false,
-        isHovered: false,
-        isActive: false,
-    };
-
+    imageTintColor(
+        hovered: boolean,
+        focused: boolean,
+        pressed: boolean,
+    ): string {
+        if (pressed) {
+            return Color.white;
+        } else if (hovered) {
+            return Color.blue;
+        }
+        return Color.offBlack64;
+    }
     render() {
-        const {itemState} = this.props;
-        const {isHovered, isActive} = this.state;
-
-        var outBoxStyle = null;
-        if (isHovered) {
-            outBoxStyle = OuterBoxStyle.inactive.hover;
-        }
-        if (isActive) {
-            outBoxStyle = OuterBoxStyle.inactive.active;
-        }
-
-        var logoStyle = {
-            filter: disabledGrey,
-        };
-        if (isHovered) {
-            logoStyle = {
-                filter: activeBlue,
-            };
-        }
-        if (isActive) {
-            logoStyle = {
-                filter: white,
-            };
-        }
-
+        const {onPress} = this.props;
         return (
-            <div
-                style={{
-                    display: "flex",
-                    height: 38,
-                    width: 44,
-                    justifyContent: "center",
-                    boxSizing: "border-box",
-                    ...outBoxStyle,
-                }}
-            >
-                <img
-                    src={Logo}
-                    alt="Logo"
-                    style={logoStyle}
-                    onMouseEnter={() => {
-                        this.setState({isHovered: true});
-                    }}
-                    onMouseLeave={() => {
-                        this.setState({isHovered: false});
-                    }}
-                    onMouseDown={() => {
-                        this.setState({isActive: true});
-                    }}
-                    onMouseUp={() => {
-                        this.setState({isActive: false});
-                    }}
-                />
-            </div>
+            <Clickable onClick={onPress}>
+                {({hovered, focused, pressed}) => (
+                    <View
+                        style={[
+                            styles.base,
+                            hovered && styles.hovered,
+                            focused && styles.focused,
+                            pressed && styles.pressed,
+                        ]}
+                    >
+                        <View
+                            style={[
+                                styles.innerBox,
+                                pressed && styles.innerBoxPressed,
+                            ]}
+                        >
+                            <svg
+                                width="32"
+                                height="32"
+                                viewBox="0 0 32 32"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    clip-rule="evenodd"
+                                    d="M7.57584 7.09442C7.92723 6.92984 8.3421 6.98339 8.64018 7.23179L26.6402 22.2318C26.9636 22.5013 27.0836 22.9446 26.9403 23.3404C26.7969 23.7363 26.421 24 26 24H8C7.44772 24 7 23.5523 7 23V8.00001C7 7.61199 7.22446 7.259 7.57584 7.09442ZM9 10.1351V17H13C13.5523 17 14 17.4477 14 18V22H23.238L9 10.1351ZM12 22V19H9V22H12Z"
+                                    fill={this.imageTintColor(
+                                        hovered,
+                                        focused,
+                                        pressed,
+                                    )}
+                                />
+                            </svg>
+                        </View>
+                    </View>
+                )}
+            </Clickable>
         );
     }
 }
