@@ -32,7 +32,7 @@ type TabbarProps = {
 };
 
 export class Tabbar extends React.Component<TabbarProps, TabbarState> {
-    state = {
+    state: TabbarState = {
         selectedItem: 0,
     };
     render() {
@@ -41,14 +41,13 @@ export class Tabbar extends React.Component<TabbarProps, TabbarState> {
             <View style={styles.tabbar}>
                 {items.map((item, index) => (
                     <TabbarItem
-                        key={`tabbar-item-${index}`}
                         itemState={
                             index === this.state.selectedItem
                                 ? "active"
                                 : "inactive"
                         }
                         itemType={item}
-                        onClick={() => {
+                        onPress={() => {
                             this.setState({selectedItem: index});
                             onSelect(item);
                         }}
