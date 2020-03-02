@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
     innerBox: {
         boxSizing: "border-box",
         border: `1px solid transparent`,
+        borderRadius: 2,
         dislay: "flex",
         flex: 1,
         justifyContent: "center",
@@ -49,7 +50,14 @@ const styles = StyleSheet.create({
     },
     innerBoxPressed: {
         border: `1px solid ${Color.white}`,
-        borderRadius: 2,
+    },
+    activeIndicator: {
+        position: "absolute",
+        boxSizing: "border-box",
+        bottom: 3,
+        width: 36,
+        height: 3,
+        marginLeft: 3,
     },
 });
 
@@ -125,10 +133,10 @@ export class TabbarItem extends React.Component<Props, State> {
     ): string {
         if (itemState === "disabled") {
             return Color.offBlack64;
-        } else if (itemState === "active") {
-            return Color.blue;
         } else if (pressed) {
             return Color.white;
+        } else if (itemState === "active") {
+            return Color.blue;
         } else if (hovered) {
             return Color.blue;
         }
@@ -171,61 +179,18 @@ export class TabbarItem extends React.Component<Props, State> {
                             </View>
                             {itemState === "active" && (
                                 <View
-                                    style={{
-                                        position: "absolute",
-                                        boxSizing: "border-box",
-                                        bottom: 3,
-                                        width: 36,
-                                        height: 3,
-                                        marginLeft: 2,
-                                        backgroundColor: tintColor,
-                                    }}
+                                    style={[
+                                        styles.activeIndicator,
+                                        {
+                                            backgroundColor: tintColor,
+                                        },
+                                    ]}
                                 ></View>
                             )}
                         </View>
                     );
                 }}
             </Clickable>
-        );
-    }
-}
-
-type TabbarState = {
-    selectedItem: number,
-};
-export class Tabbar extends React.Component<{}, TabbarState> {
-    state: TabbarState = {
-        selectedItem: 0,
-    };
-    render() {
-        const items = ["Geometry", "Operators", "Numbers"];
-        return (
-            <View
-                style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    background: Color.offWhite,
-                    paddingTop: 2,
-                    paddingBottom: 2,
-                    borderTop: `1px solid ${Color.offBlack50}`,
-                    borderBottom: `1px solid ${Color.offBlack50}`,
-                }}
-            >
-                {items.map((item, index) => (
-                    <TabbarItem
-                        itemState={
-                            index === this.state.selectedItem
-                                ? "active"
-                                : "inactive"
-                        }
-                        itemType={item}
-                        onPress={() => {
-                            this.setState({selectedItem: index});
-                            // bubble up the action
-                        }}
-                    />
-                ))}
-            </View>
         );
     }
 }

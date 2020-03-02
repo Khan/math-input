@@ -1,25 +1,60 @@
 import React from "react";
 import {action} from "@storybook/addon-actions";
+import {withKnobs, select, array} from "@storybook/addon-knobs";
 
-import {Tabbar, TabbarItem} from "../src/components/tabbar";
-import {Button} from "@storybook/react/demo";
+import {TabbarItem} from "../src/components/tabbar/item";
+import {Tabbar} from "../src/components/tabbar/tabbar";
 
-export default {title: "Tab Bar"};
+export default {title: "Tab Bar", decorators: [withKnobs]};
 
 export const InactiveBarItem = () => (
     <TabbarItem
         itemState="inactive"
-        itemType="Geometry"
-        onPress={() => {
-            alert("activated");
-        }}
+        itemType={select(
+            "Item Type",
+            {
+                Numbers: "Numbers",
+                Geometry: "Geometry",
+                Operators: "Operators",
+            },
+            "Numbers",
+        )}
+        onPress={action("inactive-item-pressed")}
     />
 );
 export const ActiveBarItem = () => (
-    <TabbarItem itemType="Geometry" itemState="active" />
+    <TabbarItem
+        itemType={select(
+            "Item Type",
+            {
+                Numbers: "Numbers",
+                Geometry: "Geometry",
+                Operators: "Operators",
+            },
+            "Numbers",
+        )}
+        itemState="active"
+        onPress={action("active-item-pressed")}
+    />
 );
 export const DisabledBarItem = () => (
-    <TabbarItem itemType="Geometry" itemState="disabled" />
+    <TabbarItem
+        itemType={select(
+            "Item Type",
+            {
+                Numbers: "Numbers",
+                Geometry: "Geometry",
+                Operators: "Operators",
+            },
+            "Numbers",
+        )}
+        itemState="disabled"
+    />
 );
 
-export const FullTabbar = () => <Tabbar></Tabbar>;
+export const FullTabbar = () => (
+    <Tabbar
+        items={array("items", ["Numbers", "Geometry", "Operators"])}
+        onSelect={action("selected-item")}
+    />
+);
