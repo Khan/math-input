@@ -19,7 +19,7 @@ export const InactiveBarItem = () => (
             },
             "Numbers",
         )}
-        onPress={action("inactive-item-pressed")}
+        onClick={action("onClick")}
     />
 );
 export const ActiveBarItem = () => (
@@ -34,7 +34,7 @@ export const ActiveBarItem = () => (
             "Numbers",
         )}
         itemState="active"
-        onPress={action("active-item-pressed")}
+        onClick={action("onClick")}
     />
 );
 export const DisabledBarItem = () => (
