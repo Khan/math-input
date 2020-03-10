@@ -1,13 +1,23 @@
 import React from "react";
 import assert from "assert";
-import {shallow} from "enzyme";
+import {mount} from "enzyme";
 
 import Tabbar from "../src/components/tabbar/tabbar";
-
+import {TabbarItem} from "../src/components/tabbar/item";
 describe("<Tabbar />", () => {
     it("defaults to selecting the first item", () => {
-        // Render the component
-        // Assert the first item is selected
+        const wrapper = mount(
+            <Tabbar
+                items={["Numbers", "Geometry", "Operators"]}
+                onSelect={() => {}}
+            />,
+        );
+        expect(wrapper).toHaveState("selectedItem", 0);
+
+        const firstItem = wrapper.childAt(0);
+
+        console.log(firstItem);
+        expect(firstItem).toHaveProp("itemState", "active");
     });
     it("selects the second item", () => {
         // Render the component

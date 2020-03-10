@@ -10,8 +10,8 @@
     "build/"
   ],
   "scripts": {
-    "test": "mocha test/test_*.js --compilers js:@babel/register",
-    "watch_test": "mocha test/test_spec.js --watch --compilers js:@babel/register",
+    "test": "jest",
+    "watch_test": "jest --watch",
     "build": "webpack --config webpack.config.externals.js",
     "watch": "webpack --config webpack.config.externals.js --watch",
     "start": "webpack-dev-server --open",
@@ -24,7 +24,6 @@
   "license": "MIT",
   "dependencies": {
     "aphrodite": "^1.1.0",
-    "enzyme": "^3.11.0",
     "jquery": "^2.1.1",
     "katex": "0.11.1",
     "mathquill": "git+https://git@github.com/Khan/mathquill.git#a9ae54e057c5c1acc8244a5627acbff29901d992",
@@ -55,12 +54,14 @@
     "babel-loader": "7.1.1",
     "core-js": "^3.0.1",
     "css-loader": "^3.4.2",
+    "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "exports-loader": "^0.6.3",
     "file-loader": "^4.0.0",
     "flow-bin": "^0.110.0",
     "html-webpack-plugin": "^3.2.0",
     "jest": "24",
+    "jest-enzyme": "^7.1.2",
     "jsdom": "^8.4.0",
     "less": "^2.7.2",
     "less-loader": "^5.0.0",
