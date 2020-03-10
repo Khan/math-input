@@ -58,5 +58,3 @@ export class Tabbar extends React.Component<TabbarProps, TabbarState> {
         );
     }
 }
-
-module.exports = Tabbar;
