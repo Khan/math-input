@@ -43,8 +43,24 @@ describe("<Tabbar />", () => {
     });
 
     it("tapping an already selected item doesn't change selection", () => {
-        // Render the component
-        // tap the first item
-        // assert the first item is still selected
+        // Arrange
+        const wrapper = mount(
+            <Tabbar
+                items={["Numbers", "Geometry", "Operators"]}
+                onSelect={() => {}}
+            />,
+        );
+
+        // Assert
+        expect(wrapper).toHaveState("selectedItem", 0);
+        const firstItem = wrapper.find("TabbarItem").first();
+        expect(firstItem).toHaveProp("itemState", "active");
+
+        // Act
+        firstItem.simulate("click");
+
+        // Assert
+        expect(wrapper).toHaveState("selectedItem", 0);
+        expect(firstItem).toHaveProp("itemState", "active");
     });
 });
