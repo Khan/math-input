@@ -37,13 +37,22 @@ export default class NumericInputPage extends React.Component<Props, State> {
                 <Button onPress={() => onClickKey(Keys.NUM_9.id)}>
                     <ButtonAsset id={Keys.NUM_9.id} />
                 </Button>
-                <Button onPress={() => onClickKey(Keys.TIMES.id)}>
+                <Button
+                    onPress={() => onClickKey(Keys.TIMES.id)}
+                    tintColor={"#F6F6F7"}
+                >
                     <ButtonAsset id={Keys.TIMES.id} />
                 </Button>
-                <Button onPress={() => onClickKey(Keys.LEFT_PAREN.id)}>
+                <Button
+                    onPress={() => onClickKey(Keys.LEFT_PAREN.id)}
+                    tintColor={"#F6F6F7"}
+                >
                     <ButtonAsset id={Keys.LEFT_PAREN.id} />
                 </Button>
-                <Button onPress={() => onClickKey(Keys.RIGHT_PAREN.id)}>
+                <Button
+                    onPress={() => onClickKey(Keys.RIGHT_PAREN.id)}
+                    tintColor={"#F6F6F7"}
+                >
                     <ButtonAsset id={Keys.RIGHT_PAREN.id} />
                 </Button>
 
@@ -56,7 +65,10 @@ export default class NumericInputPage extends React.Component<Props, State> {
                 <Button onPress={() => onClickKey(Keys.NUM_6.id)}>
                     <ButtonAsset id={Keys.NUM_6.id} />
                 </Button>
-                <Button onPress={() => onClickKey(Keys.MINUS.id)}>
+                <Button
+                    onPress={() => onClickKey(Keys.MINUS.id)}
+                    tintColor={"#F6F6F7"}
+                >
                     <ButtonAsset id={Keys.MINUS.id} />
                 </Button>
                 <Button
@@ -64,6 +76,7 @@ export default class NumericInputPage extends React.Component<Props, State> {
                         gridColumn: "5 / 7",
                     }}
                     onPress={() => onClickKey(Keys.FRAC_INCLUSIVE.id)}
+                    tintColor={"#F6F6F7"}
                 >
                     <ButtonAsset id={Keys.FRAC_INCLUSIVE.id} />
                 </Button>
@@ -85,6 +98,7 @@ export default class NumericInputPage extends React.Component<Props, State> {
                         gridRowEnd: "5",
                     }}
                     onPress={() => onClickKey(Keys.PLUS.id)}
+                    tintColor="#F6F6F7"
                 >
                     <ButtonAsset id={Keys.PLUS.id} />
                 </Button>
@@ -93,6 +107,7 @@ export default class NumericInputPage extends React.Component<Props, State> {
                         gridColumn: "6",
                     }}
                     onPress={() => onClickKey(Keys.BACKSPACE.id)}
+                    tintColor={"#DBDCDD"}
                 >
                     <ButtonAsset id={Keys.BACKSPACE.id} />
                 </Button>
@@ -111,6 +126,7 @@ export default class NumericInputPage extends React.Component<Props, State> {
                         gridColumn: "6",
                     }}
                     onPress={() => onClickKey(Keys.DISMISS.id)}
+                    tintColor={"#DBDCDD"}
                 >
                     <ButtonAsset id={Keys.DISMISS.id} />
                 </Button>

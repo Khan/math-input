@@ -10,6 +10,7 @@ type Props = {
     onPress: () => void,
     children: mixed,
     style?: mixed,
+    tintColor?: string,
 };
 
 const styles = StyleSheet.create({
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
 });
 export default class Button extends React.Component {
     render() {
-        const {onPress, children, style} = this.props;
+        const {onPress, children, style, tintColor} = this.props;
         return (
             <View style={[style]}>
                 <Clickable
@@ -79,6 +80,7 @@ export default class Button extends React.Component {
                                 <View
                                     style={[
                                         styles.base,
+                                        tintColor && {background: tintColor},
                                         hovered && styles.hovered,
                                         focused && styles.focused,
                                         pressed && styles.pressed,
