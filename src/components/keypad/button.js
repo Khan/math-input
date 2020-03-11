@@ -33,8 +33,7 @@ const styles = StyleSheet.create({
     },
     pressed: {
         border: "2px solid #1B50B3",
-        background:
-            "linear-gradient(0deg, rgba(24, 101, 242, 0.32), rgba(24, 101, 242, 0.32)), #FFFFFF",
+        background: `linear-gradient(0deg, rgba(24, 101, 242, 0.32), rgba(24, 101, 242, 0.32)), ${Color.white}`,
         boxShadow: "none",
     },
     outerBoxBase: {
@@ -48,7 +47,7 @@ const styles = StyleSheet.create({
         border: "2px solid transparent",
     },
     outerBoxHover: {
-        border: "2px solid #1865F2",
+        border: `2px solid ${Color.blue}`,
     },
     outerBoxPressed: {
         border: "2px solid #1B50B3",
