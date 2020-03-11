@@ -9,20 +9,20 @@ import Clickable from "@khanacademy/wonder-blocks-clickable";
 type Props = {
     onPress: () => void,
     children: mixed,
+    style?: mixed,
 };
 
 const styles = StyleSheet.create({
     base: {
-        width: 44,
-        height: 44,
+        display: "flex",
+        justifyContent: "center",
         boxShadow: "0px 1px 0px rgba(33, 36, 44, 0.32)",
         boxSizing: "border-box",
         background: Color.white,
         borderRadius: 4,
         border: `1px solid transparent`,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
+        flex: 1,
+        minHeight: 40,
     },
     hovered: {
         border: `1px solid ${Color.blue}`,
@@ -38,12 +38,10 @@ const styles = StyleSheet.create({
         boxShadow: "none",
     },
     outerBoxBase: {
-        height: 48,
-        width: 48,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        boxSizing: "borderBox",
+        padding: 2,
+        height: "100%",
+        width: "100%",
+        boxSizing: "border-box",
         borderRadius: 7,
         border: "2px solid transparent",
     },
@@ -56,32 +54,41 @@ const styles = StyleSheet.create({
 });
 export default class Button extends React.Component {
     render() {
-        const {onPress, children} = this.props;
+        const {onPress, children, style} = this.props;
         return (
-            <Clickable onClick={onPress}>
-                {({hovered, focused, pressed}) => {
-                    return (
-                        <View
-                            style={[
-                                styles.outerBoxBase,
-                                hovered && styles.outerBoxHover,
-                                pressed && styles.outerBoxPressed,
-                            ]}
-                        >
+            <View style={[style]}>
+                <Clickable
+                    onClick={onPress}
+                    style={{
+                        width: "100%",
+                        height: "100%",
+                        boxSizing: "border-box",
+                    }}
+                >
+                    {({hovered, focused, pressed}) => {
+                        return (
                             <View
                                 style={[
-                                    styles.base,
-                                    hovered && styles.hovered,
-                                    focused && styles.focused,
-                                    pressed && styles.pressed,
+                                    styles.outerBoxBase,
+                                    hovered && styles.outerBoxHover,
+                                    pressed && styles.outerBoxPressed,
                                 ]}
                             >
-                                {children}
+                                <View
+                                    style={[
+                                        styles.base,
+                                        hovered && styles.hovered,
+                                        focused && styles.focused,
+                                        pressed && styles.pressed,
+                                    ]}
+                                >
+                                    {children}
+                                </View>
                             </View>
-                        </View>
-                    );
-                }}
-            </Clickable>
+                        );
+                    }}
+                </Clickable>
+            </View>
         );
     }
 }
