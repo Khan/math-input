@@ -8,6 +8,7 @@ import Clickable from "@khanacademy/wonder-blocks-clickable";
 
 type Props = {
     onPress: () => void,
+    children: mixed,
 };
 
 const styles = StyleSheet.create({
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
 });
 export default class Button extends React.Component {
     render() {
-        const {onPress} = this.props;
+        const {onPress, children} = this.props;
         return (
             <Clickable onClick={onPress}>
                 {({hovered, focused, pressed}) => {
@@ -75,7 +76,7 @@ export default class Button extends React.Component {
                                     pressed && styles.pressed,
                                 ]}
                             >
-                                <p>1</p>
+                                {children}
                             </View>
                         </View>
                     );
