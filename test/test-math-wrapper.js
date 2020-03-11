@@ -1,5 +1,4 @@
-// TODO(kevinb) allow test code to use const MathQuill = require('mathquill');
-const MathQuill = window.MathQuill;
+const MathQuill = require("mathquill");
 const MQ = MathQuill.getInterface(2);
 
 const MathWrapper = require("../src/components/input/math-wrapper");
