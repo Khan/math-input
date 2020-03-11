@@ -1,4 +1,5 @@
 /**
+ * @flow
  * This file contains configuration settings for the buttons in the keypad.
  */
 
@@ -7,6 +8,10 @@ const {DecimalSeparators, IconTypes, KeyTypes} = require("../consts");
 const {decimalSeparator} = require("../utils");
 const i18n = window.i18n || {_: (s) => s};
 
+export type KeyConfig = {
+    type: string,
+    ariaLabel: string,
+};
 const KeyConfigs = {
     // Basic math keys.
     [Keys.PLUS]: {

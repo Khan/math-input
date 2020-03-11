@@ -1,6 +1,8 @@
 import React from "react";
 import {action} from "@storybook/addon-actions";
-import {withKnobs, select, array} from "@storybook/addon-knobs";
+import {View} from "@khanacademy/wonder-blocks-core";
+
+import {withKnobs, number} from "@storybook/addon-knobs";
 
 import NumericInputPage from "./numeric-input-page";
 
@@ -14,4 +16,12 @@ export default {
     },
 };
 
-export const Full = () => <NumericInputPage />;
+export const Full = () => (
+    <View
+        style={{
+            width: number("width", 320),
+        }}
+    >
+        <NumericInputPage onClickKey={action("onClickKey")} />
+    </View>
+);

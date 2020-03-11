@@ -5,16 +5,22 @@ import {View} from "@khanacademy/wonder-blocks-core";
 import Color from "@khanacademy/wonder-blocks-color";
 
 import Button from "./button";
+import Keys from "../../data/key-configs";
+import ButtonAsset from "./button-assets";
 
-type Props = {};
+import type {KeyConfig} from "../../data/key-configs";
+type Props = {
+    onClickKey: (keyConfig: KeyConfig) => void,
+};
 type State = {};
 export default class NumericInputPage extends React.Component<Props, State> {
     render() {
+        const {onClickKey} = this.props;
         return (
             <View
                 style={{
                     backgroundColor: "#DBDCDD",
-                    width: 283,
+                    width: "100%",
                     height: 192,
 
                     display: "grid",
@@ -22,28 +28,55 @@ export default class NumericInputPage extends React.Component<Props, State> {
                     gridTemplateRows: "repeat(4, 1fr)",
                 }}
             >
-                <Button>7</Button>
-                <Button>8</Button>
-                <Button>9</Button>
-                <Button>x</Button>
-                <Button>(</Button>
-                <Button>)</Button>
+                <Button onPress={() => onClickKey(Keys.NUM_7.id)}>
+                    <ButtonAsset id={Keys.NUM_7.id} />
+                </Button>
+                <Button onPress={() => onClickKey(Keys.NUM_8.id)}>
+                    <ButtonAsset id={Keys.NUM_8.id} />
+                </Button>
+                <Button onPress={() => onClickKey(Keys.NUM_9.id)}>
+                    <ButtonAsset id={Keys.NUM_9.id} />
+                </Button>
+                <Button onPress={() => onClickKey(Keys.TIMES.id)}>
+                    <ButtonAsset id={Keys.TIMES.id} />
+                </Button>
+                <Button onPress={() => onClickKey(Keys.LEFT_PAREN.id)}>
+                    <ButtonAsset id={Keys.LEFT_PAREN.id} />
+                </Button>
+                <Button onPress={() => onClickKey(Keys.RIGHT_PAREN.id)}>
+                    <ButtonAsset id={Keys.RIGHT_PAREN.id} />
+                </Button>
 
-                <Button>4</Button>
-                <Button>5</Button>
-                <Button>6</Button>
-                <Button>-</Button>
+                <Button onPress={() => onClickKey(Keys.NUM_4.id)}>
+                    <ButtonAsset id={Keys.NUM_4.id} />
+                </Button>
+                <Button onPress={() => onClickKey(Keys.NUM_5.id)}>
+                    <ButtonAsset id={Keys.NUM_5.id} />
+                </Button>
+                <Button onPress={() => onClickKey(Keys.NUM_6.id)}>
+                    <ButtonAsset id={Keys.NUM_6.id} />
+                </Button>
+                <Button onPress={() => onClickKey(Keys.MINUS.id)}>
+                    <ButtonAsset id={Keys.MINUS.id} />
+                </Button>
                 <Button
                     style={{
                         gridColumn: "5 / 7",
                     }}
+                    onPress={() => onClickKey(Keys.FRAC_INCLUSIVE.id)}
                 >
-                    frac
+                    <ButtonAsset id={Keys.FRAC_INCLUSIVE.id} />
                 </Button>
 
-                <Button>1</Button>
-                <Button>2</Button>
-                <Button>3</Button>
+                <Button onPress={() => onClickKey(Keys.NUM_1.id)}>
+                    <ButtonAsset id={Keys.NUM_1.id} />
+                </Button>
+                <Button onPress={() => onClickKey(Keys.NUM_2.id)}>
+                    <ButtonAsset id={Keys.NUM_2.id} />
+                </Button>
+                <Button onPress={() => onClickKey(Keys.NUM_3.id)}>
+                    <ButtonAsset id={Keys.NUM_3.id} />
+                </Button>
                 <Button
                     style={{
                         gridColumn: "4",
@@ -51,26 +84,35 @@ export default class NumericInputPage extends React.Component<Props, State> {
                         gridRowStart: "3",
                         gridRowEnd: "5",
                     }}
+                    onPress={() => onClickKey(Keys.PLUS.id)}
                 >
-                    +
+                    <ButtonAsset id={Keys.PLUS.id} />
                 </Button>
                 <Button
                     style={{
                         gridColumn: "6",
                     }}
+                    onPress={() => onClickKey(Keys.BACKSPACE.id)}
                 >
-                    del
+                    <ButtonAsset id={Keys.BACKSPACE.id} />
                 </Button>
 
-                <Button>0</Button>
-                <Button>.</Button>
-                <Button>(-)</Button>
+                <Button onPress={() => onClickKey(Keys.NUM_0.id)}>
+                    <ButtonAsset id={Keys.NUM_0.id} />
+                </Button>
+                <Button onPress={() => onClickKey(Keys.DECIMAL.id)}>
+                    <ButtonAsset id={Keys.DECIMAL.id} />
+                </Button>
+                <Button onPress={() => onClickKey(Keys.NEGATIVE.id)}>
+                    <ButtonAsset id={Keys.NEGATIVE.id} />
+                </Button>
                 <Button
                     style={{
                         gridColumn: "6",
                     }}
+                    onPress={() => onClickKey(Keys.DISMISS.id)}
                 >
-                    v
+                    <ButtonAsset id={Keys.DISMISS.id} />
                 </Button>
             </View>
         );

@@ -16,13 +16,15 @@ const styles = StyleSheet.create({
     base: {
         display: "flex",
         justifyContent: "center",
+        alignItems: "center",
         boxShadow: "0px 1px 0px rgba(33, 36, 44, 0.32)",
         boxSizing: "border-box",
         background: Color.white,
         borderRadius: 4,
         border: `1px solid transparent`,
         flex: 1,
-        minHeight: 40,
+        minHeight: 42,
+        minWidth: 42,
     },
     hovered: {
         border: `1px solid ${Color.blue}`,
@@ -38,7 +40,7 @@ const styles = StyleSheet.create({
         boxShadow: "none",
     },
     outerBoxBase: {
-        padding: 2,
+        padding: 1,
         height: "100%",
         width: "100%",
         boxSizing: "border-box",
