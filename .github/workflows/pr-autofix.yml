@@ -1,4 +1,5 @@
 name: Autofixers
+on: [push]
 jobs:
     autofix:
         runs-on: ubuntu-latest
