@@ -46,6 +46,7 @@
     "@khanacademy/wonder-blocks-color": "^1.1.10",
     "@khanacademy/wonder-blocks-core": "^2.5.0",
     "@storybook/addon-actions": "^5.3.14",
+    "@storybook/addon-backgrounds": "^5.3.14",
     "@storybook/addon-knobs": "^5.3.14",
     "@storybook/addon-links": "^5.3.14",
     "@storybook/addons": "^5.3.14",
