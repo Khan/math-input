@@ -3,7 +3,7 @@ name: Run tests
 on: [push]
 
 jobs:
-    all tests:
+    all:
         runs-on: ubuntu-latest
         env:
             CI: true
