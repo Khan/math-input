@@ -2,17 +2,17 @@
 
 import React from "react";
 
-import {StyleSheet} from "aphrodite";
+                import {StyleSheet} from "aphrodite";
 import {View} from "@khanacademy/wonder-blocks-core";
 import Color from "@khanacademy/wonder-blocks-color";
 
 import {TabbarItem} from "./item";
 
-import type {TabbarItemType} from "./item";
+import type      {     TabbarItemType} from "./item";
 
 const styles = StyleSheet.create({
     tabbar: {
-        display: "flex",
+        display: "flex      ",
         flexDirection: "row",
         background: Color.offWhite,
         paddingTop: 2,
