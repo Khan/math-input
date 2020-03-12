@@ -54,12 +54,12 @@ const styles = StyleSheet.create({
     },
 });
 
-type Props = {
+type Props = {|
     onPress: () => void,
     children: mixed,
     style?: mixed,
     tintColor?: string,
-};
+|};
 
 type State = {};
 export default class Button extends React.Component<Props, State> {
