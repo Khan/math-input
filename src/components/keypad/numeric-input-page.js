@@ -13,11 +13,6 @@ import KeypadPageContainer from "./keypad-page-container";
 
 import type {KeyConfig} from "../../data/key-configs";
 
-type Props = {
-    onClickKey: (keyConfig: string) => void,
-};
-type State = {};
-
 const KeypadButton = ({
     keyConfig,
     onClickKey,
@@ -72,6 +67,10 @@ const KeypadActionButton = ({
     />
 );
 
+type Props = {|
+    onClickKey: (keyConfig: string) => void,
+|};
+type State = {};
 export default class NumericInputPage extends React.Component<Props, State> {
     render() {
         const {onClickKey} = this.props;
