@@ -26,17 +26,21 @@ const styles = StyleSheet.create({
         flex: 1,
         minHeight: 42,
         minWidth: 42,
+        padding: 1,
     },
     hovered: {
         border: `1px solid ${Color.blue}`,
+        padding: 1,
         boxShadow: "none",
     },
     focused: {
         border: `2px solid ${Color.blue}`,
+        padding: 0,
         boxShadow: "none",
     },
     pressed: {
         border: "2px solid #1B50B3",
+        padding: 0,
         background: `linear-gradient(0deg, rgba(24, 101, 242, 0.32), rgba(24, 101, 242, 0.32)), ${Color.white}`,
         boxShadow: "none",
     },
