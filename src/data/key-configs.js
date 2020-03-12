@@ -9,6 +9,7 @@ const {decimalSeparator} = require("../utils");
 const i18n = window.i18n || {_: (s) => s};
 
 export type KeyConfig = {
+    id: string,
     type: string,
     ariaLabel: string,
 };
