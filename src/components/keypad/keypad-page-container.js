@@ -2,7 +2,9 @@
 import React from "react";
 import {View} from "@khanacademy/wonder-blocks-core";
 
-const KeypadPageContainer = ({children}: {children: any}) => (
+import type {Node} from "React";
+
+const KeypadPageContainer = ({children}: {children: Node}) => (
     <View
         style={{
             backgroundColor: "#DBDCDD",

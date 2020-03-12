@@ -7,6 +7,8 @@ import Color from "@khanacademy/wonder-blocks-color";
 
 import Clickable from "@khanacademy/wonder-blocks-clickable";
 
+import type {Node} from "React";
+
 const styles = StyleSheet.create({
     base: {
         display: "flex",
@@ -56,7 +58,7 @@ const styles = StyleSheet.create({
 
 type Props = {|
     onPress: () => void,
-    children: mixed,
+    children: Node,
     style?: mixed,
     tintColor?: string,
 |};
