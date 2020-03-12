@@ -1,3 +1,4 @@
+// @flow
 import React from "react";
 
 import {StyleSheet} from "aphrodite";
@@ -5,13 +6,6 @@ import {View} from "@khanacademy/wonder-blocks-core";
 import Color from "@khanacademy/wonder-blocks-color";
 
 import Clickable from "@khanacademy/wonder-blocks-clickable";
-
-type Props = {
-    onPress: () => void,
-    children: mixed,
-    style?: mixed,
-    tintColor?: string,
-};
 
 const styles = StyleSheet.create({
     base: {
@@ -59,7 +53,16 @@ const styles = StyleSheet.create({
         border: "2px solid #1B50B3",
     },
 });
-export default class Button extends React.Component {
+
+type Props = {
+    onPress: () => void,
+    children: mixed,
+    style?: mixed,
+    tintColor?: string,
+};
+
+type State = {};
+export default class Button extends React.Component<Props, State> {
     render() {
         const {onPress, children, style, tintColor} = this.props;
         return (

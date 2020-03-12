@@ -13,7 +13,7 @@ export type KeyConfig = {
     type: string,
     ariaLabel: string,
 };
-const KeyConfigs = {
+const KeyConfigs: Object = {
     // Basic math keys.
     [Keys.PLUS]: {
         type: KeyTypes.OPERATOR,

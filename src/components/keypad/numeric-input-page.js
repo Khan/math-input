@@ -1,3 +1,5 @@
+// @flow
+
 import React from "react";
 
 import {StyleSheet} from "aphrodite";
@@ -118,7 +120,6 @@ export default class NumericInputPage extends React.Component<Props, State> {
                     keyConfig={Keys.PLUS}
                     style={{
                         gridColumn: "4",
-
                         gridRowStart: "3",
                         gridRowEnd: "5",
                     }}
