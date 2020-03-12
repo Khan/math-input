@@ -1,71 +1,17 @@
 // @flow
-
 import React from "react";
-
-import {StyleSheet} from "aphrodite";
 import {View} from "@khanacademy/wonder-blocks-core";
 import Color from "@khanacademy/wonder-blocks-color";
 
-import Button from "./button";
 import Keys from "../../data/key-configs";
-import ButtonAsset from "./button-assets";
-import KeypadPageContainer from "./keypad-page-container";
+import {
+    KeypadPageContainer,
+    KeypadButton,
+    SecondaryKeypadButton,
+    KeypadActionButton,
+} from "./keypad-page-items";
 
 import type {KeyConfig} from "../../data/key-configs";
-
-const KeypadButton = ({
-    keyConfig,
-    onClickKey,
-    tintColor,
-    style,
-}: {
-    keyConfig: KeyConfig,
-    tintColor?: string,
-    style?: any,
-    onClickKey: (keyConfig: string) => void,
-}) => (
-    <Button
-        onPress={() => onClickKey(keyConfig.id)}
-        tintColor={tintColor}
-        style={style}
-    >
-        <ButtonAsset id={keyConfig.id} />
-    </Button>
-);
-
-const SecondaryKeypadButton = ({
-    keyConfig,
-    onClickKey,
-    style,
-}: {
-    keyConfig: KeyConfig,
-    style?: any,
-    onClickKey: (keyConfig: string) => void,
-}) => (
-    <KeypadButton
-        keyConfig={keyConfig}
-        onClickKey={onClickKey}
-        style={style}
-        tintColor={"#F6F6F7"}
-    />
-);
-
-const KeypadActionButton = ({
-    keyConfig,
-    onClickKey,
-    style,
-}: {
-    keyConfig: KeyConfig,
-    style?: any,
-    onClickKey: (keyConfig: string) => void,
-}) => (
-    <KeypadButton
-        keyConfig={keyConfig}
-        onClickKey={onClickKey}
-        style={style}
-        tintColor={"#DBDCDD"}
-    />
-);
 
 type Props = {|
     onClickKey: (keyConfig: string) => void,

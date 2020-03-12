@@ -1,0 +1,86 @@
+// @flow
+import React from "react";
+import {View} from "@khanacademy/wonder-blocks-core";
+
+import Button from "./button";
+import ButtonAsset from "./button-assets";
+import type {KeyConfig} from "../../data/key-configs";
+
+import type {Node} from "React";
+
+const KeypadPageContainer = ({children}: {children: Node}) => (
+    <View
+        style={{
+            backgroundColor: "#DBDCDD",
+            width: "100%",
+            height: 192,
+
+            display: "grid",
+            gridTemplateColumns: "repeat(6, 1fr)",
+            gridTemplateRows: "repeat(4, 1fr)",
+        }}
+    >
+        {children}
+    </View>
+);
+
+const KeypadButton = ({
+    keyConfig,
+    onClickKey,
+    tintColor,
+    style,
+}: {
+    keyConfig: KeyConfig,
+    tintColor?: string,
+    style?: any,
+    onClickKey: (keyConfig: string) => void,
+}) => (
+    <Button
+        onPress={() => onClickKey(keyConfig.id)}
+        tintColor={tintColor}
+        style={style}
+    >
+        <ButtonAsset id={keyConfig.id} />
+    </Button>
+);
+
+const SecondaryKeypadButton = ({
+    keyConfig,
+    onClickKey,
+    style,
+}: {
+    keyConfig: KeyConfig,
+    style?: any,
+    onClickKey: (keyConfig: string) => void,
+}) => (
+    <KeypadButton
+        keyConfig={keyConfig}
+        onClickKey={onClickKey}
+        style={style}
+        tintColor={"#F6F6F7"}
+    />
+);
+
+const KeypadActionButton = ({
+    keyConfig,
+    onClickKey,
+    style,
+}: {
+    keyConfig: KeyConfig,
+    style?: any,
+    onClickKey: (keyConfig: string) => void,
+}) => (
+    <KeypadButton
+        keyConfig={keyConfig}
+        onClickKey={onClickKey}
+        style={style}
+        tintColor={"#DBDCDD"}
+    />
+);
+
+module.exports = {
+    KeypadPageContainer,
+    KeypadButton,
+    SecondaryKeypadButton,
+    KeypadActionButton,
+};
