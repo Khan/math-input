@@ -68,7 +68,7 @@ export default class Button extends React.Component<Props, State> {
     render() {
         const {onPress, children, style, tintColor} = this.props;
         return (
-            <View style={[style]}>
+            <View style={style}>
                 <Clickable
                     onClick={onPress}
                     style={{
