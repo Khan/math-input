@@ -7,27 +7,20 @@ import Color from "@khanacademy/wonder-blocks-color";
 import Button from "./button";
 import Keys from "../../data/key-configs";
 import ButtonAsset from "./button-assets";
+import KeypadPageContainer from "./keypad-page-container";
 
 import type {KeyConfig} from "../../data/key-configs";
+
 type Props = {
     onClickKey: (keyConfig: KeyConfig) => void,
 };
 type State = {};
+
 export default class NumericInputPage extends React.Component<Props, State> {
     render() {
         const {onClickKey} = this.props;
         return (
-            <View
-                style={{
-                    backgroundColor: "#DBDCDD",
-                    width: "100%",
-                    height: 192,
-
-                    display: "grid",
-                    gridTemplateColumns: "repeat(6, 1fr)",
-                    gridTemplateRows: "repeat(4, 1fr)",
-                }}
-            >
+            <KeypadPageContainer>
                 <Button onPress={() => onClickKey(Keys.NUM_7.id)}>
                     <ButtonAsset id={Keys.NUM_7.id} />
                 </Button>
@@ -130,7 +123,7 @@ export default class NumericInputPage extends React.Component<Props, State> {
                 >
                     <ButtonAsset id={Keys.DISMISS.id} />
                 </Button>
-            </View>
+            </KeypadPageContainer>
         );
     }
 }

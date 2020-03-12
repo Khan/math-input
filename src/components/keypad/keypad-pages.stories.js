@@ -7,7 +7,7 @@ import {withKnobs, number} from "@storybook/addon-knobs";
 import NumericInputPage from "./numeric-input-page";
 
 export default {
-    title: "Numeric Input page",
+    title: "Keypad pages",
     decorators: [withKnobs],
     parameters: {
         backgrounds: [
@@ -16,7 +16,7 @@ export default {
     },
 };
 
-export const Full = () => (
+export const NumericInput = () => (
     <View
         style={{
             width: number("width", 320),
