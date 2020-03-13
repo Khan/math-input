@@ -8,6 +8,7 @@ import {withKnobs, number} from "@storybook/addon-knobs";
 
 import NumericInputPage from "./numeric-input-page";
 import PrealgebraInputPage from "./pre-algebra-page";
+import TrigonometryInputPage from "./trigonometry-page";
 
 export default {
     title: "Keypad pages",
@@ -36,5 +37,15 @@ export const PreAlgebraInput = () => (
         }}
     >
         <PrealgebraInputPage onClickKey={action("onClickKey")} />
+    </View>
+);
+
+export const TrigonometryInput = () => (
+    <View
+        style={{
+            width: number("width", 320),
+        }}
+    >
+        <TrigonometryInputPage onClickKey={action("onClickKey")} />
     </View>
 );
