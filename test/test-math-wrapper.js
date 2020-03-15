@@ -3,7 +3,7 @@ const MQ = MathQuill.getInterface(2);
 
 const MathWrapper = require("../src/components/input/math-wrapper");
 
-class TestMathWrapper extends MathWrapper {
+export default class TestMathWrapper extends MathWrapper {
     getContent() {
         return this.mathField.latex();
     }
@@ -30,5 +30,3 @@ class TestMathWrapper extends MathWrapper {
         return false;
     }
 }
-
-module.exports = TestMathWrapper;

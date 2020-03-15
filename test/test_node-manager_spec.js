@@ -3,7 +3,7 @@ const assert = require("assert");
 
 const NodeManager = require("../src/components/node-manager");
 
-describe.skip("NodeManager", () => {
+describe("NodeManager", () => {
     let nodeManager;
 
     beforeEach(() => {

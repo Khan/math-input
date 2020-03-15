@@ -1,69 +1,41 @@
-/* eslint-env node, mocha */
-const jsdom = require("jsdom");
-const assert = require("assert");
-
 const Keys = require("../src/data/keys");
 const CursorContexts = require("../src/components/input/cursor-contexts");
 
-const createMathField = (document, MathWrapper) => {
-    const span = document.createElement("span");
-    document.body.appendChild(span);
+import MathWrapper from "./test-math-wrapper";
 
-    return new MathWrapper(span);
-};
-
-describe.skip("Cursor context", () => {
-    let document;
-    let MathWrapper;
-    let loaded;
+describe("Cursor context", () => {
     let mathField;
+    let span;
 
-    beforeEach((done) => {
-        if (loaded) {
-            mathField = createMathField(document, MathWrapper);
+    beforeEach(() => {
+        span = document.createElement("span");
+        document.body.appendChild(span);
 
-            done();
-        } else {
-            jsdom.env({
-                html: "<html><body></body></html>",
-                scripts: [
-                    // jQuery is hard dep of MathQuill
-                    "http://code.jquery.com/jquery.js",
-                    "mathquill/mathquill.js",
-                ],
-                done: function(err, win) {
-                    document = win.document;
-                    global.window = win;
-                    global.document = document;
+        mathField = new MathWrapper(span);
+    });
 
-                    MathWrapper = require("./test-math-wrapper");
-                    mathField = createMathField(document, MathWrapper);
-
-                    loaded = true;
-                    done();
-                },
-            });
-        }
+    afterEach(() => {
+        document.body.removeChild(span);
     });
 
     it("should treat number-only expressions as non-jumpable", () => {
         mathField.pressKey("NUM_1");
         mathField.pressKey("NUM_2");
         const cursor = mathField.pressKey("NUM_3");
-        assert.equal(cursor.context, CursorContexts.NONE);
+        expect(cursor.context).toEqual(CursorContexts.NONE);
     });
 
     it("should treat numbers and ternary operators as non-jumpable", () => {
         mathField.pressKey("NUM_1");
         mathField.pressKey(Keys.CDOT);
         const cursor = mathField.pressKey("NUM_2");
-        assert.equal(cursor.context, CursorContexts.NONE);
+        expect(cursor.context).toEqual(CursorContexts.NONE);
     });
 
     describe("Before fraction", () => {
         it("should detect when immediately to the left", () => {
             const cursor = mathField.pressKey(Keys.FRAC_EXCLUSIVE);
-            assert.equal(cursor.context, CursorContexts.BEFORE_FRACTION);
+            expect(cursor.context).toEqual(CursorContexts.BEFORE_FRACTION);
         });
 
         it("should detect when numbers are between", () => {
@@ -71,7 +43,7 @@ describe.skip("Cursor context", () => {
             mathField.pressKey(Keys.FRAC_EXCLUSIVE);
             mathField.pressKey(Keys.LEFT);
             const cursor = mathField.pressKey(Keys.LEFT);
-            assert.equal(cursor.context, CursorContexts.BEFORE_FRACTION);
+            expect(cursor.context).toEqual(CursorContexts.BEFORE_FRACTION);
         });
 
         it("should not detect when operators are between", () => {
@@ -83,7 +55,7 @@ describe.skip("Cursor context", () => {
             mathField.pressKey(Keys.LEFT);
             mathField.pressKey(Keys.LEFT);
             const cursor = mathField.pressKey(Keys.LEFT);
-            assert.equal(cursor.context, CursorContexts.NONE);
+            expect(cursor.context).toEqual(CursorContexts.NONE);
         });
 
         it("should not detect when parens are between", () => {
@@ -97,7 +69,7 @@ describe.skip("Cursor context", () => {
             mathField.pressKey(Keys.LEFT);
             mathField.pressKey(Keys.LEFT);
             const cursor = mathField.pressKey(Keys.LEFT);
-            assert.equal(cursor.context, CursorContexts.NONE);
+            expect(cursor.context).toEqual(CursorContexts.NONE);
         });
     });
 
@@ -106,7 +78,7 @@ describe.skip("Cursor context", () => {
             mathField.pressKey(Keys.LEFT_PAREN);
             mathField.pressKey(Keys.RIGHT_PAREN);
             const cursor = mathField.pressKey(Keys.LEFT);
-            assert.equal(cursor.context, CursorContexts.IN_PARENS);
+            expect(cursor.context).toEqual(CursorContexts.IN_PARENS);
         });
 
         it("should detect when inside non-empty parens", () => {
@@ -114,7 +86,7 @@ describe.skip("Cursor context", () => {
             mathField.pressKey("NUM_2");
             mathField.pressKey(Keys.RIGHT_PAREN);
             const cursor = mathField.pressKey(Keys.LEFT);
-            assert.equal(cursor.context, CursorContexts.IN_PARENS);
+            expect(cursor.context).toEqual(CursorContexts.IN_PARENS);
         });
     });
 
@@ -122,40 +94,40 @@ describe.skip("Cursor context", () => {
         it("should detect when inside empty superscript", () => {
             mathField.pressKey("NUM_2");
             const cursor = mathField.pressKey(Keys.EXP);
-            assert.equal(cursor.context, CursorContexts.IN_SUPER_SCRIPT);
+            expect(cursor.context).toEqual(CursorContexts.IN_SUPER_SCRIPT);
         });
 
         it("should detect when inside non-empty superscript", () => {
             mathField.pressKey("NUM_2");
             mathField.pressKey(Keys.EXP);
             const cursor = mathField.pressKey("NUM_3");
-            assert.equal(cursor.context, CursorContexts.IN_SUPER_SCRIPT);
+            expect(cursor.context).toEqual(CursorContexts.IN_SUPER_SCRIPT);
         });
     });
 
     describe("In subscript", () => {
         it("should detect when inside empty superscript", () => {
             const cursor = mathField.pressKey(Keys.LOG_N);
-            assert.equal(cursor.context, CursorContexts.IN_SUB_SCRIPT);
+            expect(cursor.context).toEqual(CursorContexts.IN_SUB_SCRIPT);
         });
 
         it("should detect when inside non-empty superscript", () => {
             mathField.pressKey(Keys.LOG_N);
             const cursor = mathField.pressKey("NUM_2");
-            assert.equal(cursor.context, CursorContexts.IN_SUB_SCRIPT);
+            expect(cursor.context).toEqual(CursorContexts.IN_SUB_SCRIPT);
         });
     });
 
     describe("In numerator", () => {
         it("should detect when inside empty numerator", () => {
             const cursor = mathField.pressKey(Keys.FRAC_INCLUSIVE);
-            assert.equal(cursor.context, CursorContexts.IN_NUMERATOR);
+            expect(cursor.context).toEqual(CursorContexts.IN_NUMERATOR);
         });
 
         it("should detect when inside non-empty numerator", () => {
             mathField.pressKey(Keys.FRAC_INCLUSIVE);
             const cursor = mathField.pressKey("NUM_2");
-            assert.equal(cursor.context, CursorContexts.IN_NUMERATOR);
+            expect(cursor.context).toEqual(CursorContexts.IN_NUMERATOR);
         });
     });
 
@@ -163,14 +135,14 @@ describe.skip("Cursor context", () => {
         it("should detect when inside empty denominator", () => {
             mathField.pressKey(Keys.FRAC_INCLUSIVE);
             const cursor = mathField.pressKey(Keys.RIGHT);
-            assert.equal(cursor.context, CursorContexts.IN_DENOMINATOR);
+            expect(cursor.context).toEqual(CursorContexts.IN_DENOMINATOR);
         });
 
         it("should detect when inside non-empty denominator", () => {
             mathField.pressKey(Keys.FRAC_INCLUSIVE);
             mathField.pressKey(Keys.RIGHT);
             const cursor = mathField.pressKey("NUM_2");
-            assert.equal(cursor.context, CursorContexts.IN_DENOMINATOR);
+            expect(cursor.context).toEqual(CursorContexts.IN_DENOMINATOR);
         });
     });
 
@@ -181,7 +153,7 @@ describe.skip("Cursor context", () => {
             mathField.pressKey("NUM_2");
             mathField.pressKey(Keys.FRAC_EXCLUSIVE);
             const cursor = mathField.pressKey(Keys.LEFT);
-            assert.equal(cursor.context, CursorContexts.BEFORE_FRACTION);
+            expect(cursor.context).toEqual(CursorContexts.BEFORE_FRACTION);
         });
 
         it("should defer to the nearest parent (1)", () => {
@@ -190,7 +162,7 @@ describe.skip("Cursor context", () => {
             mathField.pressKey(Keys.EXP);
             mathField.pressKey(Keys.LEFT_PAREN);
             const cursor = mathField.pressKey("NUM_3");
-            assert.equal(cursor.context, CursorContexts.IN_PARENS);
+            expect(cursor.context).toEqual(CursorContexts.IN_PARENS);
         });
 
         it("should defer to the nearest parent (2)", () => {
@@ -199,7 +171,7 @@ describe.skip("Cursor context", () => {
             mathField.pressKey(Keys.FRAC_INCLUSIVE);
             mathField.pressKey(Keys.FRAC_INCLUSIVE);
             const cursor = mathField.pressKey(Keys.RIGHT);
-            assert.equal(cursor.context, CursorContexts.IN_DENOMINATOR);
+            expect(cursor.context).toEqual(CursorContexts.IN_DENOMINATOR);
         });
     });
 });

@@ -1,18 +1,10 @@
 /* eslint-env node, mocha */
-const jsdom = require("jsdom");
-const assert = require("assert");
-
 const Keys = require("../src/data/keys");
+
+import MathWrapper from "./test-math-wrapper";
 
 const MQ = {L: "-1", R: "1"};
 const END_OF_EXPR = 0;
-
-const createMathField = (document, MathWrapper) => {
-    const span = document.createElement("span");
-    document.body.appendChild(span);
-
-    return new MathWrapper(span);
-};
 
 const isInsideEmptyParens = (cursor) => {
     return (
@@ -22,44 +14,19 @@ const isInsideEmptyParens = (cursor) => {
     );
 };
 
-describe.skip("MathQuill", () => {
-    let document;
-    let MathWrapper;
-    let loaded;
+describe("MathQuill", () => {
     let mathField;
+    let span;
 
-    beforeEach((done) => {
-        if (loaded) {
-            mathField = createMathField(document, MathWrapper);
+    beforeEach(() => {
+        span = document.createElement("span");
+        document.body.appendChild(span);
 
-            done();
-        } else {
-            jsdom.env({
-                html: "<html><body></body></html>",
-                scripts: [
-                    // jQuery is hard dep of MathQuill
-                    "http://code.jquery.com/jquery.js",
-                    "mathquill/mathquill.js",
-                    "lib/icu.js",
-                ],
-                done: (err, win) => {
-                    document = win.document;
-                    global.window = win;
-                    global.document = document;
-                    global.icu = window.icu;
-
-                    MathWrapper = require("./test-math-wrapper");
-                    mathField = createMathField(document, MathWrapper);
-
-                    loaded = true;
-                    done();
-                },
-            });
-        }
+        mathField = new MathWrapper(span);
     });
 
-    afterEach((done) => {
-        done();
+    afterEach(() => {
+        document.body.removeChild(span);
     });
 
     // TODO(charlie): Add tests for Keys.FRAC_EXCLUSIVE (the mixed-number
@@ -67,27 +34,27 @@ describe.skip("MathQuill", () => {
     describe("Fraction Bar", () => {
         it("should work with no content", () => {
             mathField.pressKey(Keys.FRAC_INCLUSIVE);
-            assert.equal(mathField.getContent(), "\\frac{ }{ }");
+            expect(mathField.getContent()).toEqual("\\frac{ }{ }");
         });
 
         it("should work after an expression", () => {
             mathField.setContent("35x^2");
             mathField.pressKey(Keys.FRAC_INCLUSIVE);
-            assert.equal(mathField.getContent(), "\\frac{35x^2}{ }");
+            expect(mathField.getContent()).toEqual("\\frac{35x^2}{ }");
         });
 
         it("should work before an expression", () => {
             mathField.setContent("35x^2");
             mathField.moveToStart();
             mathField.pressKey(Keys.FRAC_INCLUSIVE);
-            assert.equal(mathField.getContent(), "\\frac{ }{ }35x^2");
+            expect(mathField.getContent()).toEqual("\\frac{ }{ }35x^2");
         });
 
         it("should work with a selected expression", () => {
             mathField.setContent("35x^2");
             mathField.selectAll();
             mathField.pressKey(Keys.FRAC_INCLUSIVE);
-            assert.equal(mathField.getContent(), "\\frac{35x^2}{ }");
+            expect(mathField.getContent()).toEqual("\\frac{35x^2}{ }");
         });
     });
 
@@ -95,110 +62,110 @@ describe.skip("MathQuill", () => {
         it("should work with no content", () => {
             mathField.setContent("");
             mathField.pressKey(Keys.LEFT_PAREN);
-            assert.equal(mathField.getContent(), "\\left(\\right)");
+            expect(mathField.getContent()).toEqual("\\left(\\right)");
         });
 
         it("should work after an expression", () => {
             mathField.setContent("35x^2");
             mathField.pressKey(Keys.RIGHT_PAREN);
-            assert.equal(mathField.getContent(), "\\left(35x^2\\right)");
+            expect(mathField.getContent()).toEqual("\\left(35x^2\\right)");
         });
 
         it("should work before an expression", () => {
             mathField.setContent("35x^2");
             mathField.moveToStart();
             mathField.pressKey(Keys.LEFT_PAREN);
-            assert.equal(mathField.getContent(), "\\left(35x^2\\right)");
+            expect(mathField.getContent()).toEqual("\\left(35x^2\\right)");
         });
 
         it.skip("should work on a selected expression", () => {
             mathField.setContent("35x + 5");
             mathField.selectAll();
             mathField.pressKey(Keys.LEFT_PAREN);
-            assert.equal(mathField.getContent(), "\\left(35x^2\\right)");
+            expect(mathField.getContent()).toEqual("\\left(35x^2\\right)");
         });
     });
 
     describe("Squared", () => {
         it("should prefix with empty parens after no content", () => {
             mathField.pressKey(Keys.EXP_2);
-            assert.equal(mathField.getContent(), "\\left(\\right)^2");
+            expect(mathField.getContent()).toEqual("\\left(\\right)^2");
 
             // Verify that the cursor is in parens.
-            assert(isInsideEmptyParens(mathField.getCursor()));
+            expect(isInsideEmptyParens(mathField.getCursor())).toBeTruthy();
         });
 
         it("should prefix with empty parens after an operator", () => {
             mathField.pressKey(Keys.DIVIDE);
             mathField.pressKey(Keys.EXP_2);
-            assert.equal(mathField.getContent(), "\\div\\left(\\right)^2");
+            expect(mathField.getContent()).toEqual("\\div\\left(\\right)^2");
         });
 
         it("should work after an expression", () => {
             mathField.setContent("35x");
             mathField.pressKey(Keys.EXP_2);
-            assert.equal(mathField.getContent(), "35x^2");
+            expect(mathField.getContent()).toEqual("35x^2");
         });
 
         it.skip("should work on a selected expression", () => {
             mathField.setContent("35x+5");
             mathField.selectAll();
             mathField.pressKey(Keys.EXP_2);
-            assert.equal(mathField.getContent(), "\\left(35x+5\\right)^2");
+            expect(mathField.getContent()).toEqual("\\left(35x+5\\right)^2");
         });
     });
 
     describe("Cubed", () => {
         it("should prefix with empty parens after no content", () => {
             mathField.pressKey(Keys.EXP_3);
-            assert.equal(mathField.getContent(), "\\left(\\right)^3");
+            expect(mathField.getContent()).toEqual("\\left(\\right)^3");
 
             // Verify that the cursor is in parens.
-            assert(isInsideEmptyParens(mathField.getCursor()));
+            expect(isInsideEmptyParens(mathField.getCursor())).toBeTruthy();
         });
 
         it("should prefix with empty parens after an operator", () => {
             mathField.pressKey(Keys.EQUAL);
             mathField.pressKey(Keys.EXP_3);
-            assert.equal(mathField.getContent(), "=\\left(\\right)^3");
+            expect(mathField.getContent()).toEqual("=\\left(\\right)^3");
         });
 
         it("should work after an expression", () => {
             mathField.setContent("35x");
             mathField.pressKey(Keys.EXP_3);
-            assert.equal(mathField.getContent(), "35x^3");
+            expect(mathField.getContent()).toEqual("35x^3");
         });
 
         it.skip("should work on a selected expression", () => {
             mathField.setContent("35x+5");
             mathField.selectAll();
             mathField.pressKey(Keys.EXP_3);
-            assert.equal(mathField.getContent(), "\\left(35x+5\\right)^3");
+            expect(mathField.getContent()).toEqual("\\left(35x+5\\right)^3");
         });
     });
 
     describe("Exponent", () => {
         it("should prefix with empty parens after no content", () => {
             mathField.pressKey(Keys.EXP);
-            assert.equal(mathField.getContent(), "\\left(\\right)^{ }");
+            expect(mathField.getContent()).toEqual("\\left(\\right)^{ }");
 
             // Verify that the cursor is in the exponent, not within the parens,
             // writing a unique character to verify cursor position.
-            assert(!isInsideEmptyParens(mathField.getCursor()));
+            expect(isInsideEmptyParens(mathField.getCursor())).toBeFalsy();
             mathField.pressKey(Keys.PLUS);
-            assert.equal(mathField.getContent(), "\\left(\\right)^+");
+            expect(mathField.getContent()).toEqual("\\left(\\right)^+");
         });
 
         it("should prefix with empty parens after an operator", () => {
             mathField.pressKey(Keys.PLUS);
             mathField.pressKey(Keys.EXP);
-            assert.equal(mathField.getContent(), "+\\left(\\right)^{ }");
+            expect(mathField.getContent()).toEqual("+\\left(\\right)^{ }");
         });
 
         it("should work after an expression", () => {
             mathField.setContent("35x");
             mathField.pressKey(Keys.EXP);
-            assert.equal(mathField.getContent(), "35x^{ }");
+            expect(mathField.getContent()).toEqual("35x^{ }");
         });
 
         // TODO(kevinb): makes the expression an exponent when it shouldn't
@@ -206,40 +173,40 @@ describe.skip("MathQuill", () => {
             mathField.setContent("35x+5");
             mathField.selectAll();
             mathField.pressKey(Keys.EXP);
-            assert.equal(mathField.getContent(), "\\left(35x+5\\right)^{ }");
+            expect(mathField.getContent()).toEqual("\\left(35x+5\\right)^{ }");
         });
     });
 
     describe("Square Root", () => {
         it("should work with no content", () => {
             mathField.pressKey(Keys.SQRT);
-            assert.equal(mathField.getContent(), "\\sqrt{ }");
+            expect(mathField.getContent()).toEqual("\\sqrt{ }");
         });
 
         it("should work after an expression", () => {
             mathField.setContent("35x^2");
             mathField.pressKey(Keys.SQRT);
-            assert.equal(mathField.getContent(), "35x^2\\sqrt{ }");
+            expect(mathField.getContent()).toEqual("35x^2\\sqrt{ }");
         });
 
         it("should work on a selected expression", () => {
             mathField.setContent("35x+5");
             mathField.selectAll();
             mathField.pressKey(Keys.SQRT);
-            assert.equal(mathField.getContent(), "\\sqrt{35x+5}");
+            expect(mathField.getContent()).toEqual("\\sqrt{35x+5}");
         });
     });
 
     describe("Radical", () => {
         it("should work with no content", () => {
             mathField.pressKey(Keys.RADICAL);
-            assert.equal(mathField.getContent(), "\\sqrt[]{}");
+            expect(mathField.getContent()).toEqual("\\sqrt[]{}");
         });
 
         it("should work after an expression", () => {
             mathField.setContent("35x^2");
             mathField.pressKey(Keys.RADICAL);
-            assert.equal(mathField.getContent(), "35x^2\\sqrt[]{}");
+            expect(mathField.getContent()).toEqual("35x^2\\sqrt[]{}");
         });
 
         it.skip("should work on a selected expression", () => {
@@ -247,41 +214,40 @@ describe.skip("MathQuill", () => {
             mathField.selectAll();
             mathField.pressKey(Keys.RADICAL);
             // TODO(kevinb): check cursor location
-            assert.equal(mathField.getContent(), "\\sqrt[ ]{35x+5}");
+            expect(mathField.getContent()).toEqual("\\sqrt[ ]{35x+5}");
         });
     });
 
     describe("Log", () => {
         it("should work with no content", () => {
             mathField.pressKey(Keys.LOG);
-            assert.equal(mathField.getContent(), "\\log\\left(\\right)");
+            expect(mathField.getContent()).toEqual("\\log\\left(\\right)");
         });
 
         it("should work after an expression", () => {
             mathField.setContent("35x^2");
             mathField.pressKey(Keys.LOG);
-            assert.equal(mathField.getContent(), "35x^2\\log\\left(\\right)");
+            expect(mathField.getContent()).toEqual("35x^2\\log\\left(\\right)");
         });
 
         it.skip("should work on a selected expression", () => {
             mathField.setContent("35x+5");
             mathField.selectAll();
             mathField.pressKey(Keys.LOG);
-            assert.equal(mathField.getContent(), "\\log\\left(35x+5\\right)");
+            expect(mathField.getContent()).toEqual("\\log\\left(35x+5\\right)");
         });
     });
 
     describe("Log w/ base n", () => {
         it("should work with no content", () => {
             mathField.pressKey(Keys.LOG_N);
-            assert.equal(mathField.getContent(), "\\log_{ }\\left(\\right)");
+            expect(mathField.getContent()).toEqual("\\log_{ }\\left(\\right)");
         });
 
         it("should work after an expression", () => {
             mathField.setContent("35x^2");
             mathField.pressKey(Keys.LOG_N);
-            assert.equal(
-                mathField.getContent(),
+            expect(mathField.getContent()).toEqual(
                 "35x^2\\log_{ }\\left(\\right)",
             );
         });
@@ -290,8 +256,7 @@ describe.skip("MathQuill", () => {
             mathField.setContent("35x+5");
             mathField.selectAll();
             mathField.pressKey(Keys.LOG_N);
-            assert.equal(
-                mathField.getContent(),
+            expect(mathField.getContent()).toEqual(
                 "\\log_{ }\\left(35x+5\\right)",
             );
         });
@@ -303,14 +268,14 @@ describe.skip("MathQuill", () => {
             mathField.moveToStart();
             mathField.pressKey(Keys.RIGHT);
             mathField.pressKey(Keys.BACKSPACE);
-            assert.equal(mathField.getContent(), "");
+            expect(mathField.getContent()).toEqual("");
         });
 
         it("should convert a fraction when deleting the denominator", () => {
             mathField.setContent("\\frac{35x^2}{ }");
             mathField.pressKey(Keys.LEFT);
             mathField.pressKey(Keys.BACKSPACE);
-            assert.equal(mathField.getContent(), "35x^2");
+            expect(mathField.getContent()).toEqual("35x^2");
         });
 
         // TODO(kevinb) math isn't selected
@@ -318,30 +283,30 @@ describe.skip("MathQuill", () => {
             const expr = "\\frac{35x+5}{x^2}";
             mathField.setContent(expr);
             mathField.pressKey(Keys.BACKSPACE);
-            assert(mathField.isSelected());
-            assert.equal(mathField.getContent(), expr);
+            expect(mathField.isSelected()).toBeTruthy();
+            expect(mathField.getContent()).toEqual(expr);
         });
 
         it("should delete parens when inside empty parens", () => {
             mathField.setContent("\\left(\\right)");
             mathField.pressKey(Keys.LEFT);
             mathField.pressKey(Keys.BACKSPACE);
-            assert.equal(mathField.getContent(), "");
+            expect(mathField.getContent()).toEqual("");
         });
 
         it("deletes only the first parens when inside empty parens", () => {
             mathField.setContent("\\left(\\right)\\left(\\right)");
             mathField.pressKey(Keys.LEFT);
             mathField.pressKey(Keys.BACKSPACE);
-            assert.equal(mathField.getContent(), "\\left(\\right)");
+            expect(mathField.getContent()).toEqual("\\left(\\right)");
         });
 
         it("should select an expression when deleting from outside (1)", () => {
             const expr = "\\left(35x+5\\right)";
             mathField.setContent(expr);
             mathField.pressKey(Keys.BACKSPACE);
-            assert(mathField.isSelected());
-            assert.equal(mathField.getContent(), expr);
+            expect(mathField.isSelected()).toBeTruthy();
+            expect(mathField.getContent()).toEqual(expr);
         });
 
         it("should select an expression when deleting from outside (2)", () => {
@@ -352,9 +317,9 @@ describe.skip("MathQuill", () => {
             const left = selection.ends[MQ.L][MQ.L];
             const right = selection.ends[MQ.R][MQ.R];
 
-            assert.equal(left.ctrlSeq, "+");
-            assert.equal(right, END_OF_EXPR);
-            assert.equal(mathField.getContent(), expr);
+            expect(left.ctrlSeq).toEqual("+");
+            expect(right).toEqual(END_OF_EXPR);
+            expect(mathField.getContent()).toEqual(expr);
         });
 
         it("should select an expression when deleting from outside (3)", () => {
@@ -367,9 +332,9 @@ describe.skip("MathQuill", () => {
             const left = selection.ends[MQ.L][MQ.L];
             const right = selection.ends[MQ.R][MQ.R];
 
-            assert.equal(left.ctrlSeq, "+");
-            assert.equal(right.ctrlSeq, "-");
-            assert.equal(mathField.getContent(), expr);
+            expect(left.ctrlSeq).toEqual("+");
+            expect(right.ctrlSeq).toEqual("-");
+            expect(mathField.getContent()).toEqual(expr);
         });
 
         it("should select an expression when deleting from outside (4)", () => {
@@ -382,47 +347,47 @@ describe.skip("MathQuill", () => {
             const left = selection.ends[MQ.L][MQ.L];
             const right = selection.ends[MQ.R][MQ.R];
 
-            assert.equal(left, END_OF_EXPR);
-            assert.equal(right.ctrlSeq, "-");
-            assert.equal(mathField.getContent(), expr);
+            expect(left).toEqual(END_OF_EXPR);
+            expect(right.ctrlSeq).toEqual("-");
+            expect(mathField.getContent()).toEqual(expr);
         });
 
         it("should select an expression when deleting from outside", () => {
             mathField.setContent("\\left(35x+5\\right)");
             mathField.pressKey(Keys.BACKSPACE);
-            assert(mathField.isSelected());
-            assert.equal(mathField.getContent(), "\\left(35x+5\\right)");
+            expect(mathField.isSelected()).toBeTruthy();
+            expect(mathField.getContent()).toEqual("\\left(35x+5\\right)");
         });
 
         // TODO(kevinb) fix this behavior so that we delete the exponent too
         it.skip("should not delete squared exponents", () => {
             mathField.setContent("35x^2");
             mathField.pressKey(Keys.BACKSPACE);
-            assert.equal(mathField.getContent(), "35x^2");
+            expect(mathField.getContent()).toEqual("35x^2");
             mathField.pressKey(Keys.BACKSPACE);
-            assert.equal(mathField.getContent(), "35x^{ }");
+            expect(mathField.getContent()).toEqual("35x^{ }");
         });
 
         it("should not delete non-square exponents", () => {
             mathField.setContent("35x^5");
             mathField.pressKey(Keys.BACKSPACE);
-            assert.equal(mathField.getContent(), "35x^5");
+            expect(mathField.getContent()).toEqual("35x^5");
             mathField.pressKey(Keys.BACKSPACE);
-            assert.equal(mathField.getContent(), "35x^{ }");
+            expect(mathField.getContent()).toEqual("35x^{ }");
         });
 
         it("should delete an empty exponent", () => {
             mathField.setContent("35x^{}");
             mathField.pressKey(Keys.LEFT);
             mathField.pressKey(Keys.BACKSPACE);
-            assert.equal(mathField.getContent(), "35x");
+            expect(mathField.getContent()).toEqual("35x");
         });
 
         it("should delete an empty square root", () => {
             mathField.setContent("\\sqrt{}");
             mathField.pressKey(Keys.LEFT);
             mathField.pressKey(Keys.BACKSPACE);
-            assert.equal(mathField.getContent(), "");
+            expect(mathField.getContent()).toEqual("");
         });
 
         it("should delete an empty radical when cursor is in index", () => {
@@ -430,14 +395,14 @@ describe.skip("MathQuill", () => {
             mathField.moveToStart();
             mathField.pressKey(Keys.RIGHT);
             mathField.pressKey(Keys.BACKSPACE);
-            assert.equal(mathField.getContent(), "");
+            expect(mathField.getContent()).toEqual("");
         });
 
         it("should delete an empty radical when cursor is in body", () => {
             mathField.pressKey(Keys.RADICAL);
             mathField.pressKey(Keys.RIGHT);
             mathField.pressKey(Keys.BACKSPACE);
-            assert.equal(mathField.getContent(), "");
+            expect(mathField.getContent()).toEqual("");
         });
 
         it("should select an empty radical with non-empty root", () => {
@@ -445,8 +410,8 @@ describe.skip("MathQuill", () => {
             const expr = mathField.getContent();
             mathField.pressKey(Keys.BACKSPACE);
 
-            assert(mathField.isSelected());
-            assert.equal(mathField.getContent(), expr);
+            expect(mathField.isSelected()).toBeTruthy();
+            expect(mathField.getContent()).toEqual(expr);
         });
 
         it("should normally delete within a non-empty radical", () => {
@@ -456,7 +421,7 @@ describe.skip("MathQuill", () => {
             mathField.pressKey("NUM_2");
             mathField.pressKey(Keys.BACKSPACE);
 
-            assert.equal(mathField.getContent(), expr);
+            expect(mathField.getContent()).toEqual(expr);
         });
 
         it("deletes nthroot index normally", () => {
@@ -468,8 +433,8 @@ describe.skip("MathQuill", () => {
 
             const cursor = mathField.getCursor();
 
-            assert.equal(cursor[MQ.L], END_OF_EXPR);
-            assert.equal(mathField.getContent(), "\\sqrt[]{35x+5}");
+            expect(cursor[MQ.L]).toEqual(END_OF_EXPR);
+            expect(mathField.getContent()).toEqual("\\sqrt[]{35x+5}");
         });
 
         it("converts nthroot to sqrt when deleting from index (1)", () => {
@@ -480,8 +445,8 @@ describe.skip("MathQuill", () => {
 
             const cursor = mathField.getCursor();
 
-            assert.equal(cursor[MQ.L], END_OF_EXPR);
-            assert.equal(mathField.getContent(), "\\sqrt{35x+5}");
+            expect(cursor[MQ.L]).toEqual(END_OF_EXPR);
+            expect(mathField.getContent()).toEqual("\\sqrt{35x+5}");
         });
 
         it("converts nthroot to sqrt when deleting from index (2)", () => {
@@ -494,8 +459,8 @@ describe.skip("MathQuill", () => {
 
             const cursor = mathField.getCursor();
 
-            assert.equal(cursor[MQ.L].ctrlSeq, "+");
-            assert.equal(mathField.getContent(), "1+\\sqrt{35x+5}");
+            expect(cursor[MQ.L].ctrlSeq).toEqual("+");
+            expect(mathField.getContent()).toEqual("1+\\sqrt{35x+5}");
         });
 
         it("should not delete if the index has contents", () => {
@@ -505,7 +470,7 @@ describe.skip("MathQuill", () => {
             mathField.pressKey(Keys.RIGHT);
             mathField.pressKey(Keys.BACKSPACE);
 
-            assert.equal(mathField.getContent(), expr);
+            expect(mathField.getContent()).toEqual(expr);
         });
 
         it("should select a full square root before deleting it", () => {
@@ -513,8 +478,8 @@ describe.skip("MathQuill", () => {
             mathField.setContent(expr);
             mathField.pressKey(Keys.BACKSPACE);
 
-            assert(mathField.isSelected());
-            assert.equal(mathField.getContent(), expr);
+            expect(mathField.isSelected()).toBeTruthy();
+            expect(mathField.getContent()).toEqual(expr);
         });
 
         it("should select a full nth-root before deleting it", () => {
@@ -522,15 +487,15 @@ describe.skip("MathQuill", () => {
             mathField.setContent(expr);
             mathField.pressKey(Keys.BACKSPACE);
 
-            assert(mathField.isSelected());
-            assert.equal(mathField.getContent(), expr);
+            expect(mathField.isSelected()).toBeTruthy();
+            expect(mathField.getContent()).toEqual(expr);
         });
 
         it("should delete log when inside empty log", () => {
             mathField.setContent("\\log\\left(\\right)");
             mathField.pressKey(Keys.LEFT);
             mathField.pressKey(Keys.BACKSPACE);
-            assert.equal(mathField.getContent(), "");
+            expect(mathField.getContent()).toEqual("");
         });
 
         it("should select log when inside full log at head", () => {
@@ -539,16 +504,16 @@ describe.skip("MathQuill", () => {
             mathField.moveToStart();
             mathField.pressKey(Keys.RIGHT);
             mathField.pressKey(Keys.BACKSPACE);
-            assert(mathField.isSelected());
-            assert.equal(mathField.getContent(), expr);
+            expect(mathField.isSelected()).toBeTruthy();
+            expect(mathField.getContent()).toEqual(expr);
         });
 
         it("should select log when outside full log at tail (1)", () => {
             const expr = "\\log\\left(35x\\right)";
             mathField.setContent(expr);
             mathField.pressKey(Keys.BACKSPACE);
-            assert(mathField.isSelected());
-            assert.equal(mathField.getContent(), expr);
+            expect(mathField.isSelected()).toBeTruthy();
+            expect(mathField.getContent()).toEqual(expr);
         });
 
         it("should select log when outside full log at tail (2)", () => {
@@ -559,9 +524,9 @@ describe.skip("MathQuill", () => {
             const left = selection.ends[MQ.L][MQ.L];
             const right = selection.ends[MQ.R][MQ.R];
 
-            assert.equal(left.ctrlSeq, "+");
-            assert.equal(right, END_OF_EXPR);
-            assert.equal(mathField.getContent(), expr);
+            expect(left.ctrlSeq).toEqual("+");
+            expect(right).toEqual(END_OF_EXPR);
+            expect(mathField.getContent()).toEqual(expr);
         });
 
         it("should select log when outside full log at tail (3)", () => {
@@ -574,9 +539,9 @@ describe.skip("MathQuill", () => {
             const left = selection.ends[MQ.L][MQ.L];
             const right = selection.ends[MQ.R][MQ.R];
 
-            assert.equal(left.ctrlSeq, "+");
-            assert.equal(right.ctrlSeq, "-");
-            assert.equal(mathField.getContent(), expr);
+            expect(left.ctrlSeq).toEqual("+");
+            expect(right.ctrlSeq).toEqual("-");
+            expect(mathField.getContent()).toEqual(expr);
         });
 
         it("should select log when outside full log at tail (4)", () => {
@@ -589,9 +554,9 @@ describe.skip("MathQuill", () => {
             const left = selection.ends[MQ.L][MQ.L];
             const right = selection.ends[MQ.R][MQ.R];
 
-            assert.equal(left, END_OF_EXPR);
-            assert.equal(right.ctrlSeq, "-");
-            assert.equal(mathField.getContent(), expr);
+            expect(left).toEqual(END_OF_EXPR);
+            expect(right.ctrlSeq).toEqual("-");
+            expect(mathField.getContent()).toEqual(expr);
         });
 
         it("should delete empty log when at index", () => {
@@ -605,7 +570,7 @@ describe.skip("MathQuill", () => {
             mathField.pressKey(Keys.LEFT);
 
             mathField.pressKey(Keys.BACKSPACE);
-            assert.equal(mathField.getContent(), "");
+            expect(mathField.getContent()).toEqual("");
         });
 
         it("should delete log index normally", () => {
@@ -619,7 +584,7 @@ describe.skip("MathQuill", () => {
             mathField.pressKey(Keys.LEFT);
 
             mathField.pressKey(Keys.BACKSPACE);
-            assert.equal(mathField.getContent(), "\\log_{ }\\left(\\right)");
+            expect(mathField.getContent()).toEqual("\\log_{ }\\left(\\right)");
         });
 
         it("should move to index from inside empty log with index", () => {
@@ -629,8 +594,8 @@ describe.skip("MathQuill", () => {
 
             const cursor = mathField.getCursor();
 
-            assert.equal(cursor[MQ.L].ctrlSeq, "5");
-            assert.equal(mathField.getContent(), "\\log_5\\left(\\right)");
+            expect(cursor[MQ.L].ctrlSeq).toEqual("5");
+            expect(mathField.getContent()).toEqual("\\log_5\\left(\\right)");
         });
 
         it("should select full log when deleting from empty index (1)", () => {
@@ -646,8 +611,8 @@ describe.skip("MathQuill", () => {
 
             mathField.pressKey(Keys.BACKSPACE);
 
-            assert(mathField.isSelected());
-            assert.equal(mathField.getContent(), expr);
+            expect(mathField.isSelected()).toBeTruthy();
+            expect(mathField.getContent()).toEqual(expr);
         });
 
         it("should select full log when deleting from empty index (2)", () => {
@@ -669,9 +634,9 @@ describe.skip("MathQuill", () => {
             const left = selection.ends[MQ.L][MQ.L];
             const right = selection.ends[MQ.R][MQ.R];
 
-            assert.equal(left.ctrlSeq, "+");
-            assert.equal(right, END_OF_EXPR);
-            assert.equal(mathField.getContent(), expr);
+            expect(left.ctrlSeq).toEqual("+");
+            expect(right).toEqual(END_OF_EXPR);
+            expect(mathField.getContent()).toEqual(expr);
         });
 
         it("should select full log when deleting from empty index (3)", () => {
@@ -693,9 +658,9 @@ describe.skip("MathQuill", () => {
             const left = selection.ends[MQ.L][MQ.L];
             const right = selection.ends[MQ.R][MQ.R];
 
-            assert.equal(left.ctrlSeq, "+");
-            assert.equal(right.ctrlSeq, "-");
-            assert.equal(mathField.getContent(), expr);
+            expect(left.ctrlSeq).toEqual("+");
+            expect(right.ctrlSeq).toEqual("-");
+            expect(mathField.getContent()).toEqual(expr);
         });
 
         it("should select full log when deleting from empty index (4)", () => {
@@ -715,9 +680,9 @@ describe.skip("MathQuill", () => {
             const left = selection.ends[MQ.L][MQ.L];
             const right = selection.ends[MQ.R][MQ.R];
 
-            assert.equal(left, END_OF_EXPR);
-            assert.equal(right.ctrlSeq, "-");
-            assert.equal(mathField.getContent(), expr);
+            expect(left).toEqual(END_OF_EXPR);
+            expect(right.ctrlSeq).toEqual("-");
+            expect(mathField.getContent()).toEqual(expr);
         });
     });
 
@@ -727,15 +692,15 @@ describe.skip("MathQuill", () => {
             const cursor = mathField.getCursor();
 
             // Verify that we're inside the function.
-            assert.equal(cursor[MQ.L], END_OF_EXPR);
-            assert.equal(cursor[MQ.R], END_OF_EXPR);
+            expect(cursor[MQ.L]).toEqual(END_OF_EXPR);
+            expect(cursor[MQ.R]).toEqual(END_OF_EXPR);
 
             // Navigate left.
             mathField.pressKey(Keys.LEFT);
 
             // Verify that we moved beyond the body of the function.
-            assert.equal(cursor[MQ.L], END_OF_EXPR);
-            assert.equal(cursor[MQ.R].ctrlSeq, "\\c");
+            expect(cursor[MQ.L]).toEqual(END_OF_EXPR);
+            expect(cursor[MQ.R].ctrlSeq).toEqual("\\c");
         });
 
         it("does not skip out of a function with valid content present", () => {
@@ -744,15 +709,15 @@ describe.skip("MathQuill", () => {
             const cursor = mathField.getCursor();
 
             // Verify that we're inside the function.
-            assert.equal(cursor[MQ.L].ctrlSeq, "+");
-            assert.equal(cursor[MQ.R], END_OF_EXPR);
+            expect(cursor[MQ.L].ctrlSeq).toEqual("+");
+            expect(cursor[MQ.R]).toEqual(END_OF_EXPR);
 
             // Navigate left.
             mathField.pressKey(Keys.LEFT);
 
             // Verify that we didn't move out of the function.
-            assert.equal(cursor[MQ.L], END_OF_EXPR);
-            assert.equal(cursor[MQ.R].ctrlSeq, "+");
+            expect(cursor[MQ.L]).toEqual(END_OF_EXPR);
+            expect(cursor[MQ.R].ctrlSeq).toEqual("+");
         });
     });
 
@@ -763,15 +728,15 @@ describe.skip("MathQuill", () => {
             const cursor = mathField.getCursor();
 
             // Verify that we're outside the function.
-            assert.equal(cursor[MQ.L], END_OF_EXPR);
-            assert.equal(cursor[MQ.R].ctrlSeq, "\\c");
+            expect(cursor[MQ.L]).toEqual(END_OF_EXPR);
+            expect(cursor[MQ.R].ctrlSeq).toEqual("\\c");
 
             // Navigate right.
             mathField.pressKey(Keys.RIGHT);
 
             // Verify that we moved into the body of the function.
-            assert.equal(cursor[MQ.L], END_OF_EXPR);
-            assert.equal(cursor[MQ.R].ctrlSeq, "5");
+            expect(cursor[MQ.L]).toEqual(END_OF_EXPR);
+            expect(cursor[MQ.R].ctrlSeq).toEqual("5");
         });
     });
 
