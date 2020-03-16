@@ -1,4 +1,17 @@
 //@flow
+
+/*
+The SVGs in this file should be treated as binary assets. If, in the future,
+we need to make changes to update the color or size or shape of the glyph
+then we should take the new asset, copy it, and paste it under the right
+header.
+
+This makes it as easy as possible for a designer to make an update to an
+asset.
+
+In the future it would be great if these were included from files so that
+no copying and pasting is necessary.
+*/
 import React from "react";
 
 // TODO: This should be an enumeration of all of the possible legal values
