@@ -7,6 +7,7 @@ import ButtonAsset from "./button-assets";
 import type {KeyConfig} from "../../data/key-configs";
 
 import type {Node} from "React";
+import type {StyleType} from "@khanacademy/wonder-blocks-core";
 
 const KeypadPageContainer = ({children}: {children: Node}) => (
     <View
@@ -32,7 +33,7 @@ const KeypadButton = ({
 }: {
     keyConfig: KeyConfig,
     tintColor?: string,
-    style?: any,
+    style?: StyleType,
     onClickKey: (keyConfig: string) => void,
 }) => (
     <Button
