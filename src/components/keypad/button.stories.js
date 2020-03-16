@@ -15,7 +15,13 @@ export default {
 };
 
 export const Button = () => (
-    <KeypadButton onPress={action("pressed")}>
-        <p>1</p>
-    </KeypadButton>
+    <div
+        style={{
+            width: 58,
+        }}
+    >
+        <KeypadButton onPress={action("pressed")}>
+            <p>1</p>
+        </KeypadButton>
+    </div>
 );
