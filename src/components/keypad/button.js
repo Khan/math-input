@@ -8,6 +8,7 @@ import Color from "@khanacademy/wonder-blocks-color";
 import Clickable from "@khanacademy/wonder-blocks-clickable";
 
 import type {Node} from "React";
+import type {StyleType} from "@khanacademy/wonder-blocks-core";
 
 const styles = StyleSheet.create({
     base: {
@@ -54,12 +55,17 @@ const styles = StyleSheet.create({
     outerBoxPressed: {
         border: "2px solid #1B50B3",
     },
+    clickable: {
+        width: "100%",
+        height: "100%",
+        boxSizing: "border-box",
+    },
 });
 
 type Props = {|
     onPress: () => void,
     children: Node,
-    style?: mixed,
+    style?: StyleType,
     tintColor?: string,
 |};
 
@@ -68,15 +74,8 @@ export default class Button extends React.Component<Props, State> {
     render() {
         const {onPress, children, style, tintColor} = this.props;
         return (
-            <View style={[style]}>
-                <Clickable
-                    onClick={onPress}
-                    style={{
-                        width: "100%",
-                        height: "100%",
-                        boxSizing: "border-box",
-                    }}
-                >
+            <View style={style}>
+                <Clickable onClick={onPress} style={styles.clickable}>
                     {({hovered, focused, pressed}) => {
                         return (
                             <View
