@@ -16,8 +16,7 @@ import type {KeyConfig} from "../../data/key-configs";
 type Props = {|
     onClickKey: (keyConfig: string) => void,
 |};
-type State = {};
-export default class NumericInputPage extends React.Component<Props, State> {
+export default class NumericInputPage extends React.Component<Props> {
     render() {
         const {onClickKey} = this.props;
         return (
