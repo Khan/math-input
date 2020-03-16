@@ -434,8 +434,10 @@ export default function buttonAsset({id}: {id: KeyId}) {
                 </svg>
             );
         case "PI":
+            //TODO(NickR): use correct font, size, and color for this. It's not an SVG asset
             return <span>pi</span>;
         case "X":
+            //TODO(NickR): use correct font, size, and color for this. It's not an SVG asset
             return <span>x</span>;
 
         default:
