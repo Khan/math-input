@@ -18,7 +18,8 @@
     "format": "prettier --write \"src/**\" \"test/**\" \"lib/**\"",
     "prepublish": "yarn build",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "deploy-storybook": "storybook-to-ghpages"
   },
   "author": "",
   "license": "MIT",
@@ -51,6 +52,7 @@
     "@storybook/addon-links": "^5.3.14",
     "@storybook/addons": "^5.3.14",
     "@storybook/react": "^5.3.14",
+    "@storybook/storybook-deployer": "^2.8.3",
     "babel-core": "^7.0.0-bridge.0",
     "babel-loader": "7.1.1",
     "core-js": "^3.0.1",
