@@ -1,3 +1,5 @@
+//@flow
+
 import React from "react";
 import {action} from "@storybook/addon-actions";
 import {View} from "@khanacademy/wonder-blocks-core";
@@ -5,6 +7,8 @@ import {View} from "@khanacademy/wonder-blocks-core";
 import {withKnobs, number} from "@storybook/addon-knobs";
 
 import NumericInputPage from "./numeric-input-page";
+import PrealgebraInputPage from "./pre-algebra-page";
+import TrigonometryInputPage from "./trigonometry-page";
 
 export default {
     title: "Keypad pages",
@@ -23,5 +27,25 @@ export const NumericInput = () => (
         }}
     >
         <NumericInputPage onClickKey={action("onClickKey")} />
+    </View>
+);
+
+export const PreAlgebraInput = () => (
+    <View
+        style={{
+            width: number("width", 320),
+        }}
+    >
+        <PrealgebraInputPage onClickKey={action("onClickKey")} />
+    </View>
+);
+
+export const TrigonometryInput = () => (
+    <View
+        style={{
+            width: number("width", 320),
+        }}
+    >
+        <TrigonometryInputPage onClickKey={action("onClickKey")} />
     </View>
 );

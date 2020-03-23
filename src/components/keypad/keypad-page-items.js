@@ -79,9 +79,32 @@ const KeypadActionButton = ({
     />
 );
 
+const PlaceHolderButton = () => (
+    <View
+        style={{
+            height: "100%",
+            width: "100%",
+            boxSizing: "border-box",
+            borderRadius: 7,
+            border: "4px solid transparent",
+        }}
+    >
+        <View
+            style={{
+                background: "rgba(33, 36, 44, 0.04)",
+                width: "100%",
+                height: "100%",
+                borderRadius: 4,
+                border: `1px solid transparent`,
+            }}
+        ></View>
+    </View>
+);
+
 module.exports = {
     KeypadPageContainer,
     KeypadButton,
     SecondaryKeypadButton,
     KeypadActionButton,
+    PlaceHolderButton,
 };
