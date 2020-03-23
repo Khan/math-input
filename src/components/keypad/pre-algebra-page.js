@@ -17,8 +17,7 @@ import type {KeyConfig} from "../../data/key-configs";
 type Props = {|
     onClickKey: (keyConfig: string) => void,
 |};
-type State = {};
-export default class NumericInputPage extends React.Component<Props, State> {
+export default class NumericInputPage extends React.Component<Props> {
     render() {
         const {onClickKey} = this.props;
         return (
@@ -81,7 +80,7 @@ export default class NumericInputPage extends React.Component<Props, State> {
                 <KeypadActionButton
                     keyConfig={Keys.BACKSPACE}
                     style={{
-                        gridColumn: "6",
+                        gridColumn: 6,
                     }}
                     onClickKey={onClickKey}
                 />

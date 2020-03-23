@@ -80,7 +80,7 @@ const KeypadActionButton = ({
 );
 
 const PlaceHolderButton = () => (
-    <div
+    <View
         style={{
             height: "100%",
             width: "100%",
@@ -89,7 +89,7 @@ const PlaceHolderButton = () => (
             border: "4px solid transparent",
         }}
     >
-        <div
+        <View
             style={{
                 background: "rgba(33, 36, 44, 0.04)",
                 width: "100%",
@@ -97,8 +97,8 @@ const PlaceHolderButton = () => (
                 borderRadius: 4,
                 border: `1px solid transparent`,
             }}
-        ></div>
-    </div>
+        ></View>
+    </View>
 );
 
 module.exports = {
