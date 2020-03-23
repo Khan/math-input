@@ -6,7 +6,7 @@ import {View} from "@khanacademy/wonder-blocks-core";
 
 import {withKnobs, number} from "@storybook/addon-knobs";
 
-import PreAlgebraKeypad from "./pre-algebra-keypad";
+import Keypad from "./";
 
 export default {
     title: "Full Keypad",
@@ -24,6 +24,24 @@ export const PreAlgebra = () => (
             width: number("width", 320),
         }}
     >
-        <PreAlgebraKeypad onClickKey={action("onClickKey")} />
+        <Keypad
+            onClickKey={action("onClickKey")}
+            preAlgebra={true}
+            trigonometry={false}
+        />
+    </View>
+);
+
+export const Trigonometry = () => (
+    <View
+        style={{
+            width: number("width", 320),
+        }}
+    >
+        <Keypad
+            onClickKey={action("onClickKey")}
+            preAlgebra={true}
+            trigonometry={true}
+        />
     </View>
 );

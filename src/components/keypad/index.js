@@ -9,16 +9,31 @@ import Clickable from "@khanacademy/wonder-blocks-clickable";
 import {Tabbar} from "../tabbar/tabbar";
 import NumericInputPage from "./numeric-input-page";
 import PreAlgebraPage from "./pre-algebra-page";
+import TrigonometryPage from "./trigonometry-page";
 
 import type {Node} from "React";
 import type {TabbarItemType} from "../tabbar/item";
 
-type Props = {
+type Props = {|
     onClickKey: (keyConfig: string) => void,
-};
+    preAlgebra: boolean,
+    trigonometry: boolean,
+|};
 type State = {
     selectedPage: TabbarItemType,
 };
+
+function allPages(props: Props): Array<TabbarItemType> {
+    var pages: Array<TabbarItemType> = ["Numbers"];
+
+    if (props.preAlgebra) {
+        pages.push("Operators");
+    }
+    if (props.trigonometry) {
+        pages.push("Geometry");
+    }
+    return pages;
+}
 
 export default class PreAlgebraKeypad extends React.Component<Props, State> {
     state = {
@@ -26,11 +41,14 @@ export default class PreAlgebraKeypad extends React.Component<Props, State> {
     };
     render() {
         const {selectedPage} = this.state;
-        const {onClickKey} = this.props;
+        const {onClickKey, preAlgebra} = this.props;
+
+        const availablePages = allPages(this.props);
+
         return (
             <View>
                 <Tabbar
-                    items={["Numbers", "Operators"]}
+                    items={availablePages}
                     onSelect={(tabbarItem: TabbarItemType) => {
                         this.setState({selectedPage: tabbarItem});
                     }}
@@ -40,6 +58,9 @@ export default class PreAlgebraKeypad extends React.Component<Props, State> {
                 )}
                 {selectedPage === "Operators" && (
                     <PreAlgebraPage onClickKey={onClickKey} />
+                )}
+                {selectedPage === "Geometry" && (
+                    <TrigonometryPage onClickKey={onClickKey} />
                 )}
             </View>
         );
