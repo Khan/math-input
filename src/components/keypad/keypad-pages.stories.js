@@ -17,35 +17,18 @@ export default {
         backgrounds: [
             {name: "light background", value: "white", default: true},
         ],
+        viewport: {defaultViewport: "iphone6"},
     },
 };
 
 export const NumericInput = () => (
-    <View
-        style={{
-            width: number("width", 320),
-        }}
-    >
-        <NumericInputPage onClickKey={action("onClickKey")} />
-    </View>
+    <NumericInputPage onClickKey={action("onClickKey")} />
 );
 
 export const PreAlgebraInput = () => (
-    <View
-        style={{
-            width: number("width", 320),
-        }}
-    >
-        <PrealgebraInputPage onClickKey={action("onClickKey")} />
-    </View>
+    <PrealgebraInputPage onClickKey={action("onClickKey")} />
 );
 
 export const TrigonometryInput = () => (
-    <View
-        style={{
-            width: number("width", 320),
-        }}
-    >
-        <TrigonometryInputPage onClickKey={action("onClickKey")} />
-    </View>
+    <TrigonometryInputPage onClickKey={action("onClickKey")} />
 );
