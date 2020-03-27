@@ -2,6 +2,8 @@
 
 import React from "react";
 import {action} from "@storybook/addon-actions";
+import {INITIAL_VIEWPORTS} from "@storybook/addon-viewport";
+
 import {View} from "@khanacademy/wonder-blocks-core";
 
 import {withKnobs, number} from "@storybook/addon-knobs";
@@ -15,33 +17,22 @@ export default {
         backgrounds: [
             {name: "light background", value: "white", default: true},
         ],
+        viewport: {defaultViewport: "iphone6", viewports: INITIAL_VIEWPORTS},
     },
 };
 
 export const PreAlgebra = () => (
-    <View
-        style={{
-            width: number("width", 320),
-        }}
-    >
-        <Keypad
-            onClickKey={action("onClickKey")}
-            preAlgebra={true}
-            trigonometry={false}
-        />
-    </View>
+    <Keypad
+        onClickKey={action("onClickKey")}
+        preAlgebra={true}
+        trigonometry={false}
+    />
 );
 
 export const Trigonometry = () => (
-    <View
-        style={{
-            width: number("width", 320),
-        }}
-    >
-        <Keypad
-            onClickKey={action("onClickKey")}
-            preAlgebra={true}
-            trigonometry={true}
-        />
-    </View>
+    <Keypad
+        onClickKey={action("onClickKey")}
+        preAlgebra={true}
+        trigonometry={true}
+    />
 );
