@@ -8,8 +8,7 @@ const {connect} = require("react-redux");
 const {StyleSheet} = require("aphrodite");
 
 const Keypad = require("./keypad");
-const ViewPager = require("./view-pager");
-const PagerIndicator = require("./pager-indicator");
+const {Tabbar} = require("./tabbar/tabbar");
 const {View} = require("../fake-react-native-web");
 const {column, row, fullWidth} = require("./styles");
 const {
@@ -27,6 +26,10 @@ class TwoPageKeypad extends React.Component {
         rightPage: PropTypes.node.isRequired,
     };
 
+    state = {
+        selectedPage: "Numbers",
+    };
+
     render() {
         const {
             currentPage,
@@ -35,15 +38,20 @@ class TwoPageKeypad extends React.Component {
             rightPage,
         } = this.props;
 
+        const {selectedPage} = this.state;
+
         if (paginationEnabled) {
             return (
                 <Keypad style={[column, styles.keypad]}>
-                    <PagerIndicator numPages={2} currentPage={currentPage} />
+                    <Tabbar
+                        items={["Numbers", "Operators"]}
+                        onSelect={(selectedItem) => {
+                            this.setState({selectedPage: selectedItem});
+                        }}
+                    />
                     <View style={styles.borderTop}>
-                        <ViewPager>
-                            {leftPage}
-                            {rightPage}
-                        </ViewPager>
+                        {selectedPage === "Numbers" && rightPage}
+                        {selectedPage === "Operators" && leftPage}
                     </View>
                 </Keypad>
             );
