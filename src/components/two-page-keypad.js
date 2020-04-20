@@ -18,7 +18,7 @@ const {
     offBlack16,
 } = require("./common-style");
 
-class TwoPageKeypad extends React.Component {
+export class TwoPageKeypad extends React.Component {
     static propTypes = {
         currentPage: PropTypes.oneOf([0, 1]).isRequired,
         leftPage: PropTypes.node.isRequired,
@@ -96,4 +96,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-module.exports = connect(mapStateToProps)(TwoPageKeypad);
+export default connect(mapStateToProps)(TwoPageKeypad);
