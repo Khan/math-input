@@ -8,8 +8,7 @@ const {connect} = require("react-redux");
 const {StyleSheet} = require("aphrodite");
 
 const Keypad = require("./keypad");
-const ViewPager = require("./view-pager");
-const PagerIndicator = require("./pager-indicator");
+const {Tabbar} = require("./tabbar/tabbar");
 const {View} = require("../fake-react-native-web");
 const {column, row, fullWidth} = require("./styles");
 const {
@@ -19,12 +18,16 @@ const {
     offBlack16,
 } = require("./common-style");
 
-class TwoPageKeypad extends React.Component {
+export class TwoPageKeypad extends React.Component {
     static propTypes = {
         currentPage: PropTypes.oneOf([0, 1]).isRequired,
         leftPage: PropTypes.node.isRequired,
         paginationEnabled: PropTypes.bool.isRequired,
         rightPage: PropTypes.node.isRequired,
+    };
+
+    state = {
+        selectedPage: "Numbers",
     };
 
     render() {
@@ -35,15 +38,20 @@ class TwoPageKeypad extends React.Component {
             rightPage,
         } = this.props;
 
+        const {selectedPage} = this.state;
+
         if (paginationEnabled) {
             return (
                 <Keypad style={[column, styles.keypad]}>
-                    <PagerIndicator numPages={2} currentPage={currentPage} />
+                    <Tabbar
+                        items={["Numbers", "Operators"]}
+                        onSelect={(selectedItem) => {
+                            this.setState({selectedPage: selectedItem});
+                        }}
+                    />
                     <View style={styles.borderTop}>
-                        <ViewPager>
-                            {leftPage}
-                            {rightPage}
-                        </ViewPager>
+                        {selectedPage === "Numbers" && rightPage}
+                        {selectedPage === "Operators" && leftPage}
                     </View>
                 </Keypad>
             );
@@ -88,4 +96,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-module.exports = connect(mapStateToProps)(TwoPageKeypad);
+export default connect(mapStateToProps)(TwoPageKeypad);
