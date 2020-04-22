@@ -8,7 +8,7 @@ const {connect} = require("react-redux");
 const {StyleSheet} = require("aphrodite");
 
 const Keypad = require("./keypad");
-const {Tabbar} = require("./tabbar/tabbar");
+const Tabbar = require("./tabbar/tabbar");
 const {View} = require("../fake-react-native-web");
 const {column, row, fullWidth} = require("./styles");
 const {
@@ -18,7 +18,7 @@ const {
     offBlack16,
 } = require("./common-style");
 
-export class TwoPageKeypad extends React.Component {
+class TwoPageKeypad extends React.Component {
     static propTypes = {
         currentPage: PropTypes.oneOf([0, 1]).isRequired,
         leftPage: PropTypes.node.isRequired,
@@ -96,4 +96,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(TwoPageKeypad);
+module.exports = connect(mapStateToProps)(TwoPageKeypad);

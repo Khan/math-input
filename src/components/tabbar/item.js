@@ -80,7 +80,7 @@ type Props = {
 
 type State = {};
 
-export class TabbarItem extends React.Component<Props, State> {
+class TabbarItem extends React.Component<Props, State> {
     render() {
         const {onClick, itemType, itemState} = this.props;
         return (
@@ -132,3 +132,5 @@ export class TabbarItem extends React.Component<Props, State> {
         );
     }
 }
+
+module.exports = TabbarItem;

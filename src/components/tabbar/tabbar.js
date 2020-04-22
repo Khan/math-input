@@ -6,7 +6,7 @@ import {StyleSheet} from "aphrodite";
 import {View} from "@khanacademy/wonder-blocks-core";
 import Color from "@khanacademy/wonder-blocks-color";
 
-import {TabbarItem} from "./item";
+import TabbarItem from "./item";
 
 import type {TabbarItemType} from "./item";
 
@@ -31,7 +31,7 @@ type TabbarProps = {
     onSelect: (item: TabbarItemType) => void,
 };
 
-export class Tabbar extends React.Component<TabbarProps, TabbarState> {
+class Tabbar extends React.Component<TabbarProps, TabbarState> {
     state = {
         selectedItem: 0,
     };
@@ -58,3 +58,5 @@ export class Tabbar extends React.Component<TabbarProps, TabbarState> {
         );
     }
 }
+
+module.exports = Tabbar;
