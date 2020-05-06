@@ -557,7 +557,7 @@ class MathInput extends React.Component {
     };
 
     handleTouchStart = (e) => {
-        e.stopPropagation();
+        // e.stopPropagation();
 
         // Hide the cursor handle on touch start, if the handle itself isn't
         // handling the touch event.
@@ -582,7 +582,7 @@ class MathInput extends React.Component {
     };
 
     handleTouchMove = (e) => {
-        e.stopPropagation();
+        // e.stopPropagation();
 
         // Update the handle-less cursor's location on move, if there's any
         // content in the box. Note that if the user touched outside the keypad
@@ -597,7 +597,7 @@ class MathInput extends React.Component {
     };
 
     handleTouchEnd = (e) => {
-        e.stopPropagation();
+        // e.stopPropagation();
 
         // And on touch-end, reveal the cursor, unless the input is empty. Note
         // that if the user touched outside the keypad (e.g., with a different
@@ -623,7 +623,7 @@ class MathInput extends React.Component {
         // don't affect the cursor. As such, we `stopPropagation` on any touch
         // events that are being handled by the cursor, so as to avoid handling
         // them in our own touch handlers.
-        e.stopPropagation();
+        // e.stopPropagation();
 
         e.preventDefault();
 
@@ -648,7 +648,7 @@ class MathInput extends React.Component {
      * @param {TouchEvent} e - the raw touch event from the browser
      */
     onCursorHandleTouchMove = (e) => {
-        e.stopPropagation();
+        // e.stopPropagation();
 
         const x = e.changedTouches[0].clientX;
         const y = e.changedTouches[0].clientY;
@@ -702,7 +702,7 @@ class MathInput extends React.Component {
      * @param {TouchEvent} e - the raw touch event from the browser
      */
     onCursorHandleTouchEnd = (e) => {
-        e.stopPropagation();
+        // e.stopPropagation();
 
         this._updateCursorHandle(true);
     };
@@ -713,7 +713,7 @@ class MathInput extends React.Component {
      * @param {TouchEvent} e - the raw touch event from the browser
      */
     onCursorHandleTouchCancel = (e) => {
-        e.stopPropagation();
+        // e.stopPropagation();
 
         this._updateCursorHandle(true);
     };
@@ -823,7 +823,7 @@ class MathInput extends React.Component {
                 onTouchStart={this.handleTouchStart}
                 onTouchMove={this.handleTouchMove}
                 onTouchEnd={this.handleTouchEnd}
-                onClick={(e) => e.stopPropagation()}
+                // onClick={(e) => e.stopPropagation()}
                 role={"textbox"}
                 ariaLabel={i18n._("Math input box")}
             >
