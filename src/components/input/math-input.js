@@ -817,6 +817,15 @@ class MathInput extends React.Component {
             ...style,
         };
 
+        // NOTE(diedra): This label explicitly refers to tapping because this field
+        // is currently only seen if the user is using a mobile device.
+        // We added the tapping instructions because there is currently a bug where
+        // Android users need to use two fingers to tap the input field to make the
+        // keyboard appear. It should only require one finger, which is how iOS works.
+        // TODO(diedra): Fix the bug that is causing Android to require a two finger tap
+        // to the open the keyboard, and then remove the second half of this label.
+        const ariaLabel = `{i18n._("Math input box") i18n._("Tap with one or two fingers to open keyboard")}`;
+
         return (
             <View
                 style={styles.input}
@@ -825,7 +834,7 @@ class MathInput extends React.Component {
                 onTouchEnd={this.handleTouchEnd}
                 onClick={(e) => e.stopPropagation()}
                 role={"textbox"}
-                ariaLabel={i18n._("Math input box")}
+                ariaLabel={ariaLabel}
             >
                 {/* NOTE(charlie): This is used purely to namespace the styles in
                 overrides.css. */}
