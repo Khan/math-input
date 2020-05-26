@@ -2,7 +2,7 @@ import React from "react";
 import assert from "assert";
 import {mount} from "enzyme";
 
-import {Tabbar} from "../src/components/tabbar/tabbar";
+import Tabbar from "../src/components/tabbar/tabbar";
 
 describe("<Tabbar />", () => {
     it("defaults to selecting the first item", () => {

@@ -6,7 +6,7 @@ import {View} from "@khanacademy/wonder-blocks-core";
 import Color from "@khanacademy/wonder-blocks-color";
 import Clickable from "@khanacademy/wonder-blocks-clickable";
 
-import {Tabbar} from "../tabbar/tabbar";
+import Tabbar from "../tabbar/tabbar";
 import NumericInputPage from "./numeric-input-page";
 import PreAlgebraPage from "./pre-algebra-page";
 import TrigonometryPage from "./trigonometry-page";
