@@ -824,7 +824,10 @@ class MathInput extends React.Component {
         // keyboard appear. It should only require one finger, which is how iOS works.
         // TODO(diedra): Fix the bug that is causing Android to require a two finger tap
         // to the open the keyboard, and then remove the second half of this label.
-        const ariaLabel = `{i18n._("Math input box") i18n._("Tap with one or two fingers to open keyboard")}`;
+        const ariaLabel =
+            i18n._("Math input box") +
+            " " +
+            i18n._("Tap with one or two fingers to open keyboard");
 
         return (
             <View
