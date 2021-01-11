@@ -5,7 +5,7 @@
 
 const React = require("react");
 const PropTypes = require("prop-types");
-const ReactCSSTransitionGroup = require("react-addons-css-transition-group");
+const {CSSTransitionGroup} = require("react-transition-group");
 
 const KeyConfigs = require("../data/key-configs");
 const MultiSymbolPopover = require("./multi-symbol-popover");
@@ -53,7 +53,7 @@ class PopoverManager extends React.Component {
         const {popover} = this.props;
 
         return (
-            <ReactCSSTransitionGroup
+            <CSSTransitionGroup
                 transitionName={animationTransitionName}
                 transitionEnter={true}
                 transitionLeave={false}
@@ -68,7 +68,7 @@ class PopoverManager extends React.Component {
                         )}
                     />
                 )}
-            </ReactCSSTransitionGroup>
+            </CSSTransitionGroup>
         );
     }
 }
