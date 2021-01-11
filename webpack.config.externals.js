@@ -57,10 +57,10 @@ module.exports = {
             commonjs2: "react-dom",
             amd: "react-dom",
         },
-        "react-addons-css-transition-group": {
-            commonjs: "react-addons-css-transition-group",
-            commonjs2: "react-addons-css-transition-group",
-            amd: "react-addons-css-transition-group",
+        "react-transition-group": {
+            commonjs: "react-transition-group",
+            commonjs2: "react-transition-group",
+            amd: "react-transition-group",
         },
         "react-redux": {
             commonjs: "react-redux",
