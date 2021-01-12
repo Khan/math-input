@@ -4,7 +4,7 @@
 
 const React = require("react");
 const PropTypes = require("prop-types");
-const {CSSTransitionGroup} = require("react-transition-group");
+const {TransitionGroup, CSSTransition} = require("react-transition-group");
 const KeypadButton = require("./keypad-button");
 const KeyConfigs = require("../data/key-configs");
 const {KeyTypes, EchoAnimationTypes} = require("../consts");
@@ -124,29 +124,32 @@ class EchoManager extends React.Component {
                     // See: https://github.com/Khan/aphrodite/issues/68.
                     // As such, we have to do this with a stylesheet.
                     return (
-                        <CSSTransitionGroup
-                            transitionName={animationTransitionName}
-                            transitionEnter={true}
-                            transitionLeave={false}
-                            transitionEnterTimeout={animationDurationMs}
-                            key={animationType}
-                        >
-                            {echoesForType.map((echo) => {
-                                const {animationId} = echo;
-                                return (
-                                    <Echo
-                                        key={animationId}
-                                        animationDurationMs={
-                                            animationDurationMs
-                                        }
-                                        onAnimationFinish={() =>
-                                            onAnimationFinish(animationId)
-                                        }
-                                        {...echo}
-                                    />
-                                );
-                            })}
-                        </CSSTransitionGroup>
+                        <TransitionGroup key={animationType}>
+                            <CSSTransition
+                                classNames={animationTransitionName}
+                                enter={true}
+                                exit={false}
+                                timeout={{
+                                    enter: animationDurationMs,
+                                }}
+                            >
+                                {echoesForType.map((echo) => {
+                                    const {animationId} = echo;
+                                    return (
+                                        <Echo
+                                            key={animationId}
+                                            animationDurationMs={
+                                                animationDurationMs
+                                            }
+                                            onAnimationFinish={() =>
+                                                onAnimationFinish(animationId)
+                                            }
+                                            {...echo}
+                                        />
+                                    );
+                                })}
+                            </CSSTransition>
+                        </TransitionGroup>
                     );
                 })}
             </span>
