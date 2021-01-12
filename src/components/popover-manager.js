@@ -5,7 +5,7 @@
 
 const React = require("react");
 const PropTypes = require("prop-types");
-const {CSSTransitionGroup} = require("react-transition-group");
+const {TransitionGroup, CSSTransition} = require("react-transition-group");
 
 const KeyConfigs = require("../data/key-configs");
 const MultiSymbolPopover = require("./multi-symbol-popover");
@@ -53,22 +53,22 @@ class PopoverManager extends React.Component {
         const {popover} = this.props;
 
         return (
-            <CSSTransitionGroup
-                transitionName={animationTransitionName}
-                transitionEnter={true}
-                transitionLeave={false}
-                transitionEnterTimeout={animationDurationMs}
+            popover ? <CSSTransition
+                in={true}
+                classNames={animationTransitionName}
+                enter={true}
+                exit={false}
+                timeout={{
+                    enter: animationDurationMs,
+                }}
             >
-                {popover && (
-                    <PopoverContainer
-                        key={popover.childKeyIds[0]}
-                        bounds={popover.bounds}
-                        childKeys={popover.childKeyIds.map(
-                            (id) => KeyConfigs[id],
-                        )}
-                    />
-                )}
-            </CSSTransitionGroup>
+                <PopoverContainer
+                    key={popover.childKeyIds[0]}
+                    bounds={popover.bounds}
+                    childKeys={popover.childKeyIds.map((id) => KeyConfigs[id])}
+                />
+            </CSSTransition>
+            : null
         );
     }
 }

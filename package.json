@@ -75,7 +75,7 @@
     "react": "16.5",
     "react-dom": "16.5",
     "react-router-dom": "^4.2.2",
-    "react-transition-group": "1.2.1",
+    "react-transition-group": "^4.4.1",
     "webpack": "^4.32.2",
     "webpack-cli": "^3.3.2",
     "webpack-dev-server": "^3.4.1"
