@@ -53,26 +53,22 @@ class PopoverManager extends React.Component {
         const {popover} = this.props;
 
         return (
-            <TransitionGroup>
-                <CSSTransition
-                    classNames={animationTransitionName}
-                    enter={true}
-                    exit={false}
-                    timeout={{
-                        enter: animationDurationMs,
-                    }}
-                >
-                    {popover && (
-                        <PopoverContainer
-                            key={popover.childKeyIds[0]}
-                            bounds={popover.bounds}
-                            childKeys={popover.childKeyIds.map(
-                                (id) => KeyConfigs[id],
-                            )}
-                        />
-                    )}
-                </CSSTransition>
-            </TransitionGroup>
+            popover ? <CSSTransition
+                in={true}
+                classNames={animationTransitionName}
+                enter={true}
+                exit={false}
+                timeout={{
+                    enter: animationDurationMs,
+                }}
+            >
+                <PopoverContainer
+                    key={popover.childKeyIds[0]}
+                    bounds={popover.bounds}
+                    childKeys={popover.childKeyIds.map((id) => KeyConfigs[id])}
+                />
+            </CSSTransition>
+            : null
         );
     }
 }

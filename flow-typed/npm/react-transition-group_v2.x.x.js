@@ -59,7 +59,9 @@ declare module 'react-transition-group' {
 
   declare export class Transition extends React$Component<TransitionProps & {
     in?: boolean,
-    children: ((status: TransitionStatus) => React$Node) | React$Node,
+    // KA>
+    children: ((status: TransitionStatus) => React$Element<any>) | React$Element<any>,
+    // <KA
     ...
   }> {}
 

@@ -16,17 +16,20 @@ const {echoPropType, popoverPropType} = require("./prop-types");
 
 class Keypad extends React.Component {
     static propTypes = {
-        // Whether the keypad is active, i.e., whether it should be rendered as
-        // visible or invisible.
-        active: PropTypes.bool,
         children: PropTypes.oneOfType([
             PropTypes.arrayOf(PropTypes.node),
             PropTypes.node,
         ]),
-        echoes: PropTypes.arrayOf(echoPropType).isRequired,
-        popover: popoverPropType,
         removeEcho: PropTypes.func.isRequired,
         style: PropTypes.any,
+
+        // The props below are injected by redux
+
+        // Whether the keypad is active, i.e., whether it should be rendered as
+        // visible or invisible.
+        active: PropTypes.bool,
+        echoes: PropTypes.arrayOf(echoPropType).isRequired,
+        popover: popoverPropType,
     };
 
     componentDidMount() {

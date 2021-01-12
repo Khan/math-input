@@ -125,19 +125,19 @@ class EchoManager extends React.Component {
                     // As such, we have to do this with a stylesheet.
                     return (
                         <TransitionGroup key={animationType}>
-                            <CSSTransition
-                                classNames={animationTransitionName}
-                                enter={true}
-                                exit={false}
-                                timeout={{
-                                    enter: animationDurationMs,
-                                }}
-                            >
-                                {echoesForType.map((echo) => {
-                                    const {animationId} = echo;
-                                    return (
+                            {echoesForType.map((echo) => {
+                                const {animationId} = echo;
+                                return (
+                                    <CSSTransition
+                                        classNames={animationTransitionName}
+                                        enter={true}
+                                        exit={false}
+                                        timeout={{
+                                            enter: animationDurationMs,
+                                        }}
+                                        key={animationId}
+                                    >
                                         <Echo
-                                            key={animationId}
                                             animationDurationMs={
                                                 animationDurationMs
                                             }
@@ -146,9 +146,9 @@ class EchoManager extends React.Component {
                                             }
                                             {...echo}
                                         />
-                                    );
-                                })}
-                            </CSSTransition>
+                                    </CSSTransition>
+                                );
+                            })}
                         </TransitionGroup>
                     );
                 })}
