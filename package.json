@@ -76,6 +76,7 @@
     "react-dom": "16.5",
     "react-router-dom": "^4.2.2",
     "react-transition-group": "^4.4.1",
+    "terser-webpack-plugin": "^4.2.3",
     "webpack": "^4.32.2",
     "webpack-cli": "^3.3.2",
     "webpack-dev-server": "^3.4.1"

@@ -2,6 +2,8 @@ const path = require("path");
 const webpack = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
+const terserOptions = require("./terser.js");
+
 module.exports = {
     entry: "./src/index.js",
     mode: "production",
@@ -12,7 +14,7 @@ module.exports = {
         libraryTarget: "umd",
     },
     optimization: {
-        minimize: true,
+        ...terserOptions,
     },
     module: {
         rules: [
