@@ -722,8 +722,9 @@ class MathInput extends React.Component {
         const keyMap = {
             "+": Keys.PLUS,
             "-": Keys.MINUS,
-            "*": Keys.TIMES,
-            "/": Keys.DIVIDE,
+            "*": Keys.CDOT,
+            ":": Keys.DIVIDE,
+            "/": Keys.FRAC_INCLUSIVE,
             ".": Keys.DECIMAL,
             "%": Keys.PERCENT,
             "=": Keys.EQUAL,

@@ -4,8 +4,13 @@
  */
 
 const Keys = require("../data/keys");
-const {DecimalSeparators, IconTypes, KeyTypes} = require("../consts");
-const {decimalSeparator} = require("../utils");
+const {
+    DecimalSeparators,
+    DivSeparators,
+    IconTypes,
+    KeyTypes,
+} = require("../consts");
+const {decimalSeparator, divSeparator} = require("../utils");
 const i18n = window.i18n || {_: (s) => s};
 
 export type KeyConfig = {
@@ -39,6 +44,18 @@ const KeyConfigs: Object = {
         type: KeyTypes.OPERATOR,
         // I18N: A label for a division sign.
         ariaLabel: i18n._("Divide"),
+        icon:
+            divSeparator === DivSeparators.CUSTOM
+                ? {
+                      // TODO(charlie): Get an SVG icon for the comma, or verify with
+                      // design that the text-rendered version is acceptable.
+                      type: IconTypes.TEXT,
+                      data: ":",
+                  }
+                : {
+                      type: IconTypes.SVG,
+                      data: Keys.DIVIDE,
+                  },
     },
     [Keys.DECIMAL]: {
         type: KeyTypes.VALUE,

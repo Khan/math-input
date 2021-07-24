@@ -1,9 +1,7 @@
 {
-  "name": "@khanacademy/math-input",
-  "publishConfig": {
-    "access": "public"
-  },
-  "version": "0.3.2",
+  "name": "@virtual-teacher/math-input",
+  "private": true,
+  "version": "0.4.0",
   "description": "",
   "main": "build/math-input.js",
   "files": [
@@ -16,7 +14,6 @@
     "watch": "webpack --config webpack.config.externals.js --watch",
     "start": "webpack-dev-server --open",
     "format": "prettier --write \"src/**\" \"test/**\" \"lib/**\"",
-    "prepublish": "yarn build",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
@@ -26,7 +23,7 @@
     "aphrodite": "^1.1.0",
     "jquery": "2.1.1",
     "katex": "0.11.1",
-    "mathquill": "git+https://git@github.com/Khan/mathquill.git#a9ae54e057c5c1acc8244a5627acbff29901d992",
+    "mathquill": "git+https://git@github.com/virtual-teacher/mathquill.git#78c5d92536e5b7da6773d14e5d0eed6f31067e58",
     "performance-now": "^0.2.0",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0"

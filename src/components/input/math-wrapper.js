@@ -11,10 +11,11 @@ const MathQuill = require("mathquill");
 
 const Keys = require("../../data/keys");
 const CursorContexts = require("./cursor-contexts");
-const {DecimalSeparators} = require("../../consts");
-const {decimalSeparator} = require("../../utils");
+const {DecimalSeparators, DivSeparators} = require("../../consts");
+const {decimalSeparator, divSeparator} = require("../../utils");
 
 const decimalSymbol = decimalSeparator === DecimalSeparators.COMMA ? "," : ".";
+const divSymbol = decimalSeparator === DivSeparators.CLASSIC ? "\\div" : ":";
 
 const WRITE = "write";
 const CMD = "cmd";
@@ -30,7 +31,10 @@ const KeyActions = {
     [Keys.MINUS]: {str: "-", fn: WRITE},
     [Keys.NEGATIVE]: {str: "-", fn: WRITE},
     [Keys.TIMES]: {str: "\\times", fn: WRITE},
-    [Keys.DIVIDE]: {str: "\\div", fn: WRITE},
+    [Keys.DIVIDE]: {
+        str: divSymbol,
+        fn: WRITE,
+    },
     [Keys.DECIMAL]: {
         str: decimalSymbol,
         fn: WRITE,

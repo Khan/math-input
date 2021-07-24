@@ -6,6 +6,7 @@ module.exports = {
     KeypadTypes: {
         FRACTION: "FRACTION",
         EXPRESSION: "EXPRESSION",
+        CUSTOM_VT_MATH: "CUSTOM_VT_MATH",
     },
 
     KeyTypes: {
@@ -63,6 +64,10 @@ module.exports = {
     DecimalSeparators: {
         COMMA: "COMMA",
         PERIOD: "PERIOD",
+    },
+    DivSeparators: {
+        CLASSIC: "CLASSIC",
+        CUSTOM: "CUSTOM",
     },
 
     EchoAnimationTypes: {

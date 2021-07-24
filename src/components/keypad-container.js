@@ -6,6 +6,7 @@ const {StyleSheet} = require("aphrodite");
 const {View} = require("../fake-react-native-web");
 const FractionKeypad = require("./fraction-keypad");
 const ExpressionKeypad = require("./expression-keypad");
+const CustomVTMathKeypad = require("./custom-vt-math-keypad");
 const NavigationPad = require("./navigation-pad");
 const zIndexes = require("./z-indexes");
 const {setPageSize} = require("../actions");
@@ -135,6 +136,9 @@ class KeypadContainer extends React.Component {
 
             case KeypadTypes.EXPRESSION:
                 return <ExpressionKeypad {...keypadProps} />;
+
+            case KeypadTypes.CUSTOM_VT_MATH:
+                return <CustomVTMathKeypad {...keypadProps} />;
 
             default:
                 throw new Error("Invalid keypad type: " + keypadType);

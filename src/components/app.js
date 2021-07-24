@@ -10,7 +10,7 @@ class App extends React.Component {
     state = {
         keypadElement: null,
         value: "",
-        keypadType: consts.KeypadTypes.EXPRESSION,
+        keypadType: consts.KeypadTypes.CUSTOM_VT_MATH,
     };
 
     handleChange = (e) => {
@@ -44,13 +44,19 @@ class App extends React.Component {
                             <option value={consts.KeypadTypes.EXPRESSION}>
                                 EXPRESSION
                             </option>
+                            <option value={consts.KeypadTypes.CUSTOM_VT_MATH}>
+                                VT
+                            </option>
                         </select>
                     </View>
                 </View>
                 <Keypad
                     onElementMounted={(node) => {
                         if (node && !this.state.keypadElement) {
-                            this.setState({keypadElement: node});
+                            this.setState({
+                                keypadElement: node,
+                                keypadType: consts.KeypadTypes.CUSTOM_VT_MATH,
+                            });
                         }
                     }}
                 />
