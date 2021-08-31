@@ -875,7 +875,6 @@ class MathInput extends React.Component {
 }
 
 const fontSizePt = 18;
-const inputMaxWidth = 128;
 
 // The height of numerals in Symbola (rendered at 18pt) is about 20px (though
 // they render at 24px due to padding for ascenders and descenders). We want our
@@ -893,7 +892,7 @@ const styles = StyleSheet.create({
         position: "relative",
         display: "inline-block",
         verticalAlign: "middle",
-        maxWidth: inputMaxWidth,
+        width: "100%",
     },
 });
 
@@ -911,13 +910,13 @@ const inlineStyles = {
         backgroundColor: "white",
         minHeight: minHeightPx,
         minWidth: minWidthPx,
-        maxWidth: inputMaxWidth,
         boxSizing: "border-box",
         position: "relative",
         borderStyle: "solid",
         borderColor: Color.offBlack50,
         borderRadius: 4,
         color: offBlack,
+        width: "100%",
     },
 };
 
