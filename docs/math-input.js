@@ -76964,7 +76964,8 @@ var MathWrapper = /*#__PURE__*/function () {
         this._handleLeftArrow(cursor);
       } else if (key === Keys.RIGHT || key === Keys.JUMP_OUT) {
         this._handleRightArrow(cursor);
-      } else if (/^[a-zA-Z]$/.test(key)) {
+      } else if (/^[a-zA-Z]|[ą,ć,ę,ń,ó,ś,ź,ż,Ą,Ć,Ę,Ń,Ó,Ś,Ź,Ż]$/.test(key) && !/^NUM_\d/.test(key)) {
+        // polish characters only
         this.mathField[WRITE](key);
       } else if (/^NUM_\d/.test(key)) {
         this.mathField[WRITE](key[4]);
@@ -81555,7 +81556,8 @@ var PrimaryPage = /*#__PURE__*/function (_React$Component) {
           gridTemplateRows: "repeat(1, 1fr)"
         }
       }, /*#__PURE__*/React.createElement(TouchableKeypadButton, {
-        keyConfig: Keys.NOOP
+        keyConfig: Keys.NOOP,
+        borders: []
       }), /*#__PURE__*/React.createElement(ManyKeypadButton, {
         keys: ["a", "A", "ą", "Ą"]
       }), /*#__PURE__*/React.createElement(ManyKeypadButton, {
@@ -81575,7 +81577,8 @@ var PrimaryPage = /*#__PURE__*/function (_React$Component) {
       }), /*#__PURE__*/React.createElement(ManyKeypadButton, {
         keys: ["l", "L"]
       }), /*#__PURE__*/React.createElement(TouchableKeypadButton, {
-        keyConfig: Keys.NOOP
+        keyConfig: Keys.NOOP,
+        borders: []
       })), /*#__PURE__*/React.createElement(View, {
         style: {
           backgroundColor: "#DBDCDD",
@@ -81585,7 +81588,8 @@ var PrimaryPage = /*#__PURE__*/function (_React$Component) {
           gridTemplateRows: "repeat(1, 1fr)"
         }
       }, /*#__PURE__*/React.createElement(TouchableKeypadButton, {
-        keyConfig: Keys.NOOP
+        keyConfig: Keys.NOOP,
+        borders: []
       }), /*#__PURE__*/React.createElement(ManyKeypadButton, {
         keys: ["z", "Z", "ź", "Ź", "ż", "Ż"]
       }), /*#__PURE__*/React.createElement(ManyKeypadButton, {
@@ -81601,7 +81605,8 @@ var PrimaryPage = /*#__PURE__*/function (_React$Component) {
       }), /*#__PURE__*/React.createElement(ManyKeypadButton, {
         keys: ["m", "M"]
       }), /*#__PURE__*/React.createElement(TouchableKeypadButton, {
-        keyConfig: Keys.NOOP
+        keyConfig: Keys.NOOP,
+        borders: []
       })), /*#__PURE__*/React.createElement(View, {
         style: {
           backgroundColor: "#DBDCDD",
@@ -81611,11 +81616,14 @@ var PrimaryPage = /*#__PURE__*/function (_React$Component) {
           gridTemplateRows: "repeat(1, 1fr)"
         }
       }, /*#__PURE__*/React.createElement(TouchableKeypadButton, {
-        keyConfig: Keys.NOOP
+        keyConfig: Keys.NOOP,
+        borders: []
       }), /*#__PURE__*/React.createElement(TouchableKeypadButton, {
-        keyConfig: Keys.NOOP
+        keyConfig: Keys.NOOP,
+        borders: []
       }), /*#__PURE__*/React.createElement(TouchableKeypadButton, {
-        keyConfig: Keys.NOOP
+        keyConfig: Keys.NOOP,
+        borders: []
       }), /*#__PURE__*/React.createElement(TouchableKeypadButton, {
         keyConfig: Keys.BACKSPACE
       }), /*#__PURE__*/React.createElement(TouchableKeypadButton, {
@@ -82529,7 +82537,7 @@ for (var _i2 = 0, _LETTERS = LETTERS; _i2 < _LETTERS.length; _i2++) {
       type: KeyTypes.VALUE,
       ariaLabel: _textRepresentation,
       icon: {
-        type: IconTypes.MATH,
+        type: IconTypes.TEXT,
         data: _textRepresentation
       }
     };
@@ -83411,7 +83419,6 @@ var createStore = function createStore() {
           numMaxVisibleRows: keypadForType[keypadType].maxVisibleRows,
           numPages: keypadForType[keypadType].numPages
         };
-        console.log("CONFIGURE KEYPAD", keypadType, gridDimensions, action);
         return _objectSpread(_objectSpread(_objectSpread({}, state), layoutParametersForDimensions(state.pageDimensions, gridDimensions)), {}, {
           gridDimensions: gridDimensions
         });
