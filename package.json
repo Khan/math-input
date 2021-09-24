@@ -1,7 +1,7 @@
 {
   "name": "@virtual-teacher/math-input",
   "private": true,
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "",
   "main": "build/math-input.js",
   "files": [
