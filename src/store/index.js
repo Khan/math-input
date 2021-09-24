@@ -68,7 +68,7 @@ const createStore = () => {
         }
     };
 
-    const defaultKeypadType = KeypadTypes.EXPRESSION;
+    const defaultKeypadType = KeypadTypes.CUSTOM_VT_MATH;
 
     const initialKeypadState = {
         extraKeys: ["x", "y", Keys.THETA, Keys.PI],
@@ -465,6 +465,28 @@ const createStore = () => {
                         gridDimensions,
                     ),
                     gridDimensions,
+                };
+            case "SetGridSize":
+                const {
+                    rows,
+                    columns,
+                    maxVisibleRows,
+                    numPages,
+                } = action.payload;
+                const updatedGridDimensions = {
+                    numRows: rows,
+                    numColumns: columns,
+                    numMaxVisibleRows: maxVisibleRows,
+                    numPages: numPages,
+                };
+
+                return {
+                    ...state,
+                    ...layoutParametersForDimensions(
+                        state.pageDimensions,
+                        updatedGridDimensions,
+                    ),
+                    gridDimensions: updatedGridDimensions,
                 };
 
             case "SetPageSize":

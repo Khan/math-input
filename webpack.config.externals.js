@@ -5,7 +5,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const terserOptions = require("./terser.js");
 
 module.exports = {
-    entry: "./src/index.js",
+    entry: "./src/vt.js",
     mode: "production",
     output: {
         path: path.join(__dirname, "build"),

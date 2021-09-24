@@ -32,7 +32,7 @@ class ManyKeypadButton extends React.Component {
             return <TouchableKeypadButton keyConfig={keyConfig} {...rest} />;
         } else {
             const keyConfig = {
-                id: Keys.MANY,
+                id: keys.join(","),
                 type: KeyTypes.MANY,
                 childKeyIds: keys,
             };

@@ -47,7 +47,13 @@ const KeyActions = {
     [Keys.RIGHT_PAREN]: {str: ")", fn: CMD},
     [Keys.SQRT]: {str: "sqrt", fn: CMD},
     [Keys.PI]: {str: "pi", fn: CMD},
+    [Keys.ABS]: {str: "\\mid \\quad \\mid", fn: WRITE},
+    [Keys.ANGLE]: {str: "\\angle", fn: WRITE},
+    [Keys.ALPHA]: {str: "alpha", fn: CMD},
+    [Keys.BETA]: {str: "beta", fn: CMD},
+    [Keys.GAMMA]: {str: "gamma", fn: CMD},
     [Keys.THETA]: {str: "theta", fn: CMD},
+    [Keys.DEGREE]: {str: "\\degree", fn: WRITE},
     [Keys.RADICAL]: {str: "nthroot", fn: CMD},
     [Keys.LT]: {str: "<", fn: WRITE},
     [Keys.LEQ]: {str: "\\leq", fn: WRITE},
@@ -75,10 +81,13 @@ const Numerals = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 const GreekLetters = ["\\theta", "\\pi"];
 const Letters = [
     "A",
+    "Ą",
     "B",
     "C",
+    "Ć",
     "D",
     "E",
+    "Ę",
     "F",
     "G",
     "H",
@@ -88,11 +97,14 @@ const Letters = [
     "L",
     "M",
     "N",
+    "Ń",
     "O",
+    "Ó",
     "P",
     "Q",
     "R",
     "S",
+    "Ś",
     "T",
     "U",
     "V",
@@ -100,6 +112,8 @@ const Letters = [
     "X",
     "Y",
     "Z",
+    "Ź",
+    "Ż",
 ];
 
 // We only consider numerals, variables, and Greek Letters to be proper
@@ -214,7 +228,11 @@ class MathWrapper {
             this._handleLeftArrow(cursor);
         } else if (key === Keys.RIGHT || key === Keys.JUMP_OUT) {
             this._handleRightArrow(cursor);
-        } else if (/^[a-zA-Z]$/.test(key)) {
+        } else if (
+            /^[a-zA-Z]|[ą,ć,ę,ń,ó,ś,ź,ż,Ą,Ć,Ę,Ń,Ó,Ś,Ź,Ż]$/.test(key) &&
+            !/^NUM_\d/.test(key)
+        ) {
+            // polish characters only
             this.mathField[WRITE](key);
         } else if (/^NUM_\d/.test(key)) {
             this.mathField[WRITE](key[4]);

@@ -2,7 +2,8 @@ const React = require("react");
 const {StyleSheet} = require("aphrodite");
 
 const {View} = require("../fake-react-native-web");
-const {components, consts} = require("../index");
+// const {components, consts} = require("../index");
+const {components, consts} = require("../vt");
 
 const {Keypad, KeypadInput} = components;
 
@@ -24,32 +25,14 @@ class App extends React.Component {
     render() {
         return (
             <View>
-                <View style={styles.container}>
-                    <KeypadInput
-                        value={this.state.value}
-                        keypadElement={this.state.keypadElement}
-                        onChange={(value, cb) => this.setState({value}, cb)}
-                        onFocus={() => this.state.keypadElement.activate()}
-                        onBlur={() => this.state.keypadElement.dismiss()}
-                    />
-                    <View style={styles.selectContainer}>
-                        Keypad type:
-                        <select
-                            onChange={this.handleChange}
-                            value={this.state.keypadType}
-                        >
-                            <option value={consts.KeypadTypes.FRACTION}>
-                                FRACTION
-                            </option>
-                            <option value={consts.KeypadTypes.EXPRESSION}>
-                                EXPRESSION
-                            </option>
-                            <option value={consts.KeypadTypes.CUSTOM_VT_MATH}>
-                                VT
-                            </option>
-                        </select>
-                    </View>
-                </View>
+                DEMO TEST
+                <KeypadInput
+                    value={this.state.value}
+                    keypadElement={this.state.keypadElement}
+                    onChange={(value, cb) => this.setState({value}, cb)}
+                    onFocus={() => this.state.keypadElement.activate()}
+                    onBlur={() => this.state.keypadElement.dismiss()}
+                />
                 <Keypad
                     onElementMounted={(node) => {
                         if (node && !this.state.keypadElement) {
@@ -64,18 +47,5 @@ class App extends React.Component {
         );
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        marginTop: 10,
-        marginLeft: 20,
-        marginRight: 20,
-        marginBottom: 40,
-    },
-    selectContainer: {
-        marginTop: 16,
-        flexDirection: "row",
-    },
-});
 
 module.exports = App;

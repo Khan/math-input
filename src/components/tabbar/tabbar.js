@@ -1,14 +1,10 @@
-// @flow
+const React = require("react");
 
-import React from "react";
+const {StyleSheet} = require("aphrodite");
+const {View} = require("@khanacademy/wonder-blocks-core");
+const Color = require("@khanacademy/wonder-blocks-color");
 
-import {StyleSheet} from "aphrodite";
-import {View} from "@khanacademy/wonder-blocks-core";
-import Color from "@khanacademy/wonder-blocks-color";
-
-import TabbarItem from "./item";
-
-import type {TabbarItemType} from "./item";
+const TabbarItem = require("./item");
 
 const styles = StyleSheet.create({
     tabbar: {
@@ -22,16 +18,7 @@ const styles = StyleSheet.create({
     },
 });
 
-type TabbarState = {
-    selectedItem: number,
-};
-
-type TabbarProps = {
-    items: Array<TabbarItemType>,
-    onSelect: (item: TabbarItemType) => void,
-};
-
-class Tabbar extends React.Component<TabbarProps, TabbarState> {
+class Tabbar extends React.Component {
     state = {
         selectedItem: 0,
     };

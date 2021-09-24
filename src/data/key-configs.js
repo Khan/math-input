@@ -31,7 +31,7 @@ const KeyConfigs: Object = {
         ariaLabel: i18n._("Minus"),
     },
     [Keys.NEGATIVE]: {
-        type: KeyTypes.VALUE,
+        type: KeyTypes.OPERATOR,
         // I18N: A label for a minus sign.
         ariaLabel: i18n._("Negative"),
     },
@@ -193,12 +193,60 @@ const KeyConfigs: Object = {
         type: KeyTypes.OPERATOR,
         ariaLabel: i18n._("Tangent"),
     },
+    [Keys.ANGLE]: {
+        type: KeyTypes.VALUE,
+        ariaLabel: i18n._("Angle"),
+        icon: {
+            type: IconTypes.MATH,
+            data: "\\sphericalangle",
+        },
+    },
+    [Keys.ABS]: {
+        type: KeyTypes.OPERATOR,
+        ariaLabel: i18n._("Absolute"),
+        icon: {
+            type: IconTypes.MATH,
+            data: "| {x} |",
+        },
+    },
     [Keys.PI]: {
         type: KeyTypes.VALUE,
         ariaLabel: i18n._("Pi"),
         icon: {
             type: IconTypes.MATH,
             data: "\\pi",
+        },
+    },
+    [Keys.ALPHA]: {
+        type: KeyTypes.VALUE,
+        ariaLabel: i18n._("Alpha"),
+        icon: {
+            type: IconTypes.MATH,
+            data: "\\alpha",
+        },
+    },
+    [Keys.BETA]: {
+        type: KeyTypes.VALUE,
+        ariaLabel: i18n._("Beta"),
+        icon: {
+            type: IconTypes.MATH,
+            data: "\\beta",
+        },
+    },
+    [Keys.GAMMA]: {
+        type: KeyTypes.VALUE,
+        ariaLabel: i18n._("Gamma"),
+        icon: {
+            type: IconTypes.MATH,
+            data: "\\gamma",
+        },
+    },
+    [Keys.DEGREE]: {
+        type: KeyTypes.VALUE,
+        ariaLabel: i18n._("Degree"),
+        icon: {
+            type: IconTypes.MATH,
+            data: "\\degree",
         },
     },
     [Keys.THETA]: {
@@ -308,10 +356,13 @@ for (const num of NUMBERS) {
 // Add in every variable.
 const LETTERS = [
     "A",
+    "Ą",
     "B",
     "C",
+    "Ć",
     "D",
     "E",
+    "Ę",
     "F",
     "G",
     "H",
@@ -321,11 +372,14 @@ const LETTERS = [
     "L",
     "M",
     "N",
+    "Ń",
     "O",
+    "Ó",
     "P",
     "Q",
     "R",
     "S",
+    "Ś",
     "T",
     "U",
     "V",
@@ -333,6 +387,8 @@ const LETTERS = [
     "X",
     "Y",
     "Z",
+    "Ź",
+    "Ż",
 ];
 for (const letter of LETTERS) {
     const lowerCaseVariable = letter.toLowerCase();
@@ -343,7 +399,7 @@ for (const letter of LETTERS) {
             type: KeyTypes.VALUE,
             ariaLabel: textRepresentation,
             icon: {
-                type: IconTypes.MATH,
+                type: IconTypes.TEXT,
                 data: textRepresentation,
             },
         };

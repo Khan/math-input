@@ -23,6 +23,9 @@ class MultiSymbolGrid extends React.Component {
     render() {
         const {focused, icons} = this.props;
 
+        // VT: we display first icon and others upon opening
+        return <Icon icon={icons[0]} focused={focused} />;
+
         // Validate that we only received math-based icons. Right now, this
         // component only supports math icons (and it should only be passed
         // variables and Greek letters, which are always rendered as math).

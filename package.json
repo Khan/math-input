@@ -1,7 +1,7 @@
 {
   "name": "@virtual-teacher/math-input",
   "private": true,
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "",
   "main": "build/math-input.js",
   "files": [
@@ -11,6 +11,7 @@
     "test": "jest",
     "watch_test": "jest --watch",
     "build": "webpack --config webpack.config.externals.js",
+    "build-demo": "webpack --config webpack.config.js",
     "watch": "webpack --config webpack.config.externals.js --watch",
     "start": "webpack-dev-server --open",
     "format": "prettier --write \"src/**\" \"test/**\" \"lib/**\"",

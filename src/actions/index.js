@@ -26,6 +26,13 @@ module.exports = {
         };
     },
 
+    setGridSize(rows, columns, maxVisibleRows, numPages) {
+        return {
+            type: "SetGridSize",
+            payload: {rows, columns, maxVisibleRows, numPages},
+        };
+    },
+
     setPageSize(pageWidthPx, pageHeightPx) {
         return {
             type: "SetPageSize",

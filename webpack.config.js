@@ -12,7 +12,7 @@ module.exports = {
         publicPath: "/",
         filename: "math-input.js",
         chunkFilename: "math-input.js",
-        path: path.resolve(__dirname, "build"),
+        path: path.resolve(__dirname, "docs"),
     },
     module: {
         rules: [

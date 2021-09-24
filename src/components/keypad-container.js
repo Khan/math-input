@@ -9,7 +9,7 @@ const ExpressionKeypad = require("./expression-keypad");
 const CustomVTMathKeypad = require("./custom-vt-math-keypad");
 const NavigationPad = require("./navigation-pad");
 const zIndexes = require("./z-indexes");
-const {setPageSize} = require("../actions");
+const {setPageSize, setGridSize} = require("../actions");
 const {keyIdPropType} = require("./prop-types");
 const {KeypadTypes, LayoutModes} = require("../consts");
 const {row, centered, fullWidth} = require("./styles");
@@ -110,6 +110,7 @@ class KeypadContainer extends React.Component {
             keypadType,
             layoutMode,
             navigationPadEnabled,
+            onKeypadSizeChange,
         } = this.props;
 
         const keypadProps = {
@@ -121,6 +122,7 @@ class KeypadContainer extends React.Component {
             roundTopLeft:
                 layoutMode === LayoutModes.COMPACT && !navigationPadEnabled,
             roundTopRight: layoutMode === LayoutModes.COMPACT,
+            onKeypadSizeChange,
         };
 
         // Select the appropriate keyboard given the type.
@@ -294,8 +296,11 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, state) => {
     return {
+        onKeypadSizeChange: (rows, columns, maxRows, pages) => {
+            dispatch(setGridSize(rows, columns, maxRows, pages));
+        },
         onPageSizeChange: (pageWidthPx, pageHeightPx) => {
             dispatch(setPageSize(pageWidthPx, pageHeightPx));
         },

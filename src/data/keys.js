@@ -44,6 +44,13 @@ const Keys = {
     PI: "PI",
     THETA: "THETA",
 
+    ANGLE: "ANGLE",
+    ABS: "ABS",
+    ALPHA: "ALPHA",
+    BETA: "BETA",
+    GAMMA: "GAMMA",
+    DEGREE: "DEGREE",
+
     UP: "UP",
     RIGHT: "RIGHT",
     DOWN: "DOWN",

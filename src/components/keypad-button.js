@@ -136,13 +136,11 @@ class KeypadButton extends React.PureComponent {
                 backgroundStyle = styles.empty;
                 break;
 
-            case KeyTypes.MANY:
+            // VT: for unification, all was merged to use single color
             case KeyTypes.VALUE:
-                backgroundStyle = styles.value;
-                break;
-
+            case KeyTypes.MANY:
             case KeyTypes.OPERATOR:
-                backgroundStyle = styles.operator;
+                backgroundStyle = styles.value;
                 break;
 
             case KeyTypes.INPUT_NAVIGATION:
