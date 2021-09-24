@@ -21,7 +21,7 @@ const {
     roundedTopRight,
 } = require("./styles");
 const {BorderStyles} = require("../consts");
-const {valueGrey, controlGrey, offBlack16} = require("./common-style");
+const {valueGrey, controlGrey, vtGrey} = require("./common-style");
 const {cursorContextPropType, keyIdPropType} = require("./prop-types");
 const KeyConfigs = require("../data/key-configs");
 const CursorContexts = require("./input/cursor-contexts");
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     keypad: {
         // Set the background to light grey, so that when the user drags the
         // keypad pages past the edges, there's a grey backdrop.
-        backgroundColor: offBlack16,
+        backgroundColor: vtGrey,
     },
     // NOTE(charlie): These backgrounds are applied to as to fill in some
     // unfortunate 'cracks' in the layout. However, not all keys in the first

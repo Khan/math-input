@@ -10,6 +10,7 @@ module.exports = {
     offBlack32: "rgba(33, 36, 44, 0.32)",
     offBlack16,
     offBlack8: "rgba(33, 36, 44, 0.8)",
+    vtGrey: "#E6E5E1",
 
     iconSizeHeightPx: 48,
     iconSizeWidthPx: 48,
