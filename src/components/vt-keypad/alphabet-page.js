@@ -30,36 +30,36 @@ class PrimaryPage extends React.Component {
                 <KeyboardRow rows={10}>
                     <ManyKeypadButton keys={["q", "Q"]} />
                     <ManyKeypadButton keys={["w", "W"]} />
-                    <ManyKeypadButton keys={["e", "E", "ę", "Ę"]} />
+                    <ManyKeypadButton keys={["e", "ę", "E", "Ę"]} />
                     <ManyKeypadButton keys={["r", "R"]} />
                     <ManyKeypadButton keys={["t", "T"]} />
                     <ManyKeypadButton keys={["y", "Y"]} />
                     <ManyKeypadButton keys={["u", "U"]} />
                     <ManyKeypadButton keys={["i", "I"]} />
-                    <ManyKeypadButton keys={["o", "O", "ó", "Ó"]} />
+                    <ManyKeypadButton keys={["o", "ó", "O", "Ó"]} />
                     <ManyKeypadButton keys={["p", "P"]} />
                 </KeyboardRow>
                 <KeyboardRow rows={11}>
                     <div />
-                    <ManyKeypadButton keys={["a", "A", "ą", "Ą"]} />
-                    <ManyKeypadButton keys={["s", "S"]} />
+                    <ManyKeypadButton keys={["a", "ą", "A", "Ą"]} />
+                    <ManyKeypadButton keys={["s", "ś", "S", "Ś"]} />
                     <ManyKeypadButton keys={["d", "D"]} />
                     <ManyKeypadButton keys={["f", "F"]} />
                     <ManyKeypadButton keys={["g", "G"]} />
                     <ManyKeypadButton keys={["h", "H"]} />
                     <ManyKeypadButton keys={["j", "J"]} />
                     <ManyKeypadButton keys={["k", "K"]} />
-                    <ManyKeypadButton keys={["l", "L"]} />
+                    <ManyKeypadButton keys={["l", "ł", "L", "Ł"]} />
                     <TouchableKeypadButton keyConfig={KeyConfigs.BACKSPACE} />
                 </KeyboardRow>
                 <KeyboardRow rows={9}>
                     <div />
-                    <ManyKeypadButton keys={["z", "Z", "ź", "Ź", "ż", "Ż"]} />
+                    <ManyKeypadButton keys={["z", "ż", "ź", "Z", "Ż", "Ź"]} />
                     <ManyKeypadButton keys={["x", "X"]} />
                     <ManyKeypadButton keys={["c", "C", "ć", "Ć"]} />
                     <ManyKeypadButton keys={["v", "V"]} />
                     <ManyKeypadButton keys={["b", "B"]} />
-                    <ManyKeypadButton keys={["n", "N", "ń", "Ń"]} />
+                    <ManyKeypadButton keys={["n", "ń", "N", "Ń"]} />
                     <ManyKeypadButton keys={["m", "M"]} />
                     <TouchableKeypadButton keyConfig={dismissOrJumpOutKey} />
                 </KeyboardRow>

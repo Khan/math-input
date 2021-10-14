@@ -230,7 +230,7 @@ class MathWrapper {
         } else if (key === Keys.RIGHT || key === Keys.JUMP_OUT) {
             this._handleRightArrow(cursor);
         } else if (
-            /^[a-zA-Z]|[ą,ć,ę,ń,ó,ś,ź,ż,Ą,Ć,Ę,Ń,Ó,Ś,Ź,Ż]$/.test(key) &&
+            /^[a-zA-Z]|[ą,ć,ę,ł,ń,ó,ś,ź,ż,Ą,Ć,Ę,Ł,Ń,Ó,Ś,Ź,Ż]$/.test(key) &&
             !/^NUM_\d/.test(key)
         ) {
             // polish characters only
