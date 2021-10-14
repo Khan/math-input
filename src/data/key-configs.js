@@ -193,6 +193,10 @@ const KeyConfigs: Object = {
         type: KeyTypes.OPERATOR,
         ariaLabel: i18n._("Tangent"),
     },
+    [Keys.CTG]: {
+        type: KeyTypes.OPERATOR,
+        ariaLabel: i18n._("Cotangent"),
+    },
     [Keys.ANGLE]: {
         type: KeyTypes.VALUE,
         ariaLabel: i18n._("Angle"),

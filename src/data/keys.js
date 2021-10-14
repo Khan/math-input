@@ -39,6 +39,7 @@ const Keys = {
     SIN: "SIN",
     COS: "COS",
     TAN: "TAN",
+    CTG: "CTG",
 
     // TODO(charlie): Add in additional Greek letters.
     PI: "PI",

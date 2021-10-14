@@ -72,6 +72,7 @@ const NormalCommands = {
     [Keys.SIN]: "sin",
     [Keys.COS]: "cos",
     [Keys.TAN]: "tan",
+    [Keys.CTG]: "ctg",
 };
 
 const ArithmeticOperators = ["+", "-", "\\cdot", "\\times", "\\div"];
@@ -598,7 +599,7 @@ class MathWrapper {
         // a command being prefixed with a backslash leads to undesired
         // behavior. For example, Greek symbols, left parentheses, and square
         // roots all get treated as commands.
-        const validCommands = ["\\log", "\\ln", "\\cos", "\\sin", "\\tan"];
+        const validCommands = ["\\log", "\\ln", "\\cos", "\\sin", "\\tan", "\\ctg"];
 
         let name = "";
         let startNode;

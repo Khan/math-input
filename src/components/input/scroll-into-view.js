@@ -37,6 +37,7 @@ const scrollIntoView = (containerNode, keypadNode) => {
     const desiredMarginPx = 16;
 
     if (keypadNode) {
+        console.log(keypadNode)
         // NOTE(charlie): We can't use the bounding rect of the keypad,
         // as it is likely in the process of animating in. Instead, to
         // calculate its top, we make the strong assumption that the

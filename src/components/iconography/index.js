@@ -18,6 +18,7 @@ module.exports = {
     CUBE_ROOT: require("./cube-root"),
     PLUS: require("./plus"),
     TAN: require("./tan"),
+    CTG: require("./ctg"),
     LEFT: require("./left"),
     UP: require("./up"),
     DOWN: require("./down"),

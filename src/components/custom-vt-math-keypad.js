@@ -38,7 +38,7 @@ class CustomVTMathKeypad extends React.Component {
     };
 
     static rows = 4;
-    static columns = 5;
+    static columns = 6;
 
     // Though we include an infinite-key popover in the bottom-left, it's
     // assumed that we don't need to accommodate cases in which that key

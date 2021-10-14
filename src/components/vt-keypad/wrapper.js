@@ -8,7 +8,6 @@ const Clickable = require("@khanacademy/wonder-blocks-clickable");
 const Tabbar = require("../tabbar/tabbar");
 const PrimaryPage = require("./primary-page");
 const Secondary = require("./secondary-page");
-const Tertiary = require("./tertiary-page");
 const Alphabet = require("./alphabet-page");
 
 class VTKeypadWrapper extends React.Component {
@@ -23,14 +22,14 @@ class VTKeypadWrapper extends React.Component {
             // rows, columns, maxVisibleRows, numPages
             onKeypadSizeChange(4, undefined, 4, 3);
         } else {
-            onKeypadSizeChange(4, 5, 4, 3);
+            onKeypadSizeChange(4, 6, 4, 3);
         }
     }
     render() {
         const {selectedPage} = this.state;
         const {dismissOrJumpOutKey} = this.props;
 
-        const availablePages = ["Numbers", "Operators", "Geometry", "Alphabet"];
+        const availablePages = ["Numbers", "Geometry", "Alphabet"];
         return (
             <View>
                 <Tabbar
@@ -42,11 +41,8 @@ class VTKeypadWrapper extends React.Component {
                 {selectedPage === "Numbers" && (
                     <PrimaryPage dismissOrJumpOutKey={dismissOrJumpOutKey} />
                 )}
-                {selectedPage === "Operators" && (
-                    <Secondary dismissOrJumpOutKey={dismissOrJumpOutKey} />
-                )}
                 {selectedPage === "Geometry" && (
-                    <Tertiary dismissOrJumpOutKey={dismissOrJumpOutKey} />
+                    <Secondary dismissOrJumpOutKey={dismissOrJumpOutKey} />
                 )}
                 {selectedPage === "Alphabet" && (
                     <Alphabet dismissOrJumpOutKey={dismissOrJumpOutKey} />

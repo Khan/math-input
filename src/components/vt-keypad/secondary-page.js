@@ -6,50 +6,45 @@ const Keys = require("../../data/key-configs");
 
 const TouchableKeypadButton = require("../touchable-keypad-button");
 const ManyKeypadButton = require("../many-keypad-button");
+const KeyboardWrapper = require("./keyboard-wrapper");
+const KeyboardRow = require("./keyboard-row");
+const { PlaceHolderButton } = require("../keypad/keypad-page-items");
 
 class SecondaryPage extends React.Component {
     render() {
         const {dismissOrJumpOutKey} = this.props;
         return (
-            <View
-                style={{
-                    backgroundColor: "#DBDCDD",
-                    width: "100%",
-                    height: 256,
+            <KeyboardWrapper>
+                <KeyboardRow rows={6}>
+                    <TouchableKeypadButton keyConfig={Keys.DEGREE} />
+                    <TouchableKeypadButton keyConfig={Keys.PI} />
+                    <TouchableKeypadButton keyConfig={Keys.ABS} />
+                </KeyboardRow>
 
-                    display: "grid",
-                    gridTemplateColumns: "repeat(5, 1fr)",
-                    gridTemplateRows: "repeat(4, 1fr)",
-                }}
-            >
-                {/* Row 1 */}
-                <TouchableKeypadButton keyConfig={Keys.PERCENT} />
-                <TouchableKeypadButton keyConfig={Keys.PI} />
-                <TouchableKeypadButton keyConfig={Keys.ABS} />
-                <TouchableKeypadButton keyConfig={Keys.DEGREE} />
-                <TouchableKeypadButton keyConfig={Keys.NOOP} />
+                <KeyboardRow rows={6}>
+                    <TouchableKeypadButton keyConfig={Keys.ALPHA} />
+                    <TouchableKeypadButton keyConfig={Keys.BETA} />
+                    <TouchableKeypadButton keyConfig={Keys.GAMMA} />
+                </KeyboardRow>
 
-                {/* Row 2 */}
-                <TouchableKeypadButton keyConfig={Keys.ALPHA} />
-                <TouchableKeypadButton keyConfig={Keys.BETA} />
-                <TouchableKeypadButton keyConfig={Keys.GAMMA} />
-                <TouchableKeypadButton keyConfig={Keys.NOOP} />
-                <TouchableKeypadButton keyConfig={Keys.NOOP} />
+                <KeyboardRow rows={6}>
+                    <TouchableKeypadButton keyConfig={Keys.SIN} />
+                    <TouchableKeypadButton keyConfig={Keys.COS} />
+                    <TouchableKeypadButton keyConfig={Keys.TAN} />
+                    <TouchableKeypadButton keyConfig={Keys.CTG} />
+                    <div />
+                    <TouchableKeypadButton keyConfig={Keys.BACKSPACE} />
+                </KeyboardRow>
 
-                {/* Row 3 */}
-                <TouchableKeypadButton keyConfig={Keys.NOOP} />
-                <TouchableKeypadButton keyConfig={Keys.NOOP} />
-                <TouchableKeypadButton keyConfig={Keys.NOOP} />
-                <TouchableKeypadButton keyConfig={Keys.NOOP} />
-                <TouchableKeypadButton keyConfig={Keys.NOOP} />
-
-                {/* Row 4 */}
-                <TouchableKeypadButton keyConfig={Keys.NOOP} />
-                <TouchableKeypadButton keyConfig={Keys.NOOP} />
-                <TouchableKeypadButton keyConfig={Keys.NOOP} />
-                <TouchableKeypadButton keyConfig={Keys.BACKSPACE} />
-                <TouchableKeypadButton keyConfig={dismissOrJumpOutKey} />
-            </View>
+                <KeyboardRow rows={6}>
+                    <TouchableKeypadButton keyConfig={Keys.LN} />
+                    <TouchableKeypadButton keyConfig={Keys.LOG} />
+                    <TouchableKeypadButton keyConfig={Keys.LOG_N} />
+                    <div />
+                    <div />
+                    <TouchableKeypadButton keyConfig={dismissOrJumpOutKey} />
+                </KeyboardRow>
+            </KeyboardWrapper>
         );
     }
 }
