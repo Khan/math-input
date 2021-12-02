@@ -109,6 +109,11 @@ module.exports = {
             commonjs2: "@khanacademy/wonder-blocks-color",
             amd: "@khanacademy/wonder-blocks-color",
         },
+        "react-router": {
+            commonjs: "react-router",
+            commonjs2: "react-router",
+            amd: "react-router",
+        },
         "react-router-dom": {
             commonjs: "react-router-dom",
             commonjs2: "react-router-dom",

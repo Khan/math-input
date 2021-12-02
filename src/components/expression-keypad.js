@@ -321,4 +321,6 @@ const mapStateToProps = (state) => {
     };
 };
 
-module.exports = connect(mapStateToProps)(ExpressionKeypad);
+module.exports = connect(mapStateToProps, null, null, {forwardRef: true})(
+    ExpressionKeypad,
+);

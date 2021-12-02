@@ -22,6 +22,14 @@ class ProvidedKeypad extends React.Component {
         this.store = createStore();
     }
 
+    componentDidMount() {
+        this.mounted = true;
+    }
+
+    componentWillUnmount() {
+        this.mounted = false;
+    }
+
     activate = () => {
         this.store.dispatch(activateKeypad());
     };

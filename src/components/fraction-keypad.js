@@ -172,4 +172,6 @@ const mapStateToProps = (state) => {
     };
 };
 
-module.exports = connect(mapStateToProps)(FractionKeypad);
+module.exports = connect(mapStateToProps, null, null, {forwardRef: true})(
+    FractionKeypad,
+);

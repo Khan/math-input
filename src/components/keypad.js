@@ -147,4 +147,6 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(Keypad);
+module.exports = connect(mapStateToProps, mapDispatchToProps, null, {
+    forwardRef: true,
+})(Keypad);
