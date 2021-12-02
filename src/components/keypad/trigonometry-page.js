@@ -1,5 +1,5 @@
 // @flow
-import * as React from "react";
+import React from "react";
 import {View} from "@khanacademy/wonder-blocks-core";
 import Color from "@khanacademy/wonder-blocks-color";
 
@@ -22,7 +22,7 @@ export default class TrigonometryInputPage extends React.Component<
     Props,
     State,
 > {
-    render(): React.Node {
+    render() {
         const {onClickKey} = this.props;
         return (
             <KeypadPageContainer>

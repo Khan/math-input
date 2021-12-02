@@ -12,12 +12,12 @@ asset.
 In the future it would be great if these were included from files so that
 no copying and pasting is necessary.
 */
-import * as React from "react";
+import React from "react";
 
 // TODO: This should be an enumeration of all of the possible legal values
 type KeyId = string;
 
-export default function buttonAsset({id}: {id: KeyId}): React.Node {
+export default function buttonAsset({id}: {id: KeyId}) {
     switch (id) {
         case "NUM_0":
             return (

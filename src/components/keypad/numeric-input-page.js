@@ -1,5 +1,5 @@
 // @flow
-import * as React from "react";
+import React from "react";
 import {View} from "@khanacademy/wonder-blocks-core";
 import Color from "@khanacademy/wonder-blocks-color";
 
@@ -17,7 +17,7 @@ type Props = {|
     onClickKey: (keyConfig: string) => void,
 |};
 export default class NumericInputPage extends React.Component<Props> {
-    render(): React.Node {
+    render() {
         const {onClickKey} = this.props;
         return (
             <KeypadPageContainer>

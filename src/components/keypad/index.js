@@ -1,5 +1,5 @@
 //@flow
-import * as React from "react";
+import React from "react";
 
 import {StyleSheet} from "aphrodite";
 import {View} from "@khanacademy/wonder-blocks-core";
@@ -36,10 +36,10 @@ function allPages(props: Props): Array<TabbarItemType> {
 }
 
 export default class PreAlgebraKeypad extends React.Component<Props, State> {
-    state: State = {
+    state = {
         selectedPage: "Numbers",
     };
-    render(): React.Node {
+    render() {
         const {selectedPage} = this.state;
         const {onClickKey, preAlgebra} = this.props;
 

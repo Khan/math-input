@@ -1,6 +1,6 @@
 //@flow
 
-import * as React from "react";
+import React from "react";
 import {action} from "@storybook/addon-actions";
 import {INITIAL_VIEWPORTS} from "@storybook/addon-viewport";
 
@@ -21,7 +21,7 @@ export default {
     },
 };
 
-export const PreAlgebra = (): React.Node => (
+export const PreAlgebra = () => (
     <Keypad
         onClickKey={action("onClickKey")}
         preAlgebra={true}
@@ -29,7 +29,7 @@ export const PreAlgebra = (): React.Node => (
     />
 );
 
-export const Trigonometry = (): React.Node => (
+export const Trigonometry = () => (
     <Keypad
         onClickKey={action("onClickKey")}
         preAlgebra={true}

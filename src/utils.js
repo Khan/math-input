@@ -6,7 +6,7 @@ const {DecimalSeparators} = require("./consts");
 // back to a period. We can only depend on a subset of what localeplanet
 // provides, however -- the things in `icu-slim.js` (there's a copy in ../lib/
 // for reference).
-let decimalSeparator: string;
+let decimalSeparator;
 if (
     typeof window !== "undefined" &&
     window.icu &&
