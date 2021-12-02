@@ -1,5 +1,5 @@
 // @flow
-import React from "react";
+import * as React from "react";
 
 import {StyleSheet} from "aphrodite";
 import {View} from "@khanacademy/wonder-blocks-core";
@@ -71,7 +71,7 @@ type Props = {|
 
 type State = {};
 export default class Button extends React.Component<Props, State> {
-    render() {
+    render(): React.Node {
         const {onPress, children, style, tintColor} = this.props;
         return (
             <View style={style}>
