@@ -1,5 +1,5 @@
 // @flow
-import React from "react";
+import * as React from "react";
 import {View} from "@khanacademy/wonder-blocks-core";
 
 import Button from "./button";
@@ -9,7 +9,7 @@ import type {KeyConfig} from "../../data/key-configs";
 import type {Node} from "React";
 import type {StyleType} from "@khanacademy/wonder-blocks-core";
 
-const KeypadPageContainer = ({children}: {children: Node}) => (
+const KeypadPageContainer = ({children}: {children: Node}): React.Node => (
     <View
         style={{
             backgroundColor: "#DBDCDD",
@@ -35,7 +35,7 @@ const KeypadButton = ({
     tintColor?: string,
     style?: StyleType,
     onClickKey: (keyConfig: string) => void,
-}) => (
+}): React.Node => (
     <Button
         onPress={() => onClickKey(keyConfig.id)}
         tintColor={tintColor}
@@ -53,7 +53,7 @@ const SecondaryKeypadButton = ({
     keyConfig: KeyConfig,
     style?: any,
     onClickKey: (keyConfig: string) => void,
-}) => (
+}): React.Node => (
     <KeypadButton
         keyConfig={keyConfig}
         onClickKey={onClickKey}
@@ -70,7 +70,7 @@ const KeypadActionButton = ({
     keyConfig: KeyConfig,
     style?: any,
     onClickKey: (keyConfig: string) => void,
-}) => (
+}): React.Node => (
     <KeypadButton
         keyConfig={keyConfig}
         onClickKey={onClickKey}
@@ -79,7 +79,7 @@ const KeypadActionButton = ({
     />
 );
 
-const PlaceHolderButton = () => (
+const PlaceHolderButton = (): React.Node => (
     <View
         style={{
             height: "100%",

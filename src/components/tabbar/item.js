@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react";
+import * as React from "react";
 
 import {StyleSheet} from "aphrodite";
 import Clickable from "@khanacademy/wonder-blocks-clickable";
@@ -81,7 +81,7 @@ type Props = {
 type State = {};
 
 class TabbarItem extends React.Component<Props, State> {
-    render() {
+    render(): React.Node {
         const {onClick, itemType, itemState} = this.props;
         return (
             <Clickable onClick={onClick} disabled={itemState === "disabled"}>

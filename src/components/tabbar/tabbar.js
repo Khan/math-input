@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react";
+import * as React from "react";
 
 import {StyleSheet} from "aphrodite";
 import {View} from "@khanacademy/wonder-blocks-core";
@@ -32,10 +32,10 @@ type TabbarProps = {
 };
 
 class Tabbar extends React.Component<TabbarProps, TabbarState> {
-    state = {
+    state: TabbarState = {
         selectedItem: 0,
     };
-    render() {
+    render(): React.Node {
         const {items, onSelect} = this.props;
         return (
             <View style={styles.tabbar}>
