@@ -3,7 +3,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "",
   "main": "build/math-input.js",
   "files": [
@@ -33,9 +33,9 @@
     "mathquill": "git+https://git@github.com/Khan/mathquill.git#a9ae54e057c5c1acc8244a5627acbff29901d992",
     "performance-now": "^0.2.0",
     "prop-types": "15.6.1",
-    "react-redux": "7.2.6",
     "react": "16.14.0",
     "react-dom": "16.14.0",
+    "react-redux": "7.2.6",
     "react-router": "5.2.1",
     "react-router-dom": "5.3.0",
     "react-transition-group": "^4.4.1",
