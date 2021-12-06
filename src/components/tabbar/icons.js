@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react";
+import * as React from "react";
 
 import type {TabbarItemType} from "./item";
 
@@ -10,7 +10,7 @@ function IconAsset({
 }: {
     tintColor: string,
     type: TabbarItemType,
-}) {
+}): React.Node {
     if (type === "Geometry") {
         return (
             <svg

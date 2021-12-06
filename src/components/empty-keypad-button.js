@@ -43,4 +43,6 @@ const mapStateToProps = (state) => {
     };
 };
 
-module.exports = connect(mapStateToProps)(EmptyKeypadButton);
+module.exports = connect(mapStateToProps, null, null, {forwardRef: true})(
+    EmptyKeypadButton,
+);

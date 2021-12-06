@@ -140,4 +140,6 @@ const styles = StyleSheet.create({
     },
 });
 
-module.exports = connect(mapStateToProps)(TouchableKeypadButton);
+module.exports = connect(mapStateToProps, null, null, {forwardRef: true})(
+    TouchableKeypadButton,
+);

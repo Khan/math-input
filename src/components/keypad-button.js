@@ -358,4 +358,6 @@ const mapStateToProps = (state) => {
     return state.layout.buttonDimensions;
 };
 
-module.exports = connect(mapStateToProps)(KeypadButton);
+module.exports = connect(mapStateToProps, null, null, {forwardRef: true})(
+    KeypadButton,
+);

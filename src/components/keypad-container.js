@@ -298,4 +298,6 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(KeypadContainer);
+module.exports = connect(mapStateToProps, mapDispatchToProps, null, {
+    forwardRef: true,
+})(KeypadContainer);

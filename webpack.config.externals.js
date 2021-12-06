@@ -4,6 +4,25 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const terserOptions = require("./terser.js");
 
+const externals = [
+    "prop-types",
+    "react",
+    "react-dom",
+    "react-transition-group",
+    "react-redux",
+    "redux",
+    "aphrodite",
+    "flow-enums-runtime",
+    "jquery",
+    "mathquill",
+    "katex",
+    "@khanacademy/wonder-blocks-clickable",
+    "@khanacademy/wonder-blocks-core",
+    "@khanacademy/wonder-blocks-color",
+    "react-router",
+    "react-router-dom",
+];
+
 module.exports = {
     entry: "./src/index.js",
     mode: "production",
@@ -79,6 +98,11 @@ module.exports = {
             commonjs2: "aphrodite",
             amd: "aphrodite",
         },
+        "flow-enums-runtime": {
+            commonjs: "flow-enums-runtime",
+            commonjs2: "flow-enums-runtime",
+            amd: "flow-enums-runtime",
+        },
         jquery: {
             commonjs: "jquery",
             commonjs2: "jquery",
@@ -108,6 +132,11 @@ module.exports = {
             commonjs: "@khanacademy/wonder-blocks-color",
             commonjs2: "@khanacademy/wonder-blocks-color",
             amd: "@khanacademy/wonder-blocks-color",
+        },
+        "react-router": {
+            commonjs: "react-router",
+            commonjs2: "react-router",
+            amd: "react-router",
         },
         "react-router-dom": {
             commonjs: "react-router-dom",

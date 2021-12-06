@@ -1,6 +1,6 @@
 //@flow
 
-import React from "react";
+import * as React from "react";
 import {action} from "@storybook/addon-actions";
 import {View} from "@khanacademy/wonder-blocks-core";
 
@@ -21,14 +21,14 @@ export default {
     },
 };
 
-export const NumericInput = () => (
+export const NumericInput = (): React.Node => (
     <NumericInputPage onClickKey={action("onClickKey")} />
 );
 
-export const PreAlgebraInput = () => (
+export const PreAlgebraInput = (): React.Node => (
     <PrealgebraInputPage onClickKey={action("onClickKey")} />
 );
 
-export const TrigonometryInput = () => (
+export const TrigonometryInput = (): React.Node => (
     <TrigonometryInputPage onClickKey={action("onClickKey")} />
 );
