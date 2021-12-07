@@ -28,7 +28,7 @@
     "@khanacademy/wonder-blocks-core": "^3.2.0",
     "aphrodite": "^1.1.0",
     "flow-enums-runtime": "^0.0.6",
-    "jquery": "2.1.1",
+    "jquery": "3.5.0",
     "katex": "0.11.1",
     "mathquill": "git+https://git@github.com/Khan/mathquill.git#a9ae54e057c5c1acc8244a5627acbff29901d992",
     "performance-now": "^0.2.0",
