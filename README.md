@@ -1,4 +1,4 @@
-🚚 _**As of April 2022 this repo is no longer the home of `math-input`. The contents and development activity have moved into the Perseus repo [here](https://github.com/Khan/perseus/tree/main/packages/math-inpu).**_
+🚚 _**As of April 2022 this repo is no longer the home of `math-input`. The contents and development activity have moved into the Perseus repo [here](https://github.com/Khan/perseus/tree/main/packages/math-input).**_
 
 # math-input
 
