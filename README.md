@@ -1,3 +1,5 @@
+🚚 _**As of April 2022 this repo is no longer the home of `math-input`. The contents and development activity have moved into the Perseus repo [here](https://github.com/Khan/perseus/tree/main/packages/math-input).**_
+
 # math-input
 
 Khan Academy's new expression editor for the mobile web. Used in the [Perseus](https://github.com/khan/perseus) exercise framework to power math input and expression editing on small screens.
